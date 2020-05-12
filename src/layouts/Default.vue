@@ -1,15 +1,41 @@
 <template>
-  <div class="layout">
-    <header class="header">
-      <strong>
-        <g-link to="/">{{ $static.metadata.siteName }}</g-link>
-      </strong>
-      <nav class="nav">
-        <g-link class="nav__link" to="/">Home</g-link>
-        <g-link class="nav__link" to="/about/">About</g-link>
-      </nav>
-    </header>
-    <slot/>
+  <div>
+    <b-navbar class="is-fixed-top">
+        <template slot="brand">
+            <b-navbar-item tag="router-link" :to="{ path: '/' }">
+              LOGO
+            </b-navbar-item>
+        </template>
+        <template slot="start">
+            <b-navbar-item href="#">
+                Home
+            </b-navbar-item>
+            <b-navbar-item href="#">
+                Documentation
+            </b-navbar-item>
+            <b-navbar-dropdown label="Info">
+                <b-navbar-item href="#">
+                    About
+                </b-navbar-item>
+                <b-navbar-item href="#">
+                    Contact
+                </b-navbar-item>
+            </b-navbar-dropdown>
+        </template>
+
+        <template slot="end">
+            <b-navbar-item tag="div">
+                <div class="buttons">
+                  <a class="button is-light">
+                      Log in
+                  </a>
+                </div>
+            </b-navbar-item>
+        </template>
+    </b-navbar>
+    <div class="layout">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -30,15 +56,4 @@ query {
   padding-right: 20px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  height: 80px;
-}
-
-.nav__link {
-  margin-left: 20px;
-}
 </style>
