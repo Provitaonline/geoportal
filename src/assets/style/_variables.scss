@@ -7,58 +7,26 @@ $family-serif: "Lora", serif;
 @import "~bulma/sass/utilities/_all";
 
 // Set your colors
-$primary: #BE1421;
+$primary: #8c67ef;
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
 
-// Customizations
-$box-shadow: 0 0 0;
-$box-radius: 0;
-$dropdown-content-radius: 0;
-
-$table-cell-padding: 0.2em 0.75em;
-
-$narrow-text-width: 1000px;
-$not-as-narrow-text-width: 1100px;
-
-$navbar-height: 4rem;
-
-$navbar-box-shadow-size: 10px 2px 0 0;
-
-$logo-hover-fill: #990033;
-
-$button-hover-text-color: #DBDBDB;
-$table-header-background-color: #f0d4a6;
-$table-subheader-background-color: #FAF2E4;
-$table-odd-row-background-color: #F8F8F8;
-$map-legend-border-color: #626262;
-$map-popup-close-color: #c3c3c3;
-$map-popup-close-hover-color: #939393;
-$collapsible-list-current-item-background-color: #EEEEE0;
-$collapsible-list-separator-color: #dddddd;
-
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
-  "white": ($white, $black),
-  "black": ($black, $white),
-  "light": ($light, $light-invert),
-  "dark": ($dark, $dark-invert),
-  "primary": ($primary, $primary-invert),
-  "info": ($info, $info-invert),
-  "success": ($success, $success-invert),
-  "warning": ($warning, $warning-invert),
-  "danger": ($danger, $danger-invert),
-  "twitter": ($twitter, $twitter-invert)
+    "white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert),
+    "twitter": ($twitter, $twitter-invert)
 );
 
-$footer-background-color: "white";
-
 // Links
-$link: $black;
-$link-hover: $primary;
-$link-active: $primary;
-$link-invert: $dark-invert;
+$link: $primary;
+$link-invert: $primary-invert;
 $link-focus-border: $primary;
-
-$modal-z: 1110;

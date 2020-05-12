@@ -9,5 +9,9 @@
   "dependencies": {
     "buefy": "^0.8.18",
     "gridsome": "^0.7.0"
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2"
   }
 }
