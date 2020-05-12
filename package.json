@@ -1,0 +1,13 @@
+{
+  "name": "geoportal",
+  "private": true,
+  "scripts": {
+    "build": "gridsome build",
+    "develop": "gridsome develop",
+    "explore": "gridsome explore"
+  },
+  "dependencies": {
+    "buefy": "^0.8.18",
+    "gridsome": "^0.7.0"
+  }
+}
