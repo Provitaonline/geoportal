@@ -6,7 +6,7 @@
               LOGO
             </b-navbar-item>
         </template>
-        <template slot="start">
+        <template slot="end">
             <b-navbar-item href="#">
                 Home
             </b-navbar-item>
@@ -21,15 +21,10 @@
                     Contact
                 </b-navbar-item>
             </b-navbar-dropdown>
-        </template>
-
-        <template slot="end">
             <b-navbar-item tag="div">
-                <div class="buttons">
-                  <a class="button is-light">
-                      Log in
-                  </a>
-                </div>
+              <a class="button is-light">
+                  <font-awesome :icon="['far', 'user']"/>
+              </a>
             </b-navbar-item>
         </template>
     </b-navbar>
@@ -54,6 +49,12 @@ query {
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.button {
+  border-radius: 50%;
+  padding-left: .70em;
+  padding-right: .70em; 
 }
 
 </style>
