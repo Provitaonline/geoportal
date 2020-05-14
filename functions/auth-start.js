@@ -1,18 +1,24 @@
-const {config} = require('./utils/auth')
+const {config, oauth} = require('./utils/auth')
 
-console.log(config)
-
+/* Do initial auth redirect */
 exports.handler = async (event, context) => {
-  try {
-    const subject = event.queryStringParameters.name || 'Mundo'
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: `Hola ${subject}` })
-      // // more keys you can return:
-      // headers: { "headerName": "headerValue", ... },
-      // isBase64Encoded: true,
-    }
-  } catch (err) {
-    return { statusCode: 500, body: err.toString() }
+
+  /* Generate authorizationURI */
+  const authorizationURI = oauth.authorizationCode.authorizeURL({
+    redirect_uri: config.redirect_uri,
+    /* Specify how your app needs to access the user’s account. */
+    scope: 'repo',
+    /* State helps mitigate CSRF attacks & Restore the previous state of your app */
+    state: ''
+  })
+
+  /* Redirect user to authorizationURI */
+  return {
+    statusCode: 302,
+    headers: {
+      Location: authorizationURI,
+      'Cache-Control': 'no-cache' // Disable caching of this response
+    },
+    body: '' // return body for local dev
   }
 }

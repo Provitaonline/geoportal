@@ -22,7 +22,7 @@
                 </b-navbar-item>
             </b-navbar-dropdown>
             <b-navbar-item tag="div">
-              <a class="button is-light">
+              <a @click='userLogin' class="button is-light">
                   <font-awesome :icon="['far', 'user']"/>
               </a>
             </b-navbar-item>
@@ -54,7 +54,21 @@ query {
 .button {
   border-radius: 50%;
   padding-left: .70em;
-  padding-right: .70em; 
+  padding-right: .70em;
 }
 
 </style>
+
+<script>
+import axios from 'axios'
+
+export default {
+  methods: {
+    userLogin: async function() {
+      let response = await axios.get('/.netlify/functions/auth-start')
+      console.log('User login', response)
+    }
+  }
+}
+
+</script>

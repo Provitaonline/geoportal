@@ -2,12 +2,13 @@
   "name": "geoportal",
   "private": true,
   "scripts": {
-    "prebuild" : "cd functions && npm i",
+    "prebuild": "cd functions && npm i",
     "build": "gridsome build",
     "develop": "gridsome develop",
     "explore": "gridsome explore"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "buefy": "^0.8.18",
     "gridsome": "^0.7.0"
   },
