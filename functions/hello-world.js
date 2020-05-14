@@ -1,4 +1,7 @@
-// Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method
+const {config} = require('./utils/auth')
+
+console.log(config)
+
 exports.handler = async (event, context) => {
   try {
     const subject = event.queryStringParameters.name || 'Mundo'
