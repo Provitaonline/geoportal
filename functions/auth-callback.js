@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
     /* Redirect user to authorizationURI */
     return {
       statusCode: 200,
-      body: JSON.stringify(authResult)
+      body: ''
     }
 
 
@@ -62,9 +62,7 @@ exports.handler = async (event, context) => {
     console.log(e)
     return {
       statusCode: e.statusCode || 500,
-      body: JSON.stringify({
-        error: e.message,
-      })
+      body: e.message
     }
   }
 }
