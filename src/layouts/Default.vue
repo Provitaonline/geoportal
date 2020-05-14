@@ -22,7 +22,7 @@
                 </b-navbar-item>
             </b-navbar-dropdown>
             <b-navbar-item tag="div">
-              <a @click='userLogin' class="button is-light">
+              <a class="button is-light" href="/.netlify/functions/auth-start">
                   <font-awesome :icon="['far', 'user']"/>
               </a>
             </b-navbar-item>
@@ -64,10 +64,10 @@ import axios from 'axios'
 
 export default {
   methods: {
-    userLogin: async function() {
+    /*userLogin: async function() {
       let response = await axios.get('/.netlify/functions/auth-start')
       console.log('User login', response)
-    }
+    } */
   }
 }
 

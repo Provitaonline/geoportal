@@ -4,14 +4,14 @@ const { config, oauth } = require('./utils/auth')
 /* Function to handle github auth callback */
 exports.handler = async (event, context) => {
   // Exit early
-  if (!event.queryStringParameters) {
+  /*if (!event.queryStringParameters) {
     return {
       statusCode: 401,
       body: JSON.stringify({
         error: 'Not authorized',
       })
     }
-  }
+  } */
 
   /* Grant the grant code */
   const code = event.queryStringParameters.code

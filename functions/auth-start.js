@@ -12,6 +12,8 @@ exports.handler = async (event, context) => {
     state: ''
   })
 
+  console.log('authorizationURI', authorizationURI)
+
   /* Redirect user to authorizationURI */
   return {
     statusCode: 302,
