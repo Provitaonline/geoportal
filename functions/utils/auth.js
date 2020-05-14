@@ -7,7 +7,7 @@ const TOKEN_HOST = 'https://github.com'
 const TOKEN_PATH =  '/login/oauth/access_token'
 const AUTHORIZE_HOST = 'https://github.com'
 const AUTHORIZE_PATH = '/login/oauth/authorize'
-const REDIRECT_URL = `${SITE_URL}/.netlify/functions/auth-callbackXX`
+const REDIRECT_URL = `${SITE_URL}/.netlify/functions/auth-callback`
 
 /* Env key name */
 const clientIdKey = 'GITHUB_OAUTH_CLIENT_ID'
