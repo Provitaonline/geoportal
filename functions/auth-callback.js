@@ -52,8 +52,12 @@ exports.handler = async (event, context) => {
 
     /* Redirect user to authorizationURI */
     return {
-      statusCode: 200,
-      body: 'FROM CALLBACK'
+      statusCode: 302,
+      headers: {
+        Location: config.siteUrl,
+        'Cache-Control': 'no-cache' // Disable caching of this response
+      },
+      body: '' // return body for local dev
     }
 
 

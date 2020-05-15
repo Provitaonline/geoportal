@@ -24,6 +24,7 @@ const config = {
   authorizePath: AUTHORIZE_PATH,
   /* redirect_uri is the callback url after successful signin */
   redirect_uri: REDIRECT_URL,
+  siteUrl: SITE_URL
 }
 
 function authInstance(credentials) {
