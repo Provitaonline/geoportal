@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
     /* Redirect user to authorizationURI */
     return {
       statusCode: 200,
-      body: ''
+      body: 'FROM CALLBACK'
     }
 
 
