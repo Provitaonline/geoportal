@@ -10,7 +10,8 @@
   "dependencies": {
     "axios": "^0.19.2",
     "buefy": "^0.8.18",
-    "gridsome": "^0.7.0"
+    "gridsome": "^0.7.0",
+    "vue-cookies": "^1.7.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

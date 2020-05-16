@@ -22,6 +22,13 @@
 export default {
   metaInfo: {
     title: 'Hello, world!'
+  },
+  mounted () {
+    //window.history.replaceState(null, null, window.location.pathname)
+    console.log(this.$router)
+    //this.$router.push('/')
+    console.log(this.$cookies.keys())
+    console.log(document.cookie)
   }
 }
 </script>

@@ -49,15 +49,20 @@ exports.handler = async (event, context) => {
 
     console.log('auth token', authResult.token)
     console.log('state', state)
+    console.log('context', context)
+    console.log('event', event)
 
-    /* Redirect user to authorizationURI */
+
+    /* Redirect user back to site page */
     return {
       statusCode: 302,
       headers: {
-        Location: config.siteUrl,
-        'Cache-Control': 'no-cache' // Disable caching of this response
+        'Set-Cookie': 'test=valueXX',
+        //'Set-Cookie': 'githubtoken=' + authResult.token.access_token,
+        Location: config.siteUrl+'?verga',
+        'Cache-Control': 'no-cache'
       },
-      body: '' // return body for local dev
+      body: ''
     }
 
 

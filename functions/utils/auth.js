@@ -1,7 +1,7 @@
 const simpleOauth = require('simple-oauth2')
 
-const SITE_URL = process.env.URL || 'http://localhost:8888'
-
+const SITE_URL = process.env.URL
+const isLocalhost = process.env.URL.includes('localhost')
 /* Auth values */
 const TOKEN_HOST = 'https://github.com'
 const TOKEN_PATH =  '/login/oauth/access_token'
@@ -10,8 +10,11 @@ const AUTHORIZE_PATH = '/login/oauth/authorize'
 const REDIRECT_URL = `${SITE_URL}/.netlify/functions/auth-callback`
 
 /* Env key name */
-const clientIdKey = 'GITHUB_OAUTH_CLIENT_ID'
-const clientSecretKey = 'GITHUB_OAUTH_CLIENT_SECRET'
+if (isLocalhost) {
+  console.log('Running in localhost test environment')
+}
+const clientIdKey = isLocalhost ? 'GITHUB_OAUTH_CLIENT_ID_TEST' : 'GITHUB_OAUTH_CLIENT_ID'
+const clientSecretKey = isLocalhost ? 'GITHUB_OAUTH_CLIENT_SECRET_TEST' : 'GITHUB_OAUTH_CLIENT_SECRET'
 
 const config = {
   /* values set in terminal session or in netlify environment variables */
