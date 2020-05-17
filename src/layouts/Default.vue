@@ -22,7 +22,7 @@
                 </b-navbar-item>
             </b-navbar-dropdown>
             <b-navbar-item tag="div">
-              <a class="button is-light" href="/.netlify/functions/auth-start">
+              <a @click="userLogin" class="button is-light">
                   <font-awesome :icon="['far', 'user']"/>
               </a>
             </b-navbar-item>
@@ -61,13 +61,14 @@ query {
 
 <script>
 import axios from 'axios'
+import {getStateToken} from '~/utils/auth'
 
 export default {
   methods: {
-    /*userLogin: async function() {
-      let response = await axios.get('/.netlify/functions/auth-start')
-      console.log('User login', response)
-    } */
+    userLogin: function() {
+      sessionStorage.stateToken = getStateToken()
+      window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
+    }
   }
 }
 

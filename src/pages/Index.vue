@@ -25,16 +25,22 @@ export default {
   },
   mounted () {
     //window.history.replaceState(null, null, window.location.pathname)
-    console.log(this.$router)
-    //this.$router.push('/')
-    console.log(this.$cookies.keys())
-    console.log(document.cookie)
+    console.log('tokens', this.$route.query.token, sessionStorage.stateToken)
+    if (this.$route.query.token) {
+      if (this.$route.query.state === sessionStorage.stateToken) {
+        sessionStorage.githubtoken = this.$route.query.token
+        console.log('New login')
+      } else {
+        console.log('Hey, state mismatch')
+      }
+      this.$router.push('/') // Clean the url
+    }
   }
 }
 </script>
 
 <style>
-.home-links a {
-  margin-right: 1rem;
-}
+  .home-links a {
+    margin-right: 1rem;
+  }
 </style>

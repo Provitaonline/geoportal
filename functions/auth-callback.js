@@ -1,25 +1,22 @@
-const querystring = require('querystring')
 const { config, oauth } = require('./utils/auth')
 
-/* Function to handle github auth callback */
 exports.handler = async (event, context) => {
-  // Exit early
-  /*if (!event.queryStringParameters) {
+  if (!event.queryStringParameters) {
     return {
       statusCode: 401,
       body: JSON.stringify({
         error: 'Not authorized',
       })
     }
-  } */
+  }
 
-  /* Grant the grant code */
+  // Get the grant code
   const code = event.queryStringParameters.code
   /* state helps mitigate CSRF attacks & Restore the previous state of your app */
-  const state = querystring.parse(event.queryStringParameters.state)
+  const state = event.queryStringParameters.state
 
   try {
-    /* Take the grant code and exchange for an accessToken */
+    // Take the grant code and exchange for an accessToken
     const authorizationToken = await oauth.authorizationCode.getToken({
       code: code,
       redirect_uri: config.redirect_uri,
@@ -29,37 +26,11 @@ exports.handler = async (event, context) => {
 
     const authResult = oauth.accessToken.create(authorizationToken)
 
-    // const user = await getUser(token)
-
-    // return {
-    //   statusCode: 200,
-    //   body: JSON.stringify({
-    //     user: user,
-    //     authResult: authResult,
-    //     state: state,
-    //     encode: Buffer.from(token, 'binary').toString('base64')
-    //   })
-    // }
-
-    /*const encodedUserData = querystring.stringify({
-      email: user.email || "NA",
-      full_name: user.full_name || "NA",
-      avatar: user.avatar_url || "NA"
-    }) */
-
-    console.log('auth token', authResult.token)
-    console.log('state', state)
-    console.log('context', context)
-    console.log('event', event)
-
-
-    /* Redirect user back to site page */
+    // Redirect user back to site page
     return {
       statusCode: 302,
       headers: {
-        'Set-Cookie': 'test=valueXX',
-        //'Set-Cookie': 'githubtoken=' + authResult.token.access_token,
-        Location: config.siteUrl+'?verga',
+        Location: config.siteUrl + '?token=' + authResult.token.access_token + '&state=' + state,
         'Cache-Control': 'no-cache'
       },
       body: ''

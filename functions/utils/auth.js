@@ -9,23 +9,18 @@ const AUTHORIZE_HOST = 'https://github.com'
 const AUTHORIZE_PATH = '/login/oauth/authorize'
 const REDIRECT_URL = `${SITE_URL}/.netlify/functions/auth-callback`
 
-/* Env key name */
-if (isLocalhost) {
-  console.log('Running in localhost test environment')
-}
 const clientIdKey = isLocalhost ? 'GITHUB_OAUTH_CLIENT_ID_TEST' : 'GITHUB_OAUTH_CLIENT_ID'
 const clientSecretKey = isLocalhost ? 'GITHUB_OAUTH_CLIENT_SECRET_TEST' : 'GITHUB_OAUTH_CLIENT_SECRET'
 
 const config = {
-  /* values set in terminal session or in netlify environment variables */
   clientId: process.env[clientIdKey],
   clientSecret: process.env[clientSecretKey],
-  /* OAuth API endpoints */
+  // Github OAuth API endpoints
   tokenHost: TOKEN_HOST,
   tokenPath: TOKEN_PATH,
   authorizeHost: AUTHORIZE_HOST,
   authorizePath: AUTHORIZE_PATH,
-  /* redirect_uri is the callback url after successful signin */
+  // redirect_uri is the callback url after successful signin */
   redirect_uri: REDIRECT_URL,
   siteUrl: SITE_URL
 }
@@ -41,9 +36,7 @@ function authInstance(credentials) {
 }
 
 module.exports = {
-  /* Export config for functions */
   config: config,
-  /* Create oauth2 instance to use in our functions */
   oauth: authInstance({
     client: {
       id: config.clientId,
