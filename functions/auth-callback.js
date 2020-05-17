@@ -25,6 +25,7 @@ exports.handler = async (event, context) => {
     })
 
     const authResult = oauth.accessToken.create(authorizationToken)
+    console.log('Auth result', authResult)
 
     // Redirect user back to site page
     return {

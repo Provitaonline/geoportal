@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import {getUserInfo} from '~/utils/user'
+
 export default {
   metaInfo: {
     title: 'Hello, world!'
@@ -30,6 +32,11 @@ export default {
       if (this.$route.query.state === sessionStorage.stateToken) {
         sessionStorage.githubtoken = this.$route.query.token
         console.log('New login')
+
+        getUserInfo(sessionStorage.githubtoken).then((info) => {
+          console.log('User Info ', info.name, info.login)
+        })
+
       } else {
         console.log('Hey, state mismatch')
       }
