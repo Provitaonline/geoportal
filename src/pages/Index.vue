@@ -20,6 +20,7 @@
 
 <script>
 import {getUserInfo} from '~/utils/user'
+import * as data from '~/utils/data'
 
 export default {
   metaInfo: {
@@ -28,6 +29,9 @@ export default {
   mounted () {
     //window.history.replaceState(null, null, window.location.pathname)
     console.log('tokens', this.$route.query.token, sessionStorage.stateToken)
+    data.getMetaEntries().then((data) => {
+      console.log(data)
+    })
     if (this.$route.query.token) {
       if (this.$route.query.state === sessionStorage.stateToken) {
         sessionStorage.githubtoken = this.$route.query.token

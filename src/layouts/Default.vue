@@ -60,7 +60,6 @@ query {
 </style>
 
 <script>
-import axios from 'axios'
 import {getStateToken} from '~/utils/user'
 
 export default {
