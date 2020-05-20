@@ -1,7 +1,7 @@
 const simpleOauth = require('simple-oauth2')
 
 const SITE_URL = process.env.DEPLOY_PRIME_URL || process.env.URL
-console.log('Site URL', SITE_URL)
+console.log('Site URL', process.env.DEPLOY_PRIME_URL)
 const isLocalhost = process.env.URL.includes('localhost')
 /* Auth values */
 const TOKEN_HOST = 'https://geoportalp.auth.us-west-2.amazoncognito.com'
