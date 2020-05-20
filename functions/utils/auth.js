@@ -1,8 +1,9 @@
 const simpleOauth = require('simple-oauth2')
 
-const SITE_URL = process.env.DEPLOY_PRIME_URL || process.env.URL
+//const SITE_URL = process.env.DEPLOY_PRIME_URL || process.env.URL
 console.log('Site URL', process.env.DEPLOY_PRIME_URL)
 const isLocalhost = process.env.URL.includes('localhost')
+const SITE_URL = isLocalhost ? process.env.URL : 'https://cognito--geoportalp.netlify.app/'
 /* Auth values */
 const TOKEN_HOST = 'https://geoportalp.auth.us-west-2.amazoncognito.com'
 const TOKEN_PATH =  '/oauth2/token'
