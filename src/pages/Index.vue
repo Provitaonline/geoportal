@@ -34,11 +34,11 @@ export default {
     })
     if (this.$route.query.token) {
       if (this.$route.query.state === sessionStorage.stateToken) {
-        sessionStorage.githubtoken = this.$route.query.token
+        sessionStorage.accesstoken = this.$route.query.token
         console.log('New login')
 
-        getUserInfo(sessionStorage.githubtoken).then((info) => {
-          console.log('User Info ', info.name, info.login)
+        getUserInfo(sessionStorage.accesstoken).then((info) => {
+          console.log('User Info ', info)
         })
 
       } else {

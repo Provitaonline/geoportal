@@ -1,4 +1,4 @@
-import GitHub from 'github-api'
+import axios from 'axios'
 
 export function getStateToken() {
   // Generate and return a UUIDv4 (from StackOverflow How to create GUID / UUID?)
@@ -7,12 +7,20 @@ export function getStateToken() {
   )
 }
 
-export function getUserInfo(token) {
+/* export function getUserInfo(token) {
   let github = new GitHub({token: token})
 
   return new Promise(function (resolve, reject) {
     github.getUser().getProfile().then((profile) => {
       resolve({name: profile.data.name, login: profile.data.login})
     })
+  })
+} */
+
+export async function getUserInfo(token) {
+  return await axios.get('https://geoportalp.auth.us-west-2.amazoncognito.com/oauth2/userInfo', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   })
 }

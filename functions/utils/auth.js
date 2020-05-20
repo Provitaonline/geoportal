@@ -3,14 +3,14 @@ const simpleOauth = require('simple-oauth2')
 const SITE_URL = process.env.URL
 const isLocalhost = process.env.URL.includes('localhost')
 /* Auth values */
-const TOKEN_HOST = 'https://github.com'
-const TOKEN_PATH =  '/login/oauth/access_token'
-const AUTHORIZE_HOST = 'https://github.com'
-const AUTHORIZE_PATH = '/login/oauth/authorize'
+const TOKEN_HOST = 'https://geoportalp.auth.us-west-2.amazoncognito.com'
+const TOKEN_PATH =  '/oauth2/token'
+const AUTHORIZE_HOST = 'https://geoportalp.auth.us-west-2.amazoncognito.com'
+const AUTHORIZE_PATH = '/oauth2/authorize'
 const REDIRECT_URL = `${SITE_URL}/.netlify/functions/auth-callback`
 
-const clientIdKey = isLocalhost ? 'GITHUB_OAUTH_CLIENT_ID_TEST' : 'GITHUB_OAUTH_CLIENT_ID'
-const clientSecretKey = isLocalhost ? 'GITHUB_OAUTH_CLIENT_SECRET_TEST' : 'GITHUB_OAUTH_CLIENT_SECRET'
+const clientIdKey = 'COGNITO_OAUTH_CLIENT_ID'
+const clientSecretKey = 'COGNITO_OAUTH_CLIENT_SECRET'
 
 const config = {
   clientId: process.env[clientIdKey],

@@ -8,7 +8,7 @@ exports.handler = async (event, context) => {
   const authorizationURI = oauth.authorizationCode.authorizeURL({
     redirect_uri: config.redirect_uri,
     /* Specify how your app needs to access the user’s account. */
-    scope: 'read:user public_repo',
+    scope: 'openid profile',
     /* State helps mitigate CSRF attacks & Restore the previous state of your app */
     state: state
   })

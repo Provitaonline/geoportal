@@ -1,4 +1,3 @@
-import GitHub from 'github-api'
 import axios from 'axios'
 import yaml from 'js-yaml'
 
