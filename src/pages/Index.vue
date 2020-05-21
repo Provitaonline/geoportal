@@ -32,9 +32,11 @@ export default {
     data.getMetaEntries().then((data) => {
       console.log(data)
     })
-    if (this.$route.query.token) {
-      if (this.$route.query.state === sessionStorage.stateToken) {
-        sessionStorage.accesstoken = this.$route.query.token
+    // if (this.$route.query.token) {
+    if (this.$route.hash) {
+      let modUrl = new URL(window.location.href.replace('#','?')) // Cognito token coming back in hash
+      if (modUrl.searchParams.get('state') === sessionStorage.stateToken) {
+        sessionStorage.accesstoken = modUrl.searchParams.get('access_token')
         console.log('New login')
 
         getUserInfo(sessionStorage.accesstoken).then((info) => {
@@ -42,7 +44,7 @@ export default {
         })
 
       } else {
-        console.log('Hey, state mismatch')
+        console.log('Hey, state mismatch', this.$route)
       }
       this.$router.push('/') // Clean the url
     }

@@ -66,7 +66,11 @@ export default {
   methods: {
     userLogin: function() {
       sessionStorage.stateToken = getStateToken()
-      window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
+      //window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
+      window.location.href =
+        'https://geoportalp.auth.us-west-2.amazoncognito.com/oauth2/authorize?' +
+        'client_id=p6ea0f8lu16rqah7j7is7shpi&response_type=token&scope=openid+profile&redirect_uri=http://localhost:8888&state=' +
+        sessionStorage.stateToken
     }
   }
 }
