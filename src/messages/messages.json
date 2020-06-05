@@ -1,0 +1,14 @@
+{
+  "en": {
+    "language": "English",
+    "message": {
+      "hello": "hello"
+    }
+  },
+  "es": {
+    "language": "Español",
+    "message": {
+      "hello": "hola"
+    }
+  }
+}

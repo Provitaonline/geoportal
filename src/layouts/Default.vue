@@ -2,8 +2,8 @@
   <div>
     <b-navbar class="is-fixed-top">
         <template slot="brand">
-            <b-navbar-item tag="router-link" :to="{ path: '/' }">
-              LOGO
+            <b-navbar-item>
+              <g-link :to="$tp('/')">LOGO</g-link>
             </b-navbar-item>
         </template>
         <template slot="end">
@@ -14,12 +14,22 @@
                 Documentation
             </b-navbar-item>
             <b-navbar-dropdown label="Info">
-                <b-navbar-item href="#">
-                    About
-                </b-navbar-item>
-                <b-navbar-item href="#">
-                    Contact
-                </b-navbar-item>
+              <b-navbar-item href="#">
+                  About
+              </b-navbar-item>
+              <b-navbar-item href="#">
+                  Contact
+              </b-navbar-item>
+            </b-navbar-dropdown>
+            <b-navbar-dropdown>
+              <template slot="label">
+                {{ $t('language') }}
+              </template>
+              <b-navbar-item v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
+                <a @click="changeLocale(locale)">
+                  {{ $t('language', locale) }}
+                </a>
+              </b-navbar-item>
             </b-navbar-dropdown>
             <b-navbar-item tag="div">
               <a @click="userLogin" class="button is-light">
@@ -63,9 +73,20 @@ query {
 import {getStateToken} from '~/utils/user'
 
 export default {
+  data() {
+    return {
+    }
+  },
   methods: {
+    changeLocale: function (locale) {
+      if (this.$i18n.locale.toString() != locale) {
+        this.$router.push({
+          path: this.$tp(this.$route.path, locale, true)
+        })
+      }
+    },
     userLogin: function() {
-      sessionStorage.stateToken = getStateToken()
+      sessionStorage.stateToken = this.$i18n.locale.toString().substr(0,2) + getStateToken()
       window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
     }
   }

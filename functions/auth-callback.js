@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 302,
       headers: {
-        Location: config.siteUrl + '?token=' + authResult.token.access_token + '&state=' + state,
+        Location: config.siteUrl + '/' + state.substr(0,2) + '?token=' + authResult.token.access_token + '&state=' + state,
         'Cache-Control': 'no-cache'
       },
       body: ''
