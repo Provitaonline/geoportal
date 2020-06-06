@@ -25,11 +25,13 @@
               <template slot="label">
                 {{ $t('language') }}
               </template>
-              <b-navbar-item v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
-                <a @click="changeLocale(locale)">
-                  {{ $t('language', locale) }}
-                </a>
-              </b-navbar-item>
+              <ClientOnly>
+                <b-navbar-item v-for="locale in $i18n.availableLocales" :key="locale">
+                  <a @click="changeLocale(locale)">
+                    {{ $t('language', locale) }}
+                  </a>
+                </b-navbar-item>
+              </ClientOnly>
             </b-navbar-dropdown>
             <b-navbar-item tag="div">
               <a @click="userLogin" class="button is-light">

@@ -27,6 +27,6 @@ module.exports = {
           'en-us': require('./src/messages/messages.json').en
         }
       }
-    }
+    } 
   ]
 }
