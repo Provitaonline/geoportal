@@ -16,11 +16,14 @@ library.add(
   faUser
 )
 
-export default function (Vue, { router, head, isClient }) {
+export default function (Vue, { router, head, isClient, appOptions }) {
   // Set default layout as a global component
   Vue.component('Layout', DefaultLayout)
 
   Vue.component('font-awesome', FontAwesomeIcon)
+
+  appOptions.i18n.setLocaleMessage('es-ve', require('./messages/messages.json').es)
+  appOptions.i18n.setLocaleMessage('en-us', require('./messages/messages.json').en)
 
   Vue.use(Buefy)
   Vue.use(VueCookies)

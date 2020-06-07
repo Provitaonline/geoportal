@@ -22,11 +22,8 @@ module.exports = {
         defaultLocale: 'es-ve', // default language
         enablePathRewrite: true, // rewrite path with locale prefix, default: true
         rewriteDefaultLanguage: true, // rewrite default locale, default: true
-        messages: {
-          'es-ve': require('./src/messages/messages.json').es,
-          'en-us': require('./src/messages/messages.json').en
-        }
+        messages: {}
       }
-    } 
+    }
   ]
 }
