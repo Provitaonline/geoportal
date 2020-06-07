@@ -6,9 +6,33 @@
 </template>
 
 <script>
+import {getUserInfo} from '~/utils/user'
+import * as data from '~/utils/data'
+
 export default {
   metaInfo: {
     title: 'Admin'
+  },
+  mounted () {
+    //window.history.replaceState(null, null, window.location.pathname)
+    console.log('tokens', this.$route.query.token, sessionStorage.stateToken)
+    data.getMetaEntries().then((data) => {
+      console.log(data)
+    })
+    if (this.$route.query.token) {
+      if (this.$route.query.state === sessionStorage.stateToken) {
+        sessionStorage.githubtoken = this.$route.query.token
+        console.log('New login')
+
+        getUserInfo(sessionStorage.githubtoken).then((info) => {
+          console.log('User Info ', info.name, info.login)
+        })
+
+      } else {
+        console.log('Hey, state mismatch')
+      }
+      this.$router.push('/' + sessionStorage.stateToken.substr(0,2) + '/admin') // Clean the url, stay with selected locale
+    }
   }
 }
 </script>
