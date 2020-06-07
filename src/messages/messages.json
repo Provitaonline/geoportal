@@ -3,12 +3,20 @@
     "language": "English",
     "message": {
       "hello": "hello"
+    },
+    "label": {
+      "about": "About",
+      "contact": "Contact"
     }
   },
   "es": {
     "language": "Español",
     "message": {
       "hello": "hola"
+    },
+    "label": {
+      "about": "Acerca De",
+      "contact": "Contacto"
     }
   }
 }

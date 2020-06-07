@@ -24,7 +24,7 @@ import * as data from '~/utils/data'
 
 export default {
   metaInfo: {
-    title: 'Hello, world!'
+    title: 'Geoportal Provita'
   },
   mounted () {
     //window.history.replaceState(null, null, window.location.pathname)

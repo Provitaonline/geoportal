@@ -7,33 +7,27 @@
             </b-navbar-item>
         </template>
         <template slot="end">
-            <b-navbar-item href="#">
-                Home
+            <b-navbar-item tag="div">
+              <g-link :to="$tp('/about')">
+                {{ $t('label.about') }}
+              </g-link>
             </b-navbar-item>
             <b-navbar-item href="#">
-                Documentation
+              {{ $t('label.contact') }}
             </b-navbar-item>
-            <b-navbar-dropdown label="Info">
-              <b-navbar-item href="#">
-                  About
-              </b-navbar-item>
-              <b-navbar-item href="#">
-                  Contact
-              </b-navbar-item>
-            </b-navbar-dropdown>
             <b-navbar-dropdown>
               <template slot="label">
                 {{ $t('language') }}
               </template>
               <ClientOnly>
-                <b-navbar-item v-for="locale in $i18n.availableLocales" :key="locale">
+                <b-navbar-item v-for="locale in availableLocales" :key="locale">
                   <a @click="changeLocale(locale)">
                     {{ $t('language', locale) }}
                   </a>
                 </b-navbar-item>
               </ClientOnly>
             </b-navbar-dropdown>
-            <b-navbar-item tag="div">
+            <b-navbar-item v-if="isAdminPage" tag="div">
               <a @click="userLogin" class="button is-light">
                   <font-awesome :icon="['far', 'user']"/>
               </a>
@@ -77,7 +71,11 @@ import {getStateToken} from '~/utils/user'
 export default {
   data() {
     return {
+      availableLocales: this.$i18n.availableLocales,
+      isAdminPage: this.$route.path.includes('/admin')
     }
+  },
+  mounted() {
   },
   methods: {
     changeLocale: function (locale) {
