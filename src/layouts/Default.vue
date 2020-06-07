@@ -12,8 +12,10 @@
                 {{ $t('label.about') }}
               </g-link>
             </b-navbar-item>
-            <b-navbar-item href="#">
-              {{ $t('label.contact') }}
+            <b-navbar-item tag="div">
+              <g-link :to="$tp('/contact')">
+                {{ $t('label.contact') }}
+              </g-link>
             </b-navbar-item>
             <b-navbar-dropdown>
               <template slot="label">
