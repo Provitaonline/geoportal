@@ -26,8 +26,9 @@ export default {
 
         getUserInfo(sessionStorage.githubtoken).then((info) => {
           console.log('User Info ', info.name, info.login)
+        }).catch((e) => {
+          console.log(e)
         })
-
       } else {
         console.log('Hey, state mismatch')
       }

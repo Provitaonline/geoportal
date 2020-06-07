@@ -13,6 +13,8 @@ export function getUserInfo(token) {
   return new Promise(function (resolve, reject) {
     github.getUser().getProfile().then((profile) => {
       resolve({name: profile.data.name, login: profile.data.login})
+    }).catch((e) => {
+      reject(e)
     })
   })
 }
