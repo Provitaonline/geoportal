@@ -46,6 +46,25 @@
     <section class="layout">
       <slot />
     </section>
+    <section>
+      <footer class="footer">
+        <div class="has-text-centered">
+          <div>
+            <!--<div class="social">
+              &nbsp;
+              <g-link to="https://www.instagram.com/provita_ong/"><font-awesome size="lg" :icon="['fab', 'instagram']"/></g-link>&nbsp;&nbsp;
+              <g-link to="https://www.facebook.com/ProvitaONG/"><font-awesome size="lg" :icon="['fab', 'facebook-f']"/></g-link>&nbsp;&nbsp;
+              <g-link to="https://twitter.com/provita_ong"><font-awesome size="lg" :icon="['fab', 'twitter']"/></g-link>
+              &nbsp;
+            </div> -->
+            <span> Derechos reservados, copyright © 2020 Provita</span>
+            <span>, licencia </span>
+            <g-link href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</g-link>
+            <span>. | Versión Prototipo 0.0.1</span>
+          </div>
+        </div>
+      </footer>
+    </section>
   </div>
 </template>
 
@@ -72,6 +91,7 @@ query {
     padding-left: .70em;
     padding-right: .70em;
   }
+
 </style>
 
 <script>
