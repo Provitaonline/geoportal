@@ -1,6 +1,7 @@
 {
   "en": {
     "language": "English",
+    "flag": "🇺🇸",
     "message": {
       "hello": "hello"
     },
@@ -11,6 +12,7 @@
   },
   "es": {
     "language": "Español",
+    "flag": "🇻🇪",
     "message": {
       "hello": "hola"
     },

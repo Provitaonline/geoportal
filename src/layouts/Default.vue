@@ -17,14 +17,14 @@
                 {{ $t('label.contact') }}
               </g-link>
             </b-navbar-item>
-            <b-navbar-dropdown>
+            <b-navbar-dropdown arrowless right>
               <template slot="label">
-                {{ $t('language') }}
+                {{ $t('flag') }}
               </template>
               <ClientOnly>
                 <b-navbar-item v-for="locale in availableLocales" :key="locale">
                   <a @click="changeLocale(locale)">
-                    {{ $t('language', locale) }}
+                    {{ $t('flag', locale) }}&nbsp&nbsp&nbsp{{ $t('language', locale) }}
                   </a>
                 </b-navbar-item>
               </ClientOnly>
@@ -50,21 +50,21 @@ query {
 }
 </static-query>
 
-<style>
+<style lang="scss">
+  .layout {
+    max-width: 760px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+</style>
 
-.layout {
-  max-width: 760px;
-  margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.button {
-  border-radius: 50%;
-  padding-left: .70em;
-  padding-right: .70em;
-}
-
+<style lang="scss" scoped>
+  .button {
+    border-radius: 50%;
+    padding-left: .70em;
+    padding-right: .70em;
+  }
 </style>
 
 <script>
