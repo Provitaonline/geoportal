@@ -1,6 +1,10 @@
 <template>
   <Layout>
-    <h1>Admin</h1>
+    <template slot="banner">
+      <h1 class="title is-uppercase">
+        {{ $t('label.admin') }}
+      </h1>
+    </template>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error doloremque omnis animi, eligendi magni a voluptatum, vitae, consequuntur rerum illum odit fugit assumenda rem dolores inventore iste reprehenderit maxime! Iusto.</p>
   </Layout>
 </template>
@@ -10,10 +14,13 @@ import {getUserInfo} from '~/utils/user'
 import * as data from '~/utils/data'
 
 export default {
-  metaInfo: {
-    title: 'Admin'
+  metaInfo() {
+    return {
+      title: this.$t('label.admin')
+    }
   },
   mounted () {
+    console.log('META', this.metaInfo)
     //window.history.replaceState(null, null, window.location.pathname)
     console.log('tokens', this.$route.query.token, sessionStorage.stateToken)
     data.getMetaEntries().then((data) => {

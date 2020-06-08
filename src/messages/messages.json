@@ -6,8 +6,10 @@
       "hello": "hello"
     },
     "label": {
+      "main": "Main",
       "about": "About",
-      "contact": "Contact"
+      "contact": "Contact",
+      "admin": "Portal Administration"
     }
   },
   "es": {
@@ -17,8 +19,10 @@
       "hello": "hola"
     },
     "label": {
+      "main": "Página Principal",
       "about": "Acerca De",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "admin": "Administración del portal"
     }
   }
 }

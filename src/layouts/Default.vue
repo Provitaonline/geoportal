@@ -36,9 +36,16 @@
             </b-navbar-item>
         </template>
     </b-navbar>
-    <div class="layout">
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <slot name="banner" />
+        </div>
+      </div>
+    </section>
+    <section class="layout">
       <slot />
-    </div>
+    </section>
   </div>
 </template>
 

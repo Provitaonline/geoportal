@@ -1,5 +1,10 @@
 <template>
   <Layout>
+    <template slot="banner">
+      <h1 class="title has-text-centered is-uppercase">
+        Geoportal Provita
+      </h1>
+    </template>
 
     <!-- Learn how to use images here: https://gridsome.org/docs/images -->
     <g-image alt="Example image" src="~/favicon.png" width="135" />
@@ -21,8 +26,10 @@
 <script>
 
 export default {
-  metaInfo: {
-    title: 'Geoportal Provita'
+  metaInfo() {
+    return {
+      title: this.$t('label.main')
+    }
   },
 }
 </script>
