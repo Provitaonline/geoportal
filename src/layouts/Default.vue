@@ -17,7 +17,7 @@
               {{ $t('label.contact') }}
             </g-link>
           </b-navbar-item>
-          <b-navbar-dropdown arrowless right>
+          <b-navbar-dropdown v-if="!is404Page" arrowless right>
             <template slot="label">
               {{ $t('flag') }}
             </template>
@@ -101,7 +101,8 @@ export default {
   data() {
     return {
       availableLocales: this.$i18n.availableLocales,
-      isAdminPage: this.$route.path.includes('/admin')
+      isAdminPage: this.$route.path.includes('/admin'),
+      is404Page: this.$route.name === '*'
     }
   },
   mounted() {

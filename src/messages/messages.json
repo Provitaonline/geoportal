@@ -3,7 +3,8 @@
     "language": "English",
     "flag": "🇺🇸",
     "message": {
-      "hello": "hello"
+      "hello": "hello",
+      "404": "Page not found..."
     },
     "label": {
       "main": "Main",
@@ -18,7 +19,8 @@
     "language": "Español",
     "flag": "🇻🇪",
     "message": {
-      "hello": "hola"
+      "hello": "hola",
+      "404": "No encuentro la página..."
     },
     "label": {
       "main": "Página Principal",
