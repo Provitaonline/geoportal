@@ -75,7 +75,6 @@
       }
     },
     created() {
-      console.log(this.$context.locale)
       data.getMetaEntries().then((data) => {
         this.fileList =  data.collection
         console.log(data.collection)
