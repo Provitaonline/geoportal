@@ -21,32 +21,25 @@
           <a href="https://github.com/gridsome/gridsome" target="_blank" rel="noopener">GitHub</a>
         </p>
         <div class="tile is-ancestor">
-          <div class="tile is-parent">
-            <div class="tile is-4 is-child box">
+          <div class="tile is-parent" style="flex-wrap: wrap;">
+            <div v-for="item in fileList" class="tile is-4 is-parent">
               <div class="card">
                 <div class="card-image">
                   <figure class="image is-4by3">
-                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                    <img src="https://bulma.io/images/placeholders/480x320.png" alt="Placeholder image">
                   </figure>
                 </div>
                 <div class="card-content">
                   <div class="media">
                     <div class="media-content">
-                      <p class="title is-4">Vialidad</p>
+                      <p class="title is-4">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
                     </div>
                   </div>
                   <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris.
+                    {{ item.description[$i18n.locale.substr(0, 2)] }}
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="tile is-4 is-child box">
-              <p class="title">Two</p>
-            </div>
-            <div class="tile is-4 is-child box">
-              <p class="title">Three</p>
             </div>
           </div>
         </div>
@@ -65,17 +58,33 @@
     margin-right: 1rem;
   }
 
-  .box {
-    box-shadow: none;
-  }
 </style>
 
 <script>
+  import * as data from '~/utils/data'
+
   export default {
     metaInfo() {
       return {
         title: this.$t('label.main')
       }
     },
+    data() {
+      return {
+        fileList: []
+      }
+    },
+    created() {
+      console.log(this.$context.locale)
+      data.getMetaEntries().then((data) => {
+        this.fileList =  data.collection
+        console.log(data.collection)
+      })
+    },
+    computed: {
+      getNumRows() {
+        return (this.fileList.length/3).toFixed(0)
+      }
+    }
   }
 </script>
