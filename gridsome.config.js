@@ -20,6 +20,26 @@ module.exports = {
         },
         fallbackLocale: 'es-ve', // fallback language
         defaultLocale: 'es-ve', // default language
+        dateTimeFormats: {
+          'en-us': {
+            short: {
+              year: 'numeric', month: 'numeric', day: 'numeric'
+            },
+            long: {
+              year: 'numeric', month: 'short', day: 'numeric',
+              weekday: 'short', hour: 'numeric', minute: 'numeric'
+            }
+          },
+          'es-ve': {
+            short: {
+              year: 'numeric', month: 'numeric', day: 'numeric'
+            },
+            long: {
+              year: 'numeric', month: 'long', day: 'numeric',
+              weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true
+            }
+          }
+        },
         enablePathRewrite: true, // rewrite path with locale prefix, default: true
         rewriteDefaultLanguage: true, // rewrite default locale, default: true
         messages: {}

@@ -24,18 +24,23 @@
           <div class="tile is-parent" style="flex-wrap: wrap;">
             <div v-for="item in fileList" class="tile is-4 is-parent">
               <div class="card">
+                <div class="card-header">
+                  <p style="display: block;" class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
+                </div>
                 <div class="card-image">
                   <figure class="image is-4by3">
                     <img src="https://bulma.io/images/placeholders/480x320.png" alt="Placeholder image">
                   </figure>
                 </div>
                 <div class="card-content">
-                  <div class="media">
-                    <div class="media-content">
-                      <p class="title is-4">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
-                    </div>
-                  </div>
                   <div class="content">
+                    <b>Date: </b>{{ $d(new Date(item.date), 'short') }}<br><br>
+                    <div v-if="item.keywords">
+                      <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
+                        {{ kwd }}
+                      </span>
+                      <br><br>
+                    </div>
                     {{ item.description[$i18n.locale.substr(0, 2)] }}
                   </div>
                 </div>

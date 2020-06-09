@@ -24,7 +24,7 @@
             <ClientOnly>
               <b-navbar-item v-for="locale in availableLocales" :key="locale">
                 <a @click="changeLocale(locale)">
-                  {{ $t('flag', locale) }}&nbsp&nbsp&nbsp{{ $t('language', locale) }}
+                  {{ $t('flag', locale) }}&nbsp;&nbsp;&nbsp;{{ $t('language', locale) }}
                 </a>
               </b-navbar-item>
             </ClientOnly>
