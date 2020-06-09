@@ -13,7 +13,6 @@
     "github-api": "^3.3.0",
     "gridsome": "^0.7.0",
     "gridsome-plugin-i18n": "^1.4.0",
-    "js-yaml": "^3.13.1",
     "vue-cookies": "^1.7.0"
   },
   "devDependencies": {
