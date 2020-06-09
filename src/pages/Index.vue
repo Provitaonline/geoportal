@@ -7,7 +7,7 @@
     </template>
 
     <b-tabs type="is-boxed" :animated="false">
-      <b-tab-item label="Archivos">
+      <b-tab-item :label="$t('label.files')">
         <g-image alt="Example image" src="~/favicon.png" width="135" />
 
         <h1>{{ $i18n.locale }} {{ $t('message.hello') }}, world!</h1>
@@ -34,14 +34,14 @@
                 </div>
                 <div class="card-content">
                   <div class="content">
-                    <b>Date: </b>{{ $d(new Date(item.date), 'short') }}<br><br>
+                    <b>Date: </b>{{ $d(new Date(item.date)) }}<br><br>
                     <div v-if="item.keywords">
                       <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
                         {{ kwd }}
                       </span>
                       <br><br>
                     </div>
-                    {{ item.description[$i18n.locale.substr(0, 2)] }}
+                    <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span>
                   </div>
                 </div>
               </div>
@@ -49,7 +49,7 @@
           </div>
         </div>
       </b-tab-item>
-      <b-tab-item label="Mapa">
+      <b-tab-item :label="$t('label.map')">
         PRONTO...
       </b-tab-item>
     </b-tabs>

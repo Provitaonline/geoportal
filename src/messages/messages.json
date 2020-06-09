@@ -9,7 +9,9 @@
       "main": "Main",
       "about": "About",
       "contact": "Contact",
-      "admin": "Portal Administration"
+      "admin": "Portal Administration",
+      "files": "Data sets",
+      "map": "Map"
     }
   },
   "es": {
@@ -22,7 +24,9 @@
       "main": "Página Principal",
       "about": "Acerca De",
       "contact": "Contacto",
-      "admin": "Administración del portal"
+      "admin": "Administración del portal",
+      "files": "Archivos de datos",
+      "map": "Mapa"
     }
   }
 }
