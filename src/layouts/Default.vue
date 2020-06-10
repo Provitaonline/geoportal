@@ -2,8 +2,10 @@
   <div>
     <b-navbar class="is-fixed-top container is-widescreen">
         <template slot="brand">
-          <b-navbar-item>
-            <g-link :to="$tp('/')">LOGO</g-link>
+          <b-navbar-item class="logo">
+            <g-link :to="$tp('/')">
+              <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
+            </g-link>
           </b-navbar-item>
         </template>
         <template slot="end">
@@ -90,6 +92,16 @@ query {
     border-radius: 50%;
     padding-left: .70em;
     padding-right: .70em;
+  }
+
+  .logo {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 4rem;
+  }
+
+  .hero {
+    background-color: rgba(85,107,47, 0.1)
   }
 
 </style>
