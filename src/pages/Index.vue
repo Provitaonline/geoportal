@@ -23,7 +23,8 @@
                 </div>
                 <div class="card-image">
                   <figure class="image is-4by3">
-                    <img src="https://bulma.io/images/placeholders/480x320.png" alt="Placeholder image">
+                    <g-image v-if="item.thumb" :src="'https://raw.githubusercontent.com/jimmyangel/geoportal-data/master/thumbnails/' + item.thumb" alt="Thumbnail"></g-image>
+                    <g-image v-else src="~/assets/images/480x320.png" alt="Placeholder image"></g-image>
                   </figure>
                   <div class="buttons" style="margin-top: 2px; justify-content: center;">
                     <b-button style="width: 48%;" size="is-small" type="is-primary" outlined>
