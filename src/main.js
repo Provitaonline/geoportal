@@ -9,11 +9,12 @@ import DefaultLayout from '~/layouts/Default.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
+import { faFileDownload, faDownload, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 library.add(
-  faUser
+  faUser, faFileDownload, faDownload, faMapMarkedAlt
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {

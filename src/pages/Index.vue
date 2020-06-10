@@ -11,18 +11,13 @@
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur excepturi labore tempore expedita, et iste tenetur suscipit explicabo! Dolores, aperiam non officia eos quod asperiores
     </p>
-
-    <p class="home-links">
-      <a href="https://gridsome.org/docs/" target="_blank" rel="noopener">Gridsome Docs</a>
-      <a href="https://github.com/gridsome/gridsome" target="_blank" rel="noopener">GitHub</a>
-    </p>
     <br><br>
     <b-tabs type="is-boxed" :animated="false">
       <b-tab-item :label="$t('label.files')">
         <div class="tile is-ancestor">
           <div class="tile is-parent" style="flex-wrap: wrap;">
             <div v-for="item in fileList" class="tile is-4 is-parent">
-              <div class="card">
+              <div style="width: 100%;" class="card">
                 <div class="card-header">
                   <p style="display: block;" class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
                 </div>
@@ -30,10 +25,18 @@
                   <figure class="image is-4by3">
                     <img src="https://bulma.io/images/placeholders/480x320.png" alt="Placeholder image">
                   </figure>
+                  <div class="buttons" style="margin-top: 2px; justify-content: center;">
+                    <b-button style="width: 48%;" size="is-small" type="is-primary" outlined>
+                      <font-awesome :icon="['fas', 'download']"/><b> {{ $t('label.download') }}</b>
+                    </b-button>
+                    <b-button style="width: 48%;" size="is-small" type="is-primary" outlined>
+                      <font-awesome :icon="['fas', 'map-marked-alt']"/><b> {{ $t('label.addtomap') }}</b>
+                    </b-button>
+                  </div>
                 </div>
                 <div class="card-content">
                   <div class="content">
-                    <b>Date: </b>{{ $d(new Date(item.date)) }}<br><br>
+                    <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
                     <div v-if="item.keywords">
                       <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
                         {{ kwd }}
@@ -58,8 +61,8 @@
 
 <style lang="scss" scoped>
 
-  .home-links a {
-    margin-right: 1rem;
+  .card-header {
+    background-color: rgba(85,107,47, 0.1);
   }
 
 </style>

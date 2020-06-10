@@ -12,7 +12,10 @@
       "contact": "Contact",
       "admin": "Portal Administration",
       "files": "Data sets",
-      "map": "Map"
+      "date": "Date",
+      "map": "Map",
+      "download": "Download",
+      "addtomap": "Add to map"
     }
   },
   "es": {
@@ -28,7 +31,10 @@
       "contact": "Contacto",
       "admin": "Administración del portal",
       "files": "Archivos de datos",
-      "map": "Mapa"
+      "date": "Fecha",
+      "map": "Mapa",
+      "download": "Descargar",
+      "addtomap": "Añadir al mapa"
     }
   }
 }
