@@ -8,6 +8,16 @@ module.exports = {
   siteName: 'Geoportal Provita',
   plugins: [
     {
+      use: '@gridsome/source-filesystem',
+      options: {
+        path: 'content/home/**/*.md',
+        typeName: 'HomeData',
+        remark:{
+          autolinkHeadings: false
+        }
+      }
+    },
+    {
       use: "gridsome-plugin-i18n",
       options: {
         locales: [ // locales list

@@ -6,10 +6,9 @@
       </h1>
     </template>
     <br>
-    <h1>{{ $i18n.locale }} {{ $t('message.hello') }}, world!</h1>
+    
+    <div v-html="$page.home.edges[0].node.content"></div>
 
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur excepturi labore tempore expedita, et iste tenetur suscipit explicabo! Dolores, aperiam non officia eos quod asperiores
     </p>
     <br><br>
     <b-tabs type="is-boxed" :animated="false">
@@ -67,6 +66,18 @@
   }
 
 </style>
+
+<page-query>
+  query($locale: String) {
+    home: allHomeData(filter: { locale: { eq: $locale }}) {
+      edges {
+        node {
+          content
+        }
+      }
+    }
+  }
+</page-query>
 
 <script>
   import * as data from '~/utils/data'

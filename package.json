@@ -11,7 +11,7 @@
     "axios": "^0.19.2",
     "buefy": "^0.8.18",
     "github-api": "^3.3.0",
-    "gridsome": "^0.7.0",
+    "gridsome": "^0.7.17",
     "gridsome-plugin-i18n": "^1.4.0",
     "vue-cookies": "^1.7.0"
   },
@@ -21,6 +21,8 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/vue-fontawesome": "^0.1.9",
+    "@gridsome/source-filesystem": "^0.6.2",
+    "@gridsome/transformer-remark": "^0.6.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2"
   }
