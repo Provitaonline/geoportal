@@ -53,13 +53,15 @@
       </b-tab-item>
       <b-tab-item :label="$t('label.map')">
         <div class="map">
-          <MglMap
-            :accessToken="accessToken"
-            :mapStyle="mapStyle"
-            :center="mapCenter"
-            :zoom="mapZoom"
-            @load="onMapLoaded"
-          />
+          <ClientOnly>
+            <MglMap
+              :accessToken="accessToken"
+              :mapStyle="mapStyle"
+              :center="mapCenter"
+              :zoom="mapZoom"
+              @load="onMapLoaded"
+            />
+          </ClientOnly>
         </div>
       </b-tab-item>
     </b-tabs>
@@ -105,7 +107,7 @@
 
 <script>
   import Mapbox from "mapbox-gl";
-  import { MglMap } from "vue-mapbox";
+  //import { MglMap } from "vue-mapbox";
 
   import * as data from '~/utils/data'
 
@@ -116,7 +118,7 @@
       }
     },
     components: {
-      MglMap
+      //MglMap
     },
     data() {
       return {

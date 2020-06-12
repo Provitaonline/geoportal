@@ -29,4 +29,8 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 
   Vue.use(Buefy)
   Vue.use(VueCookies)
+
+  if (isClient) {
+    Vue.component('MglMap', () => import ('vue-mapbox').then(m => m.MglMap))
+  }
 }
