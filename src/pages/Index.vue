@@ -124,9 +124,30 @@
     data() {
       return {
         fileList: [],
+        accessToken: 'NOT NEEDED',
         // TODO: Remove need for using a token
-        accessToken: 'pk.eyJ1IjoiamltbXlhbmdlbCIsImEiOiJjaW5sMGR0cDkweXN2dHZseXl6OWM4YnloIn0.v2Sv_ODztWuLuk78rUoiqg',
-        mapStyle: 'mapbox://styles/mapbox/streets-v11',
+        //accessToken: 'pk.eyJ1IjoiamltbXlhbmdlbCIsImEiOiJjaW5sMGR0cDkweXN2dHZseXl6OWM4YnloIn0.v2Sv_ODztWuLuk78rUoiqg',
+        //mapStyle: 'mapbox://styles/mapbox/streets-v11',
+        mapStyle: {
+          version: 8,
+          sources: {
+            osm: {
+              type: 'raster',
+              tiles: [
+                'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+              ],
+              tileSize: 256,
+              attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }
+          },
+          layers: [
+            {
+              id: '1',
+              type: 'raster',
+              source: 'osm'
+            }
+          ]
+        },
         mapCenter: [-66.58, 6.42],
         mapZoom: 5,
         activeTab: 0,
