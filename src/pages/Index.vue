@@ -14,6 +14,7 @@
     <b-tabs @change="tabChange" type="is-boxed" :animated="false" v-model="activeTab">
       <b-tab-item :label="$t('label.files')">
         <div class="tile is-ancestor">
+          <b-loading :is-full-page="false" :active.sync="isLoading" style="height: 300px;"></b-loading>
           <div class="tile is-parent" style="flex-wrap: wrap;">
             <div v-for="item in fileList" class="tile is-4 is-parent">
               <div style="width: 100%;" class="card">
@@ -128,7 +129,8 @@
         mapStyle: 'mapbox://styles/mapbox/streets-v11',
         mapCenter: [-66.58, 6.42],
         mapZoom: 5,
-        activeTab: 0
+        activeTab: 0,
+        isLoading: true
       }
     },
     created() {
@@ -137,6 +139,7 @@
       this.doFitBounds = true
       data.getMetaEntries().then((data) => {
         this.fileList =  data.collection
+        this.isLoading = false
         console.log(data.collection)
       })
     },
