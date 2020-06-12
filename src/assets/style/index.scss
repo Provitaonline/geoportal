@@ -6,6 +6,10 @@
 /** Import Buefy */
 @import "~buefy/src/scss/buefy";
 
+/** Import Mapbox */
+
+@import "~mapbox-gl/dist/mapbox-gl.css";
+
 /** Import overrides */
 
 @import "overrides";

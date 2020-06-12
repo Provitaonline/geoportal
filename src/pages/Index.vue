@@ -6,12 +6,12 @@
       </h1>
     </template>
     <br>
-    
+
     <div v-html="$page.home.edges[0].node.content"></div>
 
     </p>
     <br><br>
-    <b-tabs type="is-boxed" :animated="false">
+    <b-tabs @change="tabChange" type="is-boxed" :animated="false" v-model="activeTab">
       <b-tab-item :label="$t('label.files')">
         <div class="tile is-ancestor">
           <div class="tile is-parent" style="flex-wrap: wrap;">
@@ -52,18 +52,42 @@
         </div>
       </b-tab-item>
       <b-tab-item :label="$t('label.map')">
-        PRONTO...
+        <div class="map">
+          <MglMap
+            :accessToken="accessToken"
+            :mapStyle="mapStyle"
+            :center="mapCenter"
+            :zoom="mapZoom"
+            @load="onMapLoaded"
+          />
+        </div>
       </b-tab-item>
     </b-tabs>
+    <!-- <div v-bind:class="mapClass">
+      <MglMap
+        :accessToken="accessToken"
+        :mapStyle="mapStyle"
+        @load="onMapLoaded"
+      />
+    </div> -->
 
   </Layout>
 </template>
 
 <style lang="scss" scoped>
 
+  .map {
+    width: 100%;
+    height: 50vh;
+  }
+
   .card-header {
     background-color: rgba(85,107,47, 0.1);
   }
+
+</style>
+
+<style lang="scss">
 
 </style>
 
@@ -80,6 +104,9 @@
 </page-query>
 
 <script>
+  import Mapbox from "mapbox-gl";
+  import { MglMap } from "vue-mapbox";
+
   import * as data from '~/utils/data'
 
   export default {
@@ -88,16 +115,45 @@
         title: this.$t('label.main')
       }
     },
+    components: {
+      MglMap
+    },
     data() {
       return {
-        fileList: []
+        fileList: [],
+        // TODO: Remove need for using a token
+        accessToken: 'pk.eyJ1IjoiamltbXlhbmdlbCIsImEiOiJjaW5sMGR0cDkweXN2dHZseXl6OWM4YnloIn0.v2Sv_ODztWuLuk78rUoiqg',
+        mapStyle: 'mapbox://styles/mapbox/streets-v11',
+        mapCenter: [-66.58, 6.42],
+        mapZoom: 5,
+        activeTab: 0
       }
     },
     created() {
+      this.mapbox = Mapbox
+      this.map = null
+      this.doFitBounds = true
       data.getMetaEntries().then((data) => {
         this.fileList =  data.collection
         console.log(data.collection)
       })
+    },
+    methods: {
+      onMapLoaded(event) {
+        this.map = event.map
+        this.map.addControl(new this.mapbox.NavigationControl(), 'top-left')
+      },
+      tabChange(value) {
+        if (value === 1) {
+          this.$nextTick().then(() => {
+            this.map.resize()
+            if (this.doFitBounds) {
+              this.map.fitBounds([[-73, 13], [-59, 0.6]]);
+              this.doFitBounds = false
+            }
+          })
+        }
+      }
     },
     computed: {
       getNumRows() {
