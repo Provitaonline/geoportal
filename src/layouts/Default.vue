@@ -58,11 +58,11 @@
               <g-link to="https://www.facebook.com/ProvitaONG/"><font-awesome size="lg" :icon="['fab', 'facebook-f']"/></g-link>&nbsp;&nbsp;
               <g-link to="https://twitter.com/provita_ong"><font-awesome size="lg" :icon="['fab', 'twitter']"/></g-link>
               &nbsp;
-            </div> 
+            </div>
             <span> Derechos reservados, copyright © 2020 Provita</span>
             <span>, licencia </span>
             <g-link href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</g-link>
-            <span>. | Versión Prototipo 0.0.1</span>
+            <span>. | Versión Prototipo {{version}}</span>
           </div>
         </div>
       </footer>
@@ -113,11 +113,13 @@ query {
 </style>
 
 <script>
+import {version} from '../../package.json'
 import {getStateToken} from '~/utils/user'
 
 export default {
   data() {
     return {
+      version: version,
       availableLocales: this.$i18n.availableLocales,
       isAdminPage: this.$route.path.includes('/admin'),
       is404Page: this.$route.name === '*'
