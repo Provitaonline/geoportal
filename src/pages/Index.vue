@@ -102,7 +102,6 @@
 
 <script>
   import Mapbox from "mapbox-gl";
-  import { MglMap } from "vue-mapbox";
 
   import * as data from '~/utils/data'
 
@@ -113,7 +112,6 @@
       }
     },
     components: {
-      MglMap
     },
     data() {
       return {
