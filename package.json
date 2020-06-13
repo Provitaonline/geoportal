@@ -15,8 +15,7 @@
     "gridsome": "^0.7.17",
     "gridsome-plugin-i18n": "^1.4.0",
     "mapbox-gl": "^1.11.0",
-    "vue-cookies": "^1.7.0",
-    "vue-mapbox": "^0.4.1"
+    "vue-cookies": "^1.7.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

@@ -53,27 +53,15 @@
         </div>
       </b-tab-item>
       <b-tab-item :label="$t('label.map')">
-        <div class="map">
-          <ClientOnly>
-            <MglMap
-              :accessToken="accessToken"
-              :mapStyle="mapStyle"
-              :center="mapCenter"
-              :zoom="mapZoom"
-              @load="onMapLoaded"
-            >
-          </MglMap>
-          </ClientOnly>
-        </div>
+        <div id="map"></div>
       </b-tab-item>
     </b-tabs>
-
   </Layout>
 </template>
 
 <style lang="scss" scoped>
 
-  .map {
+  #map {
     width: 100%;
     height: 50vh;
   }
@@ -145,7 +133,7 @@
     },
     created() {
       this.mapbox = Mapbox
-      this.map = null
+
       this.doFitBounds = true
       data.getMetaEntries().then((data) => {
         this.fileList =  data.collection
@@ -153,19 +141,24 @@
         console.log(data.collection)
       })
     },
+    mounted() {
+      if (process.isClient) {
+        this.map = new this.mapbox.Map({
+          container: 'map',
+          style: this.mapStyle,
+          center: this.mapCenter,
+          zoom: this.mapZoom
+        })
+        this.map.on('load',( () => {
+          this.map.addControl(new this.mapbox.NavigationControl(), 'top-left')
+        }))
+      }
+    },
     methods: {
-      onMapLoaded(event) {
-        this.map = event.map
-        this.map.addControl(new this.mapbox.NavigationControl(), 'top-left')
-      },
       tabChange(value) {
         if (value === 1) {
           this.$nextTick().then(() => {
             this.map.resize()
-            if (this.doFitBounds) {
-              this.map.fitBounds([[-73, 13], [-59, 0.6]]);
-              this.doFitBounds = false
-            }
           })
         }
       }
