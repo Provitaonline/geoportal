@@ -61,18 +61,12 @@
               :center="mapCenter"
               :zoom="mapZoom"
               @load="onMapLoaded"
-            />
+            >
+          </MglMap>
           </ClientOnly>
         </div>
       </b-tab-item>
     </b-tabs>
-    <!-- <div v-bind:class="mapClass">
-      <MglMap
-        :accessToken="accessToken"
-        :mapStyle="mapStyle"
-        @load="onMapLoaded"
-      />
-    </div> -->
 
   </Layout>
 </template>
@@ -108,7 +102,7 @@
 
 <script>
   import Mapbox from "mapbox-gl";
-  //import { MglMap } from "vue-mapbox";
+  import { MglMap } from "vue-mapbox";
 
   import * as data from '~/utils/data'
 
@@ -119,15 +113,12 @@
       }
     },
     components: {
-      //MglMap
+      MglMap
     },
     data() {
       return {
         fileList: [],
         accessToken: 'NOT NEEDED',
-        // TODO: Remove need for using a token
-        //accessToken: 'pk.eyJ1IjoiamltbXlhbmdlbCIsImEiOiJjaW5sMGR0cDkweXN2dHZseXl6OWM4YnloIn0.v2Sv_ODztWuLuk78rUoiqg',
-        //mapStyle: 'mapbox://styles/mapbox/streets-v11',
         mapStyle: {
           version: 8,
           sources: {
