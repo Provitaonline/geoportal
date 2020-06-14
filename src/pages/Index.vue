@@ -89,7 +89,8 @@
 </page-query>
 
 <script>
-  import Mapbox from "mapbox-gl";
+  import Mapbox from "mapbox-gl"
+  import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher"
 
   import * as data from '~/utils/data'
 
@@ -105,26 +106,7 @@
       return {
         fileList: [],
         accessToken: 'NOT NEEDED',
-        mapStyle: {
-          version: 8,
-          sources: {
-            osm: {
-              type: 'raster',
-              tiles: [
-                'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-              ],
-              tileSize: 256,
-              attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }
-          },
-          layers: [
-            {
-              id: '1',
-              type: 'raster',
-              source: 'osm'
-            }
-          ]
-        },
+        mapStyle: null,
         mapCenter: [-66.58, 6.42],
         mapZoom: 5,
         activeTab: 0,
@@ -132,6 +114,7 @@
       }
     },
     created() {
+
       this.mapbox = Mapbox
 
       this.doFitBounds = true
@@ -143,6 +126,33 @@
     },
     mounted() {
       if (process.isClient) {
+
+        // TODO: Localize style changer labels (propagate localeChanged event, remove and re-add control)
+        const styles = [
+          {
+              title: 'Mapa base topográfico',
+              uri:"/mapstyles/topo.json"
+          },
+          {
+              title: "OpenStreetMap",
+              uri:"/mapstyles/osm.json"
+          },
+          {
+              title: "Mapa base simple",
+              uri:"/mapstyles/simple.json"
+          },
+          {
+              title: "National Geographic",
+              uri:"/mapstyles/ng.json"
+          },
+          {
+              title: "Imágenes aéreas/satelitales",
+              uri:"/mapstyles/satellite.json"
+          }
+        ]
+
+        this.mapStyle = styles[0].uri
+
         this.map = new this.mapbox.Map({
           container: 'map',
           style: this.mapStyle,
@@ -151,6 +161,7 @@
         })
         this.map.on('load',( () => {
           this.map.addControl(new this.mapbox.NavigationControl(), 'top-left')
+          this.map.addControl(new MapboxStyleSwitcherControl(styles), 'top-left')
         }))
       }
     },

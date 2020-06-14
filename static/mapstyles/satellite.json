@@ -1,0 +1,13 @@
+{
+  "version":8,
+  "sources":{
+    "satellite":{
+      "type":"raster",
+      "tiles":["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+      "tileSize":256,
+      "attribution":"Tiles © Esri — Source: <a href=\"http://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9\">ArcGIS World Imagery</a>",
+      "maxzoom": 17
+    }
+  },
+  "layers":[{"id":"1","type":"raster","source":"satellite"}]
+}

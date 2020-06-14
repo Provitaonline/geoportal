@@ -1,0 +1,13 @@
+{
+  "version":8,
+  "sources":{
+    "ng":{
+      "type":"raster",
+      "tiles":["https://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"],
+      "tileSize":256,
+      "attribution":"Tiles © Esri — Source: <a href=\"https://www.arcgis.com/home/item.html?id=b9b1b422198944fbbd5250b3241691b6\">National Geographic World Map</a>",
+      "maxzoom": 12
+    }
+  },
+  "layers":[{"id":"1","type":"raster","source":"ng"}]
+}
