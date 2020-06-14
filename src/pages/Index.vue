@@ -53,7 +53,8 @@
         </div>
       </b-tab-item>
       <b-tab-item :label="$t('label.map')">
-        <div id="map"></div>
+        <InteractiveMap ref="interactivemap">
+        </InteractiveMap>
       </b-tab-item>
     </b-tabs>
   </Layout>
@@ -89,8 +90,7 @@
 </page-query>
 
 <script>
-  import Mapbox from "mapbox-gl"
-  import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher"
+  import InteractiveMap from '~/components/InteractiveMap.vue'
 
   import * as data from '~/utils/data'
 
@@ -113,9 +113,10 @@
         isLoading: true
       }
     },
+    components: {
+      InteractiveMap
+    },
     created() {
-
-      this.mapbox = Mapbox
 
       this.doFitBounds = true
       data.getMetaEntries().then((data) => {
@@ -125,51 +126,13 @@
       })
     },
     mounted() {
-      if (process.isClient) {
 
-        // TODO: Localize style changer labels (propagate localeChanged event, remove and re-add control)
-        const styles = [
-          {
-              title: 'Mapa base topográfico',
-              uri:"/mapstyles/topo.json"
-          },
-          {
-              title: "OpenStreetMap",
-              uri:"/mapstyles/osm.json"
-          },
-          {
-              title: "Mapa base simple",
-              uri:"/mapstyles/simple.json"
-          },
-          {
-              title: "National Geographic",
-              uri:"/mapstyles/ng.json"
-          },
-          {
-              title: "Imágenes aéreas/satelitales",
-              uri:"/mapstyles/satellite.json"
-          }
-        ]
-
-        this.mapStyle = styles[0].uri
-
-        this.map = new this.mapbox.Map({
-          container: 'map',
-          style: this.mapStyle,
-          center: this.mapCenter,
-          zoom: this.mapZoom
-        })
-        this.map.on('load',( () => {
-          this.map.addControl(new this.mapbox.NavigationControl(), 'top-left')
-          this.map.addControl(new MapboxStyleSwitcherControl(styles), 'top-left')
-        }))
-      }
     },
     methods: {
       tabChange(value) {
         if (value === 1) {
           this.$nextTick().then(() => {
-            this.map.resize()
+            this.$refs.interactivemap.map.resize()
           })
         }
       }
