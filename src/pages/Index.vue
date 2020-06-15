@@ -53,27 +53,16 @@
         </div>
       </b-tab-item>
       <b-tab-item :label="$t('label.map')">
-        <div class="map">
-          <ClientOnly>
-            <MglMap
-              :accessToken="accessToken"
-              :mapStyle="mapStyle"
-              :center="mapCenter"
-              :zoom="mapZoom"
-              @load="onMapLoaded"
-            >
-          </MglMap>
-          </ClientOnly>
-        </div>
+        <InteractiveMap ref="interactivemap">
+        </InteractiveMap>
       </b-tab-item>
     </b-tabs>
-
   </Layout>
 </template>
 
 <style lang="scss" scoped>
 
-  .map {
+  #map {
     width: 100%;
     height: 50vh;
   }
@@ -101,7 +90,7 @@
 </page-query>
 
 <script>
-  import Mapbox from "mapbox-gl";
+  import InteractiveMap from '~/components/InteractiveMap.vue'
 
   import * as data from '~/utils/data'
 
@@ -117,35 +106,18 @@
       return {
         fileList: [],
         accessToken: 'NOT NEEDED',
-        mapStyle: {
-          version: 8,
-          sources: {
-            osm: {
-              type: 'raster',
-              tiles: [
-                'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-              ],
-              tileSize: 256,
-              attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }
-          },
-          layers: [
-            {
-              id: '1',
-              type: 'raster',
-              source: 'osm'
-            }
-          ]
-        },
+        mapStyle: null,
         mapCenter: [-66.58, 6.42],
         mapZoom: 5,
         activeTab: 0,
         isLoading: true
       }
     },
+    components: {
+      InteractiveMap
+    },
     created() {
-      this.mapbox = Mapbox
-      this.map = null
+
       this.doFitBounds = true
       data.getMetaEntries().then((data) => {
         this.fileList =  data.collection
@@ -153,19 +125,14 @@
         console.log(data.collection)
       })
     },
+    mounted() {
+
+    },
     methods: {
-      onMapLoaded(event) {
-        this.map = event.map
-        this.map.addControl(new this.mapbox.NavigationControl(), 'top-left')
-      },
       tabChange(value) {
         if (value === 1) {
           this.$nextTick().then(() => {
-            this.map.resize()
-            if (this.doFitBounds) {
-              this.map.fitBounds([[-73, 13], [-59, 0.6]]);
-              this.doFitBounds = false
-            }
+            this.$refs.interactivemap.map.resize()
           })
         }
       }

@@ -1,0 +1,13 @@
+{
+  "version":8,
+  "sources":{
+    "topo":{
+      "type":"raster",
+      "tiles":["https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"],
+      "tileSize":256,
+      "attribution":"Tiles © Esri — Source: <a href=\"https://www.arcgis.com/home/item.html?id=30e5fe3149c34df1ba922e6f5bbf808f\">ArcGIS World Topographic Map</a>",
+      "maxzoom": 19
+    }
+  },
+  "layers":[{"id":"1","type":"raster","source":"topo"}]
+}

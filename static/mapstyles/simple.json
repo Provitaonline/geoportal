@@ -1,0 +1,13 @@
+{
+  "version":8,
+  "sources":{
+    "simple":{
+      "type":"raster",
+      "tiles":["https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}"],
+      "tileSize":256,
+      "attribution":"Tiles © Esri — Source: <a href=\"https://www.arcgis.com/home/item.html?id=c61ad8ab017d49e1a82f580ee1298931\">ArcGIS World Terrain Base</a>",
+      "maxzoom": 9
+    }
+  },
+  "layers":[{"id":"1","type":"raster","source":"simple"}]
+}

@@ -15,7 +15,8 @@
       "date": "Date",
       "map": "Map",
       "download": "Download",
-      "addtomap": "Add to map"
+      "addtomap": "Add to map",
+      "topo":"Topographic base map"
     }
   },
   "es": {
@@ -34,7 +35,8 @@
       "date": "Fecha",
       "map": "Mapa",
       "download": "Descargar",
-      "addtomap": "Añadir al mapa"
+      "addtomap": "Añadir al mapa",
+      "topo":"Mapa base topográfico"
     }
   }
 }
