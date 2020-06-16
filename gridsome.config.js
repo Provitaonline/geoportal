@@ -51,7 +51,7 @@ module.exports = {
           }
         },
         enablePathRewrite: true, // rewrite path with locale prefix, default: true
-        rewriteDefaultLanguage: true, // rewrite default locale, default: true
+        rewriteDefaultLanguage: false, // rewrite default locale, default: true
         messages: {}
       }
     }
