@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar class="is-fixed-top container is-widescreen">
+    <b-navbar class="is-fixed-top">
         <template slot="brand">
           <b-navbar-item class="logo">
             <g-link :to="$tp('/')">
@@ -32,7 +32,7 @@
             </ClientOnly>
           </b-navbar-dropdown>
           <b-navbar-item v-if="isAdminPage" tag="div">
-            <a @click="userLogin" class="button is-light">
+            <a @click="userLogin" class="login-button button is-light">
                 <font-awesome :icon="['far', 'user']"/>
             </a>
           </b-navbar-item>
@@ -45,7 +45,7 @@
         </div>
       </div>
     </section>
-    <section class="layout">
+    <section>
       <slot />
     </section>
     <section>
@@ -79,16 +79,11 @@ query {
 </static-query>
 
 <style lang="scss">
-  .layout {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+
 </style>
 
 <style lang="scss" scoped>
-  .button {
+  .login-button {
     border-radius: 50%;
     padding-left: .70em;
     padding-right: .70em;

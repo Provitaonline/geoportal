@@ -10,12 +10,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faFacebookF, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons'
-import { faFileDownload, faDownload, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons'
+import { faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown, faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 library.add(
-  faUser, faFileDownload, faDownload, faMapMarkedAlt, faFacebookF, faTwitter, faInstagram
+  faUser, faFileDownload, faDownload, faMapMarkedAlt, faFacebookF, faTwitter, faInstagram, faTimes, faBars, faAngleDown, faSearch
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {

@@ -16,7 +16,8 @@
       "map": "Map",
       "download": "Download",
       "addtomap": "Add to map",
-      "topo":"Topographic base map"
+      "topo":"Topographic base map",
+      "search": "Search"
     }
   },
   "es": {
@@ -36,7 +37,8 @@
       "map": "Mapa",
       "download": "Descargar",
       "addtomap": "Añadir al mapa",
-      "topo":"Mapa base topográfico"
+      "topo":"Mapa base topográfico",
+      "search": "Buscar"
     }
   }
 }

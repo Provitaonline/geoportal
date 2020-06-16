@@ -5,67 +5,71 @@
         Geoportal Provita
       </h1>
     </template>
-    <br>
 
-    <div v-html="$page.home.edges[0].node.content"></div>
+    <div class="columns is-gapless">
 
-    </p>
-    <br><br>
-    <b-tabs @change="tabChange" type="is-boxed" :animated="false" v-model="activeTab">
-      <b-tab-item :label="$t('label.files')">
-        <div class="tile is-ancestor">
-          <b-loading :is-full-page="false" :active.sync="isLoading" style="height: 300px;"></b-loading>
-          <div class="tile is-parent" style="flex-wrap: wrap;">
-            <div v-for="item in fileList" class="tile is-4 is-parent">
-              <div style="width: 100%;" class="card">
-                <div class="card-header">
-                  <p style="display: block;" class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
-                </div>
-                <div class="card-image">
-                  <figure class="image is-4by3">
-                    <g-image v-if="item.thumb" :src="'https://raw.githubusercontent.com/jimmyangel/geoportal-data/master/thumbnails/' + item.thumb" alt="Thumbnail"></g-image>
-                    <g-image v-else src="~/assets/images/480x320.png" alt="Placeholder image"></g-image>
-                  </figure>
-                  <div class="buttons" style="margin-top: 2px; justify-content: center;">
-                    <b-button style="width: 48%;" size="is-small" type="is-primary" outlined>
-                      <font-awesome :icon="['fas', 'download']"/><b> {{ $t('label.download') }}</b>
-                    </b-button>
-                    <b-button style="width: 48%;" size="is-small" type="is-primary" outlined>
-                      <font-awesome :icon="['fas', 'map-marked-alt']"/><b> {{ $t('label.addtomap') }}</b>
-                    </b-button>
-                  </div>
-                </div>
-                <div class="card-content">
-                  <div class="content">
-                    <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
-                    <div v-if="item.keywords">
-                      <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
-                        {{ kwd }}
-                      </span>
-                      <br><br>
-                    </div>
-                    <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span>
-                  </div>
-                </div>
-              </div>
+      <aside class="side-panel column is-narrow">
+        <div class="side-panel-content">
+          <div class="panel">
+            <p class="panel-heading">
+              <b>{{$t('label.files')}}</b>
+            </p>
+            <div class="panel-block">
+            <p class="control has-icons-left">
+            <input class="input" type="text" :placeholder="$t('label.search')">
+            <span class="icon is-left">
+              <font-awesome :icon="['fas', 'search']"/>
+            </span>
+            </p>
+          </div>
+          </div>
+          <div v-for="item, index in fileList" class="card">
+            <div class="card-header">
+              <p class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
+              <a href="#" @click="item.visible = !item.visible" class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                  <font-awesome :icon="['fas', 'angle-down']"/>
+                </span>
+              </a>
             </div>
+            <transition name="slide">
+              <div v-show="item.visible" class="card-content">
+                <div class="buttons" style="margin-top: 2px; justify-content: center;">
+                  <b-button style="width: 48%;" size="is-small" rounded>
+                    <font-awesome :icon="['fas', 'download']"/><b> {{ $t('label.download') }}</b>
+                  </b-button>
+                  <!-- <b-button style="width: 48%;" size="is-small" type="is-primary" outlined>
+                    <font-awesome :icon="['fas', 'map-marked-alt']"/><b> {{ $t('label.addtomap') }}</b>
+                  </b-button> -->
+                  <b-field>
+                    <b-switch size="is-small">{{ $t('label.addtomap') }}</b-switch>
+                  </b-field>
+                </div>
+                <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
+                <div v-if="item.keywords">
+                  <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
+                    {{ kwd }}
+                  </span>
+                  <br><br>
+                </div>
+                <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span>
+              </div>
+            </transition>
           </div>
         </div>
-      </b-tab-item>
-      <b-tab-item :label="$t('label.map')">
-        <InteractiveMap ref="interactivemap">
+      </aside>
+
+      <div class="column">
+        <InteractiveMap class="map-container" ref="interactivemap">
         </InteractiveMap>
-      </b-tab-item>
-    </b-tabs>
+      </div>
+
+    </div>
+
   </Layout>
 </template>
 
 <style lang="scss" scoped>
-
-  #map {
-    width: 100%;
-    height: 50vh;
-  }
 
   .card-header {
     background-color: rgba(85,107,47, 0.1);
@@ -73,7 +77,53 @@
 
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  @import "~/assets/style/_variables";
+
+  @media only screen and (min-width: 769px) {
+    .side-panel {
+      width: 20rem;
+      transition: margin-left .3s;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .side-panel {
+      min-width: 20rem;
+      border-right: 0;
+    }
+  }
+
+  .side-panel-content {
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    height: 70vh;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .side-panel-content {
+      height: auto;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .map-container {
+      flex-grow: 1;
+      margin: 0 auto;
+      position: relative;
+      width: auto;
+      max-width: 90vw;
+    }
+  }
+
+  .card {
+    border: 1px solid rgba(85,107,47, 0.2);
+  }
+
+  .card-header {
+    border-bottom: 1px solid rgba(85,107,47, 0.2);
+  }
 
 </style>
 
@@ -122,6 +172,9 @@
       data.getMetaEntries().then((data) => {
         this.fileList =  data.collection
         this.isLoading = false
+        this.fileList.forEach(item => {
+          this.$set(item, 'visible', false)
+        })
         console.log(data.collection)
       })
     },

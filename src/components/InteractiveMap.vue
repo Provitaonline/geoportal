@@ -6,7 +6,7 @@
 
   #map {
     width: 100%;
-    height: 50vh;
+    height: 70vh;
   }
 
 </style>
@@ -62,8 +62,8 @@
           zoom: this.mapZoom
         })
         this.map.on('load',( () => {
-          this.map.addControl(new Mapbox.NavigationControl(), 'top-left')
-          this.map.addControl(new MapboxStyleSwitcherControl(styles), 'top-left')
+          this.map.addControl(new Mapbox.NavigationControl(), 'top-right')
+          this.map.addControl(new MapboxStyleSwitcherControl(styles), 'top-right')
         }))
       }
     }
