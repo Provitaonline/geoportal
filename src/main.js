@@ -2,7 +2,6 @@
 import '~/assets/style/index.scss'
 
 import Buefy from 'buefy'
-import VueCookies from 'vue-cookies'
 
 import DefaultLayout from '~/layouts/Default.vue'
 
@@ -28,6 +27,5 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   appOptions.i18n.setLocaleMessage('en-us', require('./messages/messages.json').en)
 
   Vue.use(Buefy)
-  Vue.use(VueCookies)
 
 }

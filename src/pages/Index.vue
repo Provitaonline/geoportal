@@ -38,9 +38,6 @@
                   <b-button style="width: 48%;" size="is-small" rounded>
                     <font-awesome :icon="['fas', 'download']"/><b> {{ $t('label.download') }}</b>
                   </b-button>
-                  <!-- <b-button style="width: 48%;" size="is-small" type="is-primary" outlined>
-                    <font-awesome :icon="['fas', 'map-marked-alt']"/><b> {{ $t('label.addtomap') }}</b>
-                  </b-button> -->
                   <b-field>
                     <b-switch size="is-small">{{ $t('label.addtomap') }}</b-switch>
                   </b-field>
@@ -65,7 +62,6 @@
       </div>
 
     </div>
-
   </Layout>
 </template>
 
@@ -124,7 +120,6 @@
   .card-header {
     border-bottom: 1px solid rgba(85,107,47, 0.2);
   }
-
 </style>
 
 <page-query>
@@ -167,7 +162,6 @@
       InteractiveMap
     },
     created() {
-
       this.doFitBounds = true
       data.getMetaEntries().then((data) => {
         this.fileList =  data.collection
