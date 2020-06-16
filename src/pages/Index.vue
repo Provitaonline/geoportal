@@ -28,7 +28,8 @@
               <p class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
               <a href="#" @click="item.visible = !item.visible" class="card-header-icon" aria-label="more options">
                 <span class="icon">
-                  <font-awesome :icon="['fas', 'angle-down']"/>
+                  <font-awesome v-if="item.visible" :icon="['fas', 'angle-up']"/>
+                  <font-awesome v-else :icon="['fas', 'angle-down']"/>
                 </span>
               </a>
             </div>
