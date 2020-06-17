@@ -177,13 +177,7 @@
 
     },
     methods: {
-      tabChange(value) {
-        if (value === 1) {
-          this.$nextTick().then(() => {
-            this.$refs.interactivemap.map.resize()
-          })
-        }
-      }
+
     },
     computed: {
       getNumRows() {

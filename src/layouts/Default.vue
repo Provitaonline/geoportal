@@ -128,6 +128,7 @@ export default {
         this.$router.push({
           path: this.$tp(this.$route.path, locale, true)
         })
+        this.$eventBus.$emit('localechanged', locale)
       }
     },
     userLogin: function() {

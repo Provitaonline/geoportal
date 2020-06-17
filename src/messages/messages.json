@@ -17,6 +17,10 @@
       "download": "Download",
       "addtomap": "Add to map",
       "topo":"Topographic base map",
+      "osm": "OpenStreetMap",
+      "simplemap": "Simple base map",
+      "natgeo": "National Geographic",
+      "imagery": "World Imagery",
       "search": "Search"
     }
   },
@@ -38,6 +42,10 @@
       "download": "Descargar",
       "addtomap": "Añadir al mapa",
       "topo":"Mapa base topográfico",
+      "osm": "OpenStreetMap",
+      "simplemap": "Mapa base simple",
+      "natgeo": "National Geographic",
+      "imagery": "Imágenes aéreas/satelitales",
       "search": "Buscar"
     }
   }
