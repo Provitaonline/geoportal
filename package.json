@@ -1,6 +1,6 @@
 {
   "name": "geoportal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "prebuild": "cd functions && npm i",
