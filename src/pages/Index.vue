@@ -35,9 +35,11 @@
             </div>
             <transition name="slide">
               <div v-show="item.visible" class="card-content">
-                <div class="buttons" style="margin-top: 2px; justify-content: center;">
-                  <b-button v-bind:disabled="!item.file" style="width: 48%;" size="is-small" rounded>
-                    <font-awesome :icon="['fas', 'download']"/><b> {{ $t('label.download') }}</b>
+                <div class="buttons">
+                  <b-button tag="a" download :href="'https://geoportalp.s3-us-west-2.amazonaws.com/files/' + item.file" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
+                    <font-awesome :icon="['fas', 'download']"/>
+                    <b> {{ $t('label.download') }}</b>
+                    ({{mFormatter(item.fileSize)}})
                   </b-button>
                   <b-field>
                     <b-switch v-bind:disabled="!item.tiles" size="is-small">{{ $t('label.addtomap') }}</b-switch>
@@ -164,20 +166,29 @@
     },
     created() {
       this.doFitBounds = true
-      data.getMetaEntries().then((data) => {
-        this.fileList =  data.collection
+      data.getMetaEntries().then((result) => {
+        this.fileList =  result.collection
         this.isLoading = false
         this.fileList.forEach(item => {
           this.$set(item, 'visible', false)
+          if (item.file) {
+            data.getFileSize(item.file).then((fileSize) => {
+              this.$set(item, 'fileSize', fileSize)
+            })
+          }
         })
-        console.log(data.collection)
       })
     },
     mounted() {
 
     },
     methods: {
-
+      kFormatter: function (num) {
+          return Math.abs(num) > 999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000).toFixed(1))) + 'K' : Math.sign(num)*Math.abs(num)
+      },
+      mFormatter: function (num) {
+          return Math.abs(num) > 999999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000000).toFixed(1))) + 'M' : this.kFormatter(num)
+      }
     },
     computed: {
       getNumRows() {
