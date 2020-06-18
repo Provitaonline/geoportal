@@ -36,11 +36,11 @@
             <transition name="slide">
               <div v-show="item.visible" class="card-content">
                 <div class="buttons" style="margin-top: 2px; justify-content: center;">
-                  <b-button style="width: 48%;" size="is-small" rounded>
+                  <b-button v-bind:disabled="!item.file" style="width: 48%;" size="is-small" rounded>
                     <font-awesome :icon="['fas', 'download']"/><b> {{ $t('label.download') }}</b>
                   </b-button>
                   <b-field>
-                    <b-switch size="is-small">{{ $t('label.addtomap') }}</b-switch>
+                    <b-switch v-bind:disabled="!item.tiles" size="is-small">{{ $t('label.addtomap') }}</b-switch>
                   </b-field>
                 </div>
                 <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
