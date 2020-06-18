@@ -45,7 +45,8 @@
               title: 'imagery',
               uri:'/mapstyles/satellite.json'
           }
-        ]
+        ],
+        visibleTileLayers: []
       }
     },
     mounted() {
@@ -76,6 +77,12 @@
           mapSwitcher = new MapboxStyleSwitcherControl(this.locStyles(locale))
           this.map.addControl(mapSwitcher, 'top-right')
         })
+        this.$eventBus.$on('addtilelayer', (layer) => {
+          this.addTileLayer(layer)
+        })
+        this.$eventBus.$on('removetilelayer', (layer) => {
+          this.removeTileLayer(layer)
+        })
       }
     },
     methods: {
@@ -85,13 +92,13 @@
         })
       },
       addLayers: function() {
-        if (!this.map.getLayer('v1')) {
+        if (!this.map.getLayer('venezuela')) {
           this.map.addSource('venezuela', {
             type: 'geojson',
             data: '/mapdata/venezuela.geojson'
           })
           this.map.addLayer({
-            id: 'v1',
+            id: 'venezuela',
             type: 'line',
             source: 'venezuela',
             layout: {},
@@ -102,6 +109,39 @@
             }
           })
         }
+        this.visibleTileLayers.forEach((item) => {
+          if (!this.map.getLayer(item)) {
+            this.addTileLayer(item)
+          }
+        });
+
+      },
+      addTileLayer: function (layer) {
+        console.log('addtilelayer', layer)
+        if (!this.map.getSource(layer)) {
+          this.map.addSource(layer, {
+            type: 'raster',
+            scheme: 'tms',
+            tiles: ['https://geoportalp.s3-us-west-2.amazonaws.com/tiles/' + layer + '/{z}/{x}/{y}.png'],
+            tileSize: 256
+          })
+        }
+        this.map.addLayer({
+          id: layer,
+          type: 'raster',
+          source: layer,
+          paint: {
+            'raster-opacity': 0.7
+          }
+        })
+        if (this.visibleTileLayers.indexOf(layer) < 0) {
+          this.visibleTileLayers.push(layer)
+        }
+      },
+      removeTileLayer: function (layer) {
+        console.log('removetilelayer', layer)
+        this.map.removeLayer(layer)
+        this.visibleTileLayers = this.visibleTileLayers.filter(e => e !== layer)
       }
     }
   }

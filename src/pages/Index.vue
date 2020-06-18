@@ -42,7 +42,7 @@
                     ({{mFormatter(item.fileSize)}})
                   </b-button>
                   <b-field>
-                    <b-switch v-bind:disabled="!item.tiles" size="is-small">{{ $t('label.addtomap') }}</b-switch>
+                    <b-switch @input="addToMap(item.tiles, $event)" v-bind:disabled="!item.tiles" size="is-small">{{ $t('label.addtomap') }}</b-switch>
                   </b-field>
                 </div>
                 <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
@@ -188,6 +188,14 @@
       },
       mFormatter: function (num) {
           return Math.abs(num) > 999999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000000).toFixed(1))) + 'M' : this.kFormatter(num)
+      },
+      addToMap: function (layer, isOn) {
+        if (isOn) {
+          this.$eventBus.$emit('addtilelayer', layer)
+        } else {
+          this.$eventBus.$emit('removetilelayer', layer)
+        }
+        console.log(layer, isOn)
       }
     },
     computed: {
