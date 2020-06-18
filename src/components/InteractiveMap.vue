@@ -117,7 +117,6 @@
 
       },
       addTileLayer: function (layer) {
-        console.log('addtilelayer', layer)
         if (!this.map.getSource(layer)) {
           this.map.addSource(layer, {
             type: 'raster',
@@ -139,7 +138,6 @@
         }
       },
       removeTileLayer: function (layer) {
-        console.log('removetilelayer', layer)
         this.map.removeLayer(layer)
         this.visibleTileLayers = this.visibleTileLayers.filter(e => e !== layer)
       }

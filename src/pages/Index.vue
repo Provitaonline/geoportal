@@ -195,7 +195,6 @@
         } else {
           this.$eventBus.$emit('removetilelayer', layer)
         }
-        console.log(layer, isOn)
       }
     },
     computed: {
