@@ -15,7 +15,6 @@
   import Mapbox from "mapbox-gl"
   import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher"
 
-
   export default {
     name: 'InteractiveMap',
     data() {
@@ -24,6 +23,7 @@
         mapStyle: null,
         mapCenter: [-66.58, 6.42],
         mapZoom: 5,
+        maxBounds: [[-82, -3], [-54, 20]],
         styles: [
           {
               title: 'topo',
@@ -58,13 +58,18 @@
           container: 'map',
           style: this.mapStyle,
           center: this.mapCenter,
-          zoom: this.mapZoom
+          zoom: this.mapZoom,
+          maxBounds: this.maxBounds
         })
         let mapSwitcher
         this.map.on('load',( () => {
           this.map.addControl(new Mapbox.NavigationControl(), 'top-right')
           mapSwitcher = new MapboxStyleSwitcherControl(styles)
           this.map.addControl(mapSwitcher, 'top-right')
+          this.addLayers()
+          this.map.on('styledata',() => {
+            this.addLayers()
+          })
         }))
         this.$eventBus.$on('localechanged', (locale) => {
           this.map.removeControl(mapSwitcher)
@@ -78,6 +83,25 @@
         return this.styles.map(s => {
           return {title: this.$t('label.' + s.title, locale), uri: s.uri}
         })
+      },
+      addLayers: function() {
+        if (!this.map.getLayer('v1')) {
+          this.map.addSource('venezuela', {
+            type: 'geojson',
+            data: '/mapdata/venezuela.geojson'
+          })
+          this.map.addLayer({
+            id: 'v1',
+            type: 'line',
+            source: 'venezuela',
+            layout: {},
+            paint: {
+              'line-color': '#504f54',
+              'line-dasharray': [2, 3],
+              'line-width': 2
+            }
+          })
+        }
       }
     }
   }
