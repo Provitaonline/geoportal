@@ -133,6 +133,7 @@
             'source-layer': layer,
             paint: {
               'fill-color': item.tileInfo.color,
+              'fill-outline-color': 'black',
               'fill-opacity': 0.5
             }
           }
