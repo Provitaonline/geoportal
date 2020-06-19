@@ -16,7 +16,7 @@
             </p>
             <div class="panel-block">
             <p class="control has-icons-left">
-            <input class="input" type="text" :placeholder="$t('label.search')">
+            <input class="input" type="search" :placeholder="$t('label.search')">
             <span class="icon is-left">
               <font-awesome :icon="['fas', 'search']"/>
             </span>
