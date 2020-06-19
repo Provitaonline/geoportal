@@ -23,7 +23,7 @@
             </p>
           </div>
           </div>
-          <div v-for="item, index in fileList" class="card">
+          <div v-for="item, index in sortedFileList" class="card">
             <div class="card-header">
               <p class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
               <a href="#" @click="item.visible = !item.visible" class="card-header-icon" aria-label="more options">
@@ -152,7 +152,7 @@
     },
     data() {
       return {
-        fileList: [],
+        fileList: null,
         accessToken: 'NOT NEEDED',
         mapStyle: null,
         mapCenter: [-66.58, 6.42],
@@ -200,6 +200,14 @@
     computed: {
       getNumRows() {
         return (this.fileList.length/3).toFixed(0)
+      },
+      sortedFileList() {
+        let locale = this.$i18n.locale.toString().substr(0,2)
+        let collator = new Intl.Collator()
+        if (this.fileList) {
+          return this.fileList.sort((a, b) => (collator.compare(a.name[locale], b.name[locale])))
+          //return this.fileList.sort((a, b) => (a.name[locale].normalize('NFD') > b.name[locale].normalize('NFD')) ? 1 : -1)
+        }
       }
     }
   }
