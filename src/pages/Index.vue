@@ -42,7 +42,13 @@
                     ({{mFormatter(item.fileSize)}})
                   </b-button>
                   <b-field>
-                    <b-switch @input="addToMap(item.tiles, $event)" v-bind:disabled="!item.tiles" size="is-small">{{ $t('label.addtomap') }}</b-switch>
+                    <b-switch
+                      @input="addToMap(item.tiles, $event)"
+                      v-bind:disabled="!item.tiles"
+                      v-model="item.layerShow"
+                      size="is-small">
+                      {{ $t('label.addtomap') }}
+                    </b-switch>
                   </b-field>
                 </div>
                 <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
