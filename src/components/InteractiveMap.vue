@@ -46,7 +46,7 @@
               uri:'/mapstyles/satellite.json'
           }
         ],
-        visibleTileLayers: []
+        visibleTileLayers: {}
       }
     },
     mounted() {
@@ -77,8 +77,8 @@
           mapSwitcher = new MapboxStyleSwitcherControl(this.locStyles(locale))
           this.map.addControl(mapSwitcher, 'top-right')
         })
-        this.$eventBus.$on('addtilelayer', (layer) => {
-          this.addTileLayer(layer)
+        this.$eventBus.$on('addtilelayer', (item) => {
+          this.addTileLayer(item)
         })
         this.$eventBus.$on('removetilelayer', (layer) => {
           this.removeTileLayer(layer)
@@ -109,37 +109,63 @@
             }
           })
         }
-        this.visibleTileLayers.forEach((item) => {
+
+        for (const item in this.visibleTileLayers) {
+          console.log(item)
           if (!this.map.getLayer(item)) {
-            this.addTileLayer(item)
+            this.addTileLayer(this.visibleTileLayers[item])
           }
-        });
+        }
 
       },
-      addTileLayer: function (layer) {
-        if (!this.map.getSource(layer)) {
-          this.map.addSource(layer, {
+      addTileLayer: function (item) {
+        let layer = item.tiles
+        let srcInfo, lInfo
+        if (item.tileInfo.type === 'vector') {
+          srcInfo = {
+            type: 'vector',
+            maxzoom: 12,
+            tiles: ['https://geoportalp.s3-us-west-2.amazonaws.com/tiles/' + layer + '/{z}/{x}/{y}.pbf']
+          }
+          lInfo = {
+            id: layer,
+            type: 'fill',
+            source: layer,
+            'source-layer': layer,
+            paint: {
+              'fill-color': item.tileInfo.color,
+              'fill-opacity': 0.5
+            }
+          }
+        } else {
+          srcInfo = {
             type: 'raster',
             scheme: 'tms',
             tiles: ['https://geoportalp.s3-us-west-2.amazonaws.com/tiles/' + layer + '/{z}/{x}/{y}.png'],
             tileSize: 256
-          })
-        }
-        this.map.addLayer({
-          id: layer,
-          type: 'raster',
-          source: layer,
-          paint: {
-            'raster-opacity': 0.7
           }
-        })
-        if (this.visibleTileLayers.indexOf(layer) < 0) {
-          this.visibleTileLayers.push(layer)
+          lInfo = {
+            id: layer,
+            type: 'raster',
+            source: layer,
+            paint: {
+              'raster-opacity': 0.7
+            }
+          }
+        }
+
+        if (!this.map.getSource(layer)) {
+          this.map.addSource(layer, srcInfo)
+        }
+        this.map.addLayer(lInfo)
+
+        if (!this.visibleTileLayers[layer]) {
+          this.visibleTileLayers[layer] = item
         }
       },
       removeTileLayer: function (layer) {
         this.map.removeLayer(layer)
-        this.visibleTileLayers = this.visibleTileLayers.filter(e => e !== layer)
+        delete this.visibleTileLayers[layer]
       }
     }
   }

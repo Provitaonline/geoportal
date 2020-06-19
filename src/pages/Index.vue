@@ -43,7 +43,7 @@
                   </b-button>
                   <b-field>
                     <b-switch
-                      @input="addToMap(item.tiles, $event)"
+                      @input="addToMap(item, $event)"
                       v-bind:disabled="!item.tiles"
                       v-model="item.layerShow"
                       size="is-small">
@@ -195,11 +195,11 @@
       mFormatter: function (num) {
           return Math.abs(num) > 999999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000000).toFixed(1))) + 'M' : this.kFormatter(num)
       },
-      addToMap: function (layer, isOn) {
+      addToMap: function (item, isOn) {
         if (isOn) {
-          this.$eventBus.$emit('addtilelayer', layer)
+          this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo})
         } else {
-          this.$eventBus.$emit('removetilelayer', layer)
+          this.$eventBus.$emit('removetilelayer', item.tiles)
         }
       }
     },
