@@ -111,7 +111,6 @@
         }
 
         for (const item in this.visibleTileLayers) {
-          console.log(item)
           if (!this.map.getLayer(item)) {
             this.addTileLayer(this.visibleTileLayers[item])
           }
