@@ -159,6 +159,20 @@
         }
         this.map.addLayer(lInfo)
 
+        this.map.on('click', layer, (e) => {
+          console.log('click ', this.map.queryRenderedFeatures(e.point, { layers: [layer] }))
+          new Mapbox.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML('HOLA')
+            .addTo(this.map);
+        })
+        this.map.on('mouseenter', layer, (e) => {
+          this.map.getCanvas().style.cursor = 'pointer'
+        })
+        this.map.on('mouseleave', layer, (e) => {
+          this.map.getCanvas().style.cursor = ''
+        })
+
         if (!this.visibleTileLayers[layer]) {
           this.visibleTileLayers[layer] = item
         }
