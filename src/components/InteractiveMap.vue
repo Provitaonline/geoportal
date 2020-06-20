@@ -163,7 +163,7 @@
           console.log('click ', this.map.queryRenderedFeatures(e.point, { layers: [layer] }))
           new Mapbox.Popup()
             .setLngLat(e.lngLat)
-            .setHTML('HOLA')
+            .setHTML(layer + '<br>More details later...')
             .addTo(this.map);
         })
         this.map.on('mouseenter', layer, (e) => {
