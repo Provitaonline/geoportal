@@ -123,7 +123,7 @@
         if (item.tileInfo.type === 'vector') {
           srcInfo = {
             type: 'vector',
-            maxzoom: 12,
+            maxzoom: 10,
             tiles: ['https://geoportalp.s3-us-west-2.amazonaws.com/tiles/' + layer + '/{z}/{x}/{y}.pbf']
           }
           lInfo = {
