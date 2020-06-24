@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar class="is-fixed-top">
+    <b-navbar :fixed-top="true" :mobile-burger="enableMobileBurger">
       <template slot="brand">
         <b-navbar-item class="logo">
           <g-link :to="$tp('/')">
@@ -117,10 +117,12 @@ export default {
       version: version,
       availableLocales: this.$i18n.availableLocales,
       isAdminPage: this.$route.path.includes('/admin'),
-      is404Page: this.$route.name === '*'
+      is404Page: this.$route.name === '*',
+      enableMobileBurger: false
     }
   },
   mounted() {
+    this.enableMobileBurger = true // Enable this at runtime, to fix double burger problem
   },
   methods: {
     changeLocale: function (locale) {
