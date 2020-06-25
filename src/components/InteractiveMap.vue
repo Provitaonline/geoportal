@@ -126,17 +126,7 @@
             maxzoom: 10,
             tiles: ['https://geoportalp.s3-us-west-2.amazonaws.com/tiles/' + layer + '/{z}/{x}/{y}.pbf']
           }
-          lInfo = {
-            id: layer,
-            type: 'fill',
-            source: layer,
-            'source-layer': layer,
-            paint: {
-              'fill-color': item.tileInfo.color,
-              'fill-outline-color': 'black',
-              'fill-opacity': 0.5
-            }
-          }
+          lInfo = item.tileInfo.style
         } else {
           srcInfo = {
             type: 'raster',
