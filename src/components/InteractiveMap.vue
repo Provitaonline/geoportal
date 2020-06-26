@@ -83,6 +83,8 @@
         this.$eventBus.$on('removetilelayer', (layer) => {
           this.removeTileLayer(layer)
         })
+        this.map.on('click', this.mapClickHandler)
+        this.map.on('mousemove', this.mapMouseMoveHandler)
       }
     },
     methods: {
@@ -149,20 +151,6 @@
         }
         this.map.addLayer(lInfo)
 
-        this.map.on('click', layer, (e) => {
-          console.log('click ', this.map.queryRenderedFeatures(e.point, { layers: [layer] }))
-          new Mapbox.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML(layer + '<br>More details later...')
-            .addTo(this.map);
-        })
-        this.map.on('mouseenter', layer, (e) => {
-          this.map.getCanvas().style.cursor = 'pointer'
-        })
-        this.map.on('mouseleave', layer, (e) => {
-          this.map.getCanvas().style.cursor = ''
-        })
-
         if (!this.visibleTileLayers[layer]) {
           this.visibleTileLayers[layer] = item
         }
@@ -170,6 +158,24 @@
       removeTileLayer: function (layer) {
         this.map.removeLayer(layer)
         delete this.visibleTileLayers[layer]
+      },
+      mapClickHandler: function(e) {
+        let features = this.map.queryRenderedFeatures(e.point)
+        console.log('click ', features)
+        if (features.length) {
+          new Mapbox.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML('<br>More details later...')
+            .addTo(this.map)
+        }
+      },
+      mapMouseMoveHandler: function(e) {
+        let features = this.map.queryRenderedFeatures(e.point)
+        if (features.length) {
+          this.map.getCanvas().style.cursor = 'pointer'
+        } else {
+          this.map.getCanvas().style.cursor = ''
+        }
       }
     }
   }
