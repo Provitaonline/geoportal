@@ -11,12 +11,22 @@
 
 </style>
 
+<style>
+  .popUpItemHeading {
+    width: 100%;
+    background-color: rgba(85, 107, 47, 0.1);
+  }
+</style>
+
 <script>
   import Mapbox from "mapbox-gl"
   import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher"
 
   export default {
     name: 'InteractiveMap',
+    props: {
+      layerMeta: { type: Array, required: true }
+    },
     data() {
       return {
         accessToken: 'NOT NEEDED',
@@ -161,12 +171,26 @@
       },
       mapClickHandler: function(e) {
         let features = this.map.queryRenderedFeatures(e.point)
-        console.log('click ', features)
         if (features.length) {
-          new Mapbox.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML('<br>More details later...')
-            .addTo(this.map)
+          let popUpContent = '<br>'
+          let currentLayerId
+          features.forEach((item) => {
+            if (this.visibleTileLayers[item.layer.id]) {
+              let lM = this.layerMeta.find(element => element.tiles === item.layer.id)
+              if (currentLayerId != item.layer.id) {
+                currentLayerId = item.layer.id
+                popUpContent += '<div class="popUpItemHeading"><b>' + lM.name[this.$i18n.locale.toString().substr(0,2)] +'</b></div>'
+              }
+              popUpContent += item.properties[lM.tileInfo.displayAttribute] + '<br>'
+            }
+          });
+
+          if (popUpContent) {
+            new Mapbox.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML(popUpContent)
+              .addTo(this.map)
+          }
         }
       },
       mapMouseMoveHandler: function(e) {

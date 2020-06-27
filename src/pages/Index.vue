@@ -66,7 +66,7 @@
       </aside>
 
       <div class="column">
-        <InteractiveMap class="map-container" ref="interactivemap">
+        <InteractiveMap :layerMeta="fileList" class="map-container" ref="interactivemap">
         </InteractiveMap>
       </div>
 
@@ -158,7 +158,7 @@
     },
     data() {
       return {
-        fileList: null,
+        fileList: [],
         accessToken: 'NOT NEEDED',
         mapStyle: null,
         mapCenter: [-66.58, 6.42],
@@ -210,7 +210,7 @@
       sortedFileList() {
         let locale = this.$i18n.locale.toString().substr(0,2)
         let collator = new Intl.Collator()
-        if (this.fileList) {
+        if (this.fileList.length) {
           return this.fileList.sort((a, b) => (collator.compare(a.name[locale], b.name[locale])))
           //return this.fileList.sort((a, b) => (a.name[locale].normalize('NFD') > b.name[locale].normalize('NFD')) ? 1 : -1)
         }
