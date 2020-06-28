@@ -71,6 +71,19 @@
       </div>
 
     </div>
+    <b-modal :active.sync="isCardModalActive" scroll="keep">
+      <div class="card">
+          <div class="card-content">
+              <div class="content">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Phasellus nec iaculis mauris. <a>@bulmaio</a>.
+                  <a>#css</a> <a>#responsive</a>
+                  <br>
+                  <small>11:09 PM - 1 Jan 2016</small>
+              </div>
+          </div>
+      </div>
+    </b-modal>
   </Layout>
 </template>
 
@@ -164,7 +177,8 @@
         mapCenter: [-66.58, 6.42],
         mapZoom: 5,
         activeTab: 0,
-        isLoading: true
+        isLoading: true,
+        isCardModalActive: false
       }
     },
     components: {
@@ -186,7 +200,10 @@
       })
     },
     mounted() {
-
+      this.$eventBus.$on('showpopupmodal', (info) => {
+        console.log(info)
+        this.isCardModalActive = true
+      })
     },
     methods: {
       kFormatter: function (num) {

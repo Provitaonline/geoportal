@@ -12,20 +12,24 @@
 </style>
 
 <style>
-  .popUpItemHeading {
-    width: 100%;
-    background-color: rgba(85, 107, 47, 0.1);
-  }
+
 </style>
 
 <script>
-  import Mapbox from "mapbox-gl"
-  import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher"
+  import Vue from 'vue'
+  import Mapbox from 'mapbox-gl'
+  import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
+  import MapPopUpContent from '~/components/MapPopUpContent.vue'
+
+  var MapPopUpContentClass = Vue.extend(MapPopUpContent)
 
   export default {
     name: 'InteractiveMap',
     props: {
       layerMeta: { type: Array, required: true }
+    },
+    components: {
+      MapPopUpContent
     },
     data() {
       return {
@@ -172,23 +176,32 @@
       mapClickHandler: function(e) {
         let features = this.map.queryRenderedFeatures(e.point)
         if (features.length) {
-          let popUpContent = '<br>'
+          let popUpItems = []
           let currentLayerId
           features.forEach((item) => {
             if (this.visibleTileLayers[item.layer.id]) {
               let lM = this.layerMeta.find(element => element.tiles === item.layer.id)
+              let layerName = lM.name[this.$i18n.locale.toString().substr(0,2)]
               if (currentLayerId != item.layer.id) {
                 currentLayerId = item.layer.id
-                popUpContent += '<div class="popUpItemHeading"><b>' + lM.name[this.$i18n.locale.toString().substr(0,2)] +'</b></div>'
+                popUpItems.push({itemText: layerName, isHeading: true})
               }
-              popUpContent += item.properties[lM.tileInfo.displayAttribute] + '<br>'
+              popUpItems.push({
+                itemText: item.properties[lM.tileInfo.displayAttribute],
+                isHeading: false,
+                itemProperties: item.properties,
+                layerName: layerName
+              })
             }
           });
 
-          if (popUpContent) {
+          if (popUpItems.length) {
+            let mapPopUpContent = (new MapPopUpContentClass({
+              propsData: {popUpItems: popUpItems, $i18n: this.$i18n}
+            })).$mount()
             new Mapbox.Popup()
               .setLngLat(e.lngLat)
-              .setHTML(popUpContent)
+              .setDOMContent(mapPopUpContent.$el)
               .addTo(this.map)
           }
         }
