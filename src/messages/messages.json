@@ -21,7 +21,9 @@
       "simplemap": "Simple base map",
       "natgeo": "National Geographic",
       "imagery": "World Imagery",
-      "search": "Search"
+      "search": "Search",
+      "fieldid": "Field Name",
+      "fieldvalue": "Field Value"
     }
   },
   "es": {
@@ -46,7 +48,9 @@
       "simplemap": "Mapa base simple",
       "natgeo": "National Geographic",
       "imagery": "Imágenes aéreas/satelitales",
-      "search": "Buscar"
+      "search": "Buscar",
+      "fieldid": "Nombre del campo",
+      "fieldvalue": "Valor del campo"
     }
   }
 }

@@ -71,15 +71,16 @@
       </div>
 
     </div>
-    <b-modal :active.sync="isCardModalActive" scroll="keep">
+    <b-modal :active.sync="isPopupModalModalActive" :width="640" scroll="keep">
       <div class="card">
+          <div class="card-header has-text-centered">
+            <p class="card-header-title" style="display: inline-block;">
+              {{popUpModalHeading}}
+            </p>
+          </div>
           <div class="card-content">
               <div class="content">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                  <a>#css</a> <a>#responsive</a>
-                  <br>
-                  <small>11:09 PM - 1 Jan 2016</small>
+                <b-table :data="popupModalData" :columns="popUpModalColumns"></b-table>
               </div>
           </div>
       </div>
@@ -178,7 +179,9 @@
         mapZoom: 5,
         activeTab: 0,
         isLoading: true,
-        isCardModalActive: false
+        isPopupModalModalActive: false,
+        popupModalData: {},
+        popUpModalHeading: ''
       }
     },
     components: {
@@ -202,7 +205,11 @@
     mounted() {
       this.$eventBus.$on('showpopupmodal', (info) => {
         console.log(info)
-        this.isCardModalActive = true
+        this.popupModalData = Object.keys(info.itemProperties).map(key => {
+          return {id: key, value: info.itemProperties[key]}
+        }).sort((a, b) => a.id.localeCompare(b.id))
+        this.popUpModalHeading = info.layerName + ': ' + info.itemText
+        this.isPopupModalModalActive = true
       })
     },
     methods: {
@@ -231,6 +238,17 @@
           return this.fileList.sort((a, b) => (collator.compare(a.name[locale], b.name[locale])))
           //return this.fileList.sort((a, b) => (a.name[locale].normalize('NFD') > b.name[locale].normalize('NFD')) ? 1 : -1)
         }
+      },
+      popUpModalColumns() {
+        return [
+          {
+            field: 'id',
+            label: this.$t('label.fieldid')
+          },
+          { field: 'value',
+            label: this.$t('label.fieldvalue')
+          }
+        ]
       }
     }
   }
