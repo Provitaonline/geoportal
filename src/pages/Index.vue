@@ -204,7 +204,6 @@
     },
     mounted() {
       this.$eventBus.$on('showpopupmodal', (info) => {
-        console.log(info)
         this.popupModalData = Object.keys(info.itemProperties).map(key => {
           return {id: key, value: info.itemProperties[key]}
         }).sort((a, b) => a.id.localeCompare(b.id))

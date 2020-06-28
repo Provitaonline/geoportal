@@ -25,7 +25,6 @@
       }
     },
     created() {
-      console.log('created', this.popUpItems[0])
     },
     methods: {
       displayPopUpModal(item) {
