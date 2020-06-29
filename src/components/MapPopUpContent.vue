@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="padding-top: 10px;">
     <div v-for="item in popUpItems">
-      <span v-if="item.isHeading" class="popUpItemHeading">{{item.itemText}}</span>
+      <div v-if="item.isHeading" class="popUpItemHeading"><b>{{item.itemText}}</b></div>
       <a v-else @click="displayPopUpModal(item)">{{item.itemText}}</a>
     </div>
   </div>
