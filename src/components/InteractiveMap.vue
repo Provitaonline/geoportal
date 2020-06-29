@@ -207,6 +207,7 @@
         }
       },
       mapMouseMoveHandler: function(e) {
+        // TODO: Do not change cursor to pointer if layer is not in this.visibleTileLayers
         let features = this.map.queryRenderedFeatures(e.point)
         if (features.length) {
           this.map.getCanvas().style.cursor = 'pointer'
