@@ -23,7 +23,9 @@
       "imagery": "World Imagery",
       "search": "Search",
       "fieldid": "Field Name",
-      "fieldvalue": "Field Value"
+      "fieldvalue": "Field Value",
+      "copyright": "All rights reserved, copyright © 2020 Provita, license",
+      "version": "Prototype Version"
     }
   },
   "es": {
@@ -50,7 +52,9 @@
       "imagery": "Imágenes aéreas/satelitales",
       "search": "Buscar",
       "fieldid": "Nombre del campo",
-      "fieldvalue": "Valor del campo"
+      "fieldvalue": "Valor del campo",
+      "copyright": "Derechos reservados, copyright © 2020 Provita, licencia",
+      "version": "Versión Prototipo"
     }
   }
 }
