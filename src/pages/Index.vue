@@ -15,13 +15,13 @@
               <b>{{$t('label.files')}}</b>
             </p>
             <div class="panel-block">
-            <p class="control has-icons-left">
-            <input class="input" type="search" :placeholder="$t('label.search')">
-            <span class="icon is-left">
-              <font-awesome :icon="['fas', 'search']"/>
-            </span>
-            </p>
-          </div>
+              <p class="control has-icons-left">
+              <input class="input" type="search" :placeholder="$t('label.search')">
+              <span class="icon is-left">
+                <font-awesome :icon="['fas', 'search']"/>
+              </span>
+              </p>
+            </div>
           </div>
           <div v-for="item, index in sortedFileList" class="card">
             <div class="card-header">
@@ -62,6 +62,7 @@
               </div>
             </transition>
           </div>
+          <div style="padding: 2em;"></div>
         </div>
       </aside>
 
