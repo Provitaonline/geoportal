@@ -1,42 +1,42 @@
 <template>
   <div>
-    <b-navbar class="is-fixed-top container is-widescreen">
-        <template slot="brand">
-          <b-navbar-item class="logo">
-            <g-link :to="$tp('/')">
-              <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
-            </g-link>
-          </b-navbar-item>
-        </template>
-        <template slot="end">
-          <b-navbar-item tag="div">
-            <g-link :to="$tp('/about')">
-              {{ $t('label.about') }}
-            </g-link>
-          </b-navbar-item>
-          <b-navbar-item tag="div">
-            <g-link :to="$tp('/contact')">
-              {{ $t('label.contact') }}
-            </g-link>
-          </b-navbar-item>
-          <b-navbar-dropdown v-if="!is404Page" arrowless right>
-            <template slot="label">
-              {{ $t('flag') }}
-            </template>
-            <ClientOnly>
-              <b-navbar-item v-for="locale in availableLocales" :key="locale">
-                <a @click="changeLocale(locale)">
-                  {{ $t('flag', locale) }}&nbsp;&nbsp;&nbsp;{{ $t('language', locale) }}
-                </a>
-              </b-navbar-item>
-            </ClientOnly>
-          </b-navbar-dropdown>
-          <b-navbar-item v-if="isAdminPage" tag="div">
-            <a @click="userLogin" class="button is-light">
-                <font-awesome :icon="['far', 'user']"/>
-            </a>
-          </b-navbar-item>
-        </template>
+    <b-navbar :fixed-top="true" :mobile-burger="enableMobileBurger">
+      <template slot="brand">
+        <b-navbar-item class="logo">
+          <g-link :to="$tp('/')">
+            <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
+          </g-link>
+        </b-navbar-item>
+      </template>
+      <template slot="end">
+        <b-navbar-item tag="div">
+          <g-link :to="$tp('/about')">
+            {{ $t('label.about') }}
+          </g-link>
+        </b-navbar-item>
+        <b-navbar-item tag="div">
+          <g-link :to="$tp('/contact')">
+            {{ $t('label.contact') }}
+          </g-link>
+        </b-navbar-item>
+        <b-navbar-dropdown v-if="!is404Page" arrowless right>
+          <template slot="label">
+            {{ $t('flag') }}
+          </template>
+          <ClientOnly>
+            <b-navbar-item v-for="locale in availableLocales" :key="locale">
+              <a @click="changeLocale(locale)">
+                {{ $t('flag', locale) }}&nbsp;&nbsp;&nbsp;{{ $t('language', locale) }}
+              </a>
+            </b-navbar-item>
+          </ClientOnly>
+        </b-navbar-dropdown>
+        <b-navbar-item v-if="isAdminPage" tag="div">
+          <a @click="userLogin" class="login-button button is-light">
+              <font-awesome :icon="['far', 'user']"/>
+          </a>
+        </b-navbar-item>
+      </template>
     </b-navbar>
     <section class="hero">
       <div class="hero-body">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </section>
-    <section class="layout">
+    <section>
       <slot />
     </section>
     <section>
@@ -79,16 +79,11 @@ query {
 </static-query>
 
 <style lang="scss">
-  .layout {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+
 </style>
 
 <style lang="scss" scoped>
-  .button {
+  .login-button {
     border-radius: 50%;
     padding-left: .70em;
     padding-right: .70em;
@@ -122,10 +117,12 @@ export default {
       version: version,
       availableLocales: this.$i18n.availableLocales,
       isAdminPage: this.$route.path.includes('/admin'),
-      is404Page: this.$route.name === '*'
+      is404Page: this.$route.name === '*',
+      enableMobileBurger: false
     }
   },
   mounted() {
+    this.enableMobileBurger = true // Enable this at runtime, to fix double burger problem
   },
   methods: {
     changeLocale: function (locale) {
@@ -133,6 +130,7 @@ export default {
         this.$router.push({
           path: this.$tp(this.$route.path, locale, true)
         })
+        this.$eventBus.$emit('localechanged', locale)
       }
     },
     userLogin: function() {

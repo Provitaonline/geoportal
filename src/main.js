@@ -2,7 +2,6 @@
 import '~/assets/style/index.scss'
 
 import Buefy from 'buefy'
-import VueCookies from 'vue-cookies'
 
 import DefaultLayout from '~/layouts/Default.vue'
 
@@ -10,12 +9,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faFacebookF, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons'
-import { faFileDownload, faDownload, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons'
+import {
+  faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown,
+  faAngleUp, faSearch
+} from '@fortawesome/free-solid-svg-icons'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 library.add(
-  faUser, faFileDownload, faDownload, faMapMarkedAlt, faFacebookF, faTwitter, faInstagram
+  faUser, faFileDownload, faDownload, faMapMarkedAlt, faFacebookF, faTwitter,
+  faInstagram, faTimes, faBars, faAngleDown, faAngleUp, faSearch
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {
@@ -28,6 +31,7 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   appOptions.i18n.setLocaleMessage('en-us', require('./messages/messages.json').en)
 
   Vue.use(Buefy)
-  Vue.use(VueCookies)
+
+  Vue.prototype.$eventBus = new Vue({})
 
 }
