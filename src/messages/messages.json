@@ -25,7 +25,8 @@
       "fieldid": "Field Name",
       "fieldvalue": "Field Value",
       "copyright": "All rights reserved, copyright © 2020 Provita, license",
-      "version": "Prototype Version"
+      "version": "Prototype Version",
+      "resetview": "Reset view"
     }
   },
   "es": {
@@ -54,7 +55,8 @@
       "fieldid": "Nombre del campo",
       "fieldvalue": "Valor del campo",
       "copyright": "Derechos reservados, copyright © 2020 Provita, licencia",
-      "version": "Versión Prototipo"
+      "version": "Versión Prototipo",
+      "resetview": "Vista inicial"
     }
   }
 }

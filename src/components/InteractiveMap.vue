@@ -12,7 +12,12 @@
 </style>
 
 <style>
-
+  .reset-view-control {
+    background-image: url(~@/assets/images/sync-alt.svg);
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 </style>
 
 <script>
@@ -22,6 +27,26 @@
   import MapPopUpContent from '~/components/MapPopUpContent.vue'
 
   var MapPopUpContentClass = Vue.extend(MapPopUpContent)
+
+  class ResetViewControl {
+    onAdd(map) {
+      this.map = map
+      this.container = document.createElement('div')
+      this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group'
+      this.button = document.createElement('button')
+      this.button.className = 'mapboxgl-ctrl-icon reset-view-control'
+      this.container.appendChild(this.button)
+      this.button.addEventListener('click', this.repositionMap.bind(this))
+      return this.container;
+    }
+    onRemove() {
+      this.container.parentNode.removeChild(this.container);
+      this.map = undefined;
+    }
+    repositionMap() {
+      this.map.flyTo({center: [-66.58, 6.42], zoom: 5})
+    }
+  }
 
   export default {
     name: 'InteractiveMap',
@@ -65,6 +90,7 @@
     },
     mounted() {
       if (process.isClient) {
+
         let styles = this.locStyles()
 
         this.mapStyle = styles[0].uri // Default map style
@@ -79,17 +105,22 @@
         let mapSwitcher
         this.map.on('load',( () => {
           this.map.addControl(new Mapbox.NavigationControl(), 'top-right')
+          const resetView = new ResetViewControl()
+          this.map.addControl(resetView, 'top-right')
           mapSwitcher = new MapboxStyleSwitcherControl(styles)
           this.map.addControl(mapSwitcher, 'top-right')
+          this.locControls(this.$i18n.locale)
           this.addLayers()
           this.map.on('styledata',() => {
             this.addLayers()
           })
         }))
+
         this.$eventBus.$on('localechanged', (locale) => {
           this.map.removeControl(mapSwitcher)
           mapSwitcher = new MapboxStyleSwitcherControl(this.locStyles(locale))
           this.map.addControl(mapSwitcher, 'top-right')
+          this.locControls(locale)
         })
         this.$eventBus.$on('addtilelayer', (item) => {
           this.addTileLayer(item)
@@ -106,6 +137,9 @@
         return this.styles.map(s => {
           return {title: this.$t('label.' + s.title, locale), uri: s.uri}
         })
+      },
+      locControls: function(locale) {
+        document.getElementsByClassName('reset-view-control')[0].title = this.$t('label.resetview', locale)
       },
       addLayers: function() {
         if (!this.map.getLayer('venezuela')) {
