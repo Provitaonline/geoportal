@@ -26,7 +26,11 @@
       "fieldvalue": "Field Value",
       "copyright": "All rights reserved, copyright © 2020 Provita, license",
       "version": "Prototype Version",
-      "resetview": "Reset view"
+      "resetview": "Reset view",
+      "selectbasemap": "Select base map",
+      "zoomin": "Zoom in",
+      "zoomout": "Zoom out",
+      "resetbearing": "Reset bearing to north"
     }
   },
   "es": {
@@ -56,7 +60,11 @@
       "fieldvalue": "Valor del campo",
       "copyright": "Derechos reservados, copyright © 2020 Provita, licencia",
       "version": "Versión Prototipo",
-      "resetview": "Vista inicial"
+      "resetview": "Vista inicial",
+      "selectbasemap": "Seleccionar mapa base",
+      "zoomin": "Acercarse",
+      "zoomout": "Alejarse",
+      "resetbearing": "Apuntar al norte"
     }
   }
 }

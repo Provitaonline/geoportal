@@ -140,6 +140,10 @@
       },
       locControls: function(locale) {
         document.getElementsByClassName('reset-view-control')[0].title = this.$t('label.resetview', locale)
+        document.getElementsByClassName('mapboxgl-style-switcher')[0].title = this.$t('label.selectbasemap', locale)
+        document.getElementsByClassName('mapboxgl-ctrl-zoom-in')[0].title = this.$t('label.zoomin', locale)
+        document.getElementsByClassName('mapboxgl-ctrl-zoom-out')[0].title = this.$t('label.zoomout', locale)
+        document.getElementsByClassName('mapboxgl-ctrl-compass')[0].title = this.$t('label.resetbearing', locale)
       },
       addLayers: function() {
         if (!this.map.getLayer('venezuela')) {
