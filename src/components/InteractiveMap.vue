@@ -11,15 +11,6 @@
 
 </style>
 
-<style>
-  .reset-view-control {
-    background-image: url(~@/assets/images/sync-alt.svg);
-    background-size: 60%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-</style>
-
 <script>
   import Vue from 'vue'
   import Mapbox from 'mapbox-gl'
@@ -139,6 +130,7 @@
         })
       },
       locControls: function(locale) {
+        // Since Mapbox does not support localization of controls, we do it this way
         document.getElementsByClassName('reset-view-control')[0].title = this.$t('label.resetview', locale)
         document.getElementsByClassName('mapboxgl-style-switcher')[0].title = this.$t('label.selectbasemap', locale)
         document.getElementsByClassName('mapboxgl-ctrl-zoom-in')[0].title = this.$t('label.zoomin', locale)

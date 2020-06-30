@@ -5,3 +5,10 @@ body {
 .vertical-line {
   border-left: 10px solid $primary;
 }
+
+.reset-view-control {
+  background-image: url(~@/assets/images/sync-alt.svg);
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
