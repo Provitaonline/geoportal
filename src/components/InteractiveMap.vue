@@ -47,7 +47,8 @@
           style: this.$store.state.mapStyleUri,
           center: mapConfig.mapCenter,
           zoom: mapConfig.mapZoom,
-          maxBounds: mapConfig.maxBounds
+          maxBounds: mapConfig.maxBounds,
+          maxZoom: mapConfig.maxZoom
         })
         let mapSwitcher
         this.map.on('load',( () => {
