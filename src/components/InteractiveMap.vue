@@ -64,10 +64,12 @@
         }))
 
         this.$eventBus.$on('localechanged', (locale) => {
-          this.map.removeControl(mapSwitcher)
-          mapSwitcher = new MapboxStyleSwitcherControl(this.locStyles(locale))
-          this.map.addControl(mapSwitcher, 'top-right')
-          this.locControls(locale)
+          if (document.getElementById('map')) { // Only if there is a map in the DOM
+            this.map.removeControl(mapSwitcher)
+            mapSwitcher = new MapboxStyleSwitcherControl(this.locStyles(locale))
+            this.map.addControl(mapSwitcher, 'top-right')
+            this.locControls(locale)
+          }
         })
         this.$eventBus.$on('addtilelayer', (item) => {
           this.addTileLayer(item)
