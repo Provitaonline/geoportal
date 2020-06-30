@@ -16,66 +16,19 @@
   import Mapbox from 'mapbox-gl'
   import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
   import MapPopUpContent from '~/components/MapPopUpContent.vue'
+  import { ResetViewControl } from '~/utils/map'
+  import { mapConfig } from '~/utils/config'
 
   var MapPopUpContentClass = Vue.extend(MapPopUpContent)
-
-  class ResetViewControl {
-    onAdd(map) {
-      this.map = map
-      this.container = document.createElement('div')
-      this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group'
-      this.button = document.createElement('button')
-      this.button.className = 'mapboxgl-ctrl-icon reset-view-control'
-      this.container.appendChild(this.button)
-      this.button.addEventListener('click', this.repositionMap.bind(this))
-      return this.container;
-    }
-    onRemove() {
-      this.container.parentNode.removeChild(this.container);
-      this.map = undefined;
-    }
-    repositionMap() {
-      this.map.flyTo({center: [-66.58, 6.42], zoom: 5})
-    }
-  }
 
   export default {
     name: 'InteractiveMap',
     props: {
       layerMeta: { type: Array, required: true }
     },
-    components: {
-      MapPopUpContent
-    },
     data() {
       return {
-        accessToken: 'NOT NEEDED',
         mapStyle: null,
-        mapCenter: [-66.58, 6.42],
-        mapZoom: 5,
-        maxBounds: [[-82, -3], [-54, 20]],
-        styles: [
-          {
-              title: 'topo',
-              uri:'/mapstyles/topo.json'
-          },
-          {
-              title: 'osm',
-              uri:'/mapstyles/osm.json'
-          },
-          {
-              title: 'simplemap',
-              uri:'/mapstyles/simple.json'
-          },
-          {
-              title: 'natgeo',
-              uri:'/mapstyles/ng.json'
-          },
-          {
-              title: 'imagery',
-              uri:'/mapstyles/satellite.json'
-          }
-        ],
         visibleTileLayers: {}
       }
     },
@@ -89,14 +42,14 @@
         this.map = new Mapbox.Map({
           container: 'map',
           style: this.mapStyle,
-          center: this.mapCenter,
-          zoom: this.mapZoom,
-          maxBounds: this.maxBounds
+          center: mapConfig.mapCenter,
+          zoom: mapConfig.mapZoom,
+          maxBounds: mapConfig.maxBounds
         })
         let mapSwitcher
         this.map.on('load',( () => {
           this.map.addControl(new Mapbox.NavigationControl(), 'top-right')
-          const resetView = new ResetViewControl()
+          const resetView = new ResetViewControl({center: mapConfig.mapCenter, zoom: mapConfig.mapZoom})
           this.map.addControl(resetView, 'top-right')
           mapSwitcher = new MapboxStyleSwitcherControl(styles)
           this.map.addControl(mapSwitcher, 'top-right')
@@ -125,7 +78,7 @@
     },
     methods: {
       locStyles: function(locale) {
-        return this.styles.map(s => {
+        return mapConfig.styles.map(s => {
           return {title: this.$t('label.' + s.title, locale), uri: s.uri}
         })
       },
