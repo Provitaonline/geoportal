@@ -28,7 +28,6 @@
     },
     data() {
       return {
-        mapStyle: null,
         visibleTileLayers: {}
       }
     },
@@ -38,11 +37,14 @@
 
         let styles = this.locStyles()
 
-        this.mapStyle = styles[0].uri // Default map style
+        // Default map style
+        if (!this.$store.state.mapStyleUri) {
+          this.$store.commit('setMapStyleUri', styles[0].uri)
+        }
 
         this.map = new Mapbox.Map({
           container: 'map',
-          style: this.mapStyle,
+          style: this.$store.state.mapStyleUri,
           center: mapConfig.mapCenter,
           zoom: mapConfig.mapZoom,
           maxBounds: mapConfig.maxBounds
@@ -75,6 +77,17 @@
         })
         this.map.on('click', this.mapClickHandler)
         this.map.on('mousemove', this.mapMouseMoveHandler)
+
+        this.map.on('sourcedata', (e) => {
+          if (e.sourceDataType === 'metadata') {
+            let foundStyle = mapConfig.styles.find(s => s.title === e.sourceId)
+            if (foundStyle) {
+              if (foundStyle.uri != this.$store.state.mapStyleUri) {
+                this.$store.commit('setMapStyleUri', foundStyle.uri)
+              }
+            }
+          }
+        })
       }
     },
     methods: {

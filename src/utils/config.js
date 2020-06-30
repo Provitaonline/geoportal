@@ -9,15 +9,15 @@ export const mapConfig = {
         uri:'/mapstyles/osm.json'
     },
     {
-        title: 'simplemap',
+        title: 'simple',
         uri:'/mapstyles/simple.json'
     },
     {
-        title: 'natgeo',
+        title: 'ng',
         uri:'/mapstyles/ng.json'
     },
     {
-        title: 'imagery',
+        title: 'satellite',
         uri:'/mapstyles/satellite.json'
     }
   ],

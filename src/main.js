@@ -40,7 +40,8 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   appOptions.store = new Vuex.Store({
     state: {
       visibleTileLayers: {},
-      fileList: []
+      fileList: [],
+      mapStyleUri: null
     },
     mutations: {
       setVisibleTileLayers (state, visibleTileLayers) {
@@ -48,6 +49,9 @@ export default function (Vue, { router, head, isClient, appOptions }) {
       },
       setFileList (state, fileList) {
         state.fileList = fileList
+      },
+      setMapStyleUri (state, mapStyleUri) {
+        state.mapStyleUri = mapStyleUri
       }
     }
   })
