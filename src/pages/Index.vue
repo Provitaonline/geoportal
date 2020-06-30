@@ -26,15 +26,15 @@
           <div v-for="item, index in sortedFileList" class="card">
             <div class="card-header">
               <p class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
-              <a href="#" @click="item.visible = !item.visible" class="card-header-icon" aria-label="more options">
+              <a href="#" @click="item.expanded = !item.expanded" class="card-header-icon" aria-label="more options">
                 <span class="icon">
-                  <font-awesome v-if="item.visible" :icon="['fas', 'angle-up']"/>
+                  <font-awesome v-if="item.expanded" :icon="['fas', 'angle-up']"/>
                   <font-awesome v-else :icon="['fas', 'angle-down']"/>
                 </span>
               </a>
             </div>
             <transition name="slide">
-              <div v-show="item.visible" class="card-content">
+              <div v-show="item.expanded" class="card-content">
                 <div class="buttons">
                   <b-button tag="a" download :href="'https://geoportalp.s3-us-west-2.amazonaws.com/files/' + item.file" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
                     <font-awesome :icon="['fas', 'download']"/>
@@ -174,11 +174,6 @@
     data() {
       return {
         fileList: [],
-        accessToken: 'NOT NEEDED',
-        mapStyle: null,
-        mapCenter: [-66.58, 6.42],
-        mapZoom: 5,
-        activeTab: 0,
         isLoading: true,
         isPopupModalModalActive: false,
         popupModalData: {},
@@ -194,7 +189,7 @@
         this.fileList =  result.collection
         this.isLoading = false
         this.fileList.forEach(item => {
-          this.$set(item, 'visible', false)
+          this.$set(item, 'expanded', false)
           if (item.file) {
             data.getFileSize(item.file).then((fileSize) => {
               this.$set(item, 'fileSize', fileSize)
