@@ -184,19 +184,22 @@
       InteractiveMap
     },
     created() {
-      this.doFitBounds = true
-      data.getMetaEntries().then((result) => {
-        this.fileList =  result.collection
-        this.isLoading = false
-        this.fileList.forEach(item => {
-          this.$set(item, 'expanded', false)
-          if (item.file) {
-            data.getFileSize(item.file).then((fileSize) => {
-              this.$set(item, 'fileSize', fileSize)
-            })
-          }
+      this.fileList = this.$store.state.fileList
+      if (this.fileList.length === 0) {
+        data.getMetaEntries().then((result) => {
+          this.fileList =  result.collection
+          this.isLoading = false
+          this.fileList.forEach(item => {
+            this.$set(item, 'expanded', false)
+            if (item.file) {
+              data.getFileSize(item.file).then((fileSize) => {
+                this.$set(item, 'fileSize', fileSize)
+              })
+            }
+          })
+          this.$store.commit('setFileList', this.fileList)
         })
-      })
+      }
     },
     mounted() {
       this.$eventBus.$on('showpopupmodal', (info) => {
@@ -220,6 +223,7 @@
         } else {
           this.$eventBus.$emit('removetilelayer', item.tiles)
         }
+        this.$store.commit('setFileList', this.fileList)
       }
     },
     computed: {

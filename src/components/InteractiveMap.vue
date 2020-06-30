@@ -34,6 +34,7 @@
     },
     mounted() {
       if (process.isClient) {
+        this.visibleTileLayers = this.$store.state.visibleTileLayers
 
         let styles = this.locStyles()
 
@@ -150,11 +151,13 @@
 
         if (!this.visibleTileLayers[layer]) {
           this.visibleTileLayers[layer] = item
+          this.$store.commit('setVisibleTileLayers', this.visibleTileLayers)
         }
       },
       removeTileLayer: function (layer) {
         this.map.removeLayer(layer)
         delete this.visibleTileLayers[layer]
+        this.$store.commit('setVisibleTileLayers', this.visibleTileLayers)
       },
       mapClickHandler: function(e) {
         let features = this.map.queryRenderedFeatures(e.point)

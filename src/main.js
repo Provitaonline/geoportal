@@ -2,6 +2,7 @@
 import '~/assets/style/index.scss'
 
 import Buefy from 'buefy'
+import Vuex from 'vuex'
 
 import DefaultLayout from '~/layouts/Default.vue'
 
@@ -34,4 +35,20 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 
   Vue.prototype.$eventBus = new Vue({})
 
+  Vue.use(Vuex)
+
+  appOptions.store = new Vuex.Store({
+    state: {
+      visibleTileLayers: {},
+      fileList: []
+    },
+    mutations: {
+      setVisibleTileLayers (state, visibleTileLayers) {
+        state.visibleTileLayers = visibleTileLayers
+      },
+      setFileList (state, fileList) {
+        state.fileList = fileList
+      }
+    }
+  })
 }
