@@ -24,5 +24,7 @@ export const mapConfig = {
   mapCenter: [-66.58, 6.42],
   mapZoom: 5,
   maxBounds: [[-82, -3], [-54, 20]],
-  maxZoom: 14
+  maxZoom: 14,
+  mapBearing: 0,
+  mapPitch: 0
 }

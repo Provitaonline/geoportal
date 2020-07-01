@@ -45,15 +45,22 @@
         this.map = new Mapbox.Map({
           container: 'map',
           style: this.$store.state.mapStyleUri,
-          center: mapConfig.mapCenter,
-          zoom: mapConfig.mapZoom,
+          center: this.$store.state.mapView.center || mapConfig.mapCenter,
+          zoom: this.$store.state.mapView.zoom || mapConfig.mapZoom,
+          bearing: this.$store.state.mapView.bearing ||  mapConfig.mapBearing,
+          pitch: this.$store.state.mapView.pitch ||  mapConfig.mapPitch,
           maxBounds: mapConfig.maxBounds,
           maxZoom: mapConfig.maxZoom
         })
         let mapSwitcher
         this.map.on('load',( () => {
           this.map.addControl(new Mapbox.NavigationControl(), 'top-right')
-          const resetView = new ResetViewControl({center: mapConfig.mapCenter, zoom: mapConfig.mapZoom})
+          const resetView = new ResetViewControl({
+            center: mapConfig.mapCenter,
+            zoom: mapConfig.mapZoom,
+            bearing: mapConfig.mapBearing,
+            pitch: mapConfig.mapPitch
+          })
           this.map.addControl(resetView, 'top-right')
           mapSwitcher = new MapboxStyleSwitcherControl(styles)
           this.map.addControl(mapSwitcher, 'top-right')
@@ -217,6 +224,15 @@
           this.map.getCanvas().style.cursor = ''
         }
       }
+    },
+    beforeDestroy () {
+      // Save map view before leaving
+      this.$store.commit('setMapView', {
+        center: this.map.getCenter(),
+        zoom: this.map.getZoom(),
+        bearing: this.map.getBearing(),
+        pitch: this.map.getPitch()
+      })
     }
   }
 

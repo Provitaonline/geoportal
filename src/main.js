@@ -41,7 +41,8 @@ export default function (Vue, { router, head, isClient, appOptions }) {
     state: {
       visibleTileLayers: {},
       fileList: [],
-      mapStyleUri: null
+      mapStyleUri: null,
+      mapView: {}
     },
     mutations: {
       setVisibleTileLayers (state, visibleTileLayers) {
@@ -52,6 +53,9 @@ export default function (Vue, { router, head, isClient, appOptions }) {
       },
       setMapStyleUri (state, mapStyleUri) {
         state.mapStyleUri = mapStyleUri
+      },
+      setMapView (state, mapView) {
+        state.mapView = mapView
       }
     }
   })
