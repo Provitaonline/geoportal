@@ -1,4 +1,5 @@
 import GitHub from 'github-api'
+import {adminConfig} from '~/utils/config'
 
 export function getStateToken() {
   // Generate and return a UUIDv4 (from StackOverflow How to create GUID / UUID?)
@@ -12,9 +13,13 @@ export function getUserInfo(token) {
 
   return new Promise(function (resolve, reject) {
     github.getUser().getProfile().then((profile) => {
-      resolve({name: profile.data.name, login: profile.data.login})
+      github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getCollaborators().then(() => {
+        resolve({name: profile.data.name, login: profile.data.login, avatar: profile.data.avatar_url})
+      }).catch((e) => {
+        reject(e.response)
+      })
     }).catch((e) => {
-      reject(e)
+      reject(e.response)
     })
   })
 }

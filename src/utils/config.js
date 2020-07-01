@@ -28,3 +28,10 @@ export const mapConfig = {
   mapBearing: 0,
   mapPitch: 0
 }
+
+export const adminConfig = {
+  githubInfo: {
+    owner : 'jimmyangel',
+    repo: 'geoportal-data'
+  }
+}

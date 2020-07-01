@@ -33,9 +33,9 @@ export default {
         console.log('New login')
 
         getUserInfo(sessionStorage.githubtoken).then((info) => {
-          console.log('User Info ', info.name, info.login)
+          console.log('User Info ', info)
         }).catch((e) => {
-          console.log(e)
+          console.log('failed admin', e)
         })
       } else {
         console.log('Hey, state mismatch')
