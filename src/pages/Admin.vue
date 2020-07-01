@@ -22,7 +22,6 @@ export default {
     }
   },
   mounted () {
-    console.log('META', this.metaInfo)
     //window.history.replaceState(null, null, window.location.pathname)
     console.log('tokens', this.$route.query.token, sessionStorage.stateToken)
     data.getMetaEntries().then((data) => {
@@ -41,7 +40,10 @@ export default {
       } else {
         console.log('Hey, state mismatch')
       }
-      this.$router.push('/' + sessionStorage.stateToken.substr(0,2) + '/admin') // Clean the url, stay with selected locale
+
+      let eLang = sessionStorage.stateToken.substr(0,2)
+      let langPath = (this.$i18n.fallbackLocale.substr(0,2) === eLang) ? '' : '/' + eLang
+      this.$router.push(langPath + '/admin') // Clean the url, stay with selected locale
     }
   }
 }

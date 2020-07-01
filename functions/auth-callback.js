@@ -27,11 +27,14 @@ exports.handler = async (event, context) => {
     const authResult = oauth.accessToken.create(authorizationToken)
     console.log('Auth result', authResult)
 
+    let eLang = state.substr(0,2)
+    let langPath = (config.defaultLang === eLang) ? '' : '/' + eLang
+
     // Redirect user back to site page
     return {
       statusCode: 302,
       headers: {
-        Location: config.siteUrl + '/' + state.substr(0,2) + '/admin?token=' + authResult.token.access_token + '&state=' + state,
+        Location: config.siteUrl + langPath + '/admin?token=' + authResult.token.access_token + '&state=' + state,
         'Cache-Control': 'no-cache'
       },
       body: ''
