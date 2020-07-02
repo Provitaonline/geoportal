@@ -175,7 +175,7 @@ export default {
       this.showLoginInfo = false
     },
     isAdminEnabled: function() {
-      return sessionStorage.userInfo != undefined
+      return process.isClient ? sessionStorage.userInfo != undefined : false
     }
   }
 }
