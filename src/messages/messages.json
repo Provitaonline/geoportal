@@ -4,13 +4,19 @@
     "flag": "🇺🇸",
     "message": {
       "hello": "hello",
-      "404": "Page not found..."
+      "404": "Page not found...",
+      "adminconnect": "Connect using your Github account to access administration functionality.",
+      "admincolab": "(In addition, you must have been invited as a data repository collaborator.)",
+      "connected": "You are connected with Github",
+      "connectionerror": "Connection error",
+      "unauthorized": "The Github user must be defined as a data repository collaborator . Contact the application administrator."
     },
     "label": {
       "main": "Main",
       "about": "About",
       "contact": "Contact",
       "admin": "Portal Administration",
+      "adminabr": "Admin",
       "files": "Data sets",
       "date": "Date",
       "map": "Map",
@@ -30,7 +36,11 @@
       "selectbasemap": "Select base map",
       "zoomin": "Zoom in",
       "zoomout": "Zoom out",
-      "resetbearing": "Reset bearing to north"
+      "resetbearing": "Reset bearing to north",
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "login": "User",
+      "name": "Name"
     }
   },
   "es": {
@@ -38,13 +48,19 @@
     "flag": "🇻🇪",
     "message": {
       "hello": "hola",
-      "404": "No encuentro la página..."
+      "404": "No encuentro la página...",
+      "adminconnect": "Conéctate con tu cuenta de Github para acceder la función de administración.",
+      "admincolab": "(Además, tienes que estar invitado como colaborador del repositiorio de datos.)",
+      "connected": "Estás conectado con Github",
+      "connectionerror": "Error de conexión",
+      "unauthorized": "Se require que el usuario de Github esté definido como colaborador del repositiorio de datos. Contacta al administrador de la aplicación."
     },
     "label": {
       "main": "Página Principal",
       "about": "Acerca De",
       "contact": "Contacto",
       "admin": "Administración del portal",
+      "adminabr": "Admin",
       "files": "Archivos de datos",
       "date": "Fecha",
       "map": "Mapa",
@@ -64,7 +80,11 @@
       "selectbasemap": "Seleccionar mapa base",
       "zoomin": "Acercarse",
       "zoomout": "Alejarse",
-      "resetbearing": "Apuntar al norte"
+      "resetbearing": "Apuntar al norte",
+      "connect": "Connectarse",
+      "disconnect": "Desconectarse",
+      "login": "Usuario",
+      "name": "Nombre"
     }
   }
 }

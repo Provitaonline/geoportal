@@ -9,6 +9,11 @@
         </b-navbar-item>
       </template>
       <template slot="end">
+        <b-navbar-item v-if="isAdminEnabled()" tag="div">
+          <g-link :to="$tp('/admin')">
+            {{ $t('label.adminabr') }}
+          </g-link>
+        </b-navbar-item>
         <b-navbar-item tag="div">
           <g-link :to="$tp('/about')">
             {{ $t('label.about') }}
@@ -32,8 +37,13 @@
           </ClientOnly>
         </b-navbar-dropdown>
         <b-navbar-item v-if="isAdminPage" tag="div">
-          <a @click="userLogin" class="login-button button is-light">
-              <font-awesome :icon="['far', 'user']"/>
+          <a v-if="$store.state.avatar" @click="showLoginInfo = true">
+            <figure v-if="$store.state.avatar" class="image is-24x24">
+              <img class="is-rounded" :src="$store.state.avatar">
+            </figure>
+          </a>
+          <a v-else @click="showLoginInfo = true" class="login-button button is-light">
+            <span><font-awesome :icon="['far', 'user']"/></span>
           </a>
         </b-navbar-item>
       </template>
@@ -45,6 +55,26 @@
         </div>
       </div>
     </section>
+    <b-modal :active.sync="showLoginInfo" :width="400" scroll="keep">
+      <div class="card">
+          <div class="card-header has-text-centered">
+            <p class="card-header-title" style="display: inline-block;">
+              {{$t('message.connected')}}
+            </p>
+          </div>
+          <div class="card-content has-text-centered">
+            <figure v-if="$store.state.avatar" class="image is-48x48" style="margin: auto;">
+              <img class="is-rounded" :src="$store.state.avatar">
+            </figure>
+            <br>
+            <b>{{$t('label.login')}}:</b> {{$store.state.login}}<br>
+            <b>{{$t('label.name')}}:</b> {{$store.state.name}}<br><br>
+            <a @click="userLogoff" class="button is-primary">
+                {{$t('label.disconnect')}}
+            </a>
+          </div>
+      </div>
+    </b-modal>
     <section>
       <slot />
     </section>
@@ -108,7 +138,6 @@ query {
 
 <script>
 import {version} from '../../package.json'
-import {getStateToken} from '~/utils/user'
 
 export default {
   data() {
@@ -116,7 +145,9 @@ export default {
       version: version,
       availableLocales: this.$i18n.availableLocales,
       isAdminPage: this.$route.path.includes('/admin'),
-      is404Page: this.$route.name === '*'
+      is404Page: this.$route.name === '*',
+      showLoginInfo: false,
+      userInfo: {}
     }
   },
   mounted() {
@@ -135,9 +166,16 @@ export default {
         this.$eventBus.$emit('localechanged', locale)
       }
     },
-    userLogin: function() {
-      sessionStorage.stateToken = this.$i18n.locale.toString().substr(0,2) + getStateToken()
-      window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
+    userLogoff: function () {
+      this.$store.commit('setLogin', null)
+      this.$store.commit('setName', null)
+      this.$store.commit('setAvatar', null)
+      sessionStorage.removeItem('githubtoken')
+      sessionStorage.removeItem('userInfo')
+      this.showLoginInfo = false
+    },
+    isAdminEnabled: function() {
+      return sessionStorage.userInfo != undefined
     }
   }
 }

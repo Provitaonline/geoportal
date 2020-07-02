@@ -8,11 +8,31 @@
     <div class="container">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error doloremque omnis animi, eligendi magni a voluptatum, vitae, consequuntur rerum illum odit fugit assumenda rem dolores inventore iste reprehenderit maxime! Iusto.</p>
     </div>
+    <b-modal v-if="!$store.state.login" :active="true" :can-cancel="false" :width="640" scroll="keep">
+      <div class="card">
+        <div class="card-header has-text-centered">
+          <div class="card-header-title" style="display: inline-block;">
+            <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
+            <br><br>{{$t('message.adminconnect')}}<br>
+            <span style="font-weight: normal;">{{$t('message.admincolab')}}</span>
+          </div>
+        </div>
+        <div class="card-content has-text-centered">
+          <b-message v-if="loginError" :title="$t('message.connectionerror')" type="is-warning" :closable="false">
+            {{loginError}}
+          </b-message>
+          <font-awesome size="4x" :icon="['fab', 'github']"/><br><br>
+          <a @click="userLogin" class="button is-primary">
+              {{$t('label.connect')}}
+          </a>
+        </div>
+      </div>
+    </b-modal>
   </Layout>
 </template>
 
 <script>
-import {getUserInfo} from '~/utils/user'
+import {getStateToken, getUserInfo} from '~/utils/user'
 import * as data from '~/utils/data'
 
 export default {
@@ -21,29 +41,50 @@ export default {
       title: this.$t('label.admin')
     }
   },
+  data() {
+    return {
+      loginError: null
+    }
+  },
   mounted () {
-    //window.history.replaceState(null, null, window.location.pathname)
-    console.log('tokens', this.$route.query.token, sessionStorage.stateToken)
-    data.getMetaEntries().then((data) => {
-      console.log(data)
-    })
     if (this.$route.query.token) {
+      let token = this.$route.query.token
       if (this.$route.query.state === sessionStorage.stateToken) {
-        sessionStorage.githubtoken = this.$route.query.token
-        console.log('New login')
-
-        getUserInfo(sessionStorage.githubtoken).then((info) => {
-          console.log('User Info ', info)
+        getUserInfo(token).then((info) => {
+          sessionStorage.githubtoken = token
+          sessionStorage.userInfo = JSON.stringify(info)
+          this.commitUserInfo(info)
+          this.loginRequired = false
         }).catch((e) => {
-          console.log('failed admin', e)
+          if (e.status === 403) {
+            console.log('Unauthorized', e)
+            this.loginError = this.$t('message.unauthorized')
+          } else {
+            console.log('Login failed', e)
+          }
         })
       } else {
-        console.log('Hey, state mismatch')
+        console.log('State mismatch')
       }
 
       let eLang = sessionStorage.stateToken.substr(0,2)
       let langPath = (this.$i18n.fallbackLocale.substr(0,2) === eLang) ? '' : '/' + eLang
       this.$router.push(langPath + '/admin') // Clean the url, stay with selected locale
+    } else {
+      if (sessionStorage.githubtoken) {
+        this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
+      }
+    }
+  },
+  methods: {
+    userLogin: function() {
+      sessionStorage.stateToken = this.$i18n.locale.toString().substr(0,2) + getStateToken()
+      window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
+    },
+    commitUserInfo(info) {
+      this.$store.commit('setLogin', info.login)
+      this.$store.commit('setName', info.name)
+      this.$store.commit('setAvatar', info.avatar)
     }
   }
 }
