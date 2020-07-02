@@ -61,10 +61,13 @@ export default {
             this.loginError = this.$t('message.unauthorized')
           } else {
             console.log('Login failed', e)
+            this.loginError = e.data.message
           }
         })
       } else {
+        // This should never happen
         console.log('State mismatch')
+        this.loginError = 'State mismatch'
       }
 
       let eLang = sessionStorage.stateToken.substr(0,2)
