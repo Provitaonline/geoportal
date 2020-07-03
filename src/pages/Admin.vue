@@ -33,7 +33,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import * as data from '~/utils/data'
+import {getListOfFiles} from '~/utils/data'
 
 export default {
   metaInfo() {
@@ -55,6 +55,7 @@ export default {
           sessionStorage.userInfo = JSON.stringify(info)
           this.commitUserInfo(info)
           this.loginRequired = false
+          this.getListOfFiles()
         }).catch((e) => {
           if (e.status === 403) {
             console.log('Unauthorized', e)
@@ -76,6 +77,7 @@ export default {
     } else {
       if (sessionStorage.githubtoken) {
         this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
+        this.getListOfFiles()
       }
     }
   },
@@ -88,6 +90,11 @@ export default {
       this.$store.commit('setLogin', info.login)
       this.$store.commit('setName', info.name)
       this.$store.commit('setAvatar', info.avatar)
+    },
+    getListOfFiles() {
+      getListOfFiles().then((result) => {
+        console.log(result)
+      })
     }
   }
 }
