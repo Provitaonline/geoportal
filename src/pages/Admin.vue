@@ -9,6 +9,12 @@
     <section class="container">
       <b-tabs type="is-boxed" :animated="false">
         <b-tab-item label="Archivos">
+          <vue2-dropzone id="dzId" :options="dropzoneOptions" :useCustomSlot="true">
+            <div class="dropzone-custom-content">
+              <h3 class="subtitle dropzone-custom-title">Drag and drop to upload content!</h3>
+              <div>...or click to select a file from your computer</div>
+            </div>
+          </vue2-dropzone>
           <div class="container" style="max-width: 600px;">
             <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
@@ -56,6 +62,7 @@
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles} from '~/utils/data'
+import vue2Dropzone from 'vue2-dropzone'
 
 export default {
   metaInfo() {
@@ -67,8 +74,15 @@ export default {
     return {
       loginError: null,
       listOfFiles: [],
-      fileListCheckedRows: []
+      fileListCheckedRows: [],
+      dropzoneOptions: {
+        url: 'https://httpbin.org/post',
+        createImageThumbnails: false
+      }
     }
+  },
+  components: {
+    vue2Dropzone
   },
   mounted () {
     if (this.$route.query.token) {

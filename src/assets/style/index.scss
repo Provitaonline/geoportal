@@ -11,6 +11,9 @@
 @import "~mapbox-gl/dist/mapbox-gl.css";
 @import "~mapbox-gl-style-switcher/styles.css";
 
+//** Import vue dropzone **/
+@import '~vue2-dropzone/dist/vue2Dropzone.min.css';
+
 /** Import overrides */
 
 @import "overrides";
