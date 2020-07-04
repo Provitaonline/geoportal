@@ -12,14 +12,15 @@ import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faFacebookF, faTwitter, faInstagram, faGithub } from '@fortawesome/free-brands-svg-icons'
 import {
   faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown,
-  faAngleUp, faSearch
+  faAngleUp, faSearch, faTrashAlt, faCloudUploadAlt
 } from '@fortawesome/free-solid-svg-icons'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 library.add(
   faUser, faFileDownload, faDownload, faMapMarkedAlt, faFacebookF, faTwitter,
-  faInstagram, faGithub, faTimes, faBars, faAngleDown, faAngleUp, faSearch
+  faInstagram, faGithub, faTimes, faBars, faAngleDown, faAngleUp, faSearch, faTrashAlt,
+  faCloudUploadAlt
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {

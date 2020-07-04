@@ -11,8 +11,8 @@
         <b-tab-item label="Archivos">
           <div class="container" style="max-width: 600px;">
             <div class="buttons" style="justify-content: center;">
-              <b-button style="width: 150px;" :disabled="!fileListCheckedRows.length">{{$t('label.removechecked')}}</b-button>
-              <b-upload><a style="width: 150px;" class="button">{{$t('label.upload')}}</a></b-upload>
+              <b-button style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
+              <b-upload><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
             <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
