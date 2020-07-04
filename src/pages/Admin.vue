@@ -9,13 +9,17 @@
     <section class="container">
       <b-tabs type="is-boxed" :animated="false">
         <b-tab-item label="Archivos">
-          <vue2-dropzone id="dzId" :options="dropzoneOptions" :useCustomSlot="true">
+          <!-- <vue2-dropzone id="dzId" :options="dropzoneOptions" :useCustomSlot="true">
             <div class="dropzone-custom-content">
               <h3 class="subtitle dropzone-custom-title">Drag and drop to upload content!</h3>
               <div>...or click to select a file from your computer</div>
-            </div>
+            </div> -->
           </vue2-dropzone>
           <div class="container" style="max-width: 600px;">
+            <div class="buttons" style="justify-content: center;">
+              <b-button :disabled="!fileListCheckedRows.length">Remove checked</b-button>&nbsp;&nbsp;
+              <b-upload><a class="button">Upload new file</a></b-upload>
+            </div>
             <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
                 <b-table-column field="name" :label="$t('label.name')">
