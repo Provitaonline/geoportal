@@ -88,7 +88,6 @@ export default {
           sessionStorage.githubtoken = token
           sessionStorage.userInfo = JSON.stringify(info)
           this.commitUserInfo(info)
-          this.loginRequired = false
           this.getListOfFiles()
         }).catch((e) => {
           if (e.status === 403) {
@@ -112,6 +111,7 @@ export default {
       if (sessionStorage.githubtoken) {
         this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
         this.getListOfFiles()
+        console.log('user already connected', this.$store.state.login)
       }
     }
   },
