@@ -41,7 +41,9 @@
       "disconnect": "Disconnect",
       "login": "User",
       "name": "Name",
-      "size": "Size"
+      "size": "Size",
+      "removechecked": "Remove checked",
+      "upload": "Upload file"
     }
   },
   "es": {
@@ -86,7 +88,9 @@
       "disconnect": "Desconectarse",
       "login": "Usuario",
       "name": "Nombre",
-      "size": "Tamaño"
+      "size": "Tamaño",
+      "removechecked": "Eliminar marcados",
+      "upload": "Subir archivo"
     }
   }
 }
