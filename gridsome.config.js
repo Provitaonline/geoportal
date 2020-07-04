@@ -37,7 +37,7 @@ module.exports = {
             },
             long: {
               year: 'numeric', month: 'short', day: 'numeric',
-              weekday: 'short', hour: 'numeric', minute: 'numeric'
+              hour: 'numeric', minute: 'numeric'
             }
           },
           'es-ve': {
@@ -46,7 +46,7 @@ module.exports = {
             },
             long: {
               year: 'numeric', month: 'long', day: 'numeric',
-              weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true
+              hour: 'numeric', minute: 'numeric', hour12: true
             }
           }
         },

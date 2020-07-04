@@ -40,7 +40,8 @@
       "connect": "Connect",
       "disconnect": "Disconnect",
       "login": "User",
-      "name": "Name"
+      "name": "Name",
+      "size": "Size"
     }
   },
   "es": {
@@ -84,7 +85,8 @@
       "connect": "Connectarse",
       "disconnect": "Desconectarse",
       "login": "Usuario",
-      "name": "Nombre"
+      "name": "Nombre",
+      "size": "Tamaño"
     }
   }
 }

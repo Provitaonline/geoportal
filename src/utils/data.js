@@ -15,7 +15,6 @@ export async function getFileSize(fileName) {
 }
 
 export function getListOfFiles() {
-
   return new Promise((resolve, reject) => {
     axios.get('https://geoportalp.s3-us-west-2.amazonaws.com/?list-type=2&prefix=files').then(response => {
       parseString(response.data, (err, result) => {

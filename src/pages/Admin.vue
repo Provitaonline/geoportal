@@ -5,9 +5,31 @@
         {{ $t('label.admin') }}
       </h1>
     </template>
-    <div class="container">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error doloremque omnis animi, eligendi magni a voluptatum, vitae, consequuntur rerum illum odit fugit assumenda rem dolores inventore iste reprehenderit maxime! Iusto.</p>
-    </div>
+    <br>
+    <section class="container">
+      <b-tabs type="is-boxed" :animated="false">
+        <b-tab-item label="Archivos">
+          <div class="container" style="max-width: 600px;">
+            <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
+              <template slot-scope="props">
+                <b-table-column field="name" :label="$t('label.name')">
+                  {{props.row.name}}
+                </b-table-column>
+                <b-table-column field="size" :label="$t('label.size')" centered>
+                  {{$n(props.row.size)}}
+                </b-table-column>
+                <b-table-column field="date" :label="$t('label.date')">
+                  {{$d(new Date(props.row.date), 'long')}}
+                </b-table-column>
+              </template>
+            </b-table>
+          </div>
+        </b-tab-item>
+        <b-tab-item label="Metadata">
+          Metadatos
+        </b-tab-item>
+      </b-tabs>
+    </section>
     <b-modal v-if="!$store.state.login" :active="true" :can-cancel="false" :width="640" scroll="keep">
       <div class="card">
         <div class="card-header has-text-centered">
@@ -43,7 +65,9 @@ export default {
   },
   data() {
     return {
-      loginError: null
+      loginError: null,
+      listOfFiles: [],
+      fileListCheckedRows: []
     }
   },
   mounted () {
@@ -92,7 +116,8 @@ export default {
       this.$store.commit('setAvatar', info.avatar)
     },
     getListOfFiles() {
-      getListOfFiles().then((result) => {
+      getListOfFiles(this.$n).then((result) => {
+        this.listOfFiles = result
         console.log(result)
       })
     }
