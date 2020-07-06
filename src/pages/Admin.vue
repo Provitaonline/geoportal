@@ -34,7 +34,7 @@
         </b-tab-item>
       </b-tabs>
     </section>
-    <b-modal v-if="!$store.state.login" :active="true" :can-cancel="false" :width="640" scroll="keep">
+    <b-modal v-if="!$store.state.login" :active="isLoginActive" :can-cancel="false" :width="640" scroll="keep">
       <div class="card">
         <div class="card-header has-text-centered">
           <div class="card-header-title" style="display: inline-block;">
@@ -72,10 +72,7 @@ export default {
       loginError: null,
       listOfFiles: [],
       fileListCheckedRows: [],
-      dropzoneOptions: {
-        url: 'https://httpbin.org/post',
-        createImageThumbnails: false
-      }
+      isLoginActive: false
     }
   },
   components: {
@@ -112,13 +109,24 @@ export default {
         this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
         this.getListOfFiles()
         console.log('user already connected', this.$store.state.login)
+      } else {
+        this.isLoginActive = true
       }
     }
+    this.$eventBus.$on('userlogoff', this.userLogoff)
   },
   methods: {
     userLogin: function() {
       sessionStorage.stateToken = this.$i18n.locale.toString().substr(0,2) + getStateToken()
       window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
+    },
+    userLogoff: function() {
+      this.$store.commit('setLogin', null)
+      this.$store.commit('setName', null)
+      this.$store.commit('setAvatar', null)
+      sessionStorage.removeItem('githubtoken')
+      sessionStorage.removeItem('userInfo')
+      this.isLoginActive = true
     },
     commitUserInfo(info) {
       this.$store.commit('setLogin', info.login)

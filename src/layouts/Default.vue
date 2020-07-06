@@ -169,11 +169,7 @@ export default {
       }
     },
     userLogoff: function () {
-      this.$store.commit('setLogin', null)
-      this.$store.commit('setName', null)
-      this.$store.commit('setAvatar', null)
-      sessionStorage.removeItem('githubtoken')
-      sessionStorage.removeItem('userInfo')
+      this.$eventBus.$emit('userlogoff')
       this.showLoginInfo = false
     },
     isAdminEnabled: function() {
