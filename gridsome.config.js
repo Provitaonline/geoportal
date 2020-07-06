@@ -45,7 +45,7 @@ module.exports = {
               year: 'numeric', month: 'numeric', day: 'numeric'
             },
             long: {
-              year: 'numeric', month: 'long', day: 'numeric',
+              year: 'numeric', month: 'short', day: 'numeric',
               hour: 'numeric', minute: 'numeric', hour12: true
             }
           }
