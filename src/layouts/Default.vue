@@ -9,11 +9,13 @@
         </b-navbar-item>
       </template>
       <template slot="end">
-        <b-navbar-item v-if="isAdminEnabled()" tag="div">
-          <g-link :to="$tp('/admin')">
-            {{ $t('label.adminabr') }}
-          </g-link>
-        </b-navbar-item>
+        <ClientOnly>
+          <b-navbar-item v-if="isAdminEnabled()" tag="div">
+            <g-link :to="$tp('/admin')">
+              {{ $t('label.adminabr') }}
+            </g-link>
+          </b-navbar-item>
+        </ClientOnly>
         <b-navbar-item tag="div">
           <g-link :to="$tp('/about')">
             {{ $t('label.about') }}
