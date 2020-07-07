@@ -48,7 +48,7 @@
                   {{$d(new Date(props.row.date), 'long')}}
                 </b-table-column>
                 <b-table-column>
-                  <a @click="isEditModalActive=true; currentIndex=props.index"><font-awesome :icon="['far', 'edit']"/></a>
+                  <a @click="editMeta(props.index)"><font-awesome :icon="['far', 'edit']"/></a>
                 </b-table-column>
               </template>
             </b-table>
@@ -56,81 +56,11 @@
         </b-tab-item>
       </b-tabs>
     </section>
-    <b-modal v-if="metaFromRepo.length" :active.sync="isEditModalActive">
-      <div class="card">
-        <div class="card-header has-text-centered">
-          <p class="card-header-title title" style="display: inline-block;">
-            {{sortedMetaFromRepo[currentIndex].name[$i18n.locale.substr(0, 2)]}}
-          </p>
-        </div>
-        <div class="card-content">
-          <div class="content">
-            <b-field :label="$t('label.titlespanish')">
-              <b-input v-model="sortedMetaFromRepo[currentIndex].name.es"></b-input>
-            </b-field>
-            <b-field :label="$t('label.titleenglish')">
-              <b-input v-model="sortedMetaFromRepo[currentIndex].name.en"></b-input>
-            </b-field>
-            <b-field :label="$t('label.file')">
-              <b-input v-model="sortedMetaFromRepo[currentIndex].file"></b-input>
-            </b-field>
-            <b-field :label="$t('label.date')+ ' (UTC)'">
-              <b-input v-model="sortedMetaFromRepo[currentIndex].date"></b-input>
-            </b-field>
-            <b-field :label="$t('label.tagsspanish')">
-              <b-taginput v-model="sortedMetaFromRepo[currentIndex].keywords.es" placeholder="Add a tag"></b-taginput>
-            </b-field>
-            <b-field :label="$t('label.tagsenglish')">
-              <b-taginput v-model="sortedMetaFromRepo[currentIndex].keywords.en" placeholder="Add a tag"></b-taginput>
-            </b-field>
-            <b-field :label="$t('label.descriptionspanish')">
-              <b-input v-model="sortedMetaFromRepo[currentIndex].description.es" type="textarea"></b-input>
-            </b-field>
-            <b-field :label="$t('label.descriptionenglish')">
-              <b-input v-model="sortedMetaFromRepo[currentIndex].description.en" type="textarea"></b-input>
-            </b-field>
-            <br>
-            <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
-            <b-field :label="$t('label.tiletype')">
-              <b-select v-model="sortedMetaFromRepo[currentIndex].tileInfo.type">
-                <option value="raster">{{$t('label.raster')}}</option>
-                <option value="vector">{{$t('label.vector')}}</option>
-              </b-select>
-            </b-field>
-            <div v-if="sortedMetaFromRepo[currentIndex].tileInfo.type === 'vector'">
-              <b-field :label="$t('label.mapdisplayattribute')">
-                <b-input v-model="sortedMetaFromRepo[currentIndex].tileInfo.displayAttribute"></b-input>
-              </b-field>
-              <b-field :label="$t('label.geometry')">
-                <b-select v-model="sortedMetaFromRepo[currentIndex].tileInfo.style.type">
-                  <option value="fill">{{$t('label.polygon')}}</option>
-                  <option value="line">{{$t('label.line')}}</option>
-                </b-select>
-              </b-field>
-              <div v-if="sortedMetaFromRepo[currentIndex].tileInfo.style.type === 'line'">
-                <b-field :label="$t('label.linecolor')">
-                  <b-input v-model="sortedMetaFromRepo[currentIndex].tileInfo.style.paint['line-color']"></b-input>
-                </b-field>
-                <b-field :label="$t('label.linewidth')">
-                  <b-input v-model="sortedMetaFromRepo[currentIndex].tileInfo.style.paint['line-width']"></b-input>
-                </b-field>
-              </div>
-              <div v-else>
-                <b-field :label="$t('label.fillcolor')">
-                  <b-input v-model="sortedMetaFromRepo[currentIndex].tileInfo.style.paint['fill-color']"></b-input>
-                </b-field>
-                <b-field :label="$t('label.fillopacity')">
-                  <b-input v-model="sortedMetaFromRepo[currentIndex].tileInfo.style.paint['fill-opacity']"></b-input>
-                </b-field>
-                <b-field :label="$t('label.filloutlinecolor')">
-                  <b-input v-model="sortedMetaFromRepo[currentIndex].tileInfo.style.paint['fill-outline-color']"></b-input>
-                </b-field>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <b-modal :active.sync="isEditModalActive" :destroy-on-hide="true">
+      <MetaEntryEditor v-if="Object.keys(currentEntry).length != 0" :metaEntry="currentEntry" />
     </b-modal>
+
     <b-modal v-if="!$store.state.login" :active="isLoginActive" :can-cancel="false" :width="640" scroll="keep">
       <div class="card">
         <div class="card-header has-text-centered">
@@ -157,6 +87,7 @@
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles, getMetaFromRepo} from '~/utils/data'
+import MetaEntryEditor from '~/components/MetaEntryEditor'
 
 export default {
   metaInfo() {
@@ -173,10 +104,12 @@ export default {
       metaFromRepo: [],
       metaCheckedRows: [],
       isEditModalActive: false,
-      currentIndex: 0
+      currentIndex: 0,
+      currentEntry: {}
     }
   },
   components: {
+    MetaEntryEditor
   },
   mounted () {
     if (this.$route.query.token) {
@@ -243,11 +176,16 @@ export default {
     },
     getMetaFromRepo() {
       getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-        console.log(result)
         this.metaFromRepo = result
       }).catch((e) => {
         console.log('error retrieving meta from repo', e)
       })
+    },
+    editMeta(index) {
+      this.isEditModalActive = true;
+      this.currentIndex = index
+      this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[index]))
+      console.log('meta', this.currentEntry)
     }
   },
   computed: {
@@ -257,7 +195,7 @@ export default {
       if (this.metaFromRepo.length) {
         return this.metaFromRepo.sort((a, b) => (collator.compare(a.name[locale], b.name[locale])))
       }
-    },
+    }
   }
 }
 </script>
