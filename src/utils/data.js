@@ -1,8 +1,11 @@
 import GitHub from 'github-api'
 import axios from 'axios'
+import {adminConfig} from '~/utils/config'
 
 let parseString = require('xml2js').parseString
 
+
+// This retrieved meta from the github cache
 export async function getMetaEntries() {
   let result = {}
   let response = await axios.get('https://raw.githubusercontent.com/jimmyangel/geoportal-data/master/meta.json')
@@ -26,4 +29,12 @@ export function getListOfFiles() {
       })
     })
   })
+}
+
+// This retrieves live meta from github repo
+export async function getMetaFromRepo(token) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', 'meta.json', true)
+  return response.data.collection
 }
