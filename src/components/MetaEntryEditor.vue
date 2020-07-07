@@ -1,12 +1,16 @@
 <template>
   <div class="card">
-    <div class="card-header has-text-centered">
-      <p class="card-header-title title" style="display: inline-block;">
+    <div class="card-header">
+      <p class="card-header-title title">
         {{metaEntry.name[$i18n.locale.substr(0, 2)]}}
       </p>
+      <div class="buttons" style="justify-content: center;">
+        <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;Cancelar</b-button>
+        <b-button @click="acceptChanges()" :disabled="!isDirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;Aceptar</b-button>&nbsp;&nbsp;
+      </div>
     </div>
     <div class="card-content">
-      <div class="content">
+      <div class="content" @change="isDirty=true">
         <b-field :label="$t('label.titlespanish')">
           <b-input v-model="metaEntry.name.es"></b-input>
         </b-field>
@@ -82,6 +86,14 @@ export default {
   },
   data() {
     return {
+      isDirty: false
+    }
+  },
+  methods: {
+    acceptChanges() {
+      console.log(this.metaEntry)
+      this.$eventBus.$emit('acceptmetachanges', this.metaEntry)
+      this.$parent.close()
     }
   }
 }

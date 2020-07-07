@@ -57,9 +57,9 @@
       </b-tabs>
     </section>
 
-    <b-modal :active.sync="isEditModalActive" :destroy-on-hide="true">
+    <!-- <b-modal :active.sync="isEditModalActive" :destroy-on-hide="true">
       <MetaEntryEditor v-if="Object.keys(currentEntry).length != 0" :metaEntry="currentEntry" />
-    </b-modal>
+    </b-modal> -->
 
     <b-modal v-if="!$store.state.login" :active="isLoginActive" :can-cancel="false" :width="640" scroll="keep">
       <div class="card">
@@ -103,13 +103,11 @@ export default {
       isLoginActive: false,
       metaFromRepo: [],
       metaCheckedRows: [],
-      isEditModalActive: false,
       currentIndex: 0,
       currentEntry: {}
     }
   },
   components: {
-    MetaEntryEditor
   },
   mounted () {
     if (this.$route.query.token) {
@@ -150,6 +148,7 @@ export default {
       }
     }
     this.$eventBus.$on('userlogoff', this.userLogoff)
+    this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
   },
   methods: {
     userLogin: function() {
@@ -182,10 +181,23 @@ export default {
       })
     },
     editMeta(index) {
-      this.isEditModalActive = true;
       this.currentIndex = index
       this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[index]))
+
+      this.$buefy.modal.open({
+        parent: this,
+        canCancel: ['escape', 'x'],
+        component: MetaEntryEditor,
+        props: {
+          metaEntry: this.currentEntry
+        }
+      })
       console.log('meta', this.currentEntry)
+    },
+    acceptMetaChanges(m) {
+      //this.metaFromRepo[this.currentIndex] = m
+      this.$set(this.metaFromRepo, this.currentIndex, m)
+      console.log(this.metaFromRepo)
     }
   },
   computed: {
