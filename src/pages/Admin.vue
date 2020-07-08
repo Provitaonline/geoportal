@@ -41,7 +41,7 @@
                 <b-table-column field="name" :label="$t('label.title')">
                   {{props.row.name[$i18n.locale.substr(0, 2)]}}
                 </b-table-column>
-                <b-table-column field="keywords" :label="$t('label.tags')">
+                <b-table-column style="justify-content: flex-start; flex-wrap: wrap;" field="keywords" :label="$t('label.tags')">
                   <span class="tag" style="margin-right: 0.5em;" v-for="kwd in props.row.keywords[$i18n.locale.substr(0, 2)]">
                     {{ kwd }}
                   </span>
