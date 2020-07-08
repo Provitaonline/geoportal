@@ -42,7 +42,9 @@
                   {{props.row.name[$i18n.locale.substr(0, 2)]}}
                 </b-table-column>
                 <b-table-column field="keywords" :label="$t('label.tags')">
-                  {{props.row.keywords[$i18n.locale.substr(0, 2)].join(', ')}}
+                  <span class="tag" style="margin-right: 0.5em;" v-for="kwd in props.row.keywords[$i18n.locale.substr(0, 2)]">
+                    {{ kwd }}
+                  </span>
                 </b-table-column>
                 <b-table-column field="date" :label="$t('label.date')">
                   {{$d(new Date(props.row.date), 'long')}}
