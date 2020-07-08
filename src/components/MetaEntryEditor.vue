@@ -24,10 +24,10 @@
           <b-input v-model="metaEntryFlat['date']"></b-input>
         </b-field>
         <b-field :label="$t('label.tagsspanish')">
-          <b-taginput v-model="metaEntryFlat['keywords.es']" placeholder="Add a tag"></b-taginput>
+          <b-taginput v-model="esTags" placeholder="Add a tag"></b-taginput>
         </b-field>
         <b-field :label="$t('label.tagsenglish')">
-          <b-taginput v-model="metaEntryFlat['keywords.en']" placeholder="Add a tag"></b-taginput>
+          <b-taginput v-model="enTags" placeholder="Add a tag"></b-taginput>
         </b-field>
         <b-field :label="$t('label.descriptionspanish')">
           <b-input v-model="metaEntryFlat['description.es']" type="textarea"></b-input>
@@ -62,10 +62,10 @@
             </b-field>
           </div>
           <div v-else>
-            <b-field label="Método de color">
+            <b-field :label="$t('label.colormethod')">
               <b-select v-model="colorMethod">
-                <option value="simple">Simple</option>
-                <option value="ramp">Gradual</option>
+                <option value="simple">{{$t('label.simplemethod')}}</option>
+                <option value="ramp">{{$t('label.rampmethod')}}</option>
               </b-select>
             </b-field>
             <div v-if="colorMethod === 'simple'">
@@ -74,22 +74,22 @@
               </b-field>
             </div>
             <div v-else>
-              <b-field label="Atributo a usar">
+              <b-field :label="$t('label.drivingattribute')">
                 <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.2.1']"></b-input>
               </b-field>
               <b-field grouped>
-                <b-field label="Valor menor" expanded>
+                <b-field :label="$t('label.lowvalue')" expanded>
                   <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.3']"></b-input>
                 </b-field>
-                <b-field label="Color" expanded>
+                <b-field :label="$t('label.color')" expanded>
                   <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.4']"></b-input>
                 </b-field>
               </b-field>
               <b-field grouped>
-                <b-field label="Valor mayor" expanded>
+                <b-field :label="$t('label.highvalue')" expanded>
                   <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.5']"></b-input>
                 </b-field>
-                <b-field label="Color" expanded>
+                <b-field :label="$t('label.color')" expanded>
                   <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.6']"></b-input>
                 </b-field>
               </b-field>
@@ -127,6 +127,27 @@ export default {
       console.log(this.metaEntryFlat)
       this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
       this.$parent.close()
+    },
+    unflattenTags(lang) {
+      let kwds = []
+      let i = 0
+      while (this.metaEntryFlat['keywords.' + lang + '.' + i]) {
+        kwds.push(this.metaEntryFlat['keywords.' + lang + '.' + i++])
+      }
+      return kwds
+    },
+    reflattenTags(lang, val) {
+      let obj = {}
+      obj['keywords.' + lang] = val
+      let i = 0
+      while (this.metaEntryFlat['keywords.' + lang + '.' + i]) {
+        delete (this.metaEntryFlat['keywords.' + lang + '.' + i++])
+      }
+      let f = flatten(obj)
+      Object.keys(f).forEach((key) => {
+        this.$set(this.metaEntryFlat, key, f[key])
+      })
+      this.isDirty = true
     }
   },
   computed: {
@@ -146,6 +167,22 @@ export default {
           this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.1.0')
           this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.2.0')
         }
+      }
+    },
+    esTags: {
+      get() {
+        return this.unflattenTags('es')
+      },
+      set(val) {
+        this.reflattenTags('es', val)
+      }
+    },
+    enTags: {
+      get() {
+        return this.unflattenTags('en')
+      },
+      set(val) {
+        this.reflattenTags('en', val)
       }
     }
   }

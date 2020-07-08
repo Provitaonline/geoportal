@@ -67,7 +67,15 @@
       "filloutlinecolor": "Fill outline color",
       "geometry": "Geometry",
       "line": "Lines",
-      "polygon": "Polygons"
+      "polygon": "Polygons",
+      "colormethod": "Color method",
+      "simplemethod": "Simple",
+      "rampmethod": "Ramp",
+      "drivingattribute": "Driving attribute",
+      "lowvalue": "Low value",
+      "highvalue": "High value",
+      "color": "Color"
+      
     }
   },
   "es": {
@@ -138,7 +146,14 @@
       "filloutlinecolor": "Color del borde del relleno",
       "geometry": "Geometría",
       "line": "Líneas",
-      "polygon": "Polígonos"
+      "polygon": "Polígonos",
+      "colormethod": "Método de color",
+      "simplemethod": "Simple",
+      "rampmethod": "Gradual",
+      "drivingattribute": "Atributo a usar",
+      "lowvalue": "Valor menor",
+      "highvalue": "Valor mayor",
+      "color": "Color"
     }
   }
 }
