@@ -33,7 +33,7 @@
           <div class="container" style="max-width: 900px;">
             <div class="buttons" style="justify-content: center;">
               <b-button style="width: 160px;" :disabled="!metaCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-              <b-button style="width: 160px;" class="button"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addrecord')}}</b-button>
+              <b-button @click="addMeta()" style="width: 160px;" class="button"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addrecord')}}</b-button>
               <b-button style="width: 160px;" :disabled="!isSaveEnabled" class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
             </div>
             <b-table hoverable :data="sortedMetaFromRepo" checkable :header-checkable="false" :checked-rows.sync="metaCheckedRows">
@@ -182,16 +182,21 @@ export default {
     editMeta(index) {
       this.currentIndex = index
       this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[index]))
-
+      this.openMetaEditor(this.currentEntry)
+    },
+    addMeta() {
+      this.currentIndex = this.metaFromRepo.length
+      this.openMetaEditor({})
+    },
+    openMetaEditor(metaEntry) {
       this.$buefy.modal.open({
         parent: this,
         canCancel: ['escape', 'x'],
         component: MetaEntryEditor,
         props: {
-          metaEntry: this.currentEntry
+          metaEntry: metaEntry
         }
       })
-      console.log('meta', this.currentEntry)
     },
     acceptMetaChanges(m) {
       //this.metaFromRepo[this.currentIndex] = m
