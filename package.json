@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "buefy": "^0.8.18",
+    "flat": "^5.0.0",
     "github-api": "^3.3.0",
     "gridsome": "^0.7.17",
     "gridsome-plugin-i18n": "^1.4.0",
