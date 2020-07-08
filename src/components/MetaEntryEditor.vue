@@ -62,11 +62,40 @@
             </b-field>
           </div>
           <div v-else>
-            <b-field :label="$t('label.fillcolor')">
-              <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color']"></b-input>
+            <b-field label="Método de color">
+              <b-select v-model="colorMethod">
+                <option value="simple">Simple</option>
+                <option value="ramp">Gradual</option>
+              </b-select>
             </b-field>
+            <div v-if="colorMethod === 'simple'">
+              <b-field :label="$t('label.fillcolor')">
+                <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color']"></b-input>
+              </b-field>
+            </div>
+            <div v-else>
+              <b-field label="Atributo a usar">
+                <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.2.1']"></b-input>
+              </b-field>
+              <b-field grouped>
+                <b-field label="Valor menor" expanded>
+                  <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.3']"></b-input>
+                </b-field>
+                <b-field label="Color" expanded>
+                  <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.4']"></b-input>
+                </b-field>
+              </b-field>
+              <b-field grouped>
+                <b-field label="Valor mayor" expanded>
+                  <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.5']"></b-input>
+                </b-field>
+                <b-field label="Color" expanded>
+                  <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.6']"></b-input>
+                </b-field>
+              </b-field>
+            </div>
             <b-field :label="$t('label.fillopacity')">
-              <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-opacity']"></b-input>
+              <b-input v-model.number="metaEntryFlat['tileInfo.style.paint.fill-opacity']"></b-input>
             </b-field>
             <b-field :label="$t('label.filloutlinecolor')">
               <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-outline-color']"></b-input>
@@ -95,8 +124,29 @@ export default {
   },
   methods: {
     acceptChanges() {
+      console.log(this.metaEntryFlat)
       this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
       this.$parent.close()
+    }
+  },
+  computed: {
+    colorMethod: {
+      get() {
+        return this.metaEntryFlat['tileInfo.style.paint.fill-color.0'] ? 'ramp' : 'simple'
+      },
+      set(val) {
+        if (val === 'ramp') {
+          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color')
+          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.0', 'interpolate')
+          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.1.0', 'linear')
+          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.2.0', 'get')
+        } else {
+          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color', '')
+          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.0')
+          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.1.0')
+          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.2.0')
+        }
+      }
     }
   }
 }
