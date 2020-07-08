@@ -1,12 +1,12 @@
 <template>
   <div class="card">
-    <div class="card-header">
-      <p class="card-header-title title">
+    <div style="position: sticky; top: 0; z-index: 45; background-color: white; padding: 12px;" class="card-header">
+      <p class="card-header-title is-size-4">
         {{metaEntryFlat['name.' + $i18n.locale.substr(0, 2)]}}
       </p>
-      <div class="buttons" style="justify-content: center;">
+      <div class="buttons">
         <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;Cancelar</b-button>
-        <b-button @click="acceptChanges()" :disabled="!isDirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;Aceptar</b-button>&nbsp;&nbsp;
+        <b-button @click="acceptChanges()" :disabled="!isDirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;Aceptar</b-button>
       </div>
     </div>
     <div class="card-content">
