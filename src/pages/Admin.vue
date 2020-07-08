@@ -34,7 +34,7 @@
             <div class="buttons" style="justify-content: center;">
               <b-button style="width: 160px;" :disabled="!metaCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
               <b-button style="width: 160px;" class="button"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addrecord')}}</b-button>
-              <b-button style="width: 160px;" disabled class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
+              <b-button style="width: 160px;" :disabled="!isSaveEnabled" class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
             </div>
             <b-table hoverable :data="sortedMetaFromRepo" checkable :header-checkable="false" :checked-rows.sync="metaCheckedRows">
               <template slot-scope="props">
@@ -56,10 +56,6 @@
         </b-tab-item>
       </b-tabs>
     </section>
-
-    <!-- <b-modal :active.sync="isEditModalActive" :destroy-on-hide="true">
-      <MetaEntryEditor v-if="Object.keys(currentEntry).length != 0" :metaEntry="currentEntry" />
-    </b-modal> -->
 
     <b-modal v-if="!$store.state.login" :active="isLoginActive" :can-cancel="false" :width="640" scroll="keep">
       <div class="card">
@@ -104,7 +100,8 @@ export default {
       metaFromRepo: [],
       metaCheckedRows: [],
       currentIndex: 0,
-      currentEntry: {}
+      currentEntry: {},
+      isSaveEnabled: false
     }
   },
   components: {
@@ -197,6 +194,7 @@ export default {
     acceptMetaChanges(m) {
       //this.metaFromRepo[this.currentIndex] = m
       this.$set(this.metaFromRepo, this.currentIndex, m)
+      this.isSaveEnabled = true
       console.log(this.metaFromRepo)
     }
   },
