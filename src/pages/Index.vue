@@ -16,51 +16,53 @@
             </p>
             <div class="panel-block">
               <p class="control has-icons-left">
-              <input class="input" type="search" :placeholder="$t('label.search')">
+              <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
               <span class="icon is-left">
                 <font-awesome :icon="['fas', 'search']"/>
               </span>
               </p>
             </div>
           </div>
-          <div v-for="item, index in sortedFileList" class="card">
-            <div class="card-header">
-              <p class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
-              <a href="#" @click="item.expanded = !item.expanded" class="card-header-icon" aria-label="more options">
-                <span class="icon">
-                  <font-awesome v-if="item.expanded" :icon="['fas', 'angle-up']"/>
-                  <font-awesome v-else :icon="['fas', 'angle-down']"/>
-                </span>
-              </a>
-            </div>
-            <transition name="slide">
-              <div v-show="item.expanded" class="card-content">
-                <div class="buttons">
-                  <b-button tag="a" download :href="'https://geoportalp.s3-us-west-2.amazonaws.com/files/' + item.file" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
-                    <font-awesome :icon="['fas', 'download']"/>
-                    <b> {{ $t('label.download') }}</b>
-                    ({{mFormatter(item.fileSize)}})
-                  </b-button>
-                  <b-field>
-                    <b-switch
-                      @input="addToMap(item, $event)"
-                      v-bind:disabled="!item.tiles"
-                      v-model="item.layerShow"
-                      size="is-small">
-                      {{ $t('label.addtomap') }}
-                    </b-switch>
-                  </b-field>
-                </div>
-                <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
-                <div v-if="item.keywords">
-                  <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
-                    {{ kwd }}
+          <div v-for="item, index in sortedFileList">
+            <div v-show="isMatch(item)" class="card"  >
+              <div class="card-header">
+                <p class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
+                <a href="#" @click="item.expanded = !item.expanded" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <font-awesome v-if="item.expanded" :icon="['fas', 'angle-up']"/>
+                    <font-awesome v-else :icon="['fas', 'angle-down']"/>
                   </span>
-                  <br><br>
-                </div>
-                <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span>
+                </a>
               </div>
-            </transition>
+              <transition name="slide">
+                <div v-show="item.expanded" class="card-content">
+                  <div class="buttons">
+                    <b-button tag="a" download :href="'https://geoportalp.s3-us-west-2.amazonaws.com/files/' + item.file" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
+                      <font-awesome :icon="['fas', 'download']"/>
+                      <b> {{ $t('label.download') }}</b>
+                      ({{mFormatter(item.fileSize)}})
+                    </b-button>
+                    <b-field>
+                      <b-switch
+                        @input="addToMap(item, $event)"
+                        v-bind:disabled="!item.tiles"
+                        v-model="item.layerShow"
+                        size="is-small">
+                        {{ $t('label.addtomap') }}
+                      </b-switch>
+                    </b-field>
+                  </div>
+                  <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
+                  <div v-if="item.keywords">
+                    <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
+                      {{ kwd }}
+                    </span>
+                    <br><br>
+                  </div>
+                  <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span>
+                </div>
+              </transition>
+            </div>
           </div>
           <div style="padding: 2em;"></div>
         </div>
@@ -162,6 +164,7 @@
   import InteractiveMap from '~/components/InteractiveMap.vue'
 
   import * as data from '~/utils/data'
+  import {getPureText} from '~/utils/misc'
 
   export default {
     metaInfo() {
@@ -177,7 +180,8 @@
         isLoading: true,
         isPopupModalModalActive: false,
         popupModalData: {},
-        popUpModalHeading: ''
+        popUpModalHeading: '',
+        searchString: ''
       }
     },
     components: {
@@ -224,6 +228,12 @@
           this.$eventBus.$emit('removetilelayer', item.tiles)
         }
         this.$store.commit('setFileList', this.fileList)
+      },
+      isMatch(item) {
+        if (this.searchString.length < 3) return true
+        if (getPureText(item.name[this.locale]).includes(getPureText(this.searchString))) return true
+        if (getPureText(item.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return true
+        return false
       }
     },
     computed: {
@@ -231,10 +241,9 @@
         return (this.fileList.length/3).toFixed(0)
       },
       sortedFileList() {
-        let locale = this.$i18n.locale.toString().substr(0,2)
         let collator = new Intl.Collator()
         if (this.fileList.length) {
-          return this.fileList.sort((a, b) => (collator.compare(a.name[locale], b.name[locale])))
+          return this.fileList.sort((a, b) => (collator.compare(a.name[this.locale], b.name[this.locale])))
           //return this.fileList.sort((a, b) => (a.name[locale].normalize('NFD') > b.name[locale].normalize('NFD')) ? 1 : -1)
         }
       },
@@ -248,6 +257,9 @@
             label: this.$t('label.fieldvalue')
           }
         ]
+      },
+      locale() {
+        return this.$i18n.locale.toString().substr(0,2)
       }
     }
   }
