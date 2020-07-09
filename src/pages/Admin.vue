@@ -16,7 +16,7 @@
             </div>
             <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
-                <b-table-column field="name" :label="$t('label.name')">
+                <b-table-column field="name" searchable :label="$t('label.name')">
                   {{props.row.name}}
                 </b-table-column>
                 <b-table-column field="size" :label="$t('label.size')" centered>
@@ -36,13 +36,19 @@
               <b-button @click="addMeta()" style="width: 160px;" class="button"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addrecord')}}</b-button>
               <b-button style="width: 160px;" :disabled="!isSaveEnabled" class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
             </div>
-            <b-table hoverable :data="sortedMetaFromRepo" checkable :header-checkable="false" :checked-rows.sync="metaCheckedRows">
+            <div class="control has-icons-left" style="max-width: 300px;">
+              <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
+              <span class="icon is-left">
+                <font-awesome :icon="['fas', 'search']"/>
+              </span>
+            </div>
+            <b-table hoverable :row-class="matchClass" :data="sortedMetaFromRepo" checkable :header-checkable="false" :checked-rows.sync="metaCheckedRows">
               <template slot-scope="props">
                 <b-table-column field="name" :label="$t('label.title')">
-                  {{props.row.name[$i18n.locale.substr(0, 2)]}}
+                  {{props.row.name[locale]}}
                 </b-table-column>
                 <b-table-column style="justify-content: flex-start; flex-wrap: wrap;" field="keywords" :label="$t('label.tags')">
-                  <span class="tag" style="margin-right: 0.5em;" v-for="kwd in props.row.keywords[$i18n.locale.substr(0, 2)]">
+                  <span class="tag" style="margin-right: 0.5em;" v-for="kwd in props.row.keywords[locale]">
                     {{ kwd }}
                   </span>
                 </b-table-column>
@@ -82,9 +88,18 @@
   </Layout>
 </template>
 
+<style lang="scss" scoped>
+
+  .is-hidden {
+    display: none;
+  }
+
+</style>
+
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles, getMetaFromRepo} from '~/utils/data'
+import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
 export default {
@@ -103,7 +118,8 @@ export default {
       metaCheckedRows: [],
       currentIndex: 0,
       currentEntry: {},
-      isSaveEnabled: false
+      isSaveEnabled: false,
+      searchString: ''
     }
   },
   components: {
@@ -151,7 +167,7 @@ export default {
   },
   methods: {
     userLogin: function() {
-      sessionStorage.stateToken = this.$i18n.locale.toString().substr(0,2) + getStateToken()
+      sessionStorage.stateToken = this.locale + getStateToken()
       window.location.href = '/.netlify/functions/auth-start?state=' + sessionStorage.stateToken
     },
     userLogoff: function() {
@@ -203,15 +219,23 @@ export default {
       this.$set(this.metaFromRepo, this.currentIndex, m)
       this.isSaveEnabled = true
       console.log(this.metaFromRepo)
+    },
+    matchClass(row, index) {
+      if (this.searchString.length < 3) return ''
+      if (getPureText(row.name[this.locale]).includes(getPureText(this.searchString))) return ''
+      if (getPureText(row.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return ''
+      return 'is-hidden'
     }
   },
   computed: {
     sortedMetaFromRepo() {
-      let locale = this.$i18n.locale.toString().substr(0,2)
       let collator = new Intl.Collator()
       if (this.metaFromRepo.length) {
-        return this.metaFromRepo.sort((a, b) => (collator.compare(a.name[locale], b.name[locale])))
+        return this.metaFromRepo.sort((a, b) => (collator.compare(a.name[this.locale], b.name[this.locale])))
       }
+    },
+    locale() {
+      return this.$i18n.locale.toString().substr(0,2)
     }
   }
 }
