@@ -71,11 +71,16 @@
       "colormethod": "Color method",
       "simplemethod": "Simple",
       "rampmethod": "Ramp",
+      "categoricalmethod": "Categorical",
       "drivingattribute": "Driving attribute",
+      "defaultcolor": "Default color",
       "lowvalue": "Low value",
       "highvalue": "High value",
-      "color": "Color"
-      
+      "color": "Color",
+      "category": "Category",
+      "categoryassignment": "Category assignment",
+      "cancel": "Cancel",
+      "accept": "Accept"
     }
   },
   "es": {
@@ -150,10 +155,16 @@
       "colormethod": "Método de color",
       "simplemethod": "Simple",
       "rampmethod": "Gradual",
+      "categoricalmethod": "Por categoría",
       "drivingattribute": "Atributo a usar",
+      "defaultcolor": "Color por defecto",
       "lowvalue": "Valor menor",
       "highvalue": "Valor mayor",
-      "color": "Color"
+      "color": "Color",
+      "category": "Categoría",
+      "categoryassignment": "Asignación de categorías",
+      "cancel": "Cancelar",
+      "accept": "Aceptar"
     }
   }
 }

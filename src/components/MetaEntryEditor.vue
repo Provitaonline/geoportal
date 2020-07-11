@@ -5,8 +5,8 @@
         {{metaEntryFlat['name.' + $i18n.locale.substr(0, 2)]}}
       </p>
       <div class="buttons">
-        <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;Cancelar</b-button>
-        <b-button @click="acceptChanges()" :disabled="!isDirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;Aceptar</b-button>
+        <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
+        <b-button @click="acceptChanges()" :disabled="!isDirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.accept')}}</b-button>
       </div>
     </div>
     <div class="card-content">
@@ -66,6 +66,7 @@
               <b-select v-model="colorMethod">
                 <option value="simple">{{$t('label.simplemethod')}}</option>
                 <option value="ramp">{{$t('label.rampmethod')}}</option>
+                <option value="categorical">{{$t('label.categoricalmethod')}}</option>
               </b-select>
             </b-field>
             <div v-if="colorMethod === 'simple'">
@@ -73,7 +74,7 @@
                 <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color']"></b-input>
               </b-field>
             </div>
-            <div v-else>
+            <div v-if="colorMethod === 'ramp'">
               <b-field :label="$t('label.drivingattribute')">
                 <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.2.1']"></b-input>
               </b-field>
@@ -93,6 +94,29 @@
                   <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.6']"></b-input>
                 </b-field>
               </b-field>
+            </div>
+            <div v-if="colorMethod === 'categorical'">
+              <b-field :label="$t('label.drivingattribute')">
+                <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.property']"></b-input>
+              </b-field>
+              <b-field :label="$t('label.defaultcolor')">
+                <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.default']"></b-input>
+              </b-field>
+              <label class="label">
+                {{$t('label.categoryassignment')}} <a @click="addCategoryColorPair"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
+              </label>
+              <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.'))">
+                <b-field grouped v-if="(index%2 == 0)">
+                  <b-field expanded>
+                    <template v-if="index === 0" slot="label">{{$t('label.category')}}</template>
+                    <b-input expanded v-model.number="metaEntryFlat[key]" placeholder="Enter category"></b-input>
+                  </b-field>
+                  <b-field expanded>
+                    <template v-if="index === 0" slot="label">{{$t('label.color')}}</template>
+                    <b-input maxlength="7" expanded v-model="metaEntryFlat['tileInfo.style.paint.fill-color.stops.' + index/2 + '.1' ]" placeholder="Enter color code"></b-input>
+                  </b-field>
+                </b-field>
+              </div>
             </div>
             <b-field :label="$t('label.fillopacity')">
               <b-input v-model.number="metaEntryFlat['tileInfo.style.paint.fill-opacity']"></b-input>
@@ -148,25 +172,36 @@ export default {
         this.$set(this.metaEntryFlat, key, f[key])
       })
       this.isDirty = true
+    },
+    addCategoryColorPair() {
+      let nCats = Object.keys(this.metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.')).length/2
+      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats, '')
+      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats + 1, '')
+      console.log('add category assignment', nCats)
     }
   },
   computed: {
     colorMethod: {
       get() {
-        return this.metaEntryFlat['tileInfo.style.paint.fill-color.0'] ? 'ramp' : 'simple'
+        if (this.metaEntryFlat['tileInfo.style.paint.fill-color.0']) return 'ramp'
+        if (this.metaEntryFlat['tileInfo.style.paint.fill-color.type']) return 'categorical'
+        return 'simple'
       },
       set(val) {
+        Object.keys(this.metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color')).forEach(match => {
+          this.$delete(this.metaEntryFlat, match)
+        })
         if (val === 'ramp') {
-          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color')
           this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.0', 'interpolate')
           this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.1.0', 'linear')
           this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.2.0', 'get')
-        } else {
-          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color', '')
-          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.0')
-          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.1.0')
-          this.$delete(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.2.0')
+          return
         }
+        if (val === 'categorical') {
+          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.type', 'categorical')
+          return
+        }
+        this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color', '')
       }
     },
     esTags: {
