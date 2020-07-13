@@ -108,15 +108,15 @@
               <br>
               <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.'))">
                 <div v-if="(index%2 == 0)" class="columns">
-                  <div class="column is-narrow"><font-awesome size="lg" :icon="['far', 'minus-square']"/></div>
+                  <div class="column is-narrow"><a @click="removeCategoryColorPair(key)"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
                   <div class="column">
                     <b-field :label="$t('label.category')" label-position="on-border" expanded>
-                      <b-input expanded v-model.number="metaEntryFlat[key]" placeholder="Enter category"></b-input>
+                      <b-input expanded v-model.number="metaEntryFlat[key]"></b-input>
                     </b-field>
                   </div>
                   <div class="column">
                     <b-field :label="$t('label.color')" label-position="on-border" expanded>
-                      <b-input maxlength="7" expanded v-model="metaEntryFlat['tileInfo.style.paint.fill-color.stops.' + index/2 + '.1' ]" placeholder="Enter color code"></b-input>
+                      <b-input maxlength="7" expanded v-model="metaEntryFlat[key.slice(0, -1) + '1']"></b-input>
                     </b-field>
                   </div>
                 </div>
@@ -179,9 +179,26 @@ export default {
     },
     addCategoryColorPair() {
       let nCats = Object.keys(this.metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.')).length/2
-      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats, '')
-      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats + 1, '')
-      console.log('add category assignment', nCats)
+      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats + '.0', '')
+      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats + '.1', '')
+    },
+    removeCategoryColorPair(cKey) {
+      // First, delete item
+      this.$delete(this.metaEntryFlat, cKey)
+      this.$delete(this.metaEntryFlat, cKey.slice(0, -1) + '1')
+
+      // Then compact the list
+      let keys = Object.keys(this.metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.'))
+      let i = 0
+      keys.forEach((key) => {
+        let stop = Math.floor((i++)/2)
+        let prefix = key.slice(0, -1)
+        let sufix = key.substr(key.length -1)
+        if ('tileInfo.style.paint.fill-color.stops.' + stop + '.' != prefix) {
+          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + stop + '.' + sufix, this.metaEntryFlat[prefix + sufix])
+          this.$delete(this.metaEntryFlat, prefix + sufix)
+        }
+      })
     }
   },
   computed: {
