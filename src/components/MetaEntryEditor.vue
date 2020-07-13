@@ -105,17 +105,21 @@
               <label class="label">
                 {{$t('label.categoryassignment')}} <a @click="addCategoryColorPair"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
               </label>
+              <br>
               <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.'))">
-                <b-field grouped v-if="(index%2 == 0)">
-                  <b-field expanded>
-                    <template v-if="index === 0" slot="label">{{$t('label.category')}}</template>
-                    <b-input expanded v-model.number="metaEntryFlat[key]" placeholder="Enter category"></b-input>
-                  </b-field>
-                  <b-field expanded>
-                    <template v-if="index === 0" slot="label">{{$t('label.color')}}</template>
-                    <b-input maxlength="7" expanded v-model="metaEntryFlat['tileInfo.style.paint.fill-color.stops.' + index/2 + '.1' ]" placeholder="Enter color code"></b-input>
-                  </b-field>
-                </b-field>
+                <div v-if="(index%2 == 0)" class="columns">
+                  <div class="column is-narrow"><font-awesome size="lg" :icon="['far', 'minus-square']"/></div>
+                  <div class="column">
+                    <b-field :label="$t('label.category')" label-position="on-border" expanded>
+                      <b-input expanded v-model.number="metaEntryFlat[key]" placeholder="Enter category"></b-input>
+                    </b-field>
+                  </div>
+                  <div class="column">
+                    <b-field :label="$t('label.color')" label-position="on-border" expanded>
+                      <b-input maxlength="7" expanded v-model="metaEntryFlat['tileInfo.style.paint.fill-color.stops.' + index/2 + '.1' ]" placeholder="Enter color code"></b-input>
+                    </b-field>
+                  </div>
+                </div>
               </div>
             </div>
             <b-field :label="$t('label.fillopacity')">

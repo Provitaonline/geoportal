@@ -8,7 +8,7 @@ import DefaultLayout from '~/layouts/Default.vue'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
-import { faUser, faEdit, faPlusSquare } from '@fortawesome/free-regular-svg-icons'
+import { faUser, faEdit, faPlusSquare, faMinusSquare } from '@fortawesome/free-regular-svg-icons'
 import { faFacebookF, faTwitter, faInstagram, faGithub } from '@fortawesome/free-brands-svg-icons'
 import {
   faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown,
@@ -20,7 +20,7 @@ config.autoAddCss = false
 library.add(
   faUser, faEdit, faFileDownload, faDownload, faMapMarkedAlt, faFacebookF, faTwitter,
   faInstagram, faGithub, faTimes, faBars, faAngleDown, faAngleUp, faSearch, faTrashAlt,
-  faCloudUploadAlt, faPlus, faCheck, faPlusSquare
+  faCloudUploadAlt, faPlus, faCheck, faPlusSquare, faMinusSquare
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {
