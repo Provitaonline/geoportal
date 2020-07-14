@@ -1,0 +1,16 @@
+{
+  "en": {
+    "validations": {
+      "required": "This field is required",
+      "min": "Enter at least {length} characters",
+      "utc": "Date must be in UTC format (YYYY-MM-DDThh:mmZ)"
+    }
+  },
+  "es": {
+    "validations": {
+      "required": "Este campo es requerido",
+      "min": "Colocar al menos {length} caracteres",
+      "utc": "El formato de fecha debe ser UTC (aaaa-mm-ddThh:mmZ)"
+    }
+  }
+}
