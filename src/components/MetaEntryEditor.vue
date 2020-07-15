@@ -1,13 +1,13 @@
 <template>
   <div class="card">
-    <ValidationObserver v-slot="{passes}">"
+    <ValidationObserver v-slot="{passes, dirty}">
       <div style="position: sticky; top: 0; z-index: 45; background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
           {{metaEntryFlat['name.' + $i18n.locale.substr(0, 2)]}}
         </p>
         <div class="buttons">
           <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
-          <b-button @click="passes(acceptChanges)" :disabled="!isDirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.accept')}}</b-button>
+          <b-button @click="passes(acceptChanges)" :disabled="!dirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.accept')}}</b-button>
         </div>
       </div>
       <div class="card-content">
@@ -30,85 +30,121 @@
               <b-input v-model="metaEntryFlat['date']"></b-input>
             </b-field>
           </ValidationProvider>
-          <b-field :label="$t('label.tagsspanish')">
-            <b-taginput v-model="esTags" placeholder="Add a tag"></b-taginput>
-          </b-field>
-          <b-field :label="$t('label.tagsenglish')">
-            <b-taginput v-model="enTags" placeholder="Add a tag"></b-taginput>
-          </b-field>
-          <b-field :label="$t('label.descriptionspanish')">
-            <b-input v-model="metaEntryFlat['description.es']" type="textarea"></b-input>
-          </b-field>
-          <b-field :label="$t('label.descriptionenglish')">
-            <b-input v-model="metaEntryFlat['description.en']" type="textarea"></b-input>
-          </b-field>
+          <ValidationProvider rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.tagsspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-taginput v-model="esTags" placeholder="Add a tag"></b-taginput>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.tagsenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-taginput v-model="enTags" placeholder="Add a tag"></b-taginput>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.descriptionspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="metaEntryFlat['description.es']" type="textarea"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.descriptionenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="metaEntryFlat['description.en']" type="textarea"></b-input>
+            </b-field>
+          </ValidationProvider>
           <br>
           <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
-          <b-field :label="$t('label.tiletype')">
-            <b-select v-model="metaEntryFlat['tileInfo.type']">
-              <option value="raster">{{$t('label.raster')}}</option>
-              <option value="vector">{{$t('label.vector')}}</option>
-            </b-select>
-          </b-field>
-          <div v-if="metaEntryFlat['tileInfo.type'] === 'vector'">
-            <b-field :label="$t('label.mapdisplayattribute')">
-              <b-input v-model="metaEntryFlat['tileInfo.displayAttribute']"></b-input>
-            </b-field>
-            <b-field :label="$t('label.geometry')">
-              <b-select v-model="metaEntryFlat['tileInfo.style.type']">
-                <option value="fill">{{$t('label.polygon')}}</option>
-                <option value="line">{{$t('label.line')}}</option>
+          <ValidationProvider rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.tiletype')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-select v-model="metaEntryFlat['tileInfo.type']" value="vector">
+                <option value="raster">{{$t('label.raster')}}</option>
+                <option value="vector">{{$t('label.vector')}}</option>
               </b-select>
             </b-field>
-            <div v-if="metaEntryFlat['tileInfo.style.type'] === 'line'">
-              <b-field :label="$t('label.linecolor')">
-                <b-input v-model="metaEntryFlat['tileInfo.style.paint.line-color']"></b-input>
+          </ValidationProvider>
+          <div v-if="metaEntryFlat['tileInfo.type'] === 'vector'">
+            <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+              <b-field :label="$t('label.mapdisplayattribute')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                <b-input v-model="metaEntryFlat['tileInfo.displayAttribute']"></b-input>
               </b-field>
-              <b-field :label="$t('label.linewidth')">
-                <b-input v-model="metaEntryFlat['tileInfo.style.paint.line-width']"></b-input>
-              </b-field>
-            </div>
-            <div v-else>
-              <b-field :label="$t('label.colormethod')">
-                <b-select v-model="colorMethod">
-                  <option value="simple">{{$t('label.simplemethod')}}</option>
-                  <option value="ramp">{{$t('label.rampmethod')}}</option>
-                  <option value="categorical">{{$t('label.categoricalmethod')}}</option>
+            </ValidationProvider>
+            <ValidationProvider rules="required" v-slot="{ errors, valid }">
+              <b-field :label="$t('label.geometry')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                <b-select v-model="metaEntryFlat['tileInfo.style.type']">
+                  <option value="fill">{{$t('label.polygon')}}</option>
+                  <option value="line">{{$t('label.line')}}</option>
                 </b-select>
               </b-field>
-              <div v-if="colorMethod === 'simple'">
-                <b-field :label="$t('label.fillcolor')">
-                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color']"></b-input>
+            </ValidationProvider>
+            <div v-if="metaEntryFlat['tileInfo.style.type'] === 'line'">
+              <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.linecolor')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.line-color']"></b-input>
                 </b-field>
+              </ValidationProvider>
+              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.linewidth')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input type="number" step="any" v-model="metaEntryFlat['tileInfo.style.paint.line-width']"></b-input>
+                </b-field>
+              </ValidationProvider>
+            </div>
+            <div v-else>
+              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.colormethod')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-select v-model="colorMethod">
+                    <option value="simple">{{$t('label.simplemethod')}}</option>
+                    <option value="ramp">{{$t('label.rampmethod')}}</option>
+                    <option value="categorical">{{$t('label.categoricalmethod')}}</option>
+                  </b-select>
+                </b-field>
+              </ValidationProvider>
+              <div v-if="colorMethod === 'simple'">
+                <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                  <b-field :label="$t('label.fillcolor')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                    <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color']"></b-input>
+                  </b-field>
+                </ValidationProvider>
               </div>
               <div v-if="colorMethod === 'ramp'">
-                <b-field :label="$t('label.drivingattribute')">
-                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.2.1']"></b-input>
+                <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                  <b-field :label="$t('label.drivingattribute')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                    <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.2.1']"></b-input>
+                  </b-field>
+                </ValidationProvider>
+                <b-field grouped>
+                  <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                    <b-field :label="$t('label.lowvalue')" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                      <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.3']"></b-input>
+                    </b-field>
+                  </ValidationProvider>
+                  <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                    <b-field :label="$t('label.color')" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                      <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.4']"></b-input>
+                    </b-field>
+                  </ValidationProvider>
                 </b-field>
                 <b-field grouped>
-                  <b-field :label="$t('label.lowvalue')" expanded>
-                    <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.3']"></b-input>
-                  </b-field>
-                  <b-field :label="$t('label.color')" expanded>
-                    <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.4']"></b-input>
-                  </b-field>
-                </b-field>
-                <b-field grouped>
-                  <b-field :label="$t('label.highvalue')" expanded>
-                    <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.5']"></b-input>
-                  </b-field>
-                  <b-field :label="$t('label.color')" expanded>
-                    <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.6']"></b-input>
-                  </b-field>
+                  <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                    <b-field :label="$t('label.highvalue')" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                      <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.5']"></b-input>
+                    </b-field>
+                  </ValidationProvider>
+                  <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                    <b-field :label="$t('label.color')" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                      <b-input maxlength="7" v-model="metaEntryFlat['tileInfo.style.paint.fill-color.6']"></b-input>
+                    </b-field>
+                  </ValidationProvider>
                 </b-field>
               </div>
               <div v-if="colorMethod === 'categorical'">
-                <b-field :label="$t('label.drivingattribute')">
-                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.property']"></b-input>
-                </b-field>
-                <b-field :label="$t('label.defaultcolor')">
-                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.default']"></b-input>
-                </b-field>
+                <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                  <b-field :label="$t('label.drivingattribute')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                    <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.property']"></b-input>
+                  </b-field>
+                </ValidationProvider>
+                <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                  <b-field :label="$t('label.defaultcolor')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                    <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.default']"></b-input>
+                  </b-field>
+                </ValidationProvider>
                 <label class="label">
                   {{$t('label.categoryassignment')}} <a @click="addCategoryColorPair"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
                 </label>
@@ -117,24 +153,32 @@
                   <div v-if="(index%2 == 0)" class="columns">
                     <div class="column is-narrow"><a @click="removeCategoryColorPair(key)"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
                     <div class="column">
-                      <b-field :label="$t('label.category')" label-position="on-border" expanded>
-                        <b-input expanded v-model.number="metaEntryFlat[key]"></b-input>
-                      </b-field>
+                      <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                        <b-field :label="$t('label.category')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                          <b-input expanded v-model.number="metaEntryFlat[key]"></b-input>
+                        </b-field>
+                      </ValidationProvider>
                     </div>
                     <div class="column">
-                      <b-field :label="$t('label.color')" label-position="on-border" expanded>
-                        <b-input maxlength="7" expanded v-model="metaEntryFlat[key.slice(0, -1) + '1']"></b-input>
-                      </b-field>
+                      <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                        <b-field :label="$t('label.color')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                          <b-input maxlength="7" expanded v-model="metaEntryFlat[key.slice(0, -1) + '1']"></b-input>
+                        </b-field>
+                      </ValidationProvider>
                     </div>
                   </div>
                 </div>
               </div>
-              <b-field :label="$t('label.fillopacity')">
-                <b-input v-model.number="metaEntryFlat['tileInfo.style.paint.fill-opacity']"></b-input>
-              </b-field>
-              <b-field :label="$t('label.filloutlinecolor')">
-                <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-outline-color']"></b-input>
-              </b-field>
+              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.fillopacity')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-opacity']"></b-input>
+                </b-field>
+              </ValidationProvider>
+              <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.filloutlinecolor')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.fill-outline-color']"></b-input>
+                </b-field>
+              </ValidationProvider>
             </div>
           </div>
         </div>
@@ -167,6 +211,11 @@ extend('regex', {
 extend('utc', {
   validate: (value) => {
     return value.match(/\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2]\d|3[0-1])T(?:[0-1]\d|2[0-3]):[0-5]\dZ/)
+  }
+})
+extend('colorhex', {
+  validate: (value) => {
+    return value.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
   }
 })
 
