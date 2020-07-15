@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="card-content">
-        <div class="content" @change="isDirty=true">
+        <div class="content">
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.titlespanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="metaEntryFlat['name.es']"></b-input>
@@ -22,9 +22,11 @@
               <b-input v-model="metaEntryFlat['name.en']"></b-input>
             </b-field>
           </ValidationProvider>
-          <b-field :label="$t('label.file')">
-            <b-input v-model="metaEntryFlat['file']"></b-input>
-          </b-field>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.file')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="metaEntryFlat['file']"></b-input>
+            </b-field>
+          </ValidationProvider>
           <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
             <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="metaEntryFlat['date']"></b-input>
@@ -201,7 +203,6 @@ export default {
   },
   data() {
     return {
-      isDirty: false,
       metaEntryFlat: flatten(this.metaEntry)
     }
   },
@@ -237,7 +238,6 @@ export default {
       Object.keys(f).forEach((key) => {
         this.$set(this.metaEntryFlat, key, f[key])
       })
-      this.isDirty = true
     },
     addCategoryColorPair() {
       let nCats = Object.keys(this.metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.')).length/2
