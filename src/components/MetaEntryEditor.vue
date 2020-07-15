@@ -199,7 +199,8 @@ let unflatten = require('flat').unflatten
 export default {
   name: 'MetaEntryEditor',
   props: {
-    metaEntry: { type: Object, required: true }
+    metaEntry: { type: Object, required: true },
+    listOfFiles: { type: Array, required: true }
   },
   data() {
     return {

@@ -210,7 +210,8 @@ export default {
         canCancel: ['escape', 'x'],
         component: MetaEntryEditor,
         props: {
-          metaEntry: metaEntry
+          metaEntry: metaEntry,
+          listOfFiles: this.listOfFiles.map(f => f.name)
         }
       })
     },
