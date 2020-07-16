@@ -41,12 +41,12 @@
           </ValidationProvider>
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tagsspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-taginput v-model="esTags" placeholder="Add a tag"></b-taginput>
+              <b-taginput v-model="esTags" :placeholder="$t('label.addtag')"></b-taginput>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tagsenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-taginput v-model="enTags" placeholder="Add a tag"></b-taginput>
+              <b-taginput v-model="enTags" :placeholder="$t('label.addtag')"></b-taginput>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">

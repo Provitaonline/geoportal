@@ -80,7 +80,8 @@
       "category": "Category",
       "categoryassignment": "Category assignment",
       "cancel": "Cancel",
-      "accept": "Accept"
+      "accept": "Accept",
+      "addtag": "Add a tag"
     }
   },
   "es": {
@@ -164,7 +165,8 @@
       "category": "Categoría",
       "categoryassignment": "Asignación de categorías",
       "cancel": "Cancelar",
-      "accept": "Aceptar"
+      "accept": "Aceptar",
+      "addtag": "Añade una etiqueta"
     }
   }
 }
