@@ -309,12 +309,14 @@ export default {
       }
     },
     filteredListOfFiles() {
-      return this.listOfFiles.filter((option) => {
-        return option
-          .toString()
-          .toLowerCase()
-          .indexOf(this.metaEntryFlat['file'].toLowerCase()) >= 0
-      })
+      if (this.metaEntryFlat['file']) {
+        return this.listOfFiles.filter((option) => {
+          return option
+            .toString()
+            .toLowerCase()
+            .indexOf(this.metaEntryFlat['file'].toLowerCase()) >= 0
+        })
+      }
     }
   }
 }
