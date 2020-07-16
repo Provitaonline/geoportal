@@ -62,6 +62,11 @@
           <br>
           <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.tilelayername')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="metaEntryFlat['tiles']"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tiletype')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-select v-model="metaEntryFlat['tileInfo.type']" value="vector">
                 <option value="raster">{{$t('label.raster')}}</option>
@@ -224,6 +229,11 @@ export default {
   methods: {
     acceptChanges() {
       console.log(this.metaEntryFlat)
+      if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
+        this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
+        this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
+        this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
+      }
       this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
       this.$parent.close()
     },
