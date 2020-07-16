@@ -29,7 +29,6 @@
                 :data="filteredListOfFiles"
               >
               </b-autocomplete>
-              <!-- <b-input v-model="metaEntryFlat['file']"></b-input> -->
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
