@@ -83,7 +83,9 @@
       "cancel": "Cancel",
       "accept": "Accept",
       "addtag": "Add a tag",
-      "tilelayername": "Tile layer name"
+      "tilelayername": "Tile layer name",
+      "help": "Help",
+      "news": "News"
     }
   },
   "es": {
@@ -170,7 +172,9 @@
       "cancel": "Cancelar",
       "accept": "Aceptar",
       "addtag": "Añade una etiqueta",
-      "tilelayername": "Nombre de la capa de teselas"
+      "tilelayername": "Nombre de la capa de teselas",
+      "help": "Ayuda",
+      "news": "Noticias"
     }
   }
 }

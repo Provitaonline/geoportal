@@ -22,6 +22,16 @@
           </g-link>
         </b-navbar-item>
         <b-navbar-item tag="div">
+          <g-link :to="$tp('/help')">
+            {{ $t('label.help') }}
+          </g-link>
+        </b-navbar-item>
+        <b-navbar-item tag="div">
+          <g-link :to="$tp('/news')">
+            {{ $t('label.news') }}
+          </g-link>
+        </b-navbar-item>
+        <b-navbar-item tag="div">
           <g-link :to="$tp('/contact')">
             {{ $t('label.contact') }}
           </g-link>
