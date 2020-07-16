@@ -12,7 +12,8 @@ import { faUser, faEdit, faPlusSquare, faMinusSquare } from '@fortawesome/free-r
 import { faFacebookF, faTwitter, faInstagram, faGithub } from '@fortawesome/free-brands-svg-icons'
 import {
   faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown,
-  faAngleUp, faSearch, faTrashAlt, faCloudUploadAlt, faPlus, faCheck
+  faAngleUp, faSearch, faTrashAlt, faCloudUploadAlt, faPlus, faCheck, faExclamationCircle,
+  faTimesCircle
 } from '@fortawesome/free-solid-svg-icons'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -20,7 +21,8 @@ config.autoAddCss = false
 library.add(
   faUser, faEdit, faFileDownload, faDownload, faMapMarkedAlt, faFacebookF, faTwitter,
   faInstagram, faGithub, faTimes, faBars, faAngleDown, faAngleUp, faSearch, faTrashAlt,
-  faCloudUploadAlt, faPlus, faCheck, faPlusSquare, faMinusSquare
+  faCloudUploadAlt, faPlus, faCheck, faPlusSquare, faMinusSquare, faExclamationCircle,
+  faTimesCircle
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {
@@ -32,7 +34,7 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   appOptions.i18n.setLocaleMessage('es-ve', require('./messages/messages.json').es)
   appOptions.i18n.setLocaleMessage('en-us', require('./messages/messages.json').en)
 
-  Vue.use(Buefy)
+  Vue.use(Buefy, {defaultIconComponent: 'font-awesome', defaultIconPack: 'fas'})
 
   Vue.prototype.$eventBus = new Vue({})
 

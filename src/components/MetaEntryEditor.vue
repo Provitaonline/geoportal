@@ -25,6 +25,8 @@
           <ValidationProvider :rules="{required: true, oneOf: listOfFiles}" v-slot="{ errors, valid }">
             <b-field :label="$t('label.file')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-autocomplete
+                icon="search"
+                clearable
                 v-model="metaEntryFlat['file']"
                 :data="filteredListOfFiles"
               >
