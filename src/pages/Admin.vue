@@ -35,6 +35,15 @@
               <b-button style="width: 160px;" :disabled="!metaCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
               <b-button @click="addMeta()" style="width: 160px;" class="button"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addrecord')}}</b-button>
               <b-button style="width: 160px;" :disabled="!isSaveEnabled" class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
+              <b-notification
+                type="is-warning"
+                :active="isSaveEnabled"
+                :closable="false"
+                has-icon
+                aria-close-label="Close notification"
+                role="alert">
+                {{$t('message.metachanges')}}
+              </b-notification>
             </div>
             <div class="control has-icons-left" style="max-width: 300px;">
               <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
@@ -216,7 +225,6 @@ export default {
       })
     },
     acceptMetaChanges(m) {
-      //this.metaFromRepo[this.currentIndex] = m
       this.$set(this.metaFromRepo, this.currentIndex, m)
       this.isSaveEnabled = true
       console.log(this.metaFromRepo)

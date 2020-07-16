@@ -9,7 +9,8 @@
       "admincolab": "(In addition, you must have been invited as a data repository collaborator.)",
       "connected": "You are connected with Github",
       "connectionerror": "Connection error",
-      "unauthorized": "The Github user must be defined as a data repository collaborator . Contact the application administrator."
+      "unauthorized": "The Github user must be defined as a data repository collaborator . Contact the application administrator.",
+      "metachanges": "Metadata has been edited. Click \"Save Changes\" to save in the repository."
     },
     "label": {
       "main": "Main",
@@ -81,7 +82,8 @@
       "categoryassignment": "Category assignment",
       "cancel": "Cancel",
       "accept": "Accept",
-      "addtag": "Add a tag"
+      "addtag": "Add a tag",
+      "tilelayername": "Tile layer name"
     }
   },
   "es": {
@@ -94,7 +96,8 @@
       "admincolab": "(Además, tienes que estar invitado como colaborador del repositiorio de datos.)",
       "connected": "Estás conectado con Github",
       "connectionerror": "Error de conexión",
-      "unauthorized": "Se require que el usuario de Github esté definido como colaborador del repositiorio de datos. Contacta al administrador de la aplicación."
+      "unauthorized": "Se require que el usuario de Github esté definido como colaborador del repositiorio de datos. Contacta al administrador de la aplicación.",
+      "metachanges": "Los metadatos han sido editados. Cliquea \"Guardar cambios\" para guardar en el repositorio."
     },
     "label": {
       "main": "Página Principal",
@@ -166,7 +169,8 @@
       "categoryassignment": "Asignación de categorías",
       "cancel": "Cancelar",
       "accept": "Aceptar",
-      "addtag": "Añade una etiqueta"
+      "addtag": "Añade una etiqueta",
+      "tilelayername": "Nombre de la capa de teselas"
     }
   }
 }
