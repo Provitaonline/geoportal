@@ -22,9 +22,14 @@
               <b-input v-model="metaEntryFlat['name.en']"></b-input>
             </b-field>
           </ValidationProvider>
-          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+          <ValidationProvider :rules="{required: true, oneOf: listOfFiles}" v-slot="{ errors, valid }">
             <b-field :label="$t('label.file')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="metaEntryFlat['file']"></b-input>
+              <b-autocomplete
+                v-model="metaEntryFlat['file']"
+                :data="filteredListOfFiles"
+              >
+              </b-autocomplete>
+              <!-- <b-input v-model="metaEntryFlat['file']"></b-input> -->
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
@@ -303,6 +308,14 @@ export default {
       set(val) {
         this.reflattenTags('en', val)
       }
+    },
+    filteredListOfFiles() {
+      return this.listOfFiles.filter((option) => {
+        return option
+          .toString()
+          .toLowerCase()
+          .indexOf(this.metaEntryFlat['file'].toLowerCase()) >= 0
+      })
     }
   }
 }

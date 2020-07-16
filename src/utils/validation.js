@@ -1,5 +1,5 @@
 import { extend, configure } from 'vee-validate'
-import { required, min, regex } from 'vee-validate/dist/rules'
+import { required, min, regex, oneOf } from 'vee-validate/dist/rules'
 import VueI18n from 'vue-i18n'
 
 const i18n = new VueI18n()
@@ -24,6 +24,9 @@ extend('colorhex', {
   validate: (value) => {
     return value.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
   }
+})
+extend('oneOf', {
+  ...oneOf
 })
 
 configure({

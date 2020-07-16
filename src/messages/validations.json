@@ -4,7 +4,8 @@
       "required": "This field is required",
       "min": "Enter at least {length} characters",
       "utc": "Date must be in UTC format (YYYY-MM-DDThh:mmZ)",
-      "colorhex": "Color code must be in css hex format"
+      "colorhex": "Color code must be in css hex format",
+      "oneOf": "Field must be one of the items on the list"
     }
   },
   "es": {
@@ -12,7 +13,8 @@
       "required": "Este campo es requerido",
       "min": "Colocar al menos {length} caracteres",
       "utc": "El formato de fecha debe ser UTC (aaaa-mm-ddThh:mmZ)",
-      "colorhex": "El código de color debe ser en formato css hex"
+      "colorhex": "El código de color debe ser en formato css hex",
+      "oneOf": "El valor del campo debe ser uno de los elementos de la lista"
     }
   }
 }
