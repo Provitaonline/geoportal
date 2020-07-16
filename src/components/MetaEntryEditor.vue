@@ -27,6 +27,7 @@
               <b-autocomplete
                 icon="search"
                 clearable
+                keep-first
                 v-model="metaEntryFlat['file']"
                 :data="filteredListOfFiles"
               >
