@@ -34,7 +34,7 @@
             <div class="buttons" style="justify-content: center;">
               <b-button style="width: 160px;" :disabled="!metaCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
               <b-button @click="addMeta()" style="width: 160px;" class="button"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addrecord')}}</b-button>
-              <b-button style="width: 160px;" :disabled="!isSaveEnabled" class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
+              <b-button style="width: 160px;" @click="saveMeta()" :disabled="!isSaveEnabled" class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
               <b-notification
                 type="is-warning"
                 :active="isSaveEnabled"
@@ -107,7 +107,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo} from '~/utils/data'
+import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo} from '~/utils/data'
 import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
@@ -227,7 +227,14 @@ export default {
     acceptMetaChanges(m) {
       this.$set(this.metaFromRepo, this.currentIndex, m)
       this.isSaveEnabled = true
-      console.log(this.metaFromRepo)
+    },
+    saveMeta() {
+      saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then((result) => {
+        console.log('meta data saved')
+        this.isSaveEnabled = false
+      }).catch((e) => {
+        console.log('error saving data to repo', e)
+      })
     },
     matchClass(row, index) {
       if (this.searchString.length < 3) return ''

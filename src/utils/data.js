@@ -5,7 +5,7 @@ import {adminConfig, dataConfig} from '~/utils/config'
 let parseString = require('xml2js').parseString
 
 
-// This retrieved meta from the github cache
+// This retrieves meta from the github cache
 export async function getMetaEntries() {
   let result = {}
   let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.metaFileName)
@@ -37,4 +37,13 @@ export async function getMetaFromRepo(token) {
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaFileName, true)
   return response.data.collection
+}
+
+// This save meta to the github repo
+export async function saveMetaFromRepo(token, meta) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+    writeFile('master', dataConfig.metaFileName, JSON.stringify({collection: meta}, null, 2), 'Updated meta', {encode: true})
+  return response
 }

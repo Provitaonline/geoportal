@@ -228,7 +228,6 @@ export default {
   },
   methods: {
     acceptChanges() {
-      console.log(this.metaEntryFlat)
       if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
         this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
