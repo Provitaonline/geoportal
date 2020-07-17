@@ -12,8 +12,9 @@
           <div class="container" style="max-width: 600px;">
             <div class="buttons" style="justify-content: center;">
               <b-button style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-              <b-upload @input="uploadFile" native accept=".zip,.tif"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
+              <b-upload @input="uploadFile" native accept=".zip,.tif" v-model="fileToUpload"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
+            <b-progress v-show="uploadInProgress" :value="uploadProgressValue" show-value format="percent"></b-progress>
             <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
                 <b-table-column field="name" searchable :label="$t('label.name')">
@@ -128,7 +129,10 @@ export default {
       currentIndex: 0,
       currentEntry: {},
       isSaveEnabled: false,
-      searchString: ''
+      searchString: '',
+      fileToUpload: null,
+      uploadInProgress: false,
+      uploadProgressValue: 0
     }
   },
   components: {
@@ -243,28 +247,36 @@ export default {
       return 'is-hidden'
     },
     uploadFile(file) {
-      console.log('file ', file)
       if (file) {
+        this.uploadInProgress = true
         getPresignedUrl(sessionStorage.githubtoken, file.name, file.type).then((result) => {
-          console.log(result)
           let formData = new FormData()
           Object.entries(result.data.fields).forEach(([k, v]) => {
           	formData.append(k, v)
           })
           formData.append('file', file)
           uploadFileToS3(result.data.url, formData, this.uploadProgress).then((response) => {
-            console.log(response)
+            this.resetProgressIndicator()
             this.getListOfFiles()
           }).catch((e) => {
             console.log('error uploading file to S3 ', e, e.response)
+            this.resetProgressIndicator()
           })
         }).catch((e) => {
           console.log('error getting presigned post ', e.response)
+          this.resetProgressIndicator()
         })
       }
+      this.$nextTick(() => {
+        this.fileToUpload = null // Reset input upload
+      })
     },
     uploadProgress(e) {
-      console.log('progress ', e)
+      this.uploadProgressValue =  Math.round((e.loaded * 100) / e.total)
+    },
+    resetProgressIndicator() {
+      this.uploadInProgress = false
+      this.uploadProgressValue = 0
     }
   },
   computed: {
