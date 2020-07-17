@@ -259,7 +259,7 @@ export default {
             console.log('error uploading file to S3 ', e, e.response)
           })
         }).catch((e) => {
-          console.log('error getting presigned post ', e)
+          console.log('error getting presigned post ', e.response)
         })
       }
     },

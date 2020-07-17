@@ -9,6 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.714.2",
+    "github-api": "^3.3.0",
     "simple-oauth2": "^3.4.0"
   }
 }
