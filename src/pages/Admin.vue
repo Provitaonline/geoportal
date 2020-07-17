@@ -110,6 +110,7 @@
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3} from '~/utils/data'
 import {getPureText} from '~/utils/misc'
+import {adminConfig} from '~/utils/config'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
 export default {
@@ -249,7 +250,7 @@ export default {
     uploadFile(file) {
       if (file) {
         this.uploadInProgress = true
-        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type).then((result) => {
+        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type, adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).then((result) => {
           let formData = new FormData()
           Object.entries(result.data.fields).forEach(([k, v]) => {
           	formData.append(k, v)

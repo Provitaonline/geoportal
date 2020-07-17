@@ -15,12 +15,15 @@ exports.handler = (event, context, callback) => {
   const token = event.queryStringParameters.token
   const name = event.queryStringParameters.name
   const type = event.queryStringParameters.type
+  const owner = event.queryStringParameters.owner
+  const repo = event.queryStringParameters.repo
 
   const github = new GitHub({token: token})
-  github.getRepo('jimmyangel', 'geoportal-data').getCollaborators().then((result) => {
+  github.getRepo(owner, repo).getCollaborators().then((result) => {
     let presignedPost = s3.createPresignedPost({
       Bucket: 'geoportalp',
       Fields: {
+        'acl': 'public-read',
         'Content-Type': type,
         'key': 'files/' + name
       }
