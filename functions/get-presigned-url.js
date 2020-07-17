@@ -22,6 +22,9 @@ exports.handler = (event, context, callback) => {
   github.getRepo(owner, repo).getCollaborators().then((result) => {
     let presignedPost = s3.createPresignedPost({
       Bucket: 'geoportalp',
+      Conditions: [
+        ["content-length-range", 	0, 1000000000],
+      ],
       Fields: {
         'acl': 'public-read',
         'Content-Type': type,
