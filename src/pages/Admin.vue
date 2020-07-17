@@ -12,7 +12,7 @@
           <div class="container" style="max-width: 600px;">
             <div class="buttons" style="justify-content: center;">
               <b-button style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-              <b-upload><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
+              <b-upload @input="uploadFile" native accept=".zip,.tif"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
             <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
@@ -107,7 +107,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo} from '~/utils/data'
+import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3} from '~/utils/data'
 import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
@@ -233,7 +233,7 @@ export default {
         console.log('meta data saved')
         this.isSaveEnabled = false
       }).catch((e) => {
-        console.log('error saving data to repo', e)
+        console.log('error saving data to repo ', e)
       })
     },
     matchClass(row, index) {
@@ -241,6 +241,30 @@ export default {
       if (getPureText(row.name[this.locale]).includes(getPureText(this.searchString))) return ''
       if (getPureText(row.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return ''
       return 'is-hidden'
+    },
+    uploadFile(file) {
+      console.log('file ', file)
+      if (file) {
+        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type).then((result) => {
+          console.log(result)
+          let formData = new FormData()
+          Object.entries(result.data.fields).forEach(([k, v]) => {
+          	formData.append(k, v)
+          })
+          formData.append('file', file)
+          uploadFileToS3(result.data.url, formData, this.uploadProgress).then((response) => {
+            console.log(response)
+            this.getListOfFiles()
+          }).catch((e) => {
+            console.log('error uploading file to S3 ', e, e.response)
+          })
+        }).catch((e) => {
+          console.log('error getting presigned post ', e)
+        })
+      }
+    },
+    uploadProgress(e) {
+      console.log('progress ', e)
     }
   },
   computed: {

@@ -47,3 +47,18 @@ export async function saveMetaFromRepo(token, meta) {
     writeFile('master', dataConfig.metaFileName, JSON.stringify({collection: meta}, null, 2), 'Updated meta', {encode: true})
   return response
 }
+
+export async function getPresignedUrl(token, name, type) {
+  let response = await axios.get('/.netlify/functions/get-presigned-url?token=' + token + '&name=' + name + '&type=' + type)
+  return response
+}
+
+export async function uploadFileToS3(url, formData, uploadProgress) {
+  let response = await axios({
+    method: 'post',
+    url: url,
+    data: formData,
+    onUploadProgress: uploadProgress
+  })
+  return response
+}
