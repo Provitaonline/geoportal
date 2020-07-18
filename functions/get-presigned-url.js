@@ -2,8 +2,8 @@ let AWS = require('aws-sdk')
 let GitHub = require('github-api')
 
 let credentials = {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey : process.env.AWS_SECRET
+    accessKeyId: process.env.GPAWS_ACCESS_KEY,
+    secretAccessKey : process.env.GPAWS_SECRET
 }
 
 AWS.config.update({credentials: credentials, region: 'us-west-2'})
@@ -33,6 +33,7 @@ exports.handler = (event, context, callback) => {
     })
     callback(null, {statusCode: 200, body: JSON.stringify(presignedPost)})
   }).catch((e) => {
+    console.log(e.response)
     callback(null, {statusCode: 401, body: 'User must be a repository collaborator'})
   })
 }
