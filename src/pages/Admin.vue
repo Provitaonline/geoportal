@@ -15,7 +15,7 @@
               <b-upload @input="uploadFile" native accept=".zip,.tif" v-model="fileToUpload"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
             <b-progress v-show="uploadInProgress" :value="uploadProgressValue" show-value format="percent"></b-progress>
-            <b-table :data="listOfFiles" checkable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
+            <b-table :data="listOfFiles" checkable :header-checkable="false" :is-row-checkable="canFileBeDeleted" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
                 <b-table-column field="name" searchable :label="$t('label.name')">
                   {{props.row.name}}
@@ -278,6 +278,9 @@ export default {
     resetProgressIndicator() {
       this.uploadInProgress = false
       this.uploadProgressValue = 0
+    },
+    canFileBeDeleted() {
+      return false
     }
   },
   computed: {
