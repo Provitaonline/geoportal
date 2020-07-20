@@ -3,11 +3,11 @@
     <ValidationObserver v-slot="{passes, dirty}">
       <div style="position: sticky; top: 0; z-index: 45; background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
-          {{metaEntryFlat['name.' + $i18n.locale.substr(0, 2)]}}
+          {{metaEntryFlat['file']}}: {{metaEntryFlat['name.' + $i18n.locale.substr(0, 2)]}}
         </p>
         <div class="buttons">
           <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
-          <b-button @click="passes(acceptChanges)" :disabled="!dirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.accept')}}</b-button>
+          <b-button @click="passes(acceptChanges)" :disabled="!dirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.save')}}</b-button>
         </div>
       </div>
       <div class="card-content">
@@ -22,7 +22,7 @@
               <b-input v-model="metaEntryFlat['name.en']"></b-input>
             </b-field>
           </ValidationProvider>
-          <ValidationProvider :rules="{required: true, oneOf: listOfFiles}" v-slot="{ errors, valid }">
+          <!-- <ValidationProvider :rules="{required: true, oneOf: listOfFiles}" v-slot="{ errors, valid }">
             <b-field :label="$t('label.file')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-autocomplete
                 icon="search"
@@ -33,7 +33,7 @@
               >
               </b-autocomplete>
             </b-field>
-          </ValidationProvider>
+          </ValidationProvider> -->
           <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
             <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="metaEntryFlat['date']"></b-input>

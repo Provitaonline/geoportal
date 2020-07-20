@@ -8,14 +8,14 @@
     <br>
     <section class="container">
       <b-tabs type="is-boxed" :animated="false">
-        <b-tab-item label="Archivos">
-          <div class="container" style="max-width: 600px;">
+        <b-tab-item :label="$t('label.files')">
+          <div class="container" style="max-width: 800px;">
             <div class="buttons" style="justify-content: center;">
               <b-button @click="deleteFiles" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
               <b-upload @input="uploadFile" native accept=".zip,.tif" v-model="fileToUpload"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
             <b-progress v-show="uploadInProgress" :value="uploadProgressValue" show-value format="percent"></b-progress>
-            <b-table :data="listOfFiles" checkable :header-checkable="false" :is-row-checkable="canFileBeDeleted" :checked-rows.sync="fileListCheckedRows">
+            <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :is-row-checkable="canFileBeDeleted" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
                 <b-table-column field="name" searchable :label="$t('label.name')">
                   {{props.row.name}}
@@ -23,53 +23,19 @@
                 <b-table-column field="size" :label="$t('label.size')" centered>
                   {{$n(props.row.size)}}
                 </b-table-column>
-                <b-table-column field="date" :label="$t('label.date')">
+                <b-table-column field="date" :label="$t('label.uploaddate')">
                   {{$d(new Date(props.row.date), 'long')}}
+                </b-table-column>
+                <b-table-column>
+                  <a @click="editMeta(props.row.name)"><font-awesome :icon="['far', 'edit']"/></a>
                 </b-table-column>
               </template>
             </b-table>
           </div>
         </b-tab-item>
-        <b-tab-item label="Metadata">
+        <b-tab-item :label="$t('label.news')">
           <div class="container" style="max-width: 900px;">
-            <div class="buttons" style="justify-content: center;">
-              <b-button style="width: 160px;" :disabled="!metaCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-              <b-button @click="addMeta()" style="width: 160px;" class="button"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addrecord')}}</b-button>
-              <b-button style="width: 160px;" @click="saveMeta()" :disabled="!isSaveEnabled" class="button"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
-              <b-notification
-                type="is-warning"
-                :active="isSaveEnabled"
-                :closable="false"
-                has-icon
-                aria-close-label="Close notification"
-                role="alert">
-                {{$t('message.metachanges')}}
-              </b-notification>
-            </div>
-            <div class="control has-icons-left" style="max-width: 300px;">
-              <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
-              <span class="icon is-left">
-                <font-awesome :icon="['fas', 'search']"/>
-              </span>
-            </div>
-            <b-table hoverable :row-class="matchClass" :data="sortedMetaFromRepo" checkable :header-checkable="false" :checked-rows.sync="metaCheckedRows">
-              <template slot-scope="props">
-                <b-table-column field="name" :label="$t('label.title')">
-                  {{props.row.name[locale]}}
-                </b-table-column>
-                <b-table-column style="justify-content: flex-start; flex-wrap: wrap;" field="keywords" :label="$t('label.tags')">
-                  <span class="tag" style="margin-right: 0.5em;" v-for="kwd in props.row.keywords[locale]">
-                    {{ kwd }}
-                  </span>
-                </b-table-column>
-                <b-table-column field="date" :label="$t('label.date')">
-                  {{$d(new Date(props.row.date), 'long')}}
-                </b-table-column>
-                <b-table-column>
-                  <a @click="editMeta(props.index)"><font-awesome :icon="['far', 'edit']"/></a>
-                </b-table-column>
-              </template>
-            </b-table>
+            Coming soon...
           </div>
         </b-tab-item>
       </b-tabs>
@@ -129,7 +95,6 @@ export default {
       metaCheckedRows: [],
       currentIndex: 0,
       currentEntry: {},
-      isSaveEnabled: false,
       searchString: '',
       fileToUpload: null,
       uploadInProgress: false,
@@ -209,14 +174,16 @@ export default {
         console.log('error retrieving meta from repo', e)
       })
     },
-    editMeta(index) {
-      this.currentIndex = index
-      this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[index]))
-      this.openMetaEditor(this.currentEntry)
-    },
-    addMeta() {
-      this.currentIndex = this.metaFromRepo.length
-      this.openMetaEditor({})
+    editMeta(fileName) {
+      let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
+      if (idx != -1) {
+        this.currentIndex = idx
+        this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[this.currentIndex]))
+        this.openMetaEditor(this.currentEntry)
+      } else {
+        this.currentIndex = this.metaFromRepo.length
+        this.openMetaEditor({file: fileName})
+      }
     },
     openMetaEditor(metaEntry) {
       this.$buefy.modal.open({
@@ -231,12 +198,8 @@ export default {
     },
     acceptMetaChanges(m) {
       this.$set(this.metaFromRepo, this.currentIndex, m)
-      this.isSaveEnabled = true
-    },
-    saveMeta() {
       saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then((result) => {
         console.log('meta data saved')
-        this.isSaveEnabled = false
       }).catch((e) => {
         console.log('error saving data to repo ', e)
       })
