@@ -11,7 +11,7 @@
         <b-tab-item label="Archivos">
           <div class="container" style="max-width: 600px;">
             <div class="buttons" style="justify-content: center;">
-              <b-button style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
+              <b-button @click="deleteFiles" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
               <b-upload @input="uploadFile" native accept=".zip,.tif" v-model="fileToUpload"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
             <b-progress v-show="uploadInProgress" :value="uploadProgressValue" show-value format="percent"></b-progress>
@@ -108,7 +108,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3} from '~/utils/data'
+import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles} from '~/utils/data'
 import {getPureText} from '~/utils/misc'
 import {adminConfig} from '~/utils/config'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
@@ -272,6 +272,15 @@ export default {
         this.fileToUpload = null // Reset input upload
       })
     },
+    deleteFiles() {
+      console.log(this.fileListCheckedRows)
+      deleteFiles(sessionStorage.githubtoken, JSON.stringify(this.fileListCheckedRows.map((item) => item.name))).then((response) => {
+        this.fileListCheckedRows = []
+        this.getListOfFiles()
+      }).catch((e) => {
+        console.log('error deleting files ', e.response)
+      })
+    },
     uploadProgress(e) {
       this.uploadProgressValue =  Math.round((e.loaded * 100) / e.total)
     },
@@ -280,7 +289,7 @@ export default {
       this.uploadProgressValue = 0
     },
     canFileBeDeleted() {
-      return false
+      return true
     }
   },
   computed: {

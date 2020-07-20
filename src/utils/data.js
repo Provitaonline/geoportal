@@ -62,3 +62,9 @@ export async function uploadFileToS3(url, formData, uploadProgress) {
   })
   return response
 }
+
+export async function deleteFiles(token, files) {
+  console.log(files)
+  let response = await axios.get('/.netlify/functions/delete-files?token=' + token + '&files=' + encodeURIComponent(files))
+  return response
+}
