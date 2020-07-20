@@ -48,8 +48,8 @@ export async function saveMetaFromRepo(token, meta) {
   return response
 }
 
-export async function getPresignedUrl(token, name, type, owner, repo) {
-  let response = await axios.get('/.netlify/functions/get-presigned-url?token=' + token + '&name=' + name + '&type=' + type + '&owner=' + owner + '&repo=' + repo)
+export async function getPresignedUrl(token, name, type) {
+  let response = await axios.get('/.netlify/functions/get-presigned-url?token=' + token + '&name=' + name + '&type=' + type)
   return response
 }
 

@@ -1,12 +1,8 @@
 let AWS = require('aws-sdk')
 let GitHub = require('github-api')
+const {config} = require('./utils/s3Config')
 
-let credentials = {
-    accessKeyId: process.env.GPAWS_ACCESS_KEY,
-    secretAccessKey : process.env.GPAWS_SECRET
-}
-
-AWS.config.update({credentials: credentials, region: 'us-west-2'})
+AWS.config.update({credentials: config.credentials, region: config.region})
 
 const s3 = new AWS.S3()
 
@@ -15,11 +11,9 @@ exports.handler = (event, context, callback) => {
   const token = event.queryStringParameters.token
   const name = event.queryStringParameters.name
   const type = event.queryStringParameters.type
-  const owner = event.queryStringParameters.owner
-  const repo = event.queryStringParameters.repo
 
   const github = new GitHub({token: token})
-  github.getRepo(owner, repo).getCollaborators().then(() => {
+  github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
     let presignedPost = s3.createPresignedPost({
       Bucket: 'geoportalp',
       Conditions: [
