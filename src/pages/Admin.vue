@@ -273,7 +273,6 @@ export default {
       })
     },
     deleteFiles() {
-      console.log(this.fileListCheckedRows)
       deleteFiles(sessionStorage.githubtoken, JSON.stringify(this.fileListCheckedRows.map((item) => item.name))).then((response) => {
         this.fileListCheckedRows = []
         this.getListOfFiles()
