@@ -26,7 +26,7 @@
           <div v-for="item, index in sortedFileList">
             <div v-show="isMatch(item)" class="card"  >
               <div class="card-header">
-                <p class="card-header-title has-text-centered">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
+                <p class="card-header-title">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
                 <a href="#" @click="item.expanded = !item.expanded" class="card-header-icon" aria-label="more options">
                   <span class="icon">
                     <font-awesome v-if="item.expanded" :icon="['fas', 'angle-up']"/>
