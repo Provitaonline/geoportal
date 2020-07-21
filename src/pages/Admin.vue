@@ -5,7 +5,9 @@
         {{ $t('label.admin') }}
       </h1>
     </template>
-    <br>
+    <div style="max-width: 400px; margin: 0 auto; height: 16px;">
+      <b-progress v-show="uploadInProgress" :value="uploadProgressValue" show-value format="percent"></b-progress>
+    </div>
     <section class="container">
       <b-tabs type="is-boxed" :animated="false">
         <b-tab-item :label="$t('label.files')">
@@ -14,10 +16,15 @@
               <b-button @click="confirmDelete" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
               <b-upload @input="uploadFile" native accept=".zip,.tif" v-model="fileToUpload"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
-            <b-progress v-show="uploadInProgress" :value="uploadProgressValue" show-value format="percent"></b-progress>
-            <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
+            <div class="control has-icons-left" style="max-width: 300px;">
+              <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
+              <span class="icon is-left">
+                <font-awesome :icon="['fas', 'search']"/>
+              </span>
+            </div>
+            <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :checked-rows.sync="fileListCheckedRows" :row-class="matchClass">
               <template slot-scope="props">
-                <b-table-column field="name" searchable :label="$t('label.name')">
+                <b-table-column field="name" :label="$t('label.name')">
                   {{props.row.name}}
                 </b-table-column>
                 <b-table-column field="size" :label="$t('label.size')" centered>
@@ -79,6 +86,7 @@
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
+import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
 export default {
@@ -98,7 +106,8 @@ export default {
       currentEntry: {},
       fileToUpload: null,
       uploadInProgress: false,
-      uploadProgressValue: 0
+      uploadProgressValue: 0,
+      searchString: ''
     }
   },
   mounted () {
@@ -273,6 +282,10 @@ export default {
     },
     fileHasMeta(filename) {
       return this.metaFromRepo.findIndex(element => element.file === filename) == -1 ? false : true
+    },
+    matchClass(row, index) {
+      if (getPureText(row.name).includes(getPureText(this.searchString))) return ''
+      return 'is-hidden'
     }
   },
   computed: {
