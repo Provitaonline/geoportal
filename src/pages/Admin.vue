@@ -249,7 +249,6 @@ export default {
       })
     },
     deleteFilesAndMeta(filesToDelete) {
-      this.$buefy.toast.open('User confirmed')
       let oLength = this.metaFromRepo.length
       this.metaFromRepo = this.metaFromRepo.filter((item) => !filesToDelete.includes(item.file))
       if (oLength != this.metaFromRepo.length) { // We have meta to delete
