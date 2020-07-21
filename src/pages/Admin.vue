@@ -78,7 +78,6 @@
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles} from '~/utils/data'
-import {getPureText} from '~/utils/misc'
 import {adminConfig} from '~/utils/config'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
@@ -95,16 +94,12 @@ export default {
       fileListCheckedRows: [],
       isLoginActive: false,
       metaFromRepo: [],
-      metaCheckedRows: [],
       currentIndex: 0,
       currentEntry: {},
-      searchString: '',
       fileToUpload: null,
       uploadInProgress: false,
       uploadProgressValue: 0
     }
-  },
-  components: {
   },
   mounted () {
     if (this.$route.query.token) {
@@ -207,12 +202,6 @@ export default {
         console.log('error saving data to repo ', e)
       })
     },
-    matchClass(row, index) {
-      if (this.searchString.length < 3) return ''
-      if (getPureText(row.name[this.locale]).includes(getPureText(this.searchString))) return ''
-      if (getPureText(row.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return ''
-      return 'is-hidden'
-    },
     uploadFile(file) {
       if (file) {
         this.uploadInProgress = true
@@ -287,12 +276,6 @@ export default {
     }
   },
   computed: {
-    sortedMetaFromRepo() {
-      let collator = new Intl.Collator()
-      if (this.metaFromRepo.length) {
-        return this.metaFromRepo.sort((a, b) => (collator.compare(a.name[this.locale], b.name[this.locale])))
-      }
-    },
     locale() {
       return this.$i18n.locale.toString().substr(0,2)
     }
