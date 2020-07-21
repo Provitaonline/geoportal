@@ -11,11 +11,11 @@
         <b-tab-item :label="$t('label.files')">
           <div class="container" style="max-width: 800px;">
             <div class="buttons" style="justify-content: center;">
-              <b-button @click="deleteFiles" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
+              <b-button @click="confirmDelete" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
               <b-upload @input="uploadFile" native accept=".zip,.tif" v-model="fileToUpload"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
             </div>
             <b-progress v-show="uploadInProgress" :value="uploadProgressValue" show-value format="percent"></b-progress>
-            <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :is-row-checkable="canFileBeDeleted" :checked-rows.sync="fileListCheckedRows">
+            <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :checked-rows.sync="fileListCheckedRows">
               <template slot-scope="props">
                 <b-table-column field="name" searchable :label="$t('label.name')">
                   {{props.row.name}}
@@ -198,7 +198,7 @@ export default {
     },
     acceptMetaChanges(m) {
       this.$set(this.metaFromRepo, this.currentIndex, m)
-      saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then((result) => {
+      saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
         console.log('meta data saved')
       }).catch((e) => {
         console.log('error saving data to repo ', e)
@@ -235,13 +235,43 @@ export default {
         this.fileToUpload = null // Reset input upload
       })
     },
-    deleteFiles() {
-      deleteFiles(sessionStorage.githubtoken, JSON.stringify(this.fileListCheckedRows.map((item) => item.name))).then((response) => {
-        this.fileListCheckedRows = []
-        this.getListOfFiles()
-      }).catch((e) => {
-        console.log('error deleting files ', e.response)
+    confirmDelete() {
+      console.log('confirm delete')
+      let filesToDelete = this.fileListCheckedRows.map((item) => item.name)
+      this.$buefy.dialog.confirm({
+        title: this.$t('message.removefiles'),
+        message: this.$t('message.removefileswarning') + ':<br><br>' + filesToDelete.join(', '),
+        confirmText: this.$t('label.confirm'),
+        cancelText: this.$t('label.cancel'),
+        type: 'none',
+        focusOn: 'cancel',
+        onConfirm: () => {this.deleteFilesAndMeta(filesToDelete)}
       })
+    },
+    deleteFilesAndMeta(filesToDelete) {
+      this.$buefy.toast.open('User confirmed')
+      let oLength = this.metaFromRepo.length
+      this.metaFromRepo = this.metaFromRepo.filter((item) => !filesToDelete.includes(item.file))
+      if (oLength != this.metaFromRepo.length) { // We have meta to delete
+        saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
+          console.log('meta data saved')
+          deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
+            this.fileListCheckedRows = []
+            this.getListOfFiles()
+          }).catch((e) => {
+            console.log('error deleting files ', e.response)
+          })
+        }).catch((e) => {
+          console.log('error saving data to repo ', e)
+        })
+      } else {
+        deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
+          this.fileListCheckedRows = []
+          this.getListOfFiles()
+        }).catch((e) => {
+          console.log('error deleting files ', e.response)
+        })
+      }
     },
     uploadProgress(e) {
       this.uploadProgressValue =  Math.round((e.loaded * 100) / e.total)
@@ -249,9 +279,6 @@ export default {
     resetProgressIndicator() {
       this.uploadInProgress = false
       this.uploadProgressValue = 0
-    },
-    canFileBeDeleted() {
-      return true
     }
   },
   computed: {

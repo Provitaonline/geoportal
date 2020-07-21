@@ -10,7 +10,9 @@
       "connected": "You are connected with Github",
       "connectionerror": "Connection error",
       "unauthorized": "The Github user must be defined as a data repository collaborator . Contact the application administrator.",
-      "metachanges": "Metadata has been edited. Click \"Save Changes\" to save in the repository."
+      "metachanges": "Metadata has been edited. Click \"Save Changes\" to save in the repository.",
+      "removefiles": "Remove data sets",
+      "removefileswarning": "This operation will remove the selected data sets and their associated metadata"
     },
     "label": {
       "main": "Main",
@@ -83,6 +85,7 @@
       "categoryassignment": "Category assignment",
       "cancel": "Cancel",
       "accept": "Accept",
+      "confirm": "Confirm",
       "save": "Save",
       "addtag": "Add a tag",
       "tilelayername": "Tile layer name",
@@ -101,7 +104,9 @@
       "connected": "Estás conectado con Github",
       "connectionerror": "Error de conexión",
       "unauthorized": "Se require que el usuario de Github esté definido como colaborador del repositiorio de datos. Contacta al administrador de la aplicación.",
-      "metachanges": "Los metadatos han sido editados. Cliquea \"Guardar cambios\" para guardar en el repositorio."
+      "metachanges": "Los metadatos han sido editados. Cliquea \"Guardar cambios\" para guardar en el repositorio.",
+      "removefiles": "Eliminar archivos de datos",
+      "removefileswarning": "Esta operación eliminará los archivos de datos seleccionados y los metadatos asociados"
     },
     "label": {
       "main": "Página Principal",
@@ -174,6 +179,7 @@
       "categoryassignment": "Asignación de categorías",
       "cancel": "Cancelar",
       "accept": "Aceptar",
+      "confirm": "Confirmar",
       "save": "Guardar",
       "addtag": "Añade una etiqueta",
       "tilelayername": "Nombre de la capa de teselas",
