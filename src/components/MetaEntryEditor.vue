@@ -22,18 +22,6 @@
               <b-input v-model="metaEntryFlat['name.en']"></b-input>
             </b-field>
           </ValidationProvider>
-          <!-- <ValidationProvider :rules="{required: true, oneOf: listOfFiles}" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.file')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-autocomplete
-                icon="search"
-                clearable
-                keep-first
-                v-model="metaEntryFlat['file']"
-                :data="filteredListOfFiles"
-              >
-              </b-autocomplete>
-            </b-field>
-          </ValidationProvider> -->
           <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
             <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="metaEntryFlat['date']"></b-input>
