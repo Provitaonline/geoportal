@@ -26,8 +26,11 @@
                 <b-table-column field="date" :label="$t('label.uploaddate')">
                   {{$d(new Date(props.row.date), 'long')}}
                 </b-table-column>
-                <b-table-column>
-                  <a @click="editMeta(props.row.name)"><font-awesome :icon="['far', 'edit']"/></a>
+                <b-table-column label="Meta" centered>
+                  <a @click="editMeta(props.row.name)">
+                    <font-awesome v-if="fileHasMeta(props.row.name)" :icon="['far', 'edit']"/>
+                    <font-awesome v-else :icon="['fas', 'plus']"/>
+                  </a>
                 </b-table-column>
               </template>
             </b-table>
@@ -278,6 +281,9 @@ export default {
     resetProgressIndicator() {
       this.uploadInProgress = false
       this.uploadProgressValue = 0
+    },
+    fileHasMeta(filename) {
+      return this.metaFromRepo.findIndex(element => element.file === filename) == -1 ? false : true
     }
   },
   computed: {
