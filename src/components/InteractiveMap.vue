@@ -147,14 +147,14 @@
           srcInfo = {
             type: 'vector',
             maxzoom: 10,
-            tiles: ['https://geoportalp.s3-us-west-2.amazonaws.com/tiles/' + layer + '/{z}/{x}/{y}.pbf']
+            tiles: [mapConfig.vectorTilesBaseUrl + layer + '/{z}/{x}/{y}.pbf']
           }
           lInfo = item.tileInfo.style
         } else {
           srcInfo = {
             type: 'raster',
             scheme: 'tms',
-            tiles: ['https://geoportalp.s3-us-west-2.amazonaws.com/tiles/' + layer + '/{z}/{x}/{y}.png'],
+            tiles: [mapConfig.rasterTilesBaseUrl + layer + '/{z}/{x}/{y}.png'],
             tileSize: 256
           }
           lInfo = {

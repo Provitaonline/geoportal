@@ -223,11 +223,13 @@ export default {
           uploadFileToS3(result.data.url, formData, this.uploadProgress).then((response) => {
             this.resetProgressIndicator()
             this.getListOfFiles()
-            submitJob(sessionStorage.githubtoken, file.name, 'vtiles').then((response) => {
-              console.log('batch job submitted')
-            }).catch((e) => {
-              console.log('error submitting batch job ', e.response)
-            })
+            if (file.name.split('.').pop().toLowerCase() === 'zip') { // For the time being
+              submitJob(sessionStorage.githubtoken, file.name, 'vtiles').then((response) => {
+                console.log('batch job submitted')
+              }).catch((e) => {
+                console.log('error submitting batch job ', e.response)
+              })
+            }
           }).catch((e) => {
             console.log('error uploading file to S3 ', e, e.response)
             this.resetProgressIndicator()

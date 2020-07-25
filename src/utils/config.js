@@ -26,7 +26,9 @@ export const mapConfig = {
   maxBounds: [[-82, -3], [-54, 20]],
   maxZoom: 14,
   mapBearing: 0,
-  mapPitch: 0
+  mapPitch: 0,
+  vectorTilesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/vtiles/',
+  rasterTilesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/tiles/'
 }
 
 export const adminConfig = {
