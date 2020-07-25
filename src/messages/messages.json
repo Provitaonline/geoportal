@@ -90,7 +90,8 @@
       "addtag": "Add a tag",
       "tilelayername": "Tile layer name",
       "help": "Help",
-      "news": "News"
+      "news": "News",
+      "skipautogen": "Skip autogeneration"
     }
   },
   "es": {
@@ -184,7 +185,8 @@
       "addtag": "Añade una etiqueta",
       "tilelayername": "Nombre de la capa de teselas",
       "help": "Ayuda",
-      "news": "Noticias"
+      "news": "Noticias",
+      "skipautogen": "No autogenerar"
     }
   }
 }

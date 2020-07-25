@@ -54,14 +54,26 @@
               <b-input v-model="metaEntryFlat['tiles']"></b-input>
             </b-field>
           </ValidationProvider>
-          <ValidationProvider rules="required" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.tiletype')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-select v-model="metaEntryFlat['tileInfo.type']" value="vector">
-                <option value="raster">{{$t('label.raster')}}</option>
-                <option value="vector">{{$t('label.vector')}}</option>
-              </b-select>
-            </b-field>
-          </ValidationProvider>
+          <div class="columns">
+            <div class="column is-narrow">
+              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.tiletype')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-select v-model="metaEntryFlat['tileInfo.type']" value="vector">
+                    <option value="raster">{{$t('label.raster')}}</option>
+                    <option value="vector">{{$t('label.vector')}}</option>
+                  </b-select>
+                </b-field>
+              </ValidationProvider>
+            </div>
+            <div class="column">
+              <ValidationProvider>
+                <b-field class="field">
+                  <template slot="label">&nbsp;</template>
+                  <b-checkbox v-model="metaEntryFlat['tileInfo.skipAutoGen']">{{$t('label.skipautogen')}}</b-checkbox>
+                </b-field>
+              </ValidationProvider>
+            </div>
+          </div>
           <div v-if="metaEntryFlat['tileInfo.type'] === 'vector'">
             <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
               <b-field :label="$t('label.mapdisplayattribute')" :type="{ 'is-danger': errors[0] }" :message="errors">
