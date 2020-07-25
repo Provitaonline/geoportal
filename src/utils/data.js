@@ -67,3 +67,8 @@ export async function deleteFiles(token, files) {
   let response = await axios.get('/.netlify/functions/delete-files?token=' + token + '&files=' + encodeURIComponent(files))
   return response
 }
+
+export async function submitJob(token, file, type) {
+  let response = await axios.get('/.netlify/functions/submit-job?token=' + token + '&file=' + file + '&type=' + type)
+  return response
+}

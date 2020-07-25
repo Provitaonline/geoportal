@@ -84,7 +84,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles} from '~/utils/data'
+import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
 import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
@@ -223,6 +223,11 @@ export default {
           uploadFileToS3(result.data.url, formData, this.uploadProgress).then((response) => {
             this.resetProgressIndicator()
             this.getListOfFiles()
+            submitJob(sessionStorage.githubtoken, file.name, 'vtiles').then((response) => {
+              console.log('batch job submitted')
+            }).catch((e) => {
+              console.log('error submitting batch job ', e.response)
+            })
           }).catch((e) => {
             console.log('error uploading file to S3 ', e, e.response)
             this.resetProgressIndicator()
