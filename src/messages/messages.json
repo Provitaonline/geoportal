@@ -92,6 +92,8 @@
       "help": "Help",
       "news": "News",
       "skipautogen": "Skip autogeneration",
+      "shapefile": "Shapefile",
+      "geotiff": "GeoTIFF",
       "format": "Format"
     }
   },
@@ -190,7 +192,7 @@
       "skipautogen": "No autogenerar",
       "shapefile": "Shapefile",
       "geotiff": "GeoTIFF",
-      "format": "Formato"     
+      "format": "Formato"
     }
   }
 }
