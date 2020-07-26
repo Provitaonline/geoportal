@@ -22,11 +22,25 @@
               <b-input v-model="metaEntryFlat['name.en']"></b-input>
             </b-field>
           </ValidationProvider>
-          <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="metaEntryFlat['date']"></b-input>
-            </b-field>
-          </ValidationProvider>
+          <div class="columns">
+            <div class="column">
+              <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaEntryFlat['date']"></b-input>
+                </b-field>
+              </ValidationProvider>
+            </div>
+            <div class="column">
+              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                <b-field v-model="metaEntryFlat['format']" :label="$t('label.format')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-select value="shapefile">
+                    <option value="shapefile">{{$t('label.shapefile')}}</option>
+                    <option value="geotiff">{{$t('label.geotiff')}}</option>
+                  </b-select>
+                </b-field>
+              </ValidationProvider>
+            </div>
+          </div>
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tagsspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-taginput v-model="esTags" :placeholder="$t('label.addtag')"></b-taginput>
