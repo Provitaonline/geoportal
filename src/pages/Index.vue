@@ -52,7 +52,14 @@
                       </b-switch>
                     </b-field>
                   </div>
-                  <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small><br><br>
+                  <div class="columns">
+                    <div class="column is-narrow">
+                      <small><b>{{ $t('label.date') }}: </b>{{ $d(new Date(item.date)) }}</small>
+                    </div>
+                    <div class="column">
+                      <small><b>{{ $t('label.format') }}: </b>{{ $t('label.' + item.format) }}</small>
+                    </div>
+                  </div>
                   <div v-if="item.keywords">
                     <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
                       {{ kwd }}
