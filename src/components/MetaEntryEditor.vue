@@ -22,25 +22,11 @@
               <b-input v-model="metaEntryFlat['name.en']"></b-input>
             </b-field>
           </ValidationProvider>
-          <div class="columns">
-            <div class="column">
-              <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
-                <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-                  <b-input v-model="metaEntryFlat['date']"></b-input>
-                </b-field>
-              </ValidationProvider>
-            </div>
-            <div class="column">
-              <ValidationProvider rules="required" v-slot="{ errors, valid }">
-                <b-field v-model="metaEntryFlat['format']" :label="$t('label.format')" :type="{ 'is-danger': errors[0] }" :message="errors">
-                  <b-select value="shapefile">
-                    <option value="shapefile">{{$t('label.shapefile')}}</option>
-                    <option value="geotiff">{{$t('label.geotiff')}}</option>
-                  </b-select>
-                </b-field>
-              </ValidationProvider>
-            </div>
-          </div>
+          <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="metaEntryFlat['date']"></b-input>
+            </b-field>
+          </ValidationProvider>
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tagsspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-taginput v-model="esTags" :placeholder="$t('label.addtag')"></b-taginput>
@@ -79,7 +65,7 @@
                 </b-field>
               </ValidationProvider>
             </div>
-            <div class="column">
+            <div v-if="metaEntryFlat['format'] === 'geotiff'" class="column">
               <ValidationProvider>
                 <b-field class="field">
                   <template slot="label">&nbsp;</template>
@@ -242,6 +228,7 @@ export default {
   },
   methods: {
     acceptChanges() {
+      this.metaEntryFlat['format'] = (this.metaEntryFlat['file'].split('.').pop().toLowerCase() === 'zip') ? 'shapefile' : 'geotiff'
       if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
         this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']

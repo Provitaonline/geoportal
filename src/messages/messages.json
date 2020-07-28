@@ -91,7 +91,7 @@
       "tilelayername": "Tile layer name",
       "help": "Help",
       "news": "News",
-      "skipautogen": "Skip autogeneration",
+      "skipautogen": "Manually generated",
       "shapefile": "Shapefile",
       "geotiff": "GeoTIFF",
       "format": "Format"
@@ -189,7 +189,7 @@
       "tilelayername": "Nombre de la capa de teselas",
       "help": "Ayuda",
       "news": "Noticias",
-      "skipautogen": "No autogenerar",
+      "skipautogen": "Generación manual",
       "shapefile": "Shapefile",
       "geotiff": "GeoTIFF",
       "format": "Formato"
