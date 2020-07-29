@@ -28,7 +28,7 @@ export const mapConfig = {
   mapBearing: 0,
   mapPitch: 0,
   vectorTilesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/vtiles/',
-  rasterTilesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/tiles/'
+  rasterTilesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/rtiles/'
 }
 
 export const adminConfig = {
