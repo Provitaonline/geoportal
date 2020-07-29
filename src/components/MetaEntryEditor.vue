@@ -274,7 +274,7 @@ export default {
         delete updatedMetaEntry.tileInfo.style
         delete updatedMetaEntry.tileInfo.displayAttribute
       }
-      //this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
+      this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
       if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.colorTable && (JSON.stringify(updatedMetaEntry.tileInfo.colorTable != this.savedColorTable))) {
         this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, colorTable: updatedMetaEntry.tileInfo.colorTable})
       }
