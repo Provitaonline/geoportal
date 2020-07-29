@@ -213,7 +213,11 @@ export default {
       })
     },
     submitRtilesJob(job) {
-      console.log('submitting rtiles job', encodeURIComponent(makeColorTableParameter(job.colorTable)))
+      submitJob(sessionStorage.githubtoken, job.file, 'rtiles', makeColorTableParameter(job.colorTable)).then((response) => {
+        console.log('batch job submitted')
+      }).catch((e) => {
+        console.log('error submitting batch job ', e.response)
+      })
     },
     uploadFile(file) {
       if (file) {

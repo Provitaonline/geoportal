@@ -11,16 +11,23 @@ exports.handler = (event, context, callback) => {
   const token = event.queryStringParameters.token
   const file = event.queryStringParameters.file
   const type = event.queryStringParameters.type
+  const parm = event.queryStringParameters.parm
+
+  let parameters = {
+    inputFile: file
+  }
+
+  if (type === 'rtiles') {
+    parameters.colorTable = parm
+  }
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
     batch.submitJob({
       jobName: 'geoportalp-' + type,
-      jobDefinition: 'geoportalp-' + type + ':5',
+      jobDefinition: 'geoportalp-' + type,
       jobQueue: 'geoportalp-' + type,
-      parameters: {
-        inputFile: file
-      }
+      parameters: parameters
     }, ((err, data) => {
       if (err) {
         callback(err)
