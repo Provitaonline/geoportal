@@ -25,6 +25,11 @@ extend('colorhex', {
     return value.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
   }
 })
+extend('colorhexa', {
+  validate: (value) => {
+    return value.match(/^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{4})$/)
+  }
+})
 extend('oneOf', {
   ...oneOf
 })

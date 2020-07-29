@@ -86,7 +86,7 @@
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
-import {getPureText} from '~/utils/misc'
+import {getPureText, makeColorTableParameter} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
 export default {
@@ -150,6 +150,7 @@ export default {
     }
     this.$eventBus.$on('userlogoff', this.userLogoff)
     this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
+    this.$eventBus.$on('submitrtilesjob', this.submitRtilesJob)
   },
   methods: {
     userLogin: function() {
@@ -210,6 +211,9 @@ export default {
       }).catch((e) => {
         console.log('error saving data to repo ', e)
       })
+    },
+    submitRtilesJob(job) {
+      console.log('submitting rtiles job', encodeURIComponent(makeColorTableParameter(job.colorTable)))
     },
     uploadFile(file) {
       if (file) {

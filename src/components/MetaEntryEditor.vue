@@ -65,7 +65,7 @@
                 </b-field>
               </ValidationProvider>
             </div>
-            <div v-if="metaEntryFlat['format'] === 'geotiff'" class="column">
+            <div v-if="!isShapefile" class="column">
               <ValidationProvider>
                 <b-field class="field">
                   <template slot="label">&nbsp;</template>
@@ -160,12 +160,12 @@
                   </b-field>
                 </ValidationProvider>
                 <label class="label">
-                  {{$t('label.categoryassignment')}} <a @click="addCategoryColorPair"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
+                  {{$t('label.categoryassignment')}} <a @click="addTablePair('tileInfo.style.paint.fill-color.stops.')"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
                 </label>
                 <br>
                 <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.'))">
                   <div v-if="(index%2 == 0)" class="columns">
-                    <div class="column is-narrow"><a @click="removeCategoryColorPair(key)"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
+                    <div class="column is-narrow"><a @click="removeTablePair(key,'tileInfo.style.paint.fill-color.stops.')"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
                     <div class="column">
                       <ValidationProvider rules="required" v-slot="{ errors, valid }">
                         <b-field :label="$t('label.category')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
@@ -195,6 +195,31 @@
               </ValidationProvider>
             </div>
           </div>
+          <div v-if="metaEntryFlat['tileInfo.type'] === 'raster'">
+            <label class="label">
+              {{$t('label.colortable')}} <a @click="addTablePair('tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
+            </label>
+            <br>
+            <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.colorTable.'))">
+              <div v-if="(index%2 == 0)" class="columns">
+                <div class="column is-narrow"><a @click="removeTablePair(key,'tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
+                <div class="column">
+                  <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                    <b-field :label="$t('label.value')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                      <b-input type="number" expanded v-model.number="metaEntryFlat[key]"></b-input>
+                    </b-field>
+                  </ValidationProvider>
+                </div>
+                <div class="column">
+                  <ValidationProvider rules="required|colorhexa" v-slot="{ errors, valid }">
+                    <b-field :label="$t('label.color')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                      <b-input maxlength="9" expanded v-model="metaEntryFlat[key.slice(0, -1) + '1']"></b-input>
+                    </b-field>
+                  </ValidationProvider>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </ValidationObserver>
@@ -216,7 +241,8 @@ export default {
   },
   data() {
     return {
-      metaEntryFlat: flatten(this.metaEntry)
+      metaEntryFlat: flatten(this.metaEntry),
+      savedColorTable: null
     }
   },
   components: {
@@ -226,15 +252,33 @@ export default {
   beforeCreate() {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
+  created() {
+    if (this.metaEntry.tileInfo && this.metaEntry.tileInfo.colorTable) {
+      this.savedColorTable = JSON.stringify(this.metaEntry.tileInfo.colorTable)
+    }
+  },
   methods: {
     acceptChanges() {
-      this.metaEntryFlat['format'] = (this.metaEntryFlat['file'].split('.').pop().toLowerCase() === 'zip') ? 'shapefile' : 'geotiff'
+      this.metaEntryFlat['format'] = (this.isShapefile) ? 'shapefile' : 'geotiff'
       if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
         this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
       }
-      this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
+      let updatedMetaEntry = unflatten(this.metaEntryFlat)
+
+      // Cleanup before exiting
+      if (updatedMetaEntry.tileInfo == 'vector') {
+        delete updatedMetaEntry.tileInfo.colorTable
+      } else {
+        delete updatedMetaEntry.tileInfo.style
+        delete updatedMetaEntry.tileInfo.displayAttribute
+      }
+      //this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
+      if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.colorTable && (JSON.stringify(updatedMetaEntry.tileInfo.colorTable != this.savedColorTable))) {
+        this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, colorTable: updatedMetaEntry.tileInfo.colorTable})
+      }
+      //console.log(updatedMetaEntry)
       this.$parent.close()
     },
     unflattenTags(lang) {
@@ -257,25 +301,25 @@ export default {
         this.$set(this.metaEntryFlat, key, f[key])
       })
     },
-    addCategoryColorPair() {
-      let nCats = Object.keys(this.metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.')).length/2
-      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats + '.0', '')
-      this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + nCats + '.1', '')
+    addTablePair(tablePrefix) {
+      let nCats = Object.keys(this.metaEntryFlat).filter(k => k.includes(tablePrefix)).length/2
+      this.$set(this.metaEntryFlat, tablePrefix + nCats + '.0', '')
+      this.$set(this.metaEntryFlat, tablePrefix + nCats + '.1', '')
     },
-    removeCategoryColorPair(cKey) {
+    removeTablePair(cKey, tablePrefix) {
       // First, delete item
       this.$delete(this.metaEntryFlat, cKey)
       this.$delete(this.metaEntryFlat, cKey.slice(0, -1) + '1')
 
       // Then compact the list
-      let keys = Object.keys(this.metaEntryFlat).filter(k => k.includes('tileInfo.style.paint.fill-color.stops.'))
+      let keys = Object.keys(this.metaEntryFlat).filter(k => k.includes(tablePrefix))
       let i = 0
       keys.forEach((key) => {
         let stop = Math.floor((i++)/2)
         let prefix = key.slice(0, -1)
         let sufix = key.substr(key.length -1)
-        if ('tileInfo.style.paint.fill-color.stops.' + stop + '.' != prefix) {
-          this.$set(this.metaEntryFlat, 'tileInfo.style.paint.fill-color.stops.' + stop + '.' + sufix, this.metaEntryFlat[prefix + sufix])
+        if (tablePrefix + stop + '.' != prefix) {
+          this.$set(this.metaEntryFlat, tablePrefix + stop + '.' + sufix, this.metaEntryFlat[prefix + sufix])
           this.$delete(this.metaEntryFlat, prefix + sufix)
         }
       })
@@ -330,6 +374,9 @@ export default {
             .indexOf(this.metaEntryFlat['file'].toLowerCase()) >= 0
         })
       }
+    },
+    isShapefile() {
+      return this.metaEntryFlat['file'].split('.').pop().toLowerCase() === 'zip'
     }
   }
 }
