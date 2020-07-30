@@ -86,7 +86,7 @@
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
-import {getPureText, makeColorTableParameter} from '~/utils/misc'
+import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
 
 export default {
@@ -213,7 +213,7 @@ export default {
       })
     },
     submitRtilesJob(job) {
-      submitJob(sessionStorage.githubtoken, job.file, 'rtiles', makeColorTableParameter(job.colorTable)).then((response) => {
+      submitJob(sessionStorage.githubtoken, job).then((response) => {
         console.log('batch job submitted')
       }).catch((e) => {
         console.log('error submitting batch job ', e.response)
@@ -232,7 +232,8 @@ export default {
             this.resetProgressIndicator()
             this.getListOfFiles()
             if (file.name.split('.').pop().toLowerCase() === 'zip') { // For the time being
-              submitJob(sessionStorage.githubtoken, file.name, 'vtiles').then((response) => {
+              let job = {file: file.name, tileInfo: {type: 'vector'}}
+              submitJob(sessionStorage.githubtoken, job).then((response) => {
                 console.log('batch job submitted')
               }).catch((e) => {
                 console.log('error submitting batch job ', e.response)

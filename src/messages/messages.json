@@ -96,7 +96,8 @@
       "skipautogen": "Manually generated",
       "shapefile": "Shapefile",
       "geotiff": "GeoTIFF",
-      "format": "Format"
+      "format": "Format",
+      "gradient": "Gradient"
     }
   },
   "es": {
@@ -196,7 +197,8 @@
       "skipautogen": "Generación manual",
       "shapefile": "Shapefile",
       "geotiff": "GeoTIFF",
-      "format": "Formato"
+      "format": "Formato",
+      "gradient": "En gradiente"
     }
   }
 }

@@ -196,9 +196,20 @@
             </div>
           </div>
           <div v-if="metaEntryFlat['tileInfo.type'] === 'raster'">
-            <label class="label">
-              {{$t('label.colortable')}} <a @click="addTablePair('tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
-            </label>
+            <div class="columns">
+              <div class="column is-narrow">
+                <label class="label">
+                  {{$t('label.colortable')}} <a @click="addTablePair('tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
+                </label>
+              </div>
+              <div class="column">
+                <ValidationProvider>
+                  <b-field class="field">
+                    <b-checkbox v-model="metaEntryFlat['tileInfo.gradient']">{{$t('label.gradient')}}</b-checkbox>
+                  </b-field>
+                </ValidationProvider>
+              </div>
+            </div>
             <br>
             <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.colorTable.'))">
               <div v-if="(index%2 == 0)" class="columns">
@@ -242,7 +253,7 @@ export default {
   data() {
     return {
       metaEntryFlat: flatten(this.metaEntry),
-      savedColorTable: null
+      savedTileInfo: null
     }
   },
   components: {
@@ -275,8 +286,8 @@ export default {
         delete updatedMetaEntry.tileInfo.displayAttribute
       }
       this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
-      if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.colorTable && (JSON.stringify(updatedMetaEntry.tileInfo.colorTable != this.savedColorTable))) {
-        this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, colorTable: updatedMetaEntry.tileInfo.colorTable})
+      if (updatedMetaEntry.tileInfo && (JSON.stringify(updatedMetaEntry.tileInfo != this.savedTileInfo))) {
+        this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo})
       }
       //console.log(updatedMetaEntry)
       this.$parent.close()

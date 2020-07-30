@@ -11,22 +11,28 @@ exports.handler = (event, context, callback) => {
   const token = event.queryStringParameters.token
   const file = event.queryStringParameters.file
   const type = event.queryStringParameters.type
-  const parm = event.queryStringParameters.parm
+  const ctable = event.queryStringParameters.ctable
+  const exact = event.queryStringParameters.exact
 
+  let jobNameSuffix
   let parameters = {
     inputFile: file
   }
 
-  if (type === 'rtiles') {
-    parameters.colorTable = parm
+  if (type === 'raster') {
+    jobNameSuffix = 'rtiles'
+    parameters.colorTable = ctable
+    parameters.exactColorEntry = exact ? exact : ''
+  } else {
+    jobNameSuffix = 'vtiles'
   }
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
     batch.submitJob({
-      jobName: 'geoportalp-' + type,
-      jobDefinition: 'geoportalp-' + type,
-      jobQueue: 'geoportalp-' + type,
+      jobName: 'geoportalp-' + jobNameSuffix,
+      jobDefinition: 'geoportalp-' + jobNameSuffix,
+      jobQueue: 'geoportalp-' + jobNameSuffix,
       parameters: parameters
     }, ((err, data) => {
       if (err) {

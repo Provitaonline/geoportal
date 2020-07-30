@@ -1,6 +1,7 @@
 import GitHub from 'github-api'
 import axios from 'axios'
 import {adminConfig, dataConfig} from '~/utils/config'
+import {makeColorTableParameter} from '~/utils/misc'
 
 let parseString = require('xml2js').parseString
 
@@ -68,10 +69,11 @@ export async function deleteFiles(token, files) {
   return response
 }
 
-export async function submitJob(token, file, type, parm) {
-  let funcUrl = '/.netlify/functions/submit-job?token=' + token + '&file=' + file + '&type=' + type
-  if (type === 'rtiles') {
-    funcUrl += '&parm=' + parm
+export async function submitJob(token, job) {
+  let funcUrl = '/.netlify/functions/submit-job?token=' + token + '&file=' + job.file + '&type=' + job.tileInfo.type
+  if (job.tileInfo.type === 'raster') {
+    funcUrl += '&ctable=' + makeColorTableParameter(job.tileInfo.colorTable)
+    funcUrl += '&exact=' + ((job.tileInfo.gradient) ? 'gradient' : 'exact')
   }
   let response = await axios.get(funcUrl)
   return response
