@@ -19,7 +19,6 @@ function hexaToRGBA(hexa) {
 }
 
 export function makeColorTableParameter(colorTable) {
-  console.log(colorTable)
   let ctp = ''
   colorTable.forEach((item, index) => {
     ctp += ((index > 0) ? '-':'') + item[0] + ':' + hexaToRGBA(item[1])

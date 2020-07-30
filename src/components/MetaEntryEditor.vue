@@ -195,7 +195,10 @@
               </ValidationProvider>
             </div>
           </div>
-          <div v-if="metaEntryFlat['tileInfo.type'] === 'raster'">
+          <div v-if="metaEntryFlat['tileInfo.type'] === 'raster' && !metaEntryFlat['tileInfo.skipAutoGen']">
+            <b-notification type="is-warning" has-icon aria-close-label="Close notification" role="alert">
+              {{$t('message.batchjobwarning')}}
+            </b-notification>
             <div class="columns">
               <div class="column is-narrow">
                 <label class="label">
@@ -210,7 +213,6 @@
                 </ValidationProvider>
               </div>
             </div>
-            <br>
             <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.colorTable.'))">
               <div v-if="(index%2 == 0)" class="columns">
                 <div class="column is-narrow"><a @click="removeTablePair(key,'tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
@@ -279,17 +281,16 @@ export default {
       let updatedMetaEntry = unflatten(this.metaEntryFlat)
 
       // Cleanup before exiting
-      if (updatedMetaEntry.tileInfo == 'vector') {
+      if (updatedMetaEntry.tileInfo === 'vector') {
         delete updatedMetaEntry.tileInfo.colorTable
       } else {
         delete updatedMetaEntry.tileInfo.style
         delete updatedMetaEntry.tileInfo.displayAttribute
       }
       this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
-      if (updatedMetaEntry.tileInfo && (JSON.stringify(updatedMetaEntry.tileInfo != this.savedTileInfo))) {
+      if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo !== this.savedTileInfo))) {
         this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo})
       }
-      //console.log(updatedMetaEntry)
       this.$parent.close()
     },
     unflattenTags(lang) {

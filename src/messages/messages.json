@@ -12,7 +12,8 @@
       "unauthorized": "The Github user must be defined as a data repository collaborator . Contact the application administrator.",
       "metachanges": "Metadata has been edited. Click \"Save Changes\" to save in the repository.",
       "removefiles": "Remove data sets",
-      "removefileswarning": "This operation will remove the selected data sets and their associated metadata"
+      "removefileswarning": "This operation will remove the selected data sets and their associated metadata",
+      "batchjobwarning": "Any changes in the color table (section below this message) will trigger the (re)generation of the tile layer associated with this data set."
     },
     "label": {
       "main": "Main",
@@ -113,7 +114,8 @@
       "unauthorized": "Se require que el usuario de Github esté definido como colaborador del repositiorio de datos. Contacta al administrador de la aplicación.",
       "metachanges": "Los metadatos han sido editados. Cliquea \"Guardar cambios\" para guardar en el repositorio.",
       "removefiles": "Eliminar archivos de datos",
-      "removefileswarning": "Esta operación eliminará los archivos de datos seleccionados y los metadatos asociados"
+      "removefileswarning": "Esta operación eliminará los archivos de datos seleccionados y los metadatos asociados",
+      "batchjobwarning": "Cualquier cambio en la tabla de colores (sección debajo de éste mensaje) iniciará la (re)generación de la capa de teselas asociada con éste archivo de datos."
     },
     "label": {
       "main": "Página Principal",
