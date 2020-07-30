@@ -2,6 +2,7 @@
   "en": {
     "validations": {
       "required": "This field is required",
+      "numeric": "This field must be numeric",
       "min": "Enter at least {length} characters",
       "utc": "Date must be in UTC format (YYYY-MM-DDThh:mmZ)",
       "colorhex": "Color code must be in css hex format",
@@ -12,6 +13,7 @@
   "es": {
     "validations": {
       "required": "Este campo es requerido",
+      "numeric": "Este campo es numérico",
       "min": "Colocar al menos {length} caracteres",
       "utc": "El formato de fecha debe ser UTC (aaaa-mm-ddThh:mmZ)",
       "colorhex": "El código de color debe ser en formato css hex",

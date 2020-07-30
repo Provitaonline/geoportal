@@ -1,5 +1,5 @@
 import { extend, configure } from 'vee-validate'
-import { required, min, regex, oneOf } from 'vee-validate/dist/rules'
+import { required, numeric, decimal, min, regex, oneOf } from 'vee-validate/dist/rules'
 import VueI18n from 'vue-i18n'
 
 const i18n = new VueI18n()
@@ -7,6 +7,12 @@ i18n.setLocaleMessage('en', require('~/messages/validations.json').en)
 i18n.setLocaleMessage('es', require('~/messages/validations.json').es)
 
 extend('required', {
+  ...required
+})
+extend('numeric', {
+  ...required
+})
+extend('decimal', {
   ...required
 })
 extend('min', {

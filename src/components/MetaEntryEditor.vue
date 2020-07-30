@@ -94,7 +94,7 @@
                   <b-input v-model="metaEntryFlat['tileInfo.style.paint.line-color']"></b-input>
                 </b-field>
               </ValidationProvider>
-              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+              <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                 <b-field :label="$t('label.linewidth')" :type="{ 'is-danger': errors[0] }" :message="errors">
                   <b-input type="number" step="any" v-model="metaEntryFlat['tileInfo.style.paint.line-width']"></b-input>
                 </b-field>
@@ -124,7 +124,7 @@
                   </b-field>
                 </ValidationProvider>
                 <b-field grouped>
-                  <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                  <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                     <b-field :label="$t('label.lowvalue')" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
                       <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.3']"></b-input>
                     </b-field>
@@ -136,7 +136,7 @@
                   </ValidationProvider>
                 </b-field>
                 <b-field grouped>
-                  <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                  <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                     <b-field :label="$t('label.highvalue')" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
                       <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-color.5']"></b-input>
                     </b-field>
@@ -183,7 +183,7 @@
                   </div>
                 </div>
               </div>
-              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+              <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                 <b-field :label="$t('label.fillopacity')" :type="{ 'is-danger': errors[0] }" :message="errors">
                   <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-opacity']"></b-input>
                 </b-field>
@@ -215,7 +215,7 @@
               <div v-if="(index%2 == 0)" class="columns">
                 <div class="column is-narrow"><a @click="removeTablePair(key,'tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
                 <div class="column">
-                  <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                  <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                     <b-field :label="$t('label.value')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
                       <b-input type="number" expanded v-model.number="metaEntryFlat[key]"></b-input>
                     </b-field>
