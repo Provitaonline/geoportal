@@ -198,7 +198,7 @@
       this.fileList = this.$store.state.fileList
       if (this.fileList.length === 0) {
         data.getMetaEntries().then((result) => {
-          this.fileList =  result.collection
+          this.fileList =  result.data.collection
           this.isLoading = false
           this.fileList.forEach(item => {
             this.$set(item, 'expanded', false)
@@ -209,6 +209,10 @@
             }
           })
           this.$store.commit('setFileList', this.fileList)
+        }).catch((error) => {
+          if (error.response.status !== 404) {
+            console.log('Error accessing meta', error)
+          }
         })
       }
     },

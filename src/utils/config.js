@@ -42,5 +42,5 @@ export const dataConfig = {
   metaBaseUrl: 'https://raw.githubusercontent.com/jimmyangel/geoportal-data/master/',
   filesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/',
   filesDirectory: 'files',
-  metaFileName: 'meta.json'
+  metaFileName: 'meta-p.json'
 }

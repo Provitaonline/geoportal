@@ -8,9 +8,8 @@ let parseString = require('xml2js').parseString
 
 // This retrieves meta from the github cache
 export async function getMetaEntries() {
-  let result = {}
   let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.metaFileName)
-  return response.data
+  return response
 }
 
 export async function getFileSize(fileName) {
