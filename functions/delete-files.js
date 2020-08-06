@@ -16,7 +16,7 @@ exports.handler = (event, context, callback) => {
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
     s3.deleteObjects({
-      Bucket: 'geoportalp',
+      Bucket: 'geoportalp-files',
       Delete: {
         Objects: objects
       }
