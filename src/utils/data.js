@@ -8,9 +8,8 @@ let parseString = require('xml2js').parseString
 
 // This retrieves meta from the github cache
 export async function getMetaEntries() {
-  let result = {}
   let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.metaFileName)
-  return response.data
+  return response
 }
 
 export async function getFileSize(fileName) {
@@ -22,11 +21,15 @@ export function getListOfFiles() {
   return new Promise((resolve, reject) => {
     axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.filesDirectory).then(response => {
       parseString(response.data, (err, result) => {
-        resolve(
-          result.ListBucketResult.Contents.map(item => {
-            return {name: item.Key[0].replace('files/', ''), size: item.Size[0], date: item.LastModified[0]}
-          }).filter(el => el.name != '')
-        )
+        if (result.ListBucketResult.Contents) {
+          resolve(
+            result.ListBucketResult.Contents.map(item => {
+              return {name: item.Key[0].replace('files/', ''), size: item.Size[0], date: item.LastModified[0]}
+            }).filter(el => el.name != '')
+          )
+        } else {
+          resolve([])
+        }
       })
     })
   })

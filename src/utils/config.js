@@ -27,8 +27,8 @@ export const mapConfig = {
   maxZoom: 14,
   mapBearing: 0,
   mapPitch: 0,
-  vectorTilesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/vtiles/',
-  rasterTilesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/rtiles/'
+  vectorTilesBaseUrl: 'https://geoportalp-files.s3-us-east-2.amazonaws.com/vtiles/',
+  rasterTilesBaseUrl: 'https://geoportalp-files.s3-us-east-2.amazonaws.com/rtiles/'
 }
 
 export const adminConfig = {
@@ -40,7 +40,7 @@ export const adminConfig = {
 
 export const dataConfig = {
   metaBaseUrl: 'https://raw.githubusercontent.com/jimmyangel/geoportal-data/master/',
-  filesBaseUrl: 'https://geoportalp.s3-us-west-2.amazonaws.com/',
+  filesBaseUrl: 'https://geoportalp-files.s3-us-east-2.amazonaws.com/',
   filesDirectory: 'files',
   metaFileName: 'meta.json'
 }
