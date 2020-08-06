@@ -236,7 +236,7 @@
       },
       addToMap: function (item, isOn) {
         if (isOn) {
-          this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo})
+          this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo, source: item.source})
         } else {
           this.$eventBus.$emit('removetilelayer', item.tiles)
         }

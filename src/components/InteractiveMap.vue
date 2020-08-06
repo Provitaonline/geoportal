@@ -166,6 +166,7 @@
             }
           }
         }
+        srcInfo.attribution=item.source ? item.source : ''
 
         if (!this.map.getSource(layer)) {
           this.map.addSource(layer, srcInfo)

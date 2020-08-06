@@ -98,7 +98,8 @@
       "shapefile": "Shapefile",
       "geotiff": "GeoTIFF",
       "format": "Format",
-      "gradient": "Gradient"
+      "gradient": "Gradient",
+      "source": "Source"
     }
   },
   "es": {
@@ -200,7 +201,8 @@
       "shapefile": "Shapefile",
       "geotiff": "GeoTIFF",
       "format": "Formato",
-      "gradient": "En gradiente"
+      "gradient": "En gradiente",
+      "source": "Fuente"
     }
   }
 }
