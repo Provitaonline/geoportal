@@ -14,7 +14,11 @@
           <div class="container" style="max-width: 800px;">
             <div class="buttons" style="justify-content: center;">
               <b-button @click="confirmDelete" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-              <b-upload @input="uploadFile" native accept=".zip,.tif" v-model="fileToUpload"><a style="width: 160px;" class="button"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}</a></b-upload>
+              <b-upload @input="uploadFile" :disabled="uploadInProgress" native accept=".zip,.tif" v-model="fileToUpload">
+                <a style="width: 160px;" class="button" :disabled="uploadInProgress">
+                  <font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}
+                </a>
+              </b-upload>
             </div>
             <div class="control has-icons-left" style="max-width: 300px;">
               <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
