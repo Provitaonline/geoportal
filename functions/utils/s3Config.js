@@ -4,6 +4,7 @@ const config = {
     secretAccessKey : process.env.GEOPORTALP_AWS_SECRET
   },
   region: 'us-east-2',
+  bucket: 'geoportalp-files',
   githubInfo: {
     owner : 'jimmyangel',
     repo: 'geoportal-data'
