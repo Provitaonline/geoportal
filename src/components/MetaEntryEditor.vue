@@ -75,7 +75,7 @@
             </div>
           </div>
           <div v-if="metaEntryFlat['tileInfo.type'] === 'vector'">
-            <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <ValidationProvider rules="required|min:2" v-slot="{ errors, valid }">
               <b-field :label="$t('label.mapdisplayattribute')" :type="{ 'is-danger': errors[0] }" :message="errors">
                 <b-input v-model="metaEntryFlat['tileInfo.displayAttribute']"></b-input>
               </b-field>
@@ -96,7 +96,7 @@
               </ValidationProvider>
               <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                 <b-field :label="$t('label.linewidth')" :type="{ 'is-danger': errors[0] }" :message="errors">
-                  <b-input type="number" step="any" v-model="metaEntryFlat['tileInfo.style.paint.line-width']"></b-input>
+                  <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.line-width']"></b-input>
                 </b-field>
               </ValidationProvider>
             </div>
