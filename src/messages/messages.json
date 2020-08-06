@@ -180,7 +180,7 @@
       "rampmethod": "Gradual",
       "categoricalmethod": "Por categoría",
       "drivingattribute": "Atributo a usar",
-      "defaultcolor": "Color por defecto",
+      "defaultcolor": "Color por omisión",
       "lowvalue": "Valor menor",
       "highvalue": "Valor mayor",
       "color": "Color",
