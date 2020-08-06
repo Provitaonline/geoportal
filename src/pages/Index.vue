@@ -37,7 +37,7 @@
               <transition name="slide">
                 <div v-show="item.expanded" class="card-content">
                   <div class="buttons">
-                    <b-button tag="a" download :href="'https://geoportalp.s3-us-west-2.amazonaws.com/files/' + item.file" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
+                    <b-button tag="a" download :href="filesBaseUrl + item.file" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
                       <font-awesome :icon="['fas', 'download']"/>
                       <b> {{ $t('label.download') }}</b>
                       ({{mFormatter(item.fileSize)}})
@@ -170,6 +170,7 @@
 <script>
   import InteractiveMap from '~/components/InteractiveMap.vue'
 
+  import {dataConfig} from '~/utils/config'
   import * as data from '~/utils/data'
   import {getPureText} from '~/utils/misc'
 
@@ -183,6 +184,7 @@
     },
     data() {
       return {
+        filesBaseUrl: dataConfig.filesBaseUrl,
         fileList: [],
         isLoading: true,
         isPopupModalModalActive: false,

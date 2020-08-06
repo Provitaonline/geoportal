@@ -1,9 +1,9 @@
 const config = {
   credentials: {
-    accessKeyId: process.env.GPAWS_ACCESS_KEY,
-    secretAccessKey : process.env.GPAWS_SECRET
+    accessKeyId: process.env.GEOPORTALP_AWS_ACCESS_KEY,
+    secretAccessKey : process.env.GEOPORTALP_AWS_SECRET
   },
-  region: 'us-west-2',
+  region: 'us-east-2',
   githubInfo: {
     owner : 'jimmyangel',
     repo: 'geoportal-data'

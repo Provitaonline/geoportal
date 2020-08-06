@@ -15,7 +15,7 @@ exports.handler = (event, context, callback) => {
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
     let presignedPost = s3.createPresignedPost({
-      Bucket: 'geoportalp',
+      Bucket: 'geoportalp-files',
       Conditions: [
         ["content-length-range", 	0, 1000000000],
       ],
