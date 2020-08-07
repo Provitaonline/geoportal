@@ -1,3 +1,8 @@
+export const awsConfig = {
+  bucket: 'geoportalp-files',
+  region: 'us-east-2'
+}
+
 export const mapConfig = {
   styles: [
     {
@@ -27,8 +32,8 @@ export const mapConfig = {
   maxZoom: 14,
   mapBearing: 0,
   mapPitch: 0,
-  vectorTilesBaseUrl: 'https://geoportalp-files.s3-us-east-2.amazonaws.com/vtiles/',
-  rasterTilesBaseUrl: 'https://geoportalp-files.s3-us-east-2.amazonaws.com/rtiles/'
+  vectorTilesBaseUrl: 'https://' + awsConfig.bucket + '.s3-' + awsConfig.region + '.amazonaws.com/vtiles/',
+  rasterTilesBaseUrl: 'https://' + awsConfig.bucket + '.s3-' + awsConfig.region + '.amazonaws.com/rtiles/'
 }
 
 export const adminConfig = {
@@ -40,7 +45,7 @@ export const adminConfig = {
 
 export const dataConfig = {
   metaBaseUrl: 'https://raw.githubusercontent.com/jimmyangel/geoportal-data/master/',
-  filesBaseUrl: 'https://geoportalp-files.s3-us-east-2.amazonaws.com/',
+  filesBaseUrl: 'https://' + awsConfig.bucket + '.s3-' + awsConfig.region + '.amazonaws.com/',
   filesDirectory: 'files',
   metaFileName: 'meta.json'
 }
