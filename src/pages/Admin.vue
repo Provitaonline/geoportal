@@ -88,7 +88,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
+import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
 import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
@@ -106,6 +106,7 @@ export default {
       fileListCheckedRows: [],
       isLoginActive: false,
       metaFromRepo: [],
+      metaSha: null,
       currentIndex: 0,
       currentEntry: {},
       fileToUpload: null,
@@ -181,21 +182,28 @@ export default {
     },
     getMetaFromRepo() {
       getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-        this.metaFromRepo = result
+        this.metaFromRepo = result.data.collection
+        this.metaSha = result.sha
       }).catch((e) => {
         console.log('error retrieving meta from repo', e)
       })
     },
     editMeta(fileName) {
-      let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
-      if (idx != -1) {
-        this.currentIndex = idx
-        this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[this.currentIndex]))
-        this.openMetaEditor(this.currentEntry)
-      } else {
-        this.currentIndex = this.metaFromRepo.length
-        this.openMetaEditor({file: fileName})
-      }
+      // this is temporary
+      getMetaSha(sessionStorage.githubtoken).then((sha) => {
+        console.log(sha)
+        let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
+        if (idx != -1) {
+          this.currentIndex = idx
+          this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[this.currentIndex]))
+          this.openMetaEditor(this.currentEntry)
+        } else {
+          this.currentIndex = this.metaFromRepo.length
+          this.openMetaEditor({file: fileName})
+        }
+      }).catch((e) => {
+        console.log('error retrieving meta sha', e)
+      })
     },
     openMetaEditor(metaEntry) {
       this.$buefy.modal.open({

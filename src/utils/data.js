@@ -1,5 +1,6 @@
 import GitHub from 'github-api'
 import axios from 'axios'
+import {Base64} from 'js-base64'
 import {adminConfig, dataConfig} from '~/utils/config'
 import {makeColorTableParameter} from '~/utils/misc'
 
@@ -12,11 +13,13 @@ export async function getMetaEntries() {
   return response
 }
 
+// This gets the size of a file
 export async function getFileSize(fileName) {
   let response = await axios.head(dataConfig.filesBaseUrl + dataConfig.filesDirectory + '/' + fileName)
   return response.headers['content-length']
 }
 
+// This gets the list of stored files
 export function getListOfFiles() {
   return new Promise((resolve, reject) => {
     axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.filesDirectory).then(response => {
@@ -39,11 +42,19 @@ export function getListOfFiles() {
 export async function getMetaFromRepo(token) {
   let github = new GitHub({token: token})
 
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaFileName, true)
-  return response.data.collection
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaFileName)
+  return {sha: response.data.sha, data: JSON.parse(Base64.decode(response.data.content))}
 }
 
-// This save meta to the github repo
+// This gets the sha of the meta file
+export async function getMetaSha(token) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getTree('master')
+  return (response.data.tree.find(item => item.path === dataConfig.metaFileName)).sha
+}
+
+// This saves meta to the github repo
 export async function saveMetaFromRepo(token, meta) {
   let github = new GitHub({token: token})
 

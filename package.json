@@ -20,6 +20,7 @@
     "github-api": "^3.3.0",
     "gridsome": "^0.7.17",
     "gridsome-plugin-i18n": "^1.4.0",
+    "js-base64": "^3.4.5",
     "mapbox-gl": "^1.11.0",
     "mapbox-gl-style-switcher": "^1.0.6",
     "vee-validate": "^3.3.7",
