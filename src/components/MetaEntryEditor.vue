@@ -300,10 +300,8 @@ export default {
       }
       let metaEntry = unflatten(this.metaEntryFlat)
       let job = null
-      //this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
       if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
         job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
-        //this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo})
       }
       this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
       this.$parent.close()
