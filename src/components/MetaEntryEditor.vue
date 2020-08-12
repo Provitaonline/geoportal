@@ -277,8 +277,8 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
-    if (this.metaEntry.tileInfo && this.metaEntry.tileInfo.colorTable) {
-      this.savedColorTable = JSON.stringify(this.metaEntry.tileInfo.colorTable)
+    if (this.metaEntry.tileInfo) {
+      this.savedTileInfo = JSON.stringify(this.metaEntry.tileInfo)
     }
   },
   methods: {
@@ -299,7 +299,7 @@ export default {
         delete updatedMetaEntry.tileInfo.displayAttribute
       }
       this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
-      if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo !== this.savedTileInfo))) {
+      if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
         this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo})
       }
       this.$parent.close()
