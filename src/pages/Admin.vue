@@ -124,7 +124,10 @@ export default {
           sessionStorage.userInfo = JSON.stringify(info)
           this.commitUserInfo(info)
           this.getListOfFiles()
-          this.getMetaFromRepo()
+          getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
+            this.metaFromRepo = result.data.collection
+            this.metaSha = result.sha
+          })
         }).catch((e) => {
           if (e.status === 403) {
             console.log('Unauthorized', e)
@@ -147,7 +150,10 @@ export default {
       if (sessionStorage.githubtoken) {
         this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
         this.getListOfFiles()
-        this.getMetaFromRepo()
+        getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
+          this.metaFromRepo = result.data.collection
+          this.metaSha = result.sha
+        })
         console.log('user already connected', this.$store.state.login)
       } else {
         this.isLoginActive = true
@@ -180,30 +186,34 @@ export default {
         this.listOfFiles = result
       })
     },
-    getMetaFromRepo() {
-      getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-        this.metaFromRepo = result.data.collection
-        this.metaSha = result.sha
-      }).catch((e) => {
-        console.log('error retrieving meta from repo', e)
-      })
-    },
     editMeta(fileName) {
-      // this is temporary
       getMetaSha(sessionStorage.githubtoken).then((sha) => {
         console.log(sha)
-        let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
-        if (idx != -1) {
-          this.currentIndex = idx
-          this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[this.currentIndex]))
-          this.openMetaEditor(this.currentEntry)
+        if (sha !== this.metaSha) {
+          // Meta changed, we must refresh
+          console.log('Metadata has been edited')
+          getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
+            this.metaFromRepo = result.data.collection
+            this.metaSha = result.sha
+            this.addOrEditMeta(fileName)
+          })
         } else {
-          this.currentIndex = this.metaFromRepo.length
-          this.openMetaEditor({file: fileName})
+          this.addOrEditMeta(fileName)
         }
       }).catch((e) => {
         console.log('error retrieving meta sha', e)
       })
+    },
+    addOrEditMeta(fileName) {
+      let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
+      if (idx != -1) {
+        this.currentIndex = idx
+        this.currentEntry = JSON.parse(JSON.stringify(this.metaFromRepo[this.currentIndex]))
+        this.openMetaEditor(this.currentEntry)
+      } else {
+        this.currentIndex = this.metaFromRepo.length
+        this.openMetaEditor({file: fileName})
+      }
     },
     openMetaEditor(metaEntry) {
       this.$buefy.modal.open({
@@ -220,6 +230,10 @@ export default {
       this.$set(this.metaFromRepo, this.currentIndex, m)
       saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
         console.log('meta data saved')
+        // Refresh meta sha
+        getMetaSha(sessionStorage.githubtoken).then((sha) => {
+          this.metaSha = sha
+        })
       }).catch((e) => {
         console.log('error saving data to repo ', e)
       })
