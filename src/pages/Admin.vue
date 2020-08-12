@@ -161,7 +161,6 @@ export default {
     }
     this.$eventBus.$on('userlogoff', this.userLogoff)
     this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
-    this.$eventBus.$on('submitrtilesjob', this.submitRtilesJob)
   },
   methods: {
     userLogin: function() {
@@ -188,7 +187,6 @@ export default {
     },
     editMeta(fileName) {
       getMetaSha(sessionStorage.githubtoken).then((sha) => {
-        console.log(sha)
         if (sha !== this.metaSha) {
           // Meta changed, we must refresh
           console.log('Metadata has been edited')
@@ -227,15 +225,31 @@ export default {
       })
     },
     acceptMetaChanges(m) {
-      this.$set(this.metaFromRepo, this.currentIndex, m)
-      saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
-        console.log('meta data saved')
-        // Refresh meta sha
-        getMetaSha(sessionStorage.githubtoken).then((sha) => {
-          this.metaSha = sha
-        })
-      }).catch((e) => {
-        console.log('error saving data to repo ', e)
+
+      getMetaSha(sessionStorage.githubtoken).then((sha) => {
+        if (sha === this.metaSha) { // Can only save if meta has not been changed
+          this.$set(this.metaFromRepo, this.currentIndex, m.metaEntry)
+          saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
+            console.log('meta data saved')
+            // Refresh meta sha
+            getMetaSha(sessionStorage.githubtoken).then((sha) => {
+              this.metaSha = sha
+            })
+            if (m.job) {
+              this.submitRtilesJob(m.job)
+            }
+          }).catch((e) => {
+            console.log('error saving data to repo ', e)
+          })
+        } else {
+          // Display error message
+          this.$buefy.dialog.alert({title: this.$t('label.error'), message: this.$t('message.dataconflictmessage'), type: 'is-danger', hasIcon: true})
+          // And refresh meta
+          getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
+            this.metaFromRepo = result.data.collection
+            this.metaSha = result.sha
+          })
+        }
       })
     },
     submitRtilesJob(job) {

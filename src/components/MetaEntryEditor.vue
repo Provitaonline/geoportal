@@ -298,10 +298,14 @@ export default {
         delete updatedMetaEntry.tileInfo.style
         delete updatedMetaEntry.tileInfo.displayAttribute
       }
-      this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
+      let metaEntry = unflatten(this.metaEntryFlat)
+      let job = null
+      //this.$eventBus.$emit('acceptmetachanges', unflatten(this.metaEntryFlat))
       if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
-        this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo})
+        job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
+        //this.$eventBus.$emit('submitrtilesjob', {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo})
       }
+      this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
       this.$parent.close()
     },
     unflattenTags(lang) {

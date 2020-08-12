@@ -13,7 +13,8 @@
       "metachanges": "Metadata has been edited. Click \"Save Changes\" to save in the repository.",
       "removefiles": "Remove data sets",
       "removefileswarning": "This operation will remove the selected data sets and their associated metadata",
-      "batchjobwarning": "Any changes in the color table (section below this message) will trigger the (re)generation of the tile layer associated with this data set."
+      "batchjobwarning": "Any changes in the color table (section below this message) will trigger the (re)generation of the tile layer associated with this data set.",
+      "dataconflictmessage": "Metadata has been changed by another user, therefore your changes will be canceled"
     },
     "label": {
       "main": "Main",
@@ -99,7 +100,8 @@
       "geotiff": "GeoTIFF",
       "format": "Format",
       "gradient": "Gradient",
-      "source": "Source"
+      "source": "Source",
+      "error": "Error"
     }
   },
   "es": {
@@ -116,7 +118,8 @@
       "metachanges": "Los metadatos han sido editados. Cliquea \"Guardar cambios\" para guardar en el repositorio.",
       "removefiles": "Eliminar archivos de datos",
       "removefileswarning": "Esta operación eliminará los archivos de datos seleccionados y los metadatos asociados",
-      "batchjobwarning": "Cualquier cambio en la tabla de colores (sección debajo de éste mensaje) iniciará la (re)generación de la capa de teselas asociada con éste archivo de datos."
+      "batchjobwarning": "Cualquier cambio en la tabla de colores (sección debajo de éste mensaje) iniciará la (re)generación de la capa de teselas asociada con éste archivo de datos.",
+      "dataconflictmessage": "Los metadatos han sido modificados por otro usuario, por lo tanto tus cambios no se han efectuado."
     },
     "label": {
       "main": "Página Principal",
@@ -202,7 +205,8 @@
       "geotiff": "GeoTIFF",
       "format": "Formato",
       "gradient": "En gradiente",
-      "source": "Fuente"
+      "source": "Fuente",
+      "error": "Error"
     }
   }
 }
