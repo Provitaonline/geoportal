@@ -1,6 +1,8 @@
-# Geoportal Provita (under development, not ready to use yet)
+# Geoportal Provita
 
 This project is the source for Provita's Geographical Information Portal.
+
+This project is currently under development, and it is not ready to use.
 
 ## Development environment
 
