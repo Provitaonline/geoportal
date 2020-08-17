@@ -49,7 +49,6 @@ function checkIfOkToSubmit(jobNameSuffix, inputFile) {
       let jobs = result.flat()
       if (jobs.length) {
         checkJobQueue(jobs, inputFile).then((isOkToSubmit) => {
-          console.log('check if ok to submit', isOkToSubmit)
           return resolve (isOkToSubmit)
         })
       } else {
@@ -66,7 +65,6 @@ function checkJobQueue(jobs, inputFile) {
         return reject(err)
       } else {
         if (data.jobs.find(job => job.parameters.inputFile === inputFile)) {
-          console.log('found it')
           return resolve (false)
         } else {
           return resolve (true)
@@ -99,19 +97,21 @@ exports.handler = (event, context, callback) => {
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
-    checkIfOkToSubmit(jobNameSuffix, parameters.inputFile).then((response) => {
-      console.log('is it ok to run', response)
-      callback(null, {statusCode: 201, body: ''})
+    checkIfOkToSubmit(jobNameSuffix, parameters.inputFile).then((isOkToSubmit) => {
+      if (isOkToSubmit) {
+        submit(jobNameSuffix, parameters).then((response) => {
+          return callback(null, response)
+        }).catch((err) => {
+          return callback(err)
+        })
+      } else {
+        return callback(null, {statusCode: 409, body: `A job to process ${parameters.inputFile} is already in progress`})
+      }
     }).catch((err) => {
-      callback(err)
+      return callback(err)
     })
-    /* submit(jobNameSuffix, parameters).then((response) => {
-      callback(null, response)
-    }).catch((err) => {
-      callback(err)
-    }) */
   }).catch((e) => {
     console.log(e)
-    callback(null, {statusCode: 401, body: 'User must be a repository collaborator'})
+    return callback(null, {statusCode: 401, body: 'User must be a repository collaborator'})
   })
 }
