@@ -37,10 +37,11 @@
               <transition name="slide">
                 <div v-show="item.expanded" class="card-content">
                   <div class="buttons">
-                    <b-button tag="a" download :href="filesBaseUrl + item.file" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
+                    <b-button @click="downloadFile(index)" tag="button" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
                       <font-awesome :icon="['fas', 'download']"/>
                       <b> {{ $t('label.download') }}</b>
                       ({{mFormatter(item.fileSize)}})
+                      <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
                     </b-button>
                     <b-field>
                       <b-switch
@@ -186,6 +187,7 @@
     data() {
       return {
         filesBaseUrl: dataConfig.filesBaseUrl,
+        filesDirectory: dataConfig.filesDirectory,
         fileList: [],
         isLoading: true,
         isPopupModalModalActive: false,
@@ -248,6 +250,10 @@
         if (getPureText(item.name[this.locale]).includes(getPureText(this.searchString))) return true
         if (getPureText(item.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return true
         return false
+      },
+      downloadFile(index) {
+        console.log('Download ', index)
+        document.getElementById('download-' + index).click()
       }
     },
     computed: {
