@@ -11,27 +11,18 @@
     </div>
     <div class="card-content">
       <div class="content">
-        <label class="label">¿Cuanto te gusta este sitio?</label>
-        <div class="block">
-          <b-radio
-              name="name"
-              native-value="Flint">
-              Mucho
-          </b-radio>
-          <b-radio
-              name="name"
-              native-value="Silver">
-              Muchísimo
-          </b-radio>
-          <b-radio
-              name="name"
-              native-value="Jack">
-              Más que muchísimo
-          </b-radio>
+        <div v-for="item in $static.userSurveyTemplate.fields">
+          <b-field v-if="item.type === 'text'" :label="item.label[$i18n.locale.substr(0, 2)]">
+            <b-input maxlength="1000" type="textarea"></b-input>
+          </b-field>
+          <div v-if="item.type === 'select'">
+            <label class="label">{{item.label[$i18n.locale.substr(0, 2)]}}</label>
+            <div class="block">
+              <b-radio v-for="btn in item.options[$i18n.locale.substr(0, 2)]" v-bind:key="btn" :name="item.fieldname" :native-value="btn">{{btn}}</b-radio>
+            </div>
+          </div>
+          <br>
         </div>
-        <b-field label="Cómo lo mejorarías aun más?">
-          <b-input maxlength="1000" type="textarea"></b-input>
-        </b-field>
       </div>
     </div>
   </div>
@@ -40,7 +31,18 @@
 <static-query>
   query {
     userSurveyTemplate (id: "usersurvey") {
-			fields
+			fields {
+        fieldname
+        type
+        options {
+          en
+          es
+        }
+        label {
+          en
+          es
+        }
+      }
     }
   }
 </static-query>
