@@ -41,8 +41,8 @@
                       <font-awesome :icon="['fas', 'download']"/>
                       <b> {{ $t('label.download') }}</b>
                       ({{mFormatter(item.fileSize)}})
-                      <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
                     </b-button>
+                    <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
                     <b-field>
                       <b-switch
                         @input="addToMap(item, $event)"
@@ -171,6 +171,7 @@
 
 <script>
   import InteractiveMap from '~/components/InteractiveMap.vue'
+  import UserSurveyForm from '~/components/UserSurveyForm'
 
   import {dataConfig} from '~/utils/config'
   import * as data from '~/utils/data'
@@ -252,9 +253,19 @@
         return false
       },
       downloadFile(index) {
-        console.log('Download ', index)
-        document.getElementById('download-' + index).click()
-      }
+        this.openUserSurvey(index)
+        //document.getElementById('download-' + index).click()
+      },
+      openUserSurvey(index) {
+        this.$buefy.modal.open({
+          parent: this,
+          canCancel: ['escape', 'x'],
+          component: UserSurveyForm,
+          props: {
+            downloadFileIndex: index
+          }
+        })
+      },
     },
     computed: {
       getNumRows() {
