@@ -171,6 +171,7 @@
 
 <script>
   import InteractiveMap from '~/components/InteractiveMap.vue'
+  import UserSurveyForm from '~/components/UserSurveyForm'
 
   import {dataConfig} from '~/utils/config'
   import * as data from '~/utils/data'
@@ -253,8 +254,18 @@
       },
       downloadFile(index) {
         console.log('Download ', index)
-        document.getElementById('download-' + index).click()
-      }
+        this.openUserSurvey()
+        //document.getElementById('download-' + index).click()
+      },
+      openUserSurvey() {
+        this.$buefy.modal.open({
+          parent: this,
+          canCancel: ['escape', 'x'],
+          component: UserSurveyForm,
+          props: {
+          }
+        })
+      },
     },
     computed: {
       getNumRows() {

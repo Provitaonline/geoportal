@@ -10,6 +10,16 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
+        path: 'content/survey/template.md',
+        typeName: 'UserSurveyTemplate',
+        remark:{
+          autolinkHeadings: false
+        }
+      }
+    },
+    {
+      use: '@gridsome/source-filesystem',
+      options: {
         path: 'content/home/**/*.md',
         typeName: 'HomeData',
         remark:{
