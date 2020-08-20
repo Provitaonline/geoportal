@@ -41,8 +41,8 @@
                       <font-awesome :icon="['fas', 'download']"/>
                       <b> {{ $t('label.download') }}</b>
                       ({{mFormatter(item.fileSize)}})
-                      <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
                     </b-button>
+                    <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
                     <b-field>
                       <b-switch
                         @input="addToMap(item, $event)"
@@ -253,16 +253,16 @@
         return false
       },
       downloadFile(index) {
-        console.log('Download ', index)
-        this.openUserSurvey()
+        this.openUserSurvey(index)
         //document.getElementById('download-' + index).click()
       },
-      openUserSurvey() {
+      openUserSurvey(index) {
         this.$buefy.modal.open({
           parent: this,
           canCancel: ['escape', 'x'],
           component: UserSurveyForm,
           props: {
+            downloadFileIndex: index
           }
         })
       },

@@ -5,7 +5,7 @@
         {{ $t('message.surveyheader') }}
       </p>
       <div class="buttons">
-        <b-button @click="$parent.close()" style="width: 160px; height: 50px;"><span v-html="$t('label.downloadonly')"></span></b-button>
+        <b-button @click="$parent.close(); downloadFile()" style="width: 160px; height: 50px;"><span v-html="$t('label.downloadonly')"></span></b-button>
       </div>
     </div>
     <div class="card-content">
@@ -26,7 +26,7 @@
     </div>
     <div class="card-footer" style="padding: 24px; justify-content: flex-end;">
       <div class="buttons">
-        <b-button @click="$parent.close()" type="is-primary" style="width: 160px;"><span v-html="$t('label.sendanddownload')"></span></b-button>
+        <b-button @click="$parent.close(); downloadFile(true)" type="is-primary" style="width: 160px;"><span v-html="$t('label.sendanddownload')"></span></b-button>
       </div>
     </div>
   </div>
@@ -53,7 +53,16 @@
 
 <script>
 export default {
-  name: 'UserSurveyForm'
+  name: 'UserSurveyForm',
+  props: {
+    downloadFileIndex: { type: Number, required: true }
+  },
+  methods: {
+    downloadFile(withSurvey) {
+      if (withSurvey) console.log('Submit survey data')
+      document.getElementById('download-' + this.downloadFileIndex).click()
+    }
+  }
 }
 
 </script>
