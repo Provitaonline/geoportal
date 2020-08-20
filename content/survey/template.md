@@ -18,6 +18,6 @@ fields:
 - fieldname: "test2"
   type: "text"
   label:
-    en: "How would you make it even better"
+    en: "How would you make it even better?"
     es: "¿Cómo lo mejorarías aun más?"
 ---

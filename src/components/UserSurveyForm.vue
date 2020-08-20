@@ -1,12 +1,11 @@
 <template>
   <div class="card">
-    <div style="position: sticky; top: 0; z-index: 45; background-color: white; padding: 12px;" class="card-header">
-      <p class="card-header-title is-size-4">
-        User survey
+    <div style="padding: 12px;" class="card-header">
+      <p class="card-header-title is-size-5">
+        {{ $t('message.surveyheader') }}
       </p>
       <div class="buttons">
-        <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
-        <b-button style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.save')}}</b-button>
+        <b-button @click="$parent.close()" style="width: 160px; height: 50px;"><span v-html="$t('label.downloadonly')"></span></b-button>
       </div>
     </div>
     <div class="card-content">
@@ -23,6 +22,11 @@
           </div>
           <br>
         </div>
+      </div>
+    </div>
+    <div class="card-footer" style="padding: 24px; justify-content: flex-end;">
+      <div class="buttons">
+        <b-button @click="$parent.close()" type="is-primary" style="width: 160px;"><span v-html="$t('label.sendanddownload')"></span></b-button>
       </div>
     </div>
   </div>
