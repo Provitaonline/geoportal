@@ -1,5 +1,6 @@
 ---
 id: usersurvey
+version: 1
 fields:
 - fieldname: "test1"
   type: "select"

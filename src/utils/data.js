@@ -92,3 +92,14 @@ export async function submitJob(token, job) {
   let response = await axios.get(funcUrl)
   return response
 }
+
+export async function sendSurvey(survey, version) {
+  let row = ''
+  let keys = Object.keys(survey)
+  version = version ? version : '1'
+  keys.forEach((key, idx) => {
+    row += '"' + survey[key].replace(/\"/g, '""') + '"' + ((idx === keys.length - 1) ? '' : ',')
+  })
+  let response = await axios.put('/.netlify/functions/send-survey?version=' + version, row, {headers: {'Content-Type': 'text/plain'}})
+  return response
+}
