@@ -11,7 +11,6 @@ exports.handler = (event, context, callback) => {
   const version = event.queryStringParameters.version
   const survey = event.body
 
-  console.log('survey data ' + version, sanitize(survey, {allowedTags: [], allowedAttributes: []}))
   s3.putObject({
     Body: sanitize(survey, {allowedTags: [], allowedAttributes: []}),
     Bucket: config.bucket,
