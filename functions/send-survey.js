@@ -15,7 +15,8 @@ exports.handler = (event, context, callback) => {
   s3.putObject({
     Body: sanitize(survey, {allowedTags: [], allowedAttributes: []}),
     Bucket: config.bucket,
-    Key: 'surveydata/version-' + version + '/' + (new Date()).toISOString() + '-' + (new Date().getTime()).toString(36) + '.csv'
+    ContentType: 'application/json',
+    Key: 'surveydata/version-' + version + '/' + (new Date()).toISOString() + '-' + (new Date().getTime()).toString(36) + '.json'
   }, ((err, data) => {
     if (err) {
       callback(err)
