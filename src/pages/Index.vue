@@ -183,8 +183,6 @@
         title: this.$t('label.main')
       }
     },
-    components: {
-    },
     data() {
       return {
         filesBaseUrl: dataConfig.filesBaseUrl,
