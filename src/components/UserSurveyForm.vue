@@ -12,7 +12,7 @@
       <div class="content">
         <div v-for="item in $static.userSurveyTemplate.fields">
           <b-field v-if="item.type === 'text'" :label="item.label[$i18n.locale.substr(0, 2)]">
-            <b-input v-model="surveyData[item.fieldname]" maxlength="1000" type="textarea"></b-input> -->
+            <b-input v-model="surveyData[item.fieldname]" maxlength="1000" type="textarea"></b-input>
           </b-field>
           <div v-if="item.type === 'select'">
             <label class="label">{{item.label[$i18n.locale.substr(0, 2)]}}</label>
@@ -76,7 +76,7 @@ export default {
         console.log('Submit survey data', this.surveyData)
         sendSurvey(this.surveyData, this.$static.userSurveyTemplate.version)
       }
-      //document.getElementById('download-' + this.downloadFileIndex).click()
+      document.getElementById('download-' + this.downloadFileIndex).click()
     }
   }
 }

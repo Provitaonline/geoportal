@@ -48,9 +48,7 @@
           </div>
         </b-tab-item>
         <b-tab-item :label="$t('label.news')">
-          <div class="container" style="max-width: 900px;">
-            Coming soon...
-          </div>
+          <AdminNewsTab />
         </b-tab-item>
       </b-tabs>
     </section>
@@ -92,6 +90,7 @@ import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresig
 import {adminConfig} from '~/utils/config'
 import {getPureText} from '~/utils/misc'
 import MetaEntryEditor from '~/components/MetaEntryEditor'
+import AdminNewsTab from '~/components/AdminNewsTab'
 
 export default {
   metaInfo() {
@@ -114,6 +113,9 @@ export default {
       uploadProgressValue: 0,
       searchString: ''
     }
+  },
+  components: {
+    AdminNewsTab
   },
   mounted () {
     if (this.$route.query.token) {
