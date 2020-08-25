@@ -117,7 +117,7 @@ export default {
   components: {
     AdminNewsTab
   },
-  mounted () {
+  created() {
     if (this.$route.query.token) {
       let token = this.$route.query.token
       if (this.$route.query.state === sessionStorage.stateToken) {
@@ -125,11 +125,6 @@ export default {
           sessionStorage.githubtoken = token
           sessionStorage.userInfo = JSON.stringify(info)
           this.commitUserInfo(info)
-          this.getListOfFiles()
-          getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-            this.metaFromRepo = result.data.collection
-            this.metaSha = result.sha
-          })
         }).catch((e) => {
           if (e.status === 403) {
             console.log('Unauthorized', e)
@@ -151,11 +146,6 @@ export default {
     } else {
       if (sessionStorage.githubtoken) {
         this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
-        this.getListOfFiles()
-        getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-          this.metaFromRepo = result.data.collection
-          this.metaSha = result.sha
-        })
         console.log('user already connected', this.$store.state.login)
       } else {
         this.isLoginActive = true
@@ -163,6 +153,13 @@ export default {
     }
     this.$eventBus.$on('userlogoff', this.userLogoff)
     this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
+  },
+  mounted () {
+    this.getListOfFiles()
+    getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
+      this.metaFromRepo = result.data.collection
+      this.metaSha = result.sha
+    })
   },
   methods: {
     userLogin: function() {
