@@ -104,7 +104,8 @@
       "source": "Source",
       "error": "Error",
       "downloadonly": "No thanks<br>Download only",
-      "sendanddownload": "Send and download"
+      "sendanddownload": "Send and download",
+      "addnews": "Add news item"
     }
   },
   "es": {
@@ -212,7 +213,8 @@
       "source": "Fuente",
       "error": "Error",
       "downloadonly": "No gracias<br>Solo descargar",
-      "sendanddownload": "Enviar y descargar"
+      "sendanddownload": "Enviar y descargar",
+      "addnews": "Añadir artículo"
     }
   }
 }
