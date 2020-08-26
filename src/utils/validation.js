@@ -40,6 +40,12 @@ extend('oneOf', {
   ...oneOf
 })
 
+extend('url', {
+  validate: (value) => {
+    return value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/)
+  }
+})
+
 configure({
   defaultMessage: (field, values) => {
     return i18n.t(`validations.${values._rule_}`, values)

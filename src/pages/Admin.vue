@@ -180,7 +180,7 @@ export default {
       this.$store.commit('setAvatar', info.avatar)
     },
     getListOfFiles() {
-      getListOfFiles(this.$n).then((result) => {
+      getListOfFiles().then((result) => {
         this.listOfFiles = result
       })
     },

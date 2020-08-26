@@ -105,7 +105,15 @@
       "error": "Error",
       "downloadonly": "No thanks<br>Download only",
       "sendanddownload": "Send and download",
-      "addnews": "Add news item"
+      "addnews": "Add news item",
+      "publishdate": "Publication date",
+      "headline": "Headline",
+      "headlinespanish": "Spanish headline",
+      "headlineenglish": "English headline",
+      "textspanish": "Spanish text",
+      "textenglish": "English text",
+      "reference": "Reference",
+      "addimage": "Add image"
     }
   },
   "es": {
@@ -214,7 +222,15 @@
       "error": "Error",
       "downloadonly": "No gracias<br>Solo descargar",
       "sendanddownload": "Enviar y descargar",
-      "addnews": "Añadir artículo"
+      "addnews": "Añadir artículo",
+      "publishdate": "Fecha de publicación",
+      "headline": "Titular",
+      "headlinespanish": "Titular en español",
+      "headlineenglish": "Titular en inglés",
+      "textspanish": "Texto en español",
+      "textenglish": "Texto en inglés",
+      "reference": "Referencia",
+      "addimage": "Añadir imagen"
     }
   }
 }

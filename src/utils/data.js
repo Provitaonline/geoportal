@@ -97,3 +97,9 @@ export async function sendSurvey(survey, version) {
   let response = await axios.put('/.netlify/functions/send-survey?version=' + version, survey)
   return response
 }
+
+export function getListOfNewsItems() {
+  return new Promise((resolve, reject) => {
+    resolve([])
+  })
+}
