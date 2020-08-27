@@ -113,8 +113,9 @@
       "textspanish": "Spanish text",
       "textenglish": "English text",
       "reference": "Reference",
-      "addimage": "Add image",
-      "upto": "Up to"
+      "addimage": "Add thumbnail",
+      "upto": "Up to",
+      "newitem": "New item"
     }
   },
   "es": {
@@ -231,8 +232,9 @@
       "textspanish": "Texto en español",
       "textenglish": "Texto en inglés",
       "reference": "Referencia",
-      "addimage": "Añadir imagen",
-      "upto": "No más de"
+      "addimage": "Añadir miniatura",
+      "upto": "hasta",
+      "newitem": "Artículo nuevo"
     }
   }
 }

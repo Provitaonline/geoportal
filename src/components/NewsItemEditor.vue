@@ -3,6 +3,7 @@
     <ValidationObserver v-slot="{passes, dirty, failed}">
       <div style="background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
+          <span v-if="!newsItem.key">{{$t('label.newitem')}}: </span>
           {{newsItem.headline[$i18n.locale.substr(0, 2)]}}
         </p>
       </div>
@@ -11,6 +12,17 @@
           <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
             <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="newsItem.date"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider>
+            <b-field label="Select a date">
+              <b-datepicker
+                  v-model="formDate"
+                  :locale="$i18n.locale"
+                  placeholder="Click to select..."
+                  icon="calendar"
+                  trap-focus>
+              </b-datepicker>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
@@ -82,7 +94,8 @@ export default {
     return {
       imagePreview: null,
       imageToUpload: null,
-      maxNewsImageKB: adminConfig.maxNewsImageKB
+      maxNewsImageKB: adminConfig.maxNewsImageKB,
+      formDate: new Date()
     }
   },
   components: {
@@ -90,7 +103,11 @@ export default {
     ValidationProvider
   },
   beforeCreate() {
+    console.log(this.$i18n.locale)
     validation.localize(this.$i18n.locale.toString().substr(0,2))
+  },
+  created() {
+    if (this.newsItem.date) this.formDate = new Date(this.newsItem.date)
   },
   methods: {
     uploadImage(imageFile) {
@@ -107,6 +124,10 @@ export default {
     },
     acceptChanges() {
       console.log('accept changes')
+      if (this.imagePreview) {
+        this.newsItem.thumb = this.imagePreview
+      }
+      this.$eventBus.$emit('acceptnewsitemchanges', this.newsItem)
       this.$parent.close()
     }
   }

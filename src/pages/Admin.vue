@@ -27,23 +27,21 @@
               </span>
             </div>
             <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :checked-rows.sync="fileListCheckedRows" :row-class="matchClass">
-              <template slot-scope="props">
-                <b-table-column field="name" :label="$t('label.name')">
-                  {{props.row.name}}
-                </b-table-column>
-                <b-table-column field="size" :label="$t('label.size')" centered>
-                  {{$n(props.row.size)}}
-                </b-table-column>
-                <b-table-column field="date" :label="$t('label.uploaddate')">
-                  {{$d(new Date(props.row.date), 'long')}}
-                </b-table-column>
-                <b-table-column label="Meta" centered>
-                  <a @click="editMeta(props.row.name)">
-                    <font-awesome v-if="fileHasMeta(props.row.name)" :icon="['far', 'edit']"/>
-                    <font-awesome v-else :icon="['fas', 'plus']"/>
-                  </a>
-                </b-table-column>
-              </template>
+              <b-table-column field="name" :label="$t('label.name')" v-slot="props">
+                {{props.row.name}}
+              </b-table-column>
+              <b-table-column field="size" :label="$t('label.size')" centered v-slot="props">
+                {{$n(props.row.size)}}
+              </b-table-column>
+              <b-table-column field="date" :label="$t('label.uploaddate')" v-slot="props">
+                {{$d(new Date(props.row.date), 'long')}}
+              </b-table-column>
+              <b-table-column label="Meta" centered v-slot="props">
+                <a @click="editMeta(props.row.name)">
+                  <font-awesome v-if="fileHasMeta(props.row.name)" :icon="['far', 'edit']"/>
+                  <font-awesome v-else :icon="['fas', 'plus']"/>
+                </a>
+              </b-table-column>
             </b-table>
           </div>
         </b-tab-item>

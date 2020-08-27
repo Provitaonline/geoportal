@@ -5,19 +5,17 @@
       <b-button @click="addNewsItem()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addnews')}}</b-button>
     </div>
     <b-table :data="sortedListOfNewsItems" checkable hoverable :header-checkable="false" :checked-rows.sync="newsItemListCheckedRows">
-      <template slot-scope="props">
-        <b-table-column field="date" :label="$t('label.publishdate')">
-          {{$d(new Date(props.row.date), 'short')}}
-        </b-table-column>
-        <b-table-column field="title" :label="$t('label.headline')">
-          {{props.row.headline[$i18n.locale.substr(0, 2)]}}
-        </b-table-column>
-        <b-table-column label="Info" centered>
-          <a @click="editInfo(props.index)">
-            <font-awesome :icon="['far', 'edit']"/>
-          </a>
-        </b-table-column>
-      </template>
+      <b-table-column field="date" :label="$t('label.publishdate')" v-slot="props">
+        {{$d(new Date(props.row.date), 'short')}}
+      </b-table-column>
+      <b-table-column field="title" :label="$t('label.headline')" v-slot="props">
+        {{props.row.headline[$i18n.locale.substr(0, 2)]}}
+      </b-table-column>
+      <b-table-column label="Info" centered v-slot="props">
+        <a @click="editInfo(props.index)">
+          <font-awesome :icon="['far', 'edit']"/>
+        </a>
+      </b-table-column>
     </b-table>
   </div>
 </template>
