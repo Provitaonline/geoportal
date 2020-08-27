@@ -43,7 +43,7 @@
             <b-field :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-upload @input="uploadImage" class="file-label" native accept=".jpeg,.jpg,.png" v-model="imageToUpload">
                 <span class="file-cta">
-                  <font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;&nbsp;<span class="file-label">{{$t('label.addimage')}}</span>
+                  <font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;&nbsp;<span class="file-label">{{$t('label.addimage')}} ({{$t('label.upto')}} {{maxNewsImageKB}}KB)</span>
                 </span>
                 <span class="file-name" v-if="imageToUpload">
                   {{ imageToUpload.name }}
