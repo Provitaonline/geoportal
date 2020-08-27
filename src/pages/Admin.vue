@@ -144,7 +144,7 @@ export default {
       let langPath = (this.$i18n.fallbackLocale.substr(0,2) === eLang) ? '' : '/' + eLang
       this.$router.push(langPath + '/admin') // Clean the url, stay with selected locale
     } else {
-      if (sessionStorage.githubtoken) {
+      if (process.isClient && sessionStorage.githubtoken) {
         this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
         console.log('user already connected', this.$store.state.login)
       } else {
