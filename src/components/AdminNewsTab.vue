@@ -4,7 +4,7 @@
       <b-button @click="" style="width: 160px;" :disabled="!newsItemListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
       <b-button @click="addNewsItem()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addnews')}}</b-button>
     </div>
-    <b-table :data="listOfNewsItems" checkable hoverable :header-checkable="false" :checked-rows.sync="newsItemListCheckedRows">
+    <b-table :data="sortedListOfNewsItems" checkable hoverable :header-checkable="false" :checked-rows.sync="newsItemListCheckedRows">
       <template slot-scope="props">
         <b-table-column field="date" :label="$t('label.publishdate')">
           {{$d(new Date(props.row.date), 'short')}}
@@ -47,8 +47,8 @@
             reference: ''
           },
           {
-            key: 'news/2020-08-24T19:51:29.227Z-ke8xrtfq.json',
-            date: '2020-08-24T19:51Z',
+            key: 'news/2020-08-25T19:51:29.227Z-ke8xrtfq.json',
+            date: '2020-08-25T19:51Z',
             headline: {
               en: 'testing 2 dgdfgdgf g dfg df g dfg df g dfgdfgdfgdfg dfg dfg dfgdf g dfg df gdf gd fg dfg',
               es: 'probando 2 dgdfgdgf g dfg df g dfg df g dfgdfgdfgdfg dfg dfg dfgdf g dfg df gdf gd fg dfg'
@@ -76,10 +76,10 @@
       },
       editInfo(index) {
         console.log(index)
-        this.openNewsItemEditor(JSON.parse(JSON.stringify(this.listOfNewsItems[index])))
+        this.openNewsItemEditor(JSON.parse(JSON.stringify(this.sortedListOfNewsItems[index])))
       },
       addNewsItem() {
-        this.openNewsItemEditor({})
+        this.openNewsItemEditor({headline: {}, text: {}})
       },
       openNewsItemEditor(newsItem) {
         console.log(newsItem)
@@ -91,6 +91,13 @@
             newsItem: newsItem
           }
         })
+      }
+    },
+    computed: {
+      sortedListOfNewsItems() {
+        if (this.listOfNewsItems.length) {
+          return this.listOfNewsItems.sort((a, b) => (a.date > b.date) ? -1 : 1)
+        }
       }
     }
   }
