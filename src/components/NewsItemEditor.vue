@@ -29,7 +29,7 @@
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.textspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="newsItem.text.en" type="textarea"></b-input>
+              <b-input v-model="newsItem.text.es" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
