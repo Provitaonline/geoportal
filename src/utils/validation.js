@@ -1,5 +1,5 @@
 import { extend, configure } from 'vee-validate'
-import { required, numeric, decimal, min, regex, oneOf } from 'vee-validate/dist/rules'
+import { required, numeric, decimal, min, regex, oneOf, size } from 'vee-validate/dist/rules'
 import VueI18n from 'vue-i18n'
 
 const i18n = new VueI18n()
@@ -44,6 +44,10 @@ extend('url', {
   validate: (value) => {
     return value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/)
   }
+})
+
+extend('size', {
+  ...size
 })
 
 configure({

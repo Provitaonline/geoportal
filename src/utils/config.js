@@ -40,7 +40,8 @@ export const adminConfig = {
   githubInfo: {
     owner : 'jimmyangel',
     repo: 'geoportal-data'
-  }
+  },
+  maxNewsImageKB: 100
 }
 
 export const dataConfig = {

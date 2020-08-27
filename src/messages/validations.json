@@ -8,7 +8,8 @@
       "colorhex": "Color code must be in css hex format",
       "colorhexa": "Color code must be in css hexa format",
       "oneOf": "Field must be one of the items on the list",
-      "url": "Field must be a valid URL"
+      "url": "Field must be a valid URL",
+      "size": "File must be smaller than {size}K"
     }
   },
   "es": {
@@ -20,7 +21,8 @@
       "colorhex": "El código de color debe ser en formato css hex",
       "colorhexa": "El código de color debe ser en formato css hexa",
       "oneOf": "El valor del campo debe ser uno de los elementos de la lista",
-      "url": "El valor del campo debe ser un URL válido"
+      "url": "El valor del campo debe ser un URL válido",
+      "size": "El tamaño del archivo debe ser menor de {size}K"
     }
   }
 }

@@ -1,13 +1,13 @@
 <template>
   <div class="card">
-    <ValidationObserver v-slot="{passes, dirty}">
+    <ValidationObserver v-slot="{passes, dirty, failed}">
       <div class="card-header">
         <p class="card-header-title is-size-4">
           {{newsItem.headline[$i18n.locale.substr(0, 2)]}}
         </p>
         <div class="buttons">
           <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
-          <b-button @click="passes(acceptChanges)" :disabled="!dirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.save')}}</b-button>
+          <b-button @click="passes(acceptChanges)" :disabled="failed || !dirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.save')}}</b-button>
         </div>
       </div>
       <div class="card-content">
@@ -43,17 +43,20 @@
             </b-field>
           </ValidationProvider>
           <br>
-          <ValidationProvider v-slot="{ errors, valid }">
+          <ValidationProvider :rules="'size:' + maxNewsImageKB" v-slot="{ errors, valid }">
             <b-field :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-upload @input="uploadImage" native accept=".jpeg,.jpg,.png" v-model="imageToUpload">
-                <a style="width: 160px;" class="button">
-                  <font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.addimage')}}
-                </a>
+              <b-upload @input="uploadImage" class="file-label" native accept=".jpeg,.jpg,.png" v-model="imageToUpload">
+                <span class="file-cta">
+                  <font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;&nbsp;<span class="file-label">{{$t('label.addimage')}}</span>
+                </span>
+                <span class="file-name" v-if="imageToUpload">
+                  {{ imageToUpload.name }}
+                </span>
               </b-upload>
             </b-field>
           </ValidationProvider>
           <div>
-            <img style="max-width: 300px;" src="https://bulma.io/images/placeholders/480x480.png">
+            <img style="max-width: 270px;" :src="imagePreview">
           </div>
         </div>
       </div>
@@ -64,12 +67,19 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
-
+import {adminConfig} from '~/utils/config'
 
 export default {
   name: 'NewsItemEditor',
   props: {
     newsItem: { type: Object, required: true }
+  },
+  data() {
+    return {
+      imagePreview: null,
+      imageToUpload: null,
+      maxNewsImageKB: adminConfig.maxNewsImageKB
+    }
   },
   components: {
     ValidationObserver,
@@ -77,6 +87,23 @@ export default {
   },
   beforeCreate() {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
+  },
+  methods: {
+    uploadImage(imageFile) {
+      console.log(imageFile)
+      if (imageFile.size <= 1000 * adminConfig.maxNewsImageKB) {
+        const reader = new FileReader()
+
+        reader.addEventListener('load', () => {
+          this.imagePreview = reader.result
+        }, false)
+
+        reader.readAsDataURL(imageFile)
+      }
+    },
+    acceptChanges() {
+      console.log('accept changes')
+    }
   }
 }
 </script>
