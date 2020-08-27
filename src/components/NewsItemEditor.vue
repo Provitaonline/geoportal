@@ -1,14 +1,10 @@
 <template>
   <div class="card">
     <ValidationObserver v-slot="{passes, dirty, failed}">
-      <div class="card-header">
+      <div style="background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
           {{newsItem.headline[$i18n.locale.substr(0, 2)]}}
         </p>
-        <div class="buttons">
-          <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
-          <b-button @click="passes(acceptChanges)" :disabled="failed || !dirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.save')}}</b-button>
-        </div>
       </div>
       <div class="card-content">
         <div class="content">
@@ -60,6 +56,14 @@
           </div>
         </div>
       </div>
+
+      <div class="card-footer" style="padding: 24px; justify-content: flex-end;">
+        <div class="buttons">
+          <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
+          <b-button @click="passes(acceptChanges)" :disabled="failed || !dirty" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.save')}}</b-button>
+        </div>
+      </div>
+
     </ValidationObserver>
   </div>
 </template>
@@ -103,6 +107,7 @@ export default {
     },
     acceptChanges() {
       console.log('accept changes')
+      this.$parent.close()
     }
   }
 }
