@@ -92,7 +92,6 @@ export default {
     ValidationProvider
   },
   beforeCreate() {
-    console.log(this.$i18n.locale)
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
@@ -101,7 +100,6 @@ export default {
   },
   methods: {
     uploadImage(imageFile) {
-      console.log(imageFile)
       if (imageFile.size <= 1000 * adminConfig.maxNewsImageKB) {
         const reader = new FileReader()
 
@@ -113,7 +111,6 @@ export default {
       }
     },
     acceptChanges() {
-      console.log('accept changes ', this.formDate.toISOString().split('.')[0]+"Z" )
       if (this.imagePreview) {
         this.newsItem.thumb = this.imagePreview
       }

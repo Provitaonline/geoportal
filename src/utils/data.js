@@ -83,6 +83,12 @@ export async function deleteFiles(token, files) {
   return response
 }
 
+export async function deleteObjects(token, objects) {
+  console.log('delete objects ', token, objects)
+  let response = await axios.get('/.netlify/functions/delete-objects?token=' + token + '&objects=' + encodeURIComponent(files))
+  return response
+}
+
 export async function submitJob(token, job) {
   let funcUrl = '/.netlify/functions/submit-job?token=' + token + '&file=' + job.file + '&type=' + job.tileInfo.type
   if (job.tileInfo.type === 'raster') {
@@ -98,9 +104,29 @@ export async function sendSurvey(survey, version) {
   return response
 }
 
+async function getNewsItem(key) {
+  let response = await axios.get(dataConfig.filesBaseUrl + key)
+  return response.data
+}
+
 export function getListOfNewsItems() {
   return new Promise((resolve, reject) => {
-    resolve([])
+    axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.newsDirectory).then(response => {
+      parseString(response.data, (err, result) => {
+        if (result.ListBucketResult.Contents) {
+          console.log('result ', result.ListBucketResult.Contents)
+          let p = result.ListBucketResult.Contents.map((item) => {
+            return getNewsItem(item.Key[0])
+          })
+          Promise.all(p).then((values) => {
+            console.log(values)
+            resolve(values)
+          })
+        } else {
+          resolve([])
+        }
+      })
+    })
   })
 }
 
