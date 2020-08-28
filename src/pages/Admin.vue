@@ -51,26 +51,28 @@
       </b-tabs>
     </section>
 
-    <b-modal v-if="!$store.state.login" :active="isLoginActive" :can-cancel="false" :width="640" scroll="keep">
-      <div class="card">
-        <div class="card-header has-text-centered">
-          <div class="card-header-title" style="display: inline-block;">
-            <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
-            <br><br>{{$t('message.adminconnect')}}<br>
-            <span style="font-weight: normal;">{{$t('message.admincolab')}}</span>
+    <ClientOnly>
+      <b-modal :active="isLoginActive" :can-cancel="false" :width="640" scroll="keep">
+        <div class="card">
+          <div class="card-header has-text-centered">
+            <div class="card-header-title" style="display: inline-block;">
+              <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
+              <br><br>{{$t('message.adminconnect')}}<br>
+              <span style="font-weight: normal;">{{$t('message.admincolab')}}</span>
+            </div>
+          </div>
+          <div class="card-content has-text-centered">
+            <b-message v-if="loginError" :title="$t('message.connectionerror')" type="is-warning" :closable="false">
+              {{loginError}}
+            </b-message>
+            <font-awesome size="4x" :icon="['fab', 'github']"/><br><br>
+            <a @click="userLogin" class="button is-primary">
+                {{$t('label.connect')}}
+            </a>
           </div>
         </div>
-        <div class="card-content has-text-centered">
-          <b-message v-if="loginError" :title="$t('message.connectionerror')" type="is-warning" :closable="false">
-            {{loginError}}
-          </b-message>
-          <font-awesome size="4x" :icon="['fab', 'github']"/><br><br>
-          <a @click="userLogin" class="button is-primary">
-              {{$t('label.connect')}}
-          </a>
-        </div>
-      </div>
-    </b-modal>
+      </b-modal>
+    </ClientOnly>
   </Layout>
 </template>
 
