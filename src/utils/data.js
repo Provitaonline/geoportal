@@ -84,8 +84,7 @@ export async function deleteFiles(token, files) {
 }
 
 export async function deleteObjects(token, objects) {
-  console.log('delete objects ', token, objects)
-  let response = await axios.get('/.netlify/functions/delete-objects?token=' + token + '&objects=' + encodeURIComponent(files))
+  let response = await axios.get('/.netlify/functions/delete-objects?token=' + token + '&objects=' + encodeURIComponent(objects))
   return response
 }
 

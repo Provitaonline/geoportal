@@ -11,7 +11,7 @@ exports.handler = (event, context, callback) => {
   console.log('delete-objects function')
 
   const token = event.queryStringParameters.token
-  const objects = JSON.parse(decodeURIComponent(event.queryStringParameters.objects))
+  const objects = JSON.parse(decodeURIComponent(event.queryStringParameters.objects)).map((key) => {return {Key: key}})
 
   console.log(objects)
 
