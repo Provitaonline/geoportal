@@ -101,7 +101,7 @@ export default {
       loginError: null,
       listOfFiles: [],
       fileListCheckedRows: [],
-      isLoginActive: false,
+      isLoginActive: true,
       metaFromRepo: [],
       metaSha: null,
       currentIndex: 0,
@@ -145,10 +145,11 @@ export default {
       if (process.isClient) {
         if (sessionStorage.githubtoken) {
           this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
+          this.isLoginActive = false
           console.log('user already connected', this.$store.state.login)
-        } else {
-          this.isLoginActive = true
         }
+      } else {
+        this.isLoginActive = false
       }
     }
     this.$eventBus.$on('userlogoff', this.userLogoff)

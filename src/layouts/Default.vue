@@ -49,14 +49,16 @@
           </ClientOnly>
         </b-navbar-dropdown>
         <b-navbar-item v-if="isAdminPage" tag="div">
-          <a v-if="$store.state.avatar" @click="showLoginInfo = true">
-            <figure v-if="$store.state.avatar" class="image is-24x24">
-              <img class="is-rounded" :src="$store.state.avatar">
-            </figure>
-          </a>
-          <a v-else @click="showLoginInfo = true" class="login-button button is-light">
-            <span><font-awesome :icon="['far', 'user']"/></span>
-          </a>
+          <ClientOnly>
+            <a v-if="$store.state.avatar" @click="showLoginInfo = true">
+              <figure v-if="$store.state.avatar" class="image is-24x24">
+                <img class="is-rounded" :src="$store.state.avatar">
+              </figure>
+            </a>
+            <a v-else @click="showLoginInfo = true" class="login-button button is-light">
+              <span><font-awesome :icon="['far', 'user']"/></span>
+            </a>
+          </ClientOnly>
         </b-navbar-item>
       </template>
     </b-navbar>
