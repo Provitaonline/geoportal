@@ -22,48 +22,20 @@
 
 <script>
 
-  import {getListOfNewsItems} from '~/utils/data'
+  import {getListOfNewsItems, saveNewsItem} from '~/utils/data'
   import NewsItemEditor from '~/components/NewsItemEditor'
 
   export default {
     name: 'AdminNewsTab',
     data() {
       return {
-        listOfNewsItems: [
-          {
-            key: 'news/2020-08-24T19:51:29.227Z-ke8xrtfv.json',
-            date: '2020-08-24T19:51Z',
-            headline: {
-              en: 'testing dgdfgdgf g dfg df g dfg df g dfgdfgdfgdfg dfg dfg dfgdf g dfg df gdf gd fg dfg',
-              es: 'probando dgdfgdgf g dfg df g dfg df g dfgdfgdfgdfg dfg dfg dfgdf g dfg df gdf gd fg dfg'
-            },
-            text: {
-              en: 'testing',
-              es: 'probando'
-            },
-            image: '',
-            reference: ''
-          },
-          {
-            key: 'news/2020-08-25T19:51:29.227Z-ke8xrtfq.json',
-            date: '2020-08-25T19:51Z',
-            headline: {
-              en: 'testing 2 dgdfgdgf g dfg df g dfg df g dfgdfgdfgdfg dfg dfg dfgdf g dfg df gdf gd fg dfg',
-              es: 'probando 2 dgdfgdgf g dfg df g dfg df g dfgdfgdfgdfg dfg dfg dfgdf g dfg df gdf gd fg dfg'
-            },
-            text: {
-              en: 'testing',
-              es: 'probando'
-            },
-            image: '',
-            reference: ''
-          }
-        ],
+        listOfNewsItems: [],
         newsItemListCheckedRows: []
       }
     },
     mounted() {
       this.getListOfNewsItems()
+      this.$eventBus.$on('acceptnewsitemchanges', this.acceptNewsItemChanges)
     },
     methods: {
       getListOfNewsItems() {
@@ -88,6 +60,18 @@
           props: {
             newsItem: newsItem
           }
+        })
+      },
+      acceptNewsItemChanges(newsItem) {
+        saveNewsItem(sessionStorage.githubtoken, newsItem).then(() => {
+          let index = this.listOfNewsItems.findIndex(item => item.key === newsItem.key)
+          if (index != -1) {
+            this.$set(this.listOfNewsItems, index, newsItem)
+          } else {
+            this.listOfNewsItems.push(newsItem)
+          }
+        }).catch((e) => {
+          console.log('error saving news item to s3 ', e)
         })
       }
     },

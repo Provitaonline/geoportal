@@ -9,20 +9,9 @@
       </div>
       <div class="card-content">
         <div class="content">
-          <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="newsItem.date"></b-input>
-            </b-field>
-          </ValidationProvider>
-          <ValidationProvider>
-            <b-field label="Select a date">
-              <b-datepicker
-                  v-model="formDate"
-                  :locale="$i18n.locale"
-                  placeholder="Click to select..."
-                  icon="calendar"
-                  trap-focus>
-              </b-datepicker>
+          <ValidationProvider rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.publishdate')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-datepicker :disabled="!!newsItem.key" v-model="formDate" :locale="$i18n.locale" icon="calendar" trap-focus></b-datepicker>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
@@ -108,6 +97,7 @@ export default {
   },
   created() {
     if (this.newsItem.date) this.formDate = new Date(this.newsItem.date)
+    if (this.newsItem.thumb) this.imagePreview = this.newsItem.thumb
   },
   methods: {
     uploadImage(imageFile) {
@@ -123,9 +113,13 @@ export default {
       }
     },
     acceptChanges() {
-      console.log('accept changes')
+      console.log('accept changes ', this.formDate.toISOString().split('.')[0]+"Z" )
       if (this.imagePreview) {
         this.newsItem.thumb = this.imagePreview
+      }
+      if (!this.newsItem.key) {
+        this.newsItem.date = this.formDate.toISOString()
+        this.newsItem.key = 'news/' + this.newsItem.date + '-' + (new Date().getTime()).toString(36) + '.json'
       }
       this.$eventBus.$emit('acceptnewsitemchanges', this.newsItem)
       this.$parent.close()

@@ -103,3 +103,8 @@ export function getListOfNewsItems() {
     resolve([])
   })
 }
+
+export async function saveNewsItem(token, newsItem) {
+  let response = await axios.put('/.netlify/functions/save-news-item?token=' + token, newsItem)
+  return response
+}
