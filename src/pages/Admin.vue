@@ -116,33 +116,33 @@ export default {
     AdminNewsTab
   },
   created() {
-    if (process.isClient) {
-      if (this.$route.query.token) {
-        let token = this.$route.query.token
-        if (this.$route.query.state === sessionStorage.stateToken) {
-          getUserInfo(token).then((info) => {
-            sessionStorage.githubtoken = token
-            sessionStorage.userInfo = JSON.stringify(info)
-            this.commitUserInfo(info)
-          }).catch((e) => {
-            if (e.status === 403) {
-              console.log('Unauthorized', e)
-              this.loginError = this.$t('message.unauthorized')
-            } else {
-              console.log('Login failed', e)
-              this.loginError = e.data.message
-            }
-          })
-        } else {
-          // This should never happen
-          console.log('State mismatch')
-          this.loginError = 'State mismatch'
-        }
-
-        let eLang = sessionStorage.stateToken.substr(0,2)
-        let langPath = (this.$i18n.fallbackLocale.substr(0,2) === eLang) ? '' : '/' + eLang
-        this.$router.push(langPath + '/admin') // Clean the url, stay with selected locale
+    if (this.$route.query.token) {
+      let token = this.$route.query.token
+      if (this.$route.query.state === sessionStorage.stateToken) {
+        getUserInfo(token).then((info) => {
+          sessionStorage.githubtoken = token
+          sessionStorage.userInfo = JSON.stringify(info)
+          this.commitUserInfo(info)
+        }).catch((e) => {
+          if (e.status === 403) {
+            console.log('Unauthorized', e)
+            this.loginError = this.$t('message.unauthorized')
+          } else {
+            console.log('Login failed', e)
+            this.loginError = e.data.message
+          }
+        })
       } else {
+        // This should never happen
+        console.log('State mismatch')
+        this.loginError = 'State mismatch'
+      }
+
+      let eLang = sessionStorage.stateToken.substr(0,2)
+      let langPath = (this.$i18n.fallbackLocale.substr(0,2) === eLang) ? '' : '/' + eLang
+      this.$router.push(langPath + '/admin') // Clean the url, stay with selected locale
+    } else {
+      if (process.isClient) {
         if (sessionStorage.githubtoken) {
           this.commitUserInfo(JSON.parse(sessionStorage.userInfo))
           console.log('user already connected', this.$store.state.login)
@@ -150,8 +150,6 @@ export default {
           this.isLoginActive = true
         }
       }
-    } else {
-      this.isLoginActive = true
     }
     this.$eventBus.$on('userlogoff', this.userLogoff)
     this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
