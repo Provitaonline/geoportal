@@ -143,6 +143,7 @@ export default {
       let eLang = sessionStorage.stateToken.substr(0,2)
       let langPath = (this.$i18n.fallbackLocale.substr(0,2) === eLang) ? '' : '/' + eLang
       this.$router.push(langPath + '/admin') // Clean the url, stay with selected locale
+      this.isLoginActive = false
     } else {
       if (process.isClient) {
         if (sessionStorage.githubtoken) {
