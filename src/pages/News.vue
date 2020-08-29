@@ -56,7 +56,6 @@
     },
     mounted() {
       this.getListOfNewsItems()
-      console.log(this.listOfNewsItems)
     },
     methods: {
       getListOfNewsItems() {

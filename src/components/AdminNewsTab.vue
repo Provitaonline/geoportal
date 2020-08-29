@@ -47,14 +47,12 @@
         }
       },
       editInfo(index) {
-        console.log(index)
         this.openNewsItemEditor(JSON.parse(JSON.stringify(this.sortedListOfNewsItems[index])))
       },
       addNewsItem() {
         this.openNewsItemEditor({headline: {}, text: {}})
       },
       openNewsItemEditor(newsItem) {
-        console.log(newsItem)
         this.$buefy.modal.open({
           parent: this,
           canCancel: ['escape', 'x'],

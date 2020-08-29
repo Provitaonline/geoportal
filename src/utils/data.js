@@ -113,12 +113,10 @@ export function getListOfNewsItems() {
     axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.newsDirectory).then(response => {
       parseString(response.data, (err, result) => {
         if (result.ListBucketResult.Contents) {
-          console.log('result ', result.ListBucketResult.Contents)
           let p = result.ListBucketResult.Contents.map((item) => {
             return getNewsItem(item.Key[0])
           })
           Promise.all(p).then((values) => {
-            console.log(values)
             resolve(values)
           })
         } else {
