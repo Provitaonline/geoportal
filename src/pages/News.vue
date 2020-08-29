@@ -9,11 +9,6 @@
     <div class="container">
       <div class="box">
         <article v-for="item, index in sortedListOfNewsItems" class="media">
-          <figure v-if="item.thumb" class="media-left">
-            <p class="image is-270x270">
-              <img :src="item.thumb">
-            </p>
-          </figure>
           <div class="media-content">
             <div class="content">
               <p>
@@ -25,6 +20,11 @@
               </p>
             </div>
           </div>
+          <figure v-if="item.thumb" class="media-right">
+            <p class="image is-270x270">
+              <img :src="item.thumb">
+            </p>
+          </figure>
         </article>
       </div>
     </div>
