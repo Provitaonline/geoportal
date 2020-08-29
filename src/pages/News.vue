@@ -21,7 +21,7 @@
             </div>
           </div>
           <figure v-if="item.thumb" class="media-right">
-            <p class="image is-270x270">
+            <p class="image">
               <img :src="item.thumb">
             </p>
           </figure>
@@ -33,9 +33,20 @@
 
 <style lang="scss" scoped>
 
-  .is-270x270 {
-    height: 270px;
-    width: 270px;
+  .image {
+    height: 300px;
+    width: 300px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .media {
+      flex-direction: column;
+    }
+    .media-right {
+      align-self: center;
+      margin-left: 0;
+      margin-top: 12px;
+    }
   }
 
 </style>
