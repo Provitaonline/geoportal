@@ -1,5 +1,6 @@
 <template>
   <div class="container" style="max-width: 900px;">
+    <b-loading v-model="isLoading"></b-loading>
     <div class="buttons" style="justify-content: center;">
       <b-button @click="confirmDelete" style="width: 160px;" :disabled="!newsItemListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
       <b-button @click="addNewsItem()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addnews')}}</b-button>
@@ -30,7 +31,8 @@
     data() {
       return {
         listOfNewsItems: null,
-        newsItemListCheckedRows: []
+        newsItemListCheckedRows: [],
+        isLoading: true
       }
     },
     mounted() {
@@ -43,6 +45,7 @@
           console.log('get news items')
           getListOfNewsItems().then((result) => {
             this.listOfNewsItems = result
+            this.isLoading = false
           })
         }
       },

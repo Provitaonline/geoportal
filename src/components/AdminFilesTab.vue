@@ -1,5 +1,6 @@
 <template>
   <div class="container" style="max-width: 800px;">
+    <b-loading v-model="isLoading"></b-loading>
     <div class="buttons" style="justify-content: center;">
       <b-button @click="confirmDelete" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
       <b-upload @input="uploadFile" :disabled="uploadInProgress" native accept=".zip,.tif" v-model="fileToUpload">
@@ -57,7 +58,8 @@
         fileToUpload: null,
         uploadInProgress: false,
         uploadProgressValue: 0,
-        searchString: ''
+        searchString: '',
+        isLoading: true
       }
     },
     mounted() {
@@ -65,6 +67,7 @@
       getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
         this.metaFromRepo = result.data.collection
         this.metaSha = result.sha
+        this.isLoading = false
       })
       this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
     },
