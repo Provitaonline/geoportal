@@ -8,62 +8,22 @@
     <br>
     <div class="container">
       <div class="box">
-        <article class="media">
-          <figure class="media-left">
+        <article v-for="item, index in sortedListOfNewsItems" class="media">
+          <figure v-if="item.thumb" class="media-left">
             <p class="image is-270x270">
-              <img src="https://bulma.io/images/placeholders/128x128.png">
+              <img :src="item.thumb">
             </p>
           </figure>
           <div class="media-content">
             <div class="content">
               <p>
-                <strong>Titular</strong>
+                <strong>{{item.headline[$i18n.locale.substr(0, 2)]}}</strong>
                 <br>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
+                <small>{{$d(new Date(item.date), 'long')}}</small>
+                <br>
+                {{item.text[$i18n.locale.substr(0, 2)]}}
               </p>
             </div>
-            <nav class="level is-mobile">
-              <div class="level-left">
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fas fa-reply"></i></span>
-                </a>
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-                </a>
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fas fa-heart"></i></span>
-                </a>
-              </div>
-            </nav>
-          </div>
-        </article>
-        <article class="media">
-          <figure class="media-left">
-            <p class="image is-270x270">
-              <img src="https://bulma.io/images/placeholders/128x128.png">
-            </p>
-          </figure>
-          <div class="media-content">
-            <div class="content">
-              <p>
-                <strong>Titular</strong>
-                <br>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
-              </p>
-            </div>
-            <nav class="level is-mobile">
-              <div class="level-left">
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fas fa-reply"></i></span>
-                </a>
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-                </a>
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fas fa-heart"></i></span>
-                </a>
-              </div>
-            </nav>
           </div>
         </article>
       </div>
@@ -81,11 +41,36 @@
 </style>
 
 <script>
-export default {
-  metaInfo() {
-    return {
-      title: this.$t('label.news')
+  import {getListOfNewsItems} from '~/utils/data'
+
+  export default {
+    metaInfo() {
+      return {
+        title: this.$t('label.news')
+      }
+    },
+    data() {
+      return {
+        listOfNewsItems: []
+      }
+    },
+    mounted() {
+      this.getListOfNewsItems()
+      console.log(this.listOfNewsItems)
+    },
+    methods: {
+      getListOfNewsItems() {
+        getListOfNewsItems().then((result) => {
+          this.listOfNewsItems = result
+        })
+      }
+    },
+    computed: {
+      sortedListOfNewsItems() {
+        if (this.listOfNewsItems.length) {
+          return this.listOfNewsItems.sort((a, b) => (a.date > b.date) ? -1 : 1)
+        }
+      }
     }
   }
-}
 </script>
