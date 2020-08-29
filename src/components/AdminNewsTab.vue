@@ -29,20 +29,22 @@
     name: 'AdminNewsTab',
     data() {
       return {
-        listOfNewsItems: [],
+        listOfNewsItems: null,
         newsItemListCheckedRows: []
       }
     },
     mounted() {
-      this.getListOfNewsItems()
+      this.$eventBus.$on('newstabvisible', this.getListOfNewsItems)
       this.$eventBus.$on('acceptnewsitemchanges', this.acceptNewsItemChanges)
     },
     methods: {
       getListOfNewsItems() {
-        console.log('get news items')
-        getListOfNewsItems().then((result) => {
-          this.listOfNewsItems = result
-        })
+        if (!this.listOfNewsItems) {
+          console.log('get news items')
+          getListOfNewsItems().then((result) => {
+            this.listOfNewsItems = result
+          })
+        }
       },
       editInfo(index) {
         console.log(index)
@@ -98,7 +100,7 @@
     },
     computed: {
       sortedListOfNewsItems() {
-        if (this.listOfNewsItems.length) {
+        if (this.listOfNewsItems && this.listOfNewsItems.length) {
           return this.listOfNewsItems.sort((a, b) => (a.date > b.date) ? -1 : 1)
         }
       }

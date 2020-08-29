@@ -7,11 +7,11 @@
     </template>
     <br>
     <section class="container">
-      <b-tabs type="is-boxed" :animated="false">
-        <b-tab-item :label="$t('label.files')">
+      <b-tabs @input="tabChanged()" v-model="activeTab" type="is-boxed" :animated="false">
+        <b-tab-item value="files" :label="$t('label.files')">
           <AdminFilesTab />
         </b-tab-item>
-        <b-tab-item :label="$t('label.news')">
+        <b-tab-item value="news" :label="$t('label.news')">
           <AdminNewsTab />
         </b-tab-item>
       </b-tabs>
@@ -67,7 +67,8 @@ export default {
   data() {
     return {
       loginError: null,
-      isLoginActive: true
+      isLoginActive: true,
+      activeTab: 'files'
     }
   },
   components: {
@@ -134,6 +135,11 @@ export default {
       this.$store.commit('setLogin', info.login)
       this.$store.commit('setName', info.name)
       this.$store.commit('setAvatar', info.avatar)
+    },
+    tabChanged() {
+      if (this.activeTab === 'news') {
+        this.$eventBus.$emit('newstabvisible')
+      }
     }
   },
   computed: {
