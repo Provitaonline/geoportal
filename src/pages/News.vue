@@ -39,14 +39,14 @@
         </article>
         <article class="media">
           <figure class="media-left">
-            <p class="image is-128x128">
+            <p class="image is-270x270">
               <img src="https://bulma.io/images/placeholders/128x128.png">
             </p>
           </figure>
           <div class="media-content">
             <div class="content">
               <p>
-                <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
+                <strong>Titular</strong>
                 <br>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
               </p>
