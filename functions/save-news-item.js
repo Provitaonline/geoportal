@@ -13,9 +13,29 @@ exports.handler = (event, context, callback) => {
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
+    if (newsItem.thumb) {
+      let parts = newsItem.thumb.split(',')
+      let info = parts[0].split(/[:;]/)
+      let thumbKey = newsItem.key.replace(/news\//,'news/thumbs/') + '.' + info[1].split('/')[1]
+      s3.putObject({
+        ACL: 'public-read',
+        Body: Buffer.from(parts[1], 'base64'),
+        Bucket: config.bucket,
+        ContentType: info[1],
+        Key: thumbKey
+      }, ((err, data) => {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('thumb saved')
+        }
+      }))
+      newsItem.thumb = 'https://' + config.bucket + '.s3-' + config.region + '.amazonaws.com/' + thumbKey
+    }
+
     s3.putObject({
       ACL: 'public-read',
-      Body: event.body,
+      Body: JSON.stringify(newsItem),
       Bucket: config.bucket,
       ContentType: 'application/json',
       Key: newsItem.key

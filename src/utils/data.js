@@ -110,7 +110,7 @@ async function getNewsItem(key) {
 
 export function getListOfNewsItems() {
   return new Promise((resolve, reject) => {
-    axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.newsDirectory).then(response => {
+    axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.newsDirectory + '/&delimiter=/').then(response => {
       parseString(response.data, (err, result) => {
         if (result.ListBucketResult.Contents) {
           let p = result.ListBucketResult.Contents.map((item) => {
