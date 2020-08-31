@@ -23,13 +23,7 @@ exports.handler = (event, context, callback) => {
         Bucket: config.bucket,
         ContentType: info[1],
         Key: thumbKey
-      }, ((err, data) => {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log('thumb saved')
-        }
-      }))
+      }, ((err) => { if (err) { console.log(err) }}))
       newsItem.thumb = 'https://' + config.bucket + '.s3-' + config.region + '.amazonaws.com/' + thumbKey
     }
 
