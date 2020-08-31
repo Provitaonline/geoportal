@@ -10,7 +10,7 @@
     </div>
     <div class="card-content">
       <div class="content">
-        <div v-for="item in $static.userSurveyTemplate.fields">
+        <div v-for="item in surveyTemplate.fields">
           <b-field v-if="item.type === 'text'" :label="item.label[$i18n.locale.substr(0, 2)]">
             <b-input v-model="surveyData[item.fieldname]" maxlength="1000" type="textarea"></b-input>
           </b-field>
@@ -32,33 +32,14 @@
   </div>
 </template>
 
-<static-query>
-  query {
-    userSurveyTemplate (id: "usersurvey") {
-      version
-			fields {
-        fieldname
-        type
-        options {
-          en
-          es
-        }
-        label {
-          en
-          es
-        }
-      }
-    }
-  }
-</static-query>
-
 <script>
-import {sendSurvey} from '~/utils/data'
+import {sendSurvey, getSurveyTemplate} from '~/utils/data'
 
 export default {
   name: 'UserSurveyForm',
   props: {
-    downloadFileIndex: { type: Number, required: true }
+    downloadFileIndex: { type: Number, required: true },
+    surveyTemplate: { type: Object, required: true }
   },
   data() {
     return {
@@ -66,7 +47,7 @@ export default {
     }
   },
   created() {
-    this.$static.userSurveyTemplate.fields.forEach(item => {
+    this.surveyTemplate.fields.forEach(item => {
       this.$set(this.surveyData, item.fieldname, '')
     })
   },
@@ -74,7 +55,7 @@ export default {
     downloadFile(withSurvey) {
       if (withSurvey) {
         console.log('Submit survey data', this.surveyData)
-        sendSurvey(this.surveyData, this.$static.userSurveyTemplate.version)
+        sendSurvey(this.surveyData, this.surveyTemplate.version)
       }
       document.getElementById('download-' + this.downloadFileIndex).click()
     }

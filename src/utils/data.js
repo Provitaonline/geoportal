@@ -98,6 +98,11 @@ export async function submitJob(token, job) {
   return response
 }
 
+export async function getSurveyTemplate() {
+  let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.surveyTemplateName)
+  return response
+}
+
 export async function sendSurvey(survey, version) {
   let response = await axios.put('/.netlify/functions/send-survey?version=' + version, survey)
   return response

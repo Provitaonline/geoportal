@@ -192,7 +192,8 @@
         isPopupModalModalActive: false,
         popupModalData: {},
         popUpModalHeading: '',
-        searchString: ''
+        searchString: '',
+        surveyTemplate: null
       }
     },
     components: {
@@ -219,6 +220,7 @@
           }
         })
       }
+      data.getSurveyTemplate().then(result => this.surveyTemplate = result.data)
     },
     mounted() {
       this.$eventBus.$on('showpopupmodal', (info) => {
@@ -260,7 +262,8 @@
           canCancel: ['escape', 'x'],
           component: UserSurveyForm,
           props: {
-            downloadFileIndex: index
+            downloadFileIndex: index,
+            surveyTemplate: this.surveyTemplate
           }
         })
       },

@@ -49,5 +49,6 @@ export const dataConfig = {
   filesBaseUrl: 'https://' + awsConfig.bucket + '.s3-' + awsConfig.region + '.amazonaws.com/',
   filesDirectory: 'files',
   newsDirectory: 'news',
-  metaFileName: 'meta.json'
+  metaFileName: 'meta.json',
+  surveyTemplateName: 'survey-template.json'
 }
