@@ -52,8 +52,8 @@
               </b-upload>
             </b-field>
           </ValidationProvider>
-          <div>
-            <img style="max-width: 270px;" :src="imagePreview">
+          <div class="image">
+            <img :src="imagePreview">
           </div>
         </div>
       </div>
@@ -68,6 +68,15 @@
     </ValidationObserver>
   </div>
 </template>
+
+<style lang="scss" scoped>
+
+  .image {
+    height: 270px;
+    width: 270px;
+  }
+
+</style>
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
