@@ -123,7 +123,8 @@
       "questionenglish": "Question in english",
       "questiontype":"Question type",
       "selection": "Selection",
-      "text": "Text"
+      "text": "Text",
+      "newquestion": "New question"
     }
   },
   "es": {
@@ -250,7 +251,8 @@
       "questionenglish": "Pregunta en inglés",
       "questiontype":"Tipo de pregunta",
       "selection": "Selección",
-      "text": "Texto"
+      "text": "Texto",
+      "newquestion": "Pregunta nueva"
     }
   }
 }
