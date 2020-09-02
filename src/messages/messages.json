@@ -115,7 +115,15 @@
       "reference": "Reference",
       "addimage": "Add thumbnail",
       "upto": "Up to",
-      "newitem": "New item"
+      "newitem": "New item",
+      "survey": "Survey",
+      "question": "Question",
+      "addquestion": "Add question",
+      "questionspanish": "Question in spanish",
+      "questionenglish": "Question in english",
+      "questiontype":"Question type",
+      "selection": "Selection",
+      "text": "Text"
     }
   },
   "es": {
@@ -234,7 +242,15 @@
       "reference": "Referencia",
       "addimage": "Añadir miniatura",
       "upto": "hasta",
-      "newitem": "Artículo nuevo"
+      "newitem": "Artículo nuevo",
+      "survey": "Encuesta",
+      "question": "Pregunta",
+      "addquestion": "Añadir pregunta",
+      "questionspanish": "Pregunta en español",
+      "questionenglish": "Pregunta en inglés",
+      "questiontype":"Tipo de pregunta",
+      "selection": "Selección",
+      "text": "Texto"
     }
   }
 }

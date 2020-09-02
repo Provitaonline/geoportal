@@ -14,6 +14,9 @@
         <b-tab-item value="news" :label="$t('label.news')">
           <AdminNewsTab />
         </b-tab-item>
+        <b-tab-item value="survey" :label="$t('label.survey')">
+          <AdminSurveyTab />
+        </b-tab-item>
       </b-tabs>
     </section>
 
@@ -57,6 +60,7 @@ import {adminConfig} from '~/utils/config'
 import {getPureText} from '~/utils/misc'
 import AdminFilesTab from '~/components/AdminFilesTab'
 import AdminNewsTab from '~/components/AdminNewsTab'
+import AdminSurveyTab from '~/components/AdminSurveyTab'
 
 export default {
   metaInfo() {
@@ -73,7 +77,8 @@ export default {
   },
   components: {
     AdminFilesTab,
-    AdminNewsTab
+    AdminNewsTab,
+    AdminSurveyTab
   },
   created() {
     if (this.$route.query.token) {
@@ -137,8 +142,13 @@ export default {
       this.$store.commit('setAvatar', info.avatar)
     },
     tabChanged() {
-      if (this.activeTab === 'news') {
-        this.$eventBus.$emit('newstabvisible')
+      switch (this.activeTab) {
+        case 'news':
+          this.$eventBus.$emit('newstabvisible')
+          break
+        case 'survey':
+          this.$eventBus.$emit('surveytabvisible')
+          break
       }
     }
   },

@@ -100,7 +100,14 @@ export async function submitJob(token, job) {
 
 export async function getSurveyTemplate() {
   let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.surveyTemplateName)
-  return response
+  return response.data
+}
+
+export async function getSurveyTemplateFromRepo(token) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.surveyTemplateName)
+  return JSON.parse(Base64.decode(response.data.content))
 }
 
 export async function sendSurvey(survey, version) {
