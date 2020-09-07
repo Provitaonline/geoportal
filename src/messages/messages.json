@@ -124,7 +124,10 @@
       "questiontype":"Question type",
       "selection": "Selection",
       "text": "Text",
-      "newquestion": "New question"
+      "newquestion": "New question",
+      "addoption": "Add an option",
+      "optionsspanish": "Options in spanish",
+      "optionsenglish": "Options in english"
     }
   },
   "es": {
@@ -252,7 +255,10 @@
       "questiontype":"Tipo de pregunta",
       "selection": "Selección",
       "text": "Texto",
-      "newquestion": "Pregunta nueva"
+      "newquestion": "Pregunta nueva",
+      "addoption": "Añadir una opción",
+      "optionsspanish": "Opciones en español",
+      "optionsenglish": "Opciones en inglés"
     }
   }
 }
