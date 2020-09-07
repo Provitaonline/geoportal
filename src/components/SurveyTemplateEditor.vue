@@ -91,6 +91,7 @@ export default {
   },
   methods: {
     acceptChanges() {
+      if (this.q.type === 'text') delete this.q.options
       this.$eventBus.$emit('acceptquestionchanges', this.q)
       this.$parent.close()
     },
