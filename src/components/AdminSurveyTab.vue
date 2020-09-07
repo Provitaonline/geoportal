@@ -6,7 +6,7 @@
       <b-button @click="addQuestion()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
       <b-button @click="" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
     </div>
-    <b-table checkable hoverable :header-checkable="false" v-if="surveyTemplate" :data="surveyTemplate.fields" :checked-rows.sync="questionListCheckedRows" draggable>
+    <b-table checkable hoverable :header-checkable="false" v-if="surveyTemplate" :data="surveyTemplate.fields" :checked-rows.sync="questionListCheckedRows" draggable @dragstart="dragStart" @dragover="dragOver" @drop="dropRow">
       <b-table-column field="fieldname" :label="$t('label.name')" v-slot="props">
         {{props.row.fieldname}}
       </b-table-column>
@@ -36,7 +36,8 @@
         isLoading: true,
         currentIndex: 0,
         isNew: false,
-        isChanged: false
+        isChanged: false,
+        draggingRowIndex: null
       }
     },
     mounted() {
@@ -89,6 +90,19 @@
         }).catch((e) => {
           console.log('error saving news item to s3 ', e)
         }) */
+      },
+      dragStart(payload) {
+        this.draggingRowIndex = payload.index
+        payload.event.dataTransfer.effectAllowed = 'move'
+      },
+      dragOver(payload) {
+        payload.event.dataTransfer.dropEffect = 'move'
+        payload.event.preventDefault()
+      },
+      dropRow(payload) {
+        var element = this.surveyTemplate.fields[this.draggingRowIndex]
+        this.surveyTemplate.fields.splice(this.draggingRowIndex, 1);
+        this.surveyTemplate.fields.splice(payload.index, 0, element);
       }
     }
   }

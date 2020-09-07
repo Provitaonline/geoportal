@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     acceptChanges() {
-      console.log('hey')
       this.$eventBus.$emit('acceptquestionchanges', this.q)
       this.$parent.close()
     },
