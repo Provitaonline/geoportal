@@ -4,6 +4,7 @@
     <div class="buttons" style="justify-content: center;">
       <b-button @click="" style="width: 160px;" :disabled="!questionListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
       <b-button @click="addQuestion()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
+      <b-button @click="" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
     </div>
     <b-table checkable hoverable :header-checkable="false" v-if="surveyTemplate" :data="surveyTemplate.fields" :checked-rows.sync="questionListCheckedRows" draggable>
       <b-table-column field="fieldname" :label="$t('label.name')" v-slot="props">
@@ -32,7 +33,10 @@
       return {
         surveyTemplate: null,
         questionListCheckedRows: [],
-        isLoading: true
+        isLoading: true,
+        currentIndex: 0,
+        isNew: false,
+        isChanged: false
       }
     },
     mounted() {
@@ -42,18 +46,20 @@
     methods: {
       getSurveyTemplate() {
         if (!this.surveyTemplate) {
-          console.log('get news items')
+          console.log('get survey template')
           getSurveyTemplateFromRepo().then((result) => {
             this.surveyTemplate = result
-            console.log(this.surveyTemplate)
             this.isLoading = false
           })
         }
       },
       editQuestion(index) {
+        this.isNew = false
+        this.currentIndex = index
         this.openSurveyTemplateEditor(JSON.parse(JSON.stringify(this.surveyTemplate.fields[index])))
       },
       addQuestion() {
+        this.isNew = true
         this.openSurveyTemplateEditor({label:{en: '', es: ''}})
       },
       openSurveyTemplateEditor(question) {
@@ -67,7 +73,12 @@
         })
       },
       acceptQuestionChanges(question) {
-        console.log('save survey template')
+        this.isChanged = true
+        if (this.isNew) {
+          this.surveyTemplate.fields.push(question)
+        } else {
+          this.$set(this.surveyTemplate.fields, this.currentIndex, question)
+        }
         /* saveSurveyTemplate(sessionStorage.githubtoken, question).then(() => {
           let index = this.surveyTemplate.fields.findIndex(item => item.fieldname === question.fieldname)
           if (index != -1) {

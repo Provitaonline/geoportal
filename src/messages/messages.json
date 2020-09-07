@@ -127,7 +127,8 @@
       "newquestion": "New question",
       "addoption": "Add an option",
       "optionsspanish": "Options in spanish",
-      "optionsenglish": "Options in english"
+      "optionsenglish": "Options in english",
+      "savechanges": "Save changes"
     }
   },
   "es": {
@@ -258,7 +259,8 @@
       "newquestion": "Pregunta nueva",
       "addoption": "Añadir una opción",
       "optionsspanish": "Opciones en español",
-      "optionsenglish": "Opciones en inglés"
+      "optionsenglish": "Opciones en inglés",
+      "savechanges": "Guardar cambios"
     }
   }
 }

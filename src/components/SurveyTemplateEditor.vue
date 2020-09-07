@@ -30,13 +30,13 @@
               <b-radio @input="selectEntry()" v-model="q.type" name="type" native-value="select">{{$t('label.selection')}}</b-radio>
             </b-field>
           </ValidationProvider>
-          <ValidationProvider rules="required" v-slot="{ errors, valid }">
-            <b-field v-if="q.type === 'select'" :label="$t('label.optionsspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+          <ValidationProvider v-if="q.type === 'select'" rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.optionsspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-taginput v-model="q.options.es" :placeholder="$t('label.addoption')"></b-taginput>
             </b-field>
           </ValidationProvider>
-          <ValidationProvider rules="required" v-slot="{ errors, valid }">
-            <b-field v-if="q.type === 'select'" :label="$t('label.optionsenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+          <ValidationProvider v-if="q.type === 'select'" rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.optionsenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-taginput v-model="q.options.en" :placeholder="$t('label.addoption')"></b-taginput>
             </b-field>
           </ValidationProvider>
@@ -46,7 +46,7 @@
       <div class="card-footer" style="padding: 24px; justify-content: flex-end;">
         <div class="buttons">
           <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
-          <b-button @click="passes(acceptChanges)" :disabled="failed || pristine" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.save')}}</b-button>
+          <b-button @click="passes(acceptChanges)" :disabled="failed || pristine" style="width: 140px;"><font-awesome :icon="['fas', 'check']"/>&nbsp;{{$t('label.accept')}}</b-button>
         </div>
       </div>
 
@@ -91,6 +91,7 @@ export default {
   },
   methods: {
     acceptChanges() {
+      console.log('hey')
       this.$eventBus.$emit('acceptquestionchanges', this.q)
       this.$parent.close()
     },
