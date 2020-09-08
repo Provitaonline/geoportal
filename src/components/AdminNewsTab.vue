@@ -42,12 +42,15 @@
     methods: {
       getListOfNewsItems() {
         if (!this.listOfNewsItems) {
-          console.log('get news items')
-          getListOfNewsItems().then((result) => {
-            this.listOfNewsItems = result
-            this.isLoading = false
-          })
+          this.reloadListOfNewsItems()
         }
+      },
+      reloadListOfNewsItems() {
+        console.log('get news items')
+        getListOfNewsItems().then((result) => {
+          this.listOfNewsItems = result
+          this.isLoading = false
+        })
       },
       editInfo(index) {
         this.openNewsItemEditor(JSON.parse(JSON.stringify(this.sortedListOfNewsItems[index])))
@@ -79,21 +82,24 @@
       },
       confirmDelete() {
         console.log('confirm delete')
-        let itemsToDelete = this.newsItemListCheckedRows.map((item) => item.key)
         this.$buefy.dialog.confirm({
           title: this.$t('message.removenewsitems'),
-          message: this.$t('message.removenewsitemswarning') + ':<br><br>' + itemsToDelete.join(', '),
+          message: this.$t('message.removenewsitemswarning'),
           confirmText: this.$t('label.confirm'),
           cancelText: this.$t('label.cancel'),
           type: 'none',
           focusOn: 'cancel',
-          onConfirm: () => {this.deleteNewsItems(itemsToDelete)}
+          onConfirm: () => {this.deleteNewsItems()}
         })
       },
-      deleteNewsItems(itemsToDelete) {
+      deleteNewsItems() {
+        let itemsToDelete = this.newsItemListCheckedRows.map((item) => item.key)
+        let thumbsToDelete = this.newsItemListCheckedRows.map((item) => item.thumb ? item.thumb.substring(item.thumb.indexOf('amazonaws.com/') + 14) : null).filter((t) => t)
+
         deleteObjects(sessionStorage.githubtoken, JSON.stringify(itemsToDelete)).then(() => {
           this.newsItemListCheckedRows = []
-          this.getListOfNewsItems()
+          this.reloadListOfNewsItems()
+          deleteObjects(sessionStorage.githubtoken, JSON.stringify(thumbsToDelete))
         }).catch((e) => {
           console.log('error deleting news items ', e.response)
         })
