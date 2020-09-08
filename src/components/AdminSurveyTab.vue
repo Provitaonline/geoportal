@@ -2,7 +2,7 @@
   <div class="container" style="max-width: 900px;">
     <b-loading v-model="isLoading"></b-loading>
     <div class="buttons" style="justify-content: center;">
-      <b-button @click="" style="width: 160px;" :disabled="!questionListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
+      <b-button @click="confirmDelete()" style="width: 160px;" :disabled="!questionListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
       <b-button @click="addQuestion()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
       <b-button @click="" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
     </div>
@@ -12,7 +12,7 @@
       :header-checkable="false"
       v-if="surveyTemplate"
       :data="surveyTemplate.fields"
-      :checked-rows.sync="questionListCheckedRows" 
+      :checked-rows.sync="questionListCheckedRows"
       draggable
       @dragstart="dragStart"
       @dragover="dragOver"
@@ -100,6 +100,21 @@
         }).catch((e) => {
           console.log('error saving news item to s3 ', e)
         }) */
+      },
+      confirmDelete() {
+        console.log('confirm delete')
+        this.$buefy.dialog.confirm({
+          title: this.$t('message.removequestions'),
+          message: this.$t('message.removequestionswarning'),
+          confirmText: this.$t('label.confirm'),
+          cancelText: this.$t('label.cancel'),
+          type: 'none',
+          focusOn: 'cancel',
+          onConfirm: () => {this.deleteQuestions()}
+        })
+      },
+      deleteQuestions() {
+        this.surveyTemplate.fields = this.surveyTemplate.fields.filter(x => !this.questionListCheckedRows.includes(x))
       },
       dragStart(payload) {
         this.draggingRowIndex = payload.index

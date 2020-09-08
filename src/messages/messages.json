@@ -15,6 +15,8 @@
       "removefileswarning": "This operation will remove the selected data sets and their associated metadata",
       "removenewsitems": "Remove news items",
       "removenewsitemswarning": "This operation will remove the selected news items",
+      "removequestions": "Remove questions",
+      "removequestionswarning": "This operation will remove the selected questions",
       "batchjobwarning": "Any changes in the color table (section below this message) will trigger the (re)generation of the tile layer associated with this data set.",
       "dataconflictmessage": "Metadata has been changed by another user, therefore your changes will be canceled",
       "surveyheader": "Would you like to complete a survey to help us serve you better?"
@@ -148,6 +150,8 @@
       "removefiles": "Eliminar archivos de datos",
       "removefileswarning": "Esta operación eliminará los archivos de datos seleccionados y los metadatos asociados",
       "removenewsitems": "Eliminar artículos",
+      "removequestions": "Eliminar preguntas",
+      "removequestionswarning": "Esta operación eliminará las preguntas seleccionadas",
       "removenewsitemswarning": "Esta operación eliminará los artículos seleccionados",
       "batchjobwarning": "Cualquier cambio en la tabla de colores (sección debajo de éste mensaje) iniciará la (re)generación de la capa de teselas asociada con éste archivo de datos.",
       "dataconflictmessage": "Los metadatos han sido modificados por otro usuario, por lo tanto tus cambios no se han efectuado.",
