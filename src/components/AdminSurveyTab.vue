@@ -6,7 +6,17 @@
       <b-button @click="addQuestion()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
       <b-button @click="" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
     </div>
-    <b-table checkable hoverable :header-checkable="false" v-if="surveyTemplate" :data="surveyTemplate.fields" :checked-rows.sync="questionListCheckedRows" draggable @dragstart="dragStart" @dragover="dragOver" @drop="dropRow">
+    <b-table
+      checkable
+      hoverable
+      :header-checkable="false"
+      v-if="surveyTemplate"
+      :data="surveyTemplate.fields"
+      :checked-rows.sync="questionListCheckedRows" 
+      draggable
+      @dragstart="dragStart"
+      @dragover="dragOver"
+      @drop="dropRow">
       <b-table-column field="fieldname" :label="$t('label.name')" v-slot="props">
         {{props.row.fieldname}}
       </b-table-column>
