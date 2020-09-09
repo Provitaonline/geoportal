@@ -126,6 +126,11 @@ export async function getFAQFromRepo(token) {
   }
 }
 
+export async function getFAQ() {
+  let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.faqFileName)
+  return response.data
+}
+
 async function getNewsItem(key) {
   let response = await axios.get(dataConfig.filesBaseUrl + key)
   return response.data

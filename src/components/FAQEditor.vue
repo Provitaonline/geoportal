@@ -15,7 +15,7 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.answerspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+            <b-field :label="$t('label.answerspanish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="q.answer.es" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
@@ -25,7 +25,7 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.answerenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+            <b-field :label="$t('label.answerenglish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="q.answer.en" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
@@ -45,9 +45,9 @@
 
 <style lang="scss" scoped>
 
-  .image {
-    height: 270px;
-    width: 270px;
+  ::v-deep textarea {
+    font-family: monospace;
+    font-size: 0.9rem;
   }
 
 </style>
