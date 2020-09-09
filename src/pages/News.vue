@@ -12,11 +12,13 @@
           <div class="media-content">
             <div class="content">
               <p>
-                <strong>{{item.headline[$i18n.locale.substr(0, 2)]}}</strong>
-                <br>
+                <div class="is-size-5 has-text-weight-bold">{{item.headline[$i18n.locale.substr(0, 2)]}}</div>
                 <small>{{$d(new Date(item.date), 'long')}}</small>
-                <br>
+                <br><br>
                 {{item.text[$i18n.locale.substr(0, 2)]}}
+              </p>
+              <p v-if="item.reference" class="has-text-weight-semibold">
+                <g-link :to="item.reference">{{$t('label.readmore')}}</g-link>
               </p>
             </div>
           </div>

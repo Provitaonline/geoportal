@@ -132,7 +132,8 @@
       "addoption": "Add an option",
       "optionsspanish": "Options in spanish",
       "optionsenglish": "Options in english",
-      "savechanges": "Save changes"
+      "savechanges": "Save changes",
+      "readmore": "Read more..."
     }
   },
   "es": {
@@ -268,7 +269,8 @@
       "addoption": "Añadir una opción",
       "optionsspanish": "Opciones en español",
       "optionsenglish": "Opciones en inglés",
-      "savechanges": "Guardar cambios"
+      "savechanges": "Guardar cambios",
+      "readmore": "Leer más..."
     }
   }
 }
