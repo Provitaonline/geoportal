@@ -13,7 +13,7 @@ exports.handler = (event, context, callback) => {
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
-    if (newsItem.thumb) {
+    if (newsItem.thumb && newsItem.thumb.startsWith('data:')) {
       let parts = newsItem.thumb.split(',')
       let info = parts[0].split(/[:;]/)
       let thumbKey = newsItem.key.replace(/news\//,'news/thumbs/') + '.' + info[1].split('/')[1]
