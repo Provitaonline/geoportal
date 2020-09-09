@@ -55,6 +55,7 @@ export default {
     downloadFile(withSurvey) {
       if (withSurvey) {
         console.log('Submit survey data', this.surveyData)
+        this.surveyData.version = this.surveyTemplate.version
         sendSurvey(this.surveyData, this.surveyTemplate.version)
       }
       document.getElementById('download-' + this.downloadFileIndex).click()

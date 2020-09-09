@@ -4,7 +4,7 @@
     <div class="buttons" style="justify-content: center;">
       <b-button @click="confirmDelete()" style="width: 160px;" :disabled="!questionListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
       <b-button @click="addQuestion()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
-      <b-button @click="" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
+      <b-button @click="saveChanges()" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
     </div>
     <b-table
       checkable
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import {getSurveyTemplateFromRepo} from '~/utils/data'
+  import {getSurveyTemplateFromRepo, saveSurveyTemplate} from '~/utils/data'
   import SurveyTemplateEditor from '~/components/SurveyTemplateEditor'
 
   export default {
@@ -90,16 +90,6 @@
         } else {
           this.$set(this.surveyTemplate.fields, this.currentIndex, question)
         }
-        /* saveSurveyTemplate(sessionStorage.githubtoken, question).then(() => {
-          let index = this.surveyTemplate.fields.findIndex(item => item.fieldname === question.fieldname)
-          if (index != -1) {
-            this.$set(this.surveyTemplate.fields, index, question)
-          } else {
-            this.this.surveyTemplate.fields.push(question)
-          }
-        }).catch((e) => {
-          console.log('error saving news item to s3 ', e)
-        }) */
       },
       confirmDelete() {
         console.log('confirm delete')
@@ -113,8 +103,18 @@
           onConfirm: () => {this.deleteQuestions()}
         })
       },
+      saveChanges() {
+        this.surveyTemplate.version++
+        saveSurveyTemplate(sessionStorage.githubtoken, this.surveyTemplate).then(() => {
+          console.log('saved survey template')
+          this.isChanged = false
+        }).catch((e) => {
+          console.log('error saving survey template to github ', e)
+        })
+      },
       deleteQuestions() {
         this.surveyTemplate.fields = this.surveyTemplate.fields.filter(x => !this.questionListCheckedRows.includes(x))
+        this.isChanged = true
       },
       dragStart(payload) {
         this.draggingRowIndex = payload.index
