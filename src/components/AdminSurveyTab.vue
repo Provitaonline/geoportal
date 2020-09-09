@@ -126,8 +126,9 @@
       },
       dropRow(payload) {
         var element = this.surveyTemplate.fields[this.draggingRowIndex]
-        this.surveyTemplate.fields.splice(this.draggingRowIndex, 1);
-        this.surveyTemplate.fields.splice(payload.index, 0, element);
+        this.surveyTemplate.fields.splice(this.draggingRowIndex, 1)
+        this.surveyTemplate.fields.splice(payload.index, 0, element)
+        this.isChanged = true
       }
     }
   }
