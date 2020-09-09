@@ -50,5 +50,6 @@ export const dataConfig = {
   filesDirectory: 'files',
   newsDirectory: 'news',
   metaFileName: 'meta.json',
-  surveyTemplateName: 'survey-template.json'
+  surveyTemplateName: 'survey-template.json',
+  faqFileName: 'faq.json'
 }

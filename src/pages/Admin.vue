@@ -17,6 +17,9 @@
         <b-tab-item value="survey" :label="$t('label.survey')">
           <AdminSurveyTab />
         </b-tab-item>
+        <b-tab-item value="faq" :label="$t('label.faq')">
+          <AdminFAQTab />
+        </b-tab-item>
       </b-tabs>
     </section>
 
@@ -61,6 +64,7 @@ import {getPureText} from '~/utils/misc'
 import AdminFilesTab from '~/components/AdminFilesTab'
 import AdminNewsTab from '~/components/AdminNewsTab'
 import AdminSurveyTab from '~/components/AdminSurveyTab'
+import AdminFAQTab from '~/components/AdminFAQTab'
 
 export default {
   metaInfo() {
@@ -78,7 +82,8 @@ export default {
   components: {
     AdminFilesTab,
     AdminNewsTab,
-    AdminSurveyTab
+    AdminSurveyTab,
+    AdminFAQTab
   },
   created() {
     if (this.$route.query.token) {
@@ -148,6 +153,9 @@ export default {
           break
         case 'survey':
           this.$eventBus.$emit('surveytabvisible')
+          break
+        case 'faq':
+          this.$eventBus.$emit('faqtabvisible')
           break
       }
     }

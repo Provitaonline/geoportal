@@ -99,6 +99,7 @@
       "addtag": "Add a tag",
       "tilelayername": "Tile layer name",
       "help": "Help",
+      "faq": "F.A.Q.",
       "news": "News",
       "skipautogen": "Manually generated",
       "shapefile": "Shapefile",
@@ -133,7 +134,9 @@
       "optionsspanish": "Options in spanish",
       "optionsenglish": "Options in english",
       "savechanges": "Save changes",
-      "readmore": "Read more..."
+      "readmore": "Read more...",
+      "answerspanish": "Answer in spanish",
+      "answerenglish": "Answer in english"
     }
   },
   "es": {
@@ -236,6 +239,7 @@
       "addtag": "Añade una etiqueta",
       "tilelayername": "Nombre de la capa de teselas",
       "help": "Ayuda",
+      "faq": "Ayuda",
       "news": "Noticias",
       "skipautogen": "Generación manual",
       "shapefile": "Shapefile",
@@ -270,7 +274,9 @@
       "optionsspanish": "Opciones en español",
       "optionsenglish": "Opciones en inglés",
       "savechanges": "Guardar cambios",
-      "readmore": "Leer más..."
+      "readmore": "Leer más...",
+      "answerspanish": "Respuesta en español",
+      "answerenglish": "Respuesta en inglés"
     }
   }
 }

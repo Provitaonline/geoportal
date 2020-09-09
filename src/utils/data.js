@@ -115,6 +115,17 @@ export async function sendSurvey(survey, version) {
   return response
 }
 
+export async function getFAQFromRepo(token) {
+  let github = new GitHub({token: token})
+
+  try {
+    let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.faqFileName)
+    return JSON.parse(Base64.decode(response.data.content))
+  } catch(err) {
+    throw err
+  }
+}
+
 async function getNewsItem(key) {
   let response = await axios.get(dataConfig.filesBaseUrl + key)
   return response.data
@@ -149,5 +160,13 @@ export async function saveSurveyTemplate(token, surveyTemplate) {
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
     writeFile('master', dataConfig.surveyTemplateName, JSON.stringify(surveyTemplate, null, 2), 'Updated survey template', {encode: true})
+  return response
+}
+
+export async function saveFAQ(token, FAQ) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+    writeFile('master', dataConfig.faqFileName, JSON.stringify(FAQ, null, 2), 'Updated FAQ', {encode: true})
   return response
 }
