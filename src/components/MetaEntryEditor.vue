@@ -31,9 +31,9 @@
               </ValidationProvider>
             </div>
             <div class="column">
-              <ValidationProvider rules="required|utc" v-slot="{ errors, valid }">
-                <b-field :label="$t('label.date')+ ' (UTC)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-                  <b-input v-model="metaEntryFlat['date']"></b-input>
+              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.date')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-datepicker v-model="formDate" :locale="$i18n.locale" icon="calendar" trap-focus></b-datepicker>
                 </b-field>
               </ValidationProvider>
             </div>
@@ -266,7 +266,8 @@ export default {
   data() {
     return {
       metaEntryFlat: flatten(this.metaEntry),
-      savedTileInfo: null
+      savedTileInfo: null,
+      formDate: null
     }
   },
   components: {
@@ -277,6 +278,7 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
+    if (this.metaEntry.date) this.formDate = new Date(this.metaEntry.date)
     if (this.metaEntry.tileInfo) {
       this.savedTileInfo = JSON.stringify(this.metaEntry.tileInfo)
     }
@@ -289,6 +291,7 @@ export default {
         this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
       }
+      this.metaEntryFlat.date = this.formDate.toISOString()
       let updatedMetaEntry = unflatten(this.metaEntryFlat)
 
       // Cleanup before exiting
