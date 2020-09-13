@@ -29,7 +29,6 @@
   </Layout>
 </template>
 
-
 <page-query>
   query Contact {
     contactData: contactData (id: "contact") {
