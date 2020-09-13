@@ -5,13 +5,32 @@
         {{ $t('label.about') }}
       </h1>
     </template>
-    <div class="container">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error doloremque omnis animi, eligendi magni a voluptatum, vitae, consequuntur rerum illum odit fugit assumenda rem dolores inventore iste reprehenderit maxime! Iusto.</p>
-    </div>
+    <div class="container" v-html="$page.about.edges[0].node.content"></div>
   </Layout>
 </template>
 
+<style lang="scss" scoped>
+
+  ::v-deep p {
+    padding: 1em;
+  }
+
+</style>
+
+<page-query>
+  query($locale: String) {
+    about: allAboutData(filter: { locale: { eq: $locale }}) {
+      edges {
+        node {
+          content
+        }
+      }
+    }
+  }
+</page-query>
+
 <script>
+
 export default {
   metaInfo() {
     return {

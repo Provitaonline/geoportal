@@ -104,6 +104,8 @@
               &nbsp;
             </div>
             <span> {{$t('label.copyright')}} </span>
+            <g-link href="https://www.provita.org.ve/">Provita, </g-link>
+            <span> {{$t('label.license')}} </span>
             <g-link href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</g-link>
             <span>. | {{$t('label.version')}} {{version}}</span>
           </div>

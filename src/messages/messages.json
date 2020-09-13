@@ -40,7 +40,8 @@
       "search": "Search",
       "fieldid": "Field Name",
       "fieldvalue": "Field Value",
-      "copyright": "All rights reserved, copyright © 2020 Provita, license",
+      "copyright": "All rights reserved, copyright © 2020",
+      "license": "license",
       "version": "Prototype Version",
       "resetview": "Reset view",
       "selectbasemap": "Select base map",
@@ -137,7 +138,8 @@
       "savechanges": "Save changes",
       "readmore": "Read more...",
       "answerspanish": "Answer in spanish",
-      "answerenglish": "Answer in english"
+      "answerenglish": "Answer in english",
+      "phone": "Phone"
     }
   },
   "es": {
@@ -181,7 +183,8 @@
       "search": "Buscar",
       "fieldid": "Nombre del campo",
       "fieldvalue": "Valor del campo",
-      "copyright": "Derechos reservados, copyright © 2020 Provita, licencia",
+      "copyright": "Derechos reservados, copyright © 2020",
+      "license": "licencia",
       "version": "Versión Prototipo",
       "resetview": "Vista inicial",
       "selectbasemap": "Seleccionar mapa base",
@@ -278,7 +281,8 @@
       "savechanges": "Guardar cambios",
       "readmore": "Leer más...",
       "answerspanish": "Respuesta en español",
-      "answerenglish": "Respuesta en inglés"
+      "answerenglish": "Respuesta en inglés",
+      "phone": "Teléfono"
     }
   }
 }

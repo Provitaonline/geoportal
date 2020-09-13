@@ -157,18 +157,6 @@
   }
 </style>
 
-<page-query>
-  query($locale: String) {
-    home: allHomeData(filter: { locale: { eq: $locale }}) {
-      edges {
-        node {
-          content
-        }
-      }
-    }
-  }
-</page-query>
-
 <script>
   import InteractiveMap from '~/components/InteractiveMap.vue'
   import UserSurveyForm from '~/components/UserSurveyForm'
