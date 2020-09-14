@@ -55,7 +55,7 @@
       getFAQ() {
         if (!this.FAQ) {
           console.log('get faq')
-          getFAQFromRepo().then((result) => {
+          getFAQFromRepo(sessionStorage.githubtoken).then((result) => {
             this.FAQ = result
             this.isLoading = false
           }).catch((err) => {
