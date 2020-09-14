@@ -58,7 +58,7 @@
       getSurveyTemplate() {
         if (!this.surveyTemplate) {
           console.log('get survey template')
-          getSurveyTemplateFromRepo().then((result) => {
+          getSurveyTemplateFromRepo(sessionStorage.githubtoken).then((result) => {
             this.surveyTemplate = result
             this.isLoading = false
           })
