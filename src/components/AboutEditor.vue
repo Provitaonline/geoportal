@@ -7,7 +7,7 @@
           {{$t('label.about')}}
         </p>
       </div>
-      <div class="card-content">
+      <div v-if="about" class="card-content">
         <div class="content">
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.aboutspanish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
@@ -56,7 +56,7 @@
     data() {
       return {
         isLoading: true,
-        about: {}
+        about: null
       }
     },
     components: {
@@ -72,10 +72,12 @@
     },
     methods: {
       getAbout() {
-        getAboutFromRepo(sessionStorage.githubtoken).then((result) => {
-          this.about = result
-          this.isLoading = false
-        })
+        if (!this.about) {
+          getAboutFromRepo(sessionStorage.githubtoken).then((result) => {
+            this.about = result
+            this.isLoading = false
+          })
+        }
       },
       saveChanges() {
         this.isLoading = true
