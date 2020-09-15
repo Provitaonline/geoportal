@@ -1,0 +1,418 @@
+{
+  "collection": [
+    {
+      "name": {
+        "en": "Protected Natural Areas",
+        "es": "Áreas Naturales Protegidas"
+      },
+      "description": {
+        "en": "This is a test description, for testing, yes it is, hmmmm, yep, it is",
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+      },
+      "date": "2020-06-02T07:00:00.000Z",
+      "file": "ANP.zip",
+      "format": "shapefile",
+      "tiles": "anp",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "NOMBRE",
+        "style": {
+          "id": "anp",
+          "type": "fill",
+          "source": "anp",
+          "source-layer": "anp",
+          "paint": {
+            "fill-color": {
+              "property": "CATEGORIA",
+              "type": "categorical",
+              "default": "#760000",
+              "stops": [
+                [
+                  "Parque Nacional",
+                  "#8A2BE2"
+                ],
+                [
+                  "Monumento Natural",
+                  "#7D0056"
+                ],
+                [
+                  "Reserva de Biosfera",
+                  "#554080"
+                ],
+                [
+                  "Reserva Forestal",
+                  "#6D8059"
+                ]
+              ]
+            },
+            "fill-outline-color": "#000",
+            "fill-opacity": 0.5
+          }
+        }
+      },
+      "keywords": {
+        "en": [
+          "PNA",
+          "Protected areas",
+          "Shapefile",
+          "Vector"
+        ],
+        "es": [
+          "ANP",
+          "Áreas protegidas",
+          "Shapefile",
+          "Vector"
+        ]
+      },
+      "source": "Provita"
+    },
+    {
+      "file": "DEM_30m.tif",
+      "name": {
+        "es": "Modelo digital del terreno",
+        "en": "Digital elevation model"
+      },
+      "date": "2020-06-01T07:00Z",
+      "keywords": {
+        "es": [
+          "DEM",
+          "MDT",
+          "Altitud",
+          "GeoTIFF",
+          "Ráster"
+        ],
+        "en": [
+          "DEM",
+          "Elevation",
+          "GeoTIFF",
+          "Raster"
+        ]
+      },
+      "description": {
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
+        "en": "This is a test description"
+      },
+      "tiles": "contour",
+      "tileInfo": {
+        "type": "vector",
+        "skipAutoGen": true,
+        "displayAttribute": "ELEV",
+        "style": {
+          "type": "line",
+          "paint": {
+            "line-color": "#774d3a",
+            "line-width": 1
+          },
+          "id": "contour",
+          "source": "contour",
+          "source-layer": "contour"
+        }
+      },
+      "format": "geotiff",
+      "source": "NASA"
+    },
+    {
+      "file": "Bosques.tif",
+      "name": {
+        "es": "Bosques",
+        "en": "Forests"
+      },
+      "date": "2020-06-01T07:00Z",
+      "keywords": {
+        "es": [
+          "Bosques",
+          "GeoTIFF",
+          "Ráster"
+        ],
+        "en": [
+          "Forests",
+          "GeoTIFF",
+          "Raster"
+        ]
+      },
+      "description": {
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Test",
+        "en": "This is another test description"
+      },
+      "tiles": "bosques",
+      "tileInfo": {
+        "type": "raster",
+        "colorTable": [
+          [
+            0,
+            "#0000"
+          ],
+          [
+            1,
+            "#169017FE"
+          ]
+        ]
+      },
+      "format": "geotiff",
+      "source": "Provita"
+    },
+    {
+      "file": "Cuencas.zip",
+      "name": {
+        "es": "Cuencas",
+        "en": "Basins"
+      },
+      "date": "2020-06-01T07:00Z",
+      "keywords": {
+        "es": [
+          "Cuencas",
+          "Shapefile",
+          "Vector"
+        ],
+        "en": [
+          "Basins",
+          "Shapefile",
+          "Vector"
+        ]
+      },
+      "description": {
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? TEST",
+        "en": "This is yet another test description"
+      },
+      "tiles": "cuencas",
+      "tileInfo": {
+        "type": "vector",
+        "style": {
+          "paint": {
+            "fill-color": "#66ccff",
+            "fill-opacity": 0.5,
+            "fill-outline-color": "#000"
+          },
+          "type": "fill",
+          "id": "cuencas",
+          "source": "cuencas",
+          "source-layer": "cuencas"
+        },
+        "displayAttribute": "NOMBRE"
+      },
+      "format": "shapefile",
+      "source": "Provita"
+    },
+    {
+      "file": "Ecosistemas.zip",
+      "name": {
+        "es": "Ecosistemas",
+        "en": "Ecosystems"
+      },
+      "date": "2020-06-01T07:00Z",
+      "keywords": {
+        "es": [
+          "Ecosistemas",
+          "Shapefile",
+          "Vector"
+        ],
+        "en": [
+          "Ecosystems",
+          "Shapefile",
+          "Vector"
+        ]
+      },
+      "description": {
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
+        "en": "This is a test description"
+      },
+      "tiles": "ecosistemas",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "N_ecosiste",
+        "style": {
+          "type": "fill",
+          "paint": {
+            "fill-color": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "N_ecosiste"
+              ],
+              0,
+              "#daf8bd",
+              67,
+              "#13570e"
+            ],
+            "fill-opacity": 0.5,
+            "fill-outline-color": "#000"
+          },
+          "id": "ecosistemas",
+          "source": "ecosistemas",
+          "source-layer": "ecosistemas"
+        }
+      },
+      "format": "shapefile",
+      "source": "Provita"
+    },
+    {
+      "file": "Estados.zip",
+      "name": {
+        "es": "Estados",
+        "en": "States"
+      },
+      "date": "2020-06-01T07:00Z",
+      "keywords": {
+        "es": [
+          "Estados",
+          "Shapefile",
+          "Vector"
+        ],
+        "en": [
+          "States",
+          "Shapefile",
+          "Vector"
+        ]
+      },
+      "description": {
+        "es": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+        "en": "This is a test description"
+      },
+      "tiles": "estados",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "NAM",
+        "style": {
+          "type": "fill",
+          "paint": {
+            "fill-color": "#F0E68C",
+            "fill-opacity": 0.5,
+            "fill-outline-color": "#000"
+          },
+          "id": "estados",
+          "source": "estados",
+          "source-layer": "estados"
+        }
+      },
+      "format": "shapefile",
+      "source": "IGVSB"
+    },
+    {
+      "file": "Hidrografia.zip",
+      "name": {
+        "es": "Hidrografía",
+        "en": "Hydrography"
+      },
+      "date": "2020-06-01T00:00Z",
+      "keywords": {
+        "es": [
+          "Hidrografía",
+          "Shapefile",
+          "Vector"
+        ],
+        "en": [
+          "Hydrography",
+          "Shapefile",
+          "Vector"
+        ]
+      },
+      "description": {
+        "es": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "en": "This is a test description"
+      },
+      "tiles": "hidrografia",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "Nombre",
+        "style": {
+          "type": "line",
+          "paint": {
+            "line-color": "#005c99",
+            "line-width": 2
+          },
+          "id": "hidrografia",
+          "source": "hidrografia",
+          "source-layer": "hidrografia"
+        }
+      },
+      "format": "shapefile",
+      "source": "Provita"
+    },
+    {
+      "file": "Municipios.zip",
+      "name": {
+        "es": "Municipios",
+        "en": "Municipalities"
+      },
+      "keywords": {
+        "es": [
+          "Municipios",
+          "Shapefile",
+          "Vector"
+        ],
+        "en": [
+          "Municipalities",
+          "Shapefile",
+          "Vector"
+        ]
+      },
+      "date": "2020-06-01T07:00Z",
+      "description": {
+        "es": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+        "en": "This is a test description"
+      },
+      "tiles": "municipios",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "NAM",
+        "style": {
+          "type": "fill",
+          "paint": {
+            "fill-color": "#FFA500",
+            "fill-opacity": 0.5,
+            "fill-outline-color": "#000"
+          },
+          "id": "municipios",
+          "source": "municipios",
+          "source-layer": "municipios"
+        }
+      },
+      "format": "shapefile",
+      "source": "IGVSB"
+    },
+    {
+      "file": "Vialidad.zip",
+      "name": {
+        "es": "Vialidad",
+        "en": "Roads"
+      },
+      "date": "2020-06-01T07:00Z",
+      "description": {
+        "es": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+        "en": "Test description test"
+      },
+      "tiles": "vialidad",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "leyenda",
+        "style": {
+          "type": "line",
+          "paint": {
+            "line-color": "#484848",
+            "line-width": 2
+          },
+          "id": "vialidad",
+          "source": "vialidad",
+          "source-layer": "vialidad"
+        }
+      },
+      "format": "shapefile",
+      "source": "Provita",
+      "keywords": {
+        "es": [
+          "Vialidad",
+          "Shapefile",
+          "Vector"
+        ],
+        "en": [
+          "Roads",
+          "Shapefile",
+          "Vector"
+        ]
+      }
+    }
+  ]
+}

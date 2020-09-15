@@ -1,0 +1,292 @@
+{
+  "collection": [
+    {
+      "name": {
+        "en": "Roads",
+        "es": "Vialidad"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "Vialidad.zip",
+      "tiles": "vialidad",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "leyenda",
+        "style": {
+          "id": "vialidad",
+          "type": "line",
+          "source": "vialidad",
+          "source-layer": "vialidad",
+          "paint": {
+            "line-color": "#484848",
+            "line-width": 2
+          }
+        }
+      },
+      "thumb": "Vialidad.png",
+      "keywords": {
+        "en": ["Roads", "Shapefile", "Vector"],
+        "es": ["Vialidad", "Shapefile", "Vector"]
+      }
+    },
+    {
+      "name": {
+        "en": "Municipalities",
+        "es": "Municipios"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "Municipios.zip",
+      "tiles": "municipios",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "NAM",
+        "style": {
+          "id": "municipios",
+          "type": "fill",
+          "source": "municipios",
+          "source-layer": "municipios",
+          "paint": {
+            "fill-color": "#FFA500",
+            "fill-outline-color": "black",
+            "fill-opacity": 0.5
+          }
+        }
+      },
+      "thumb": "Municipios.png",
+      "keywords": {
+        "en": ["Municipalities", "Shapefile", "Vector"],
+        "es": ["Municipios", "Shapefile", "Vector"]
+      }
+    },
+    {
+      "name": {
+        "en": "Hydrography",
+        "es": "Hidrografía"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."
+      },
+      "date": "2020-06-01",
+      "file": "Hidrografia.zip",
+      "tiles": "hidrografia",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "Nombre",
+        "style": {
+          "id": "hidrografia",
+          "type": "line",
+          "source": "hidrografia",
+          "source-layer": "hidrografia",
+          "paint": {
+            "line-color": "#005c99",
+            "line-width": 2
+          }
+        }
+      },
+      "keywords": {
+        "en": ["Hydrography", "Shapefile", "Vector"],
+        "es": ["Hidrografía", "Shapefile", "Vector"]
+      }
+    },
+    {
+      "name": {
+        "en": "States",
+        "es": "Estados"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?"
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "Estados.zip",
+      "tiles": "estados",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "NAM",
+        "style": {
+          "id": "estados",
+          "type": "fill",
+          "source": "estados",
+          "source-layer": "estados",
+          "paint": {
+            "fill-color": "#F0E68C",
+            "fill-outline-color": "black",
+            "fill-opacity": 0.5
+          }
+        }
+      },
+      "keywords": {
+        "en": ["States", "Shapefile", "Vector"],
+        "es": ["Estados", "Shapefile", "Vector"]
+      }
+    },
+    {
+      "name": {
+        "en": "Ecosystems",
+        "es": "Ecosistemas"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "Ecosistemas.zip",
+      "tiles": "ecosistemas",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "leyenda",
+        "style": {
+          "id": "ecosistemas",
+          "type": "fill",
+          "source": "ecosistemas",
+          "source-layer": "ecosistemas",
+          "paint": {
+            "fill-color": [
+              "interpolate",
+              ["linear"],
+              ["get", "N_ecosiste"],
+              0,
+              "#daf8bd",
+              67,
+              "#13570e"
+            ],
+            "fill-outline-color": "black",
+            "fill-opacity": 0.5
+          }
+        }
+      },
+      "keywords": {
+        "en": ["Ecosystems", "Shapefile", "Vector"],
+        "es": ["Ecosistemas", "Shapefile", "Vector"]
+      }
+    },
+    {
+      "name": {
+        "en": "Basins",
+        "es": "Cuencas"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "Cuencas.zip",
+      "tiles": "cuencas",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "NOMBRE",
+        "style": {
+          "id": "cuencas",
+          "type": "fill",
+          "source": "cuencas",
+          "source-layer": "cuencas",
+          "paint": {
+            "fill-color": "#66ccff",
+            "fill-outline-color": "black",
+            "fill-opacity": 0.5
+          }
+        }
+      },
+      "keywords": {
+        "en": ["Basins", "Shapefile", "Vector"],
+        "es": ["Cuencas", "Shapefile", "Vector"]
+      }
+    },
+    {
+      "name": {
+        "en": "Protected Natural Areas",
+        "es": "Áreas Naturales Protegidas"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "ANP.zip",
+      "tiles": "ANP",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "NOMBRE",
+        "style": {
+          "id": "ANP",
+          "type": "fill",
+          "source": "ANP",
+          "source-layer": "ANP",
+          "paint": {
+            "fill-color": {
+              "property": "CATEGORIA",
+              "type": "categorical",
+              "default": "#760000",
+              "stops": [["Parque Nacional", "#8A2BE2"], ["Monumento Natural", "#7D0056"], ["Reserva de Biosfera", "#554080"], ["Reserva Forestal", "#6D8059"]]
+            },
+            "fill-outline-color": "black",
+            "fill-opacity": 0.5
+          }
+        }
+      },
+      "keywords": {
+        "en": ["PNA", "Protected areas", "Shapefile", "Vector"],
+        "es": ["ANP", "Áreas protegidas", "Shapefile", "Vector"]
+      }
+    },
+    {
+      "name": {
+        "en": "Forests",
+        "es": "Bosques"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "Bosques.tif",
+      "tiles": "bosques",
+      "tileInfo": {
+        "type": "raster"
+      },
+      "keywords": {
+        "en": ["Forests", "GeoTIFF", "Raster"],
+        "es": ["Bosques", "GeoTIFF", "Ráster"]
+      }
+    },
+    {
+      "name": {
+        "en": "Digital elevation model",
+        "es": "Modelo digital del terreno"
+      },
+      "description": {
+        "en": "This is a test description",
+        "es": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+      },
+      "date": "2020-06-01T07:00Z",
+      "file": "DEM_30m.tif",
+      "tiles": "contour",
+      "tileInfo": {
+        "type": "vector",
+        "displayAttribute": "ELEV",
+        "style": {
+          "id": "contour",
+          "type": "line",
+          "source": "contour",
+          "source-layer": "contour",
+          "paint": {
+            "line-color": "#774d3a",
+            "line-width": 1
+          }
+        }
+      },
+      "keywords": {
+        "en": ["DEM", "Elevation", "GeoTIFF", "Raster"],
+        "es": ["DEM", "MDT", "Altitud", "GeoTIFF", "Ráster"]
+      }
+    }
+  ]
+}
