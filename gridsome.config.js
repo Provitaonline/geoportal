@@ -37,7 +37,7 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
-        path: 'content/contact/**/*.md',
+        path: 'data/contact.json',
         typeName: 'ContactData',
         remark:{
           autolinkHeadings: false
