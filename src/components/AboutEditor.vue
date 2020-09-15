@@ -38,6 +38,7 @@
   ::v-deep textarea {
     font-family: monospace;
     font-size: 0.9rem;
+    min-height: 14em !important;
   }
 
 </style>
