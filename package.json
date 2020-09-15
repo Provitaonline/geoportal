@@ -7,9 +7,10 @@
   },
   "scripts": {
     "prebuild": "cd functions && npm i",
-    "build": "gridsome build",
-    "develop": "gridsome develop",
-    "explore": "gridsome explore"
+    "build": "npm run subm && gridsome build",
+    "develop": "npm run subm && gridsome develop",
+    "explore": "gridsome explore",
+    "subm": "git submodule update --remote"
   },
   "author": "Ricardo Morin",
   "license": "MIT",
