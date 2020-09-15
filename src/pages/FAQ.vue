@@ -8,7 +8,7 @@
     <br>
     <div class="container">
       <div class="box">
-        <article v-for="item, index in FAQ" class="media">
+        <article v-for="item, index in $page.faqData.questions" class="media">
             <div class="content">
               <div>
                 <div class="is-size-4 has-text-weight-bold is-italic">{{item.question[$i18n.locale.substr(0, 2)]}}</div>
@@ -41,6 +41,23 @@
 
 </style>
 
+<page-query>
+  query FAQ {
+    faqData: faqData (id: "faq") {
+      questions {
+        question {
+          en
+          es
+        }
+        answer {
+          en
+          es
+        }
+      }
+    }
+  }
+</page-query>
+
 <script>
   import {getFAQ} from '~/utils/data'
   import marked from 'marked'
@@ -53,20 +70,14 @@
     },
     data() {
       return {
-        FAQ: []
+
       }
     },
     mounted() {
-      this.getFAQ()
     },
     methods: {
-      getFAQ() {
-        getFAQ().then((result) => {
-          this.FAQ = result
-        })
-      },
       answerHTML(index) {
-        return marked(this.FAQ[index].answer[this.$i18n.locale.substr(0, 2)])
+        return marked(this.$page.faqData.questions[index].answer[this.$i18n.locale.substr(0, 2)])
       }
     }
   }

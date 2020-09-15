@@ -120,15 +120,10 @@ export async function getFAQFromRepo(token) {
 
   try {
     let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.faqFileName)
-    return JSON.parse(Base64.decode(response.data.content))
+    return JSON.parse(Base64.decode(response.data.content)).questions
   } catch(err) {
     throw err
   }
-}
-
-export async function getFAQ() {
-  let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.faqFileName)
-  return response.data
 }
 
 async function getNewsItem(key) {
@@ -172,7 +167,7 @@ export async function saveFAQ(token, FAQ) {
   let github = new GitHub({token: token})
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.faqFileName, JSON.stringify(FAQ, null, 2), 'Updated FAQ', {encode: true})
+    writeFile('master', dataConfig.faqFileName, JSON.stringify({id: 'faq', questions: FAQ}, null, 2), 'Updated FAQ', {encode: true})
   return response
 }
 

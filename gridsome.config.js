@@ -30,6 +30,13 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
+        path: 'data/faq.json',
+        typeName: 'FaqData'
+      }
+    },
+    {
+      use: '@gridsome/source-filesystem',
+      options: {
         path: 'content/contact/**/*.md',
         typeName: 'ContactData',
         remark:{
