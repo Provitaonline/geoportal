@@ -51,5 +51,10 @@ export const dataConfig = {
   newsDirectory: 'news',
   metaFileName: 'meta.json',
   surveyTemplateName: 'survey-template.json',
-  faqFileName: 'faq.json'
+  faqFileName: 'faq.json',
+  aboutDirName: 'about',
+  aboutLocItems: [
+    {fieldName: 'abouten', filePath: '/en-us/content.md', frontMatter: '---\ntitle: About\nlocale: en-us\n---\n'},
+    {fieldName: 'aboutes', filePath: '/es-ve/content.md', frontMatter: '---\ntitle: Acerca de\nlocale: es-ve\n---\n'}
+  ]
 }

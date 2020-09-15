@@ -175,3 +175,48 @@ export async function saveFAQ(token, FAQ) {
     writeFile('master', dataConfig.faqFileName, JSON.stringify(FAQ, null, 2), 'Updated FAQ', {encode: true})
   return response
 }
+
+export async function getAboutFromRepo(token) {
+
+  let github = new GitHub({token: token})
+
+  let response
+  let result = {}
+
+  dataConfig.aboutLocItems.forEach(async item => {
+    result[item.fieldName] = ''
+    try {
+      response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.aboutDirName + item.filePath)
+    } catch (err) {
+      if (err.response.status != 404) {
+        throw err
+      }
+    }
+    if (response !== undefined) result[item.fieldName] = Base64.decode(response.data.content)
+
+    // Yank frontmatter
+    let idx = result[item.fieldName].lastIndexOf('---\n')
+    idx = (idx === -1) ? 0 : idx + 4
+    result[item.fieldName] = result[item.fieldName].substr(idx)
+  })
+  return result
+}
+
+export async function saveAbout(token, about) {
+  let github = new GitHub({token: token})
+
+  let response
+
+  for (const idx in dataConfig.aboutLocItems) {
+    // Prepend frontmatter
+    about[dataConfig.aboutLocItems[idx].fieldName] = dataConfig.aboutLocItems[idx].frontMatter + about[dataConfig.aboutLocItems[idx].fieldName]
+
+    try {
+      response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+        writeFile('master', dataConfig.aboutDirName + dataConfig.aboutLocItems[idx].filePath, about[dataConfig.aboutLocItems[idx].fieldName], 'Updated About', {encode: true})
+    } catch (err) {
+      throw err
+    }
+  }
+  return
+}

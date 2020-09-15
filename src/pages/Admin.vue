@@ -20,6 +20,9 @@
         <b-tab-item value="faq" :label="$t('label.faq')">
           <AdminFAQTab />
         </b-tab-item>
+        <b-tab-item value="more" :label="$t('label.more')">
+          <AdminMoreTab />
+        </b-tab-item>
       </b-tabs>
     </section>
 
@@ -65,6 +68,7 @@ import AdminFilesTab from '~/components/AdminFilesTab'
 import AdminNewsTab from '~/components/AdminNewsTab'
 import AdminSurveyTab from '~/components/AdminSurveyTab'
 import AdminFAQTab from '~/components/AdminFAQTab'
+import AdminMoreTab from '~/components/AdminMoreTab'
 
 export default {
   metaInfo() {
@@ -83,7 +87,8 @@ export default {
     AdminFilesTab,
     AdminNewsTab,
     AdminSurveyTab,
-    AdminFAQTab
+    AdminFAQTab,
+    AdminMoreTab
   },
   created() {
     if (this.$route.query.token) {
@@ -147,16 +152,8 @@ export default {
       this.$store.commit('setAvatar', info.avatar)
     },
     tabChanged() {
-      switch (this.activeTab) {
-        case 'news':
-          this.$eventBus.$emit('newstabvisible')
-          break
-        case 'survey':
-          this.$eventBus.$emit('surveytabvisible')
-          break
-        case 'faq':
-          this.$eventBus.$emit('faqtabvisible')
-          break
+      if (this.activeTab !== 'more') {
+        this.$eventBus.$emit(this.activeTab + 'tabvisible')
       }
     }
   },

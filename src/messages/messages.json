@@ -139,7 +139,13 @@
       "readmore": "Read more...",
       "answerspanish": "Answer in spanish",
       "answerenglish": "Answer in english",
-      "phone": "Phone"
+      "phone": "Phone",
+      "more": "More...",
+      "editabout": "Edit \"About\"",
+      "editcontact": "Edit \"Contact\"",
+      "downloadsurveydata": "Download survey data",
+      "aboutspanish": "\"About\" content in spanish",
+      "aboutenglish": "\"About\" content in english"
     }
   },
   "es": {
@@ -282,7 +288,13 @@
       "readmore": "Leer más...",
       "answerspanish": "Respuesta en español",
       "answerenglish": "Respuesta en inglés",
-      "phone": "Teléfono"
+      "phone": "Teléfono",
+      "more": "Más...",
+      "editabout": "Editar \"Acerca de\"",
+      "editcontact": "Editar \"Contacto\"",
+      "downloadsurveydata": "Descargar datos de la encuesta",
+      "aboutspanish": "Contenido de \"Acerca de\" en español",
+      "aboutenglish": "Contenido de \"Acerca de\" en inglés"
     }
   }
 }
