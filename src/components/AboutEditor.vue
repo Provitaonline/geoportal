@@ -68,13 +68,15 @@
     },
     created() {
       console.log('get about')
-      getAboutFromRepo(sessionStorage.githubtoken).then((result) => {
-        console.log(result)
-        this.about = result
-        this.isLoading = false
-      })
+      this.getAbout()
     },
     methods: {
+      getAbout() {
+        getAboutFromRepo(sessionStorage.githubtoken).then((result) => {
+          this.about = result
+          this.isLoading = false
+        })
+      },
       saveChanges() {
         this.isLoading = true
         saveAbout(sessionStorage.githubtoken, JSON.parse(JSON.stringify(this.about))).then(() => {
