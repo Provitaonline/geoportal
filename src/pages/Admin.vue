@@ -100,6 +100,7 @@ export default {
           this.commitUserInfo(info)
         }).catch((e) => {
           if (e.status === 403) {
+            this.isLoginActive = true
             console.log('Unauthorized', e)
             this.loginError = this.$t('message.unauthorized')
           } else {
