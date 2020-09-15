@@ -20,7 +20,7 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
-        path: 'data/about/**/*.md',
+        path: 'content/about/**/*.md',
         typeName: 'AboutData',
         remark:{
           autolinkHeadings: false
