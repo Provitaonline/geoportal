@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <b-loading v-model="isLoading"></b-loading>
     <ValidationObserver v-slot="{passes, dirty, pristine, failed}">
       <div style="background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
@@ -53,6 +54,7 @@
     },
     data() {
       return {
+        isLoading: true,
         about: {}
       }
     },
@@ -68,12 +70,15 @@
       getAboutFromRepo(sessionStorage.githubtoken).then((result) => {
         console.log(result)
         this.about = result
+        this.isLoading = false
       })
     },
     methods: {
       saveChanges() {
-        saveAbout(sessionStorage.githubtoken, this.about).then(() => {
+        this.isLoading = true
+        saveAbout(sessionStorage.githubtoken, JSON.parse(JSON.stringify(this.about))).then(() => {
           console.log('saved About')
+          this.isLoading = false
           this.$parent.close()
         }).catch((e) => {
           console.log('error saving About to github ', e)
