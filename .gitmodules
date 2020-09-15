@@ -2,4 +2,4 @@
 [submodule "data"]
 	path = data
 	url = https://github.com/jimmyangel/geoportal-data.git
-  merge
+	merge
