@@ -195,8 +195,8 @@ export async function getAboutFromRepo(token) {
     if (response !== undefined) result[item.fieldName] = Base64.decode(response.data.content)
 
     // Yank frontmatter
-    let idx = result[item.fieldName].lastIndexOf('---\n')
-    idx = (idx === -1) ? 0 : idx + 4
+    let idx = result[item.fieldName].substr(4).indexOf('---\n')
+    idx = (idx === -1) ? 0 : idx + 8
     result[item.fieldName] = result[item.fieldName].substr(idx)
   })
   return result
