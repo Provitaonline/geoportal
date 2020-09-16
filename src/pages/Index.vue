@@ -197,6 +197,7 @@
             this.$set(item, 'expanded', false)
             if (item.file) {
               data.getFileSize(item.file).then((fileSize) => {
+                console.log(fileSize)
                 this.$set(item, 'fileSize', fileSize)
               })
             }
@@ -223,7 +224,7 @@
           return Math.abs(num) > 999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000).toFixed(1))) + 'K' : Math.sign(num)*Math.abs(num)
       },
       mFormatter: function (num) {
-          return Math.abs(num) > 999999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000000).toFixed(1))) + 'M' : this.kFormatter(num)
+          if (num) return Math.abs(num) > 999999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000000).toFixed(1))) + 'M' : this.kFormatter(num)
       },
       addToMap: function (item, isOn) {
         if (isOn) {
