@@ -197,7 +197,6 @@
             this.$set(item, 'expanded', false)
             if (item.file) {
               data.getFileSize(item.file).then((fileSize) => {
-                console.log(fileSize)
                 this.$set(item, 'fileSize', fileSize)
               })
             }
@@ -242,7 +241,6 @@
       },
       downloadFile(index) {
         this.openUserSurvey(index)
-        //document.getElementById('download-' + index).click()
       },
       openUserSurvey(index) {
         this.$buefy.modal.open({
