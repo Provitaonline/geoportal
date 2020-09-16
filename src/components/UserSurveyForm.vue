@@ -10,8 +10,7 @@
     </div>
     <div class="card-content">
       <div class="content">
-        {{$page.userSurveyTemplate}}
-        <!-- <div v-for="item in $page.userSurveyTemplate.fields">
+        <div v-for="item in $static.userSurveyTemplate.fields">
           <b-field v-if="item.type === 'text'" :label="item.label[$i18n.locale.substr(0, 2)]">
             <b-input v-model="surveyData[item.fieldname]" maxlength="1000" type="textarea"></b-input>
           </b-field>
@@ -22,7 +21,7 @@
             </div>
           </div>
           <br>
-        </div> -->
+        </div>
       </div>
     </div>
     <div class="card-footer" style="padding: 24px; justify-content: flex-end;">
@@ -33,7 +32,7 @@
   </div>
 </template>
 
-<page-query>
+<static-query>
   query UserSurveyTemplate {
     userSurveyTemplate: userSurveyTemplate (id: "usersurvey") {
       fields {
@@ -50,7 +49,7 @@
       }
     }
   }
-</page-query>
+</static-query>
 
 <script>
 import {sendSurvey, getSurveyTemplate} from '~/utils/data'
@@ -65,21 +64,19 @@ export default {
       surveyData: {}
     }
   },
-  mounted() {
+  created() {
     console.log('created', this)
-    /*this.$page.userSurveyTemplate.fields.forEach(item => {
+    this.$static.userSurveyTemplate.fields.forEach(item => {
     //this.surveyTemplate.fields.forEach(item => {
       this.$set(this.surveyData, item.fieldname, '')
     })
-    */
-
   },
   methods: {
     downloadFile(withSurvey) {
       if (withSurvey) {
         console.log('Submit survey data', this.surveyData)
-        this.surveyData.version = this.$page.userSurveyTemplate.version
-        sendSurvey(this.surveyData, this.$page.userSurveyTemplate.version)
+        this.surveyData.version = this.$static.userSurveyTemplate.version
+        sendSurvey(this.surveyData, this.$static.userSurveyTemplate.version)
       }
       document.getElementById('download-' + this.downloadFileIndex).click()
     }
