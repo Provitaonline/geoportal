@@ -35,6 +35,7 @@
 <static-query>
   query UserSurveyTemplate {
     userSurveyTemplate: userSurveyTemplate (id: "usersurvey") {
+      version
       fields {
         fieldname
         type
@@ -65,7 +66,6 @@ export default {
     }
   },
   created() {
-    console.log('created', this)
     this.$static.userSurveyTemplate.fields.forEach(item => {
       this.$set(this.surveyData, item.fieldname, '')
     })
