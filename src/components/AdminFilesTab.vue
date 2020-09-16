@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
+  import {getListOfFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
   import NewsItemEditor from '~/components/NewsItemEditor'
   import MetaEntryEditor from '~/components/MetaEntryEditor'
@@ -64,9 +64,9 @@
     },
     mounted() {
       this.getListOfFiles()
-      getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-        this.metaFromRepo = result.data.collection
-        this.metaSha = result.sha
+      getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
+        console.log('retrieve list from meta', result)
+        this.metaFromRepo = result
         this.isLoading = false
       })
       this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
@@ -78,21 +78,7 @@
         })
       },
       editMeta(fileName) {
-        getMetaSha(sessionStorage.githubtoken).then((sha) => {
-          if (sha !== this.metaSha) {
-            // Meta changed, we must refresh
-            console.log('Metadata has been edited')
-            getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-              this.metaFromRepo = result.data.collection
-              this.metaSha = result.sha
-              this.addOrEditMeta(fileName)
-            })
-          } else {
-            this.addOrEditMeta(fileName)
-          }
-        }).catch((e) => {
-          console.log('error retrieving meta sha', e)
-        })
+        this.addOrEditMeta(fileName)
       },
       addOrEditMeta(fileName) {
         let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
@@ -118,7 +104,8 @@
       },
       acceptMetaChanges(m) {
 
-        getMetaSha(sessionStorage.githubtoken).then((sha) => {
+        console.log('accept changes')
+        /* getMetaSha(sessionStorage.githubtoken).then((sha) => {
           if (sha === this.metaSha) { // Can only save if meta has not been changed
             this.$set(this.metaFromRepo, this.currentIndex, m.metaEntry)
             saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
@@ -142,7 +129,7 @@
               this.metaSha = result.sha
             })
           }
-        })
+        }) */
       },
       submitRtilesJob(job) {
         submitJob(sessionStorage.githubtoken, job).then((response) => {

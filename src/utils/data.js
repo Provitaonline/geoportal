@@ -39,11 +39,40 @@ export function getListOfFiles() {
 }
 
 // This retrieves live meta from github repo
-export async function getMetaFromRepo(token) {
+export async function getMetaFromRepo(token, file) {
   let github = new GitHub({token: token})
 
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaFileName)
-  return {sha: response.data.sha, data: JSON.parse(Base64.decode(response.data.content))}
+  let response
+  let result = {file: file}
+
+  try {
+    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaDirectory + '/' + file + '.json')
+  } catch (err) {
+    if (err.response.status != 404) {
+      throw err
+    }
+  }
+  if (response !== undefined) result = JSON.parse(Base64.decode(response.data.content))
+  return result
+}
+
+export async function getMetaListFromRepo(token) {
+  let github = new GitHub({token: token})
+
+  let response
+  let result = []
+
+  try {
+    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaDirectory)
+  } catch (err) {
+    if (err.response.status != 404) {
+      throw err
+    }
+  }
+  if (response !== undefined) result = response.data.map(item => {
+    return {file: item.name.substr(0, item.name.lastIndexOf('.'))}
+  })
+  return result
 }
 
 // This gets the sha of the meta file
@@ -59,7 +88,7 @@ export async function saveMetaFromRepo(token, meta) {
   let github = new GitHub({token: token})
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.metaFileName, JSON.stringify({collection: meta}, null, 2), 'Updated meta', {encode: true})
+    writeFile('master', dataConfig.metaDirectory + '/' + meta.file + '.json', JSON.stringify(meta, null, 2), 'Updated meta', {encode: true})
   return response
 }
 

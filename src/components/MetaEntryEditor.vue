@@ -253,6 +253,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
+import { getMetaFromRepo, saveMetaFromRepo } from '~/utils/data'
 
 let flatten = require('flat')
 let unflatten = require('flat').unflatten
@@ -278,10 +279,14 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
-    if (this.metaEntry.date) this.formDate = new Date(this.metaEntry.date)
-    if (this.metaEntry.tileInfo) {
-      this.savedTileInfo = JSON.stringify(this.metaEntry.tileInfo)
-    }
+    getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
+      console.log('here is the meta', result)
+      this.metaEntryFlat = flatten(result)
+      if (result.date) this.formDate = new Date(result.date)
+      if (result.tileInfo) {
+        this.savedTileInfo = JSON.stringify(result.tileInfo)
+      }
+    })
   },
   methods: {
     acceptChanges() {
@@ -306,8 +311,12 @@ export default {
       if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
         job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
       }
-      this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
-      this.$parent.close()
+
+      saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
+        console.log('saved meta entry')
+        this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
+        this.$parent.close()
+      })
     },
     unflattenTags(lang) {
       let kwds = []
@@ -391,16 +400,6 @@ export default {
       },
       set(val) {
         this.reflattenTags('en', val)
-      }
-    },
-    filteredListOfFiles() {
-      if (this.metaEntryFlat['file']) {
-        return this.listOfFiles.filter((option) => {
-          return option
-            .toString()
-            .toLowerCase()
-            .indexOf(this.metaEntryFlat['file'].toLowerCase()) >= 0
-        })
       }
     },
     isShapefile() {
