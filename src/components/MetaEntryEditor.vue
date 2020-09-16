@@ -261,8 +261,7 @@ let unflatten = require('flat').unflatten
 export default {
   name: 'MetaEntryEditor',
   props: {
-    metaEntry: { type: Object, required: true },
-    listOfFiles: { type: Array, required: true }
+    metaEntry: { type: Object, required: true }
   },
   data() {
     return {
@@ -279,14 +278,16 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
-    getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
-      console.log('here is the meta', result)
-      this.metaEntryFlat = flatten(result)
-      if (result.date) this.formDate = new Date(result.date)
-      if (result.tileInfo) {
-        this.savedTileInfo = JSON.stringify(result.tileInfo)
-      }
-    })
+    if (!this.metaEntry.format) { // Populate only if empty
+      getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
+        console.log('here is the meta', result)
+        this.metaEntryFlat = flatten(result)
+        if (result.date) this.formDate = new Date(result.date)
+        if (result.tileInfo) {
+          this.savedTileInfo = JSON.stringify(result.tileInfo)
+        }
+      })
+    }
   },
   methods: {
     acceptChanges() {

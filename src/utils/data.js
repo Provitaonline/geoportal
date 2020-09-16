@@ -92,6 +92,19 @@ export async function saveMetaFromRepo(token, meta) {
   return response
 }
 
+export async function deleteMetaListFromRepo(token, fileList) {
+  let github = new GitHub({token: token})
+
+  let responses = []
+  console.log('delete file list from repo', fileList)
+  for (const file of fileList) {
+    let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).deleteFile('master', dataConfig.metaDirectory + '/' + file + '.json')
+    responses.push(response)
+  }
+
+  return responses
+}
+
 export async function getPresignedUrl(token, name, type) {
   let response = await axios.get('/.netlify/functions/get-presigned-url?token=' + token + '&name=' + name + '&type=' + type)
   return response
