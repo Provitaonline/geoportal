@@ -19,7 +19,8 @@
       "removequestionswarning": "This operation will remove the selected questions",
       "batchjobwarning": "Any changes in the color table (section below this message) will trigger the (re)generation of the tile layer associated with this data set.",
       "dataconflictmessage": "Metadata has been changed by another user, therefore your changes will be canceled",
-      "surveyheader": "Would you like to complete a survey to help us serve you better?"
+      "surveyheader": "Would you like to complete a survey to help us serve you better?",
+      "confirmpublishsite": "This operation will publish the data to the site and make it visible to end users"
     },
     "label": {
       "main": "Main",
@@ -145,7 +146,8 @@
       "editcontact": "Edit \"Contact\"",
       "downloadsurveydata": "Download survey data",
       "aboutspanish": "\"About\" content in spanish",
-      "aboutenglish": "\"About\" content in english"
+      "aboutenglish": "\"About\" content in english",
+      "publish": "Publish"
     }
   },
   "es": {
@@ -168,7 +170,8 @@
       "removenewsitemswarning": "Esta operación eliminará los artículos seleccionados",
       "batchjobwarning": "Cualquier cambio en la tabla de colores (sección debajo de éste mensaje) iniciará la (re)generación de la capa de teselas asociada con éste archivo de datos.",
       "dataconflictmessage": "Los metadatos han sido modificados por otro usuario, por lo tanto tus cambios no se han efectuado.",
-      "surveyheader": "¿Deseas completar una encuesta para ayudarnos a servirte mejor?"
+      "surveyheader": "¿Deseas completar una encuesta para ayudarnos a servirte mejor?",
+      "confirmpublishsite": "Esta operación publicará los datos al sitio web y los hará visibles a los usuarios"
     },
     "label": {
       "main": "Página Principal",
@@ -294,7 +297,8 @@
       "editcontact": "Editar \"Contacto\"",
       "downloadsurveydata": "Descargar datos de la encuesta",
       "aboutspanish": "Contenido de \"Acerca de\" en español",
-      "aboutenglish": "Contenido de \"Acerca de\" en inglés"
+      "aboutenglish": "Contenido de \"Acerca de\" en inglés",
+      "publish": "Publicar"
     }
   }
 }

@@ -7,6 +7,9 @@
     </template>
     <br>
     <section class="container">
+      <div class="buttons" style="justify-content: flex-end;">
+        <b-button @click="confirmPublish()" style="width: 140px;" type="is-warning"><font-awesome :icon="['far', 'newspaper']"/>&nbsp;{{$t('label.publish')}}</b-button>
+      </div>
       <b-tabs @input="tabChanged()" v-model="activeTab" type="is-boxed" :animated="false">
         <b-tab-item value="files" :label="$t('label.files')">
           <AdminFilesTab />
@@ -61,7 +64,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
+import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, publishSite} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
 import {getPureText} from '~/utils/misc'
 import AdminFilesTab from '~/components/AdminFilesTab'
@@ -156,6 +159,25 @@ export default {
       if (this.activeTab !== 'more') {
         this.$eventBus.$emit(this.activeTab + 'tabvisible')
       }
+    },
+    confirmPublish() {
+      console.log('confirm publish')
+      this.$buefy.dialog.confirm({
+        title: this.$t('label.publish'),
+        message: this.$t('message.confirmpublishsite'),
+        confirmText: this.$t('label.confirm'),
+        cancelText: this.$t('label.cancel'),
+        type: 'none',
+        focusOn: 'cancel',
+        onConfirm: () => {this.publishSite()}
+      })
+    },
+    publishSite() {
+      publishSite().then(() => {
+        console.log('site deploy requested')
+      }).catch(err => {
+        console.log('publish error', err)
+      })
     }
   },
   computed: {

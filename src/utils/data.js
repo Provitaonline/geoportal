@@ -215,3 +215,8 @@ export async function saveAbout(token, about) {
   }
   return
 }
+
+export async function publishSite() {
+  let response = await axios.post(dataConfig.deployHookUrl, 'publish')
+  return response
+}
