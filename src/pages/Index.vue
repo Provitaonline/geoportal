@@ -208,7 +208,7 @@
           }
         })
       }
-      data.getSurveyTemplate().then(result => this.surveyTemplate = result).catch(result => console.log(result))
+      //data.getSurveyTemplate().then(result => this.surveyTemplate = result).catch(result => console.log(result))
     },
     mounted() {
       this.$eventBus.$on('showpopupmodal', (info) => {
@@ -250,8 +250,7 @@
           canCancel: ['escape', 'x'],
           component: UserSurveyForm,
           props: {
-            downloadFileIndex: index,
-            surveyTemplate: this.surveyTemplate
+            downloadFileIndex: index
           }
         })
       },

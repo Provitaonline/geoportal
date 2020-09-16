@@ -10,11 +10,8 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
-        path: 'content/survey/template.md',
-        typeName: 'UserSurveyTemplate',
-        remark:{
-          autolinkHeadings: false
-        }
+        path: 'data/survey-template.json',
+        typeName: 'UserSurveyTemplate'
       }
     },
     {
