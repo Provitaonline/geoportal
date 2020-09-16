@@ -52,7 +52,7 @@
 </static-query>
 
 <script>
-import {sendSurvey, getSurveyTemplate} from '~/utils/data'
+import {sendSurvey} from '~/utils/data'
 
 export default {
   name: 'UserSurveyForm',
@@ -67,7 +67,6 @@ export default {
   created() {
     console.log('created', this)
     this.$static.userSurveyTemplate.fields.forEach(item => {
-    //this.surveyTemplate.fields.forEach(item => {
       this.$set(this.surveyData, item.fieldname, '')
     })
   },

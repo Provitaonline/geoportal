@@ -208,7 +208,6 @@
           }
         })
       }
-      //data.getSurveyTemplate().then(result => this.surveyTemplate = result).catch(result => console.log(result))
     },
     mounted() {
       this.$eventBus.$on('showpopupmodal', (info) => {
