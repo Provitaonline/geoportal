@@ -89,9 +89,11 @@
           </div>
       </div>
     </b-modal>
-    <section>
-      <slot />
-    </section>
+    <transition name="fade" appear>
+      <section>
+        <slot />
+      </section>
+    </transition>
     <section>
       <footer class="footer">
         <div class="has-text-centered">
