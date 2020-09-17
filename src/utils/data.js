@@ -52,7 +52,11 @@ export async function getMetaFromRepo(token, file) {
       throw err
     }
   }
-  if (response !== undefined) result = JSON.parse(Base64.decode(response.data.content))
+  if (response !== undefined) {
+    result = JSON.parse(Base64.decode(response.data.content))
+    // Need to unpack tileInfo back to object
+    result.tileInfo = JSON.parse(result.tileInfo)
+  }
   return result
 }
 
@@ -86,6 +90,9 @@ export async function getMetaSha(token) {
 // This saves meta to the github repo
 export async function saveMetaFromRepo(token, meta) {
   let github = new GitHub({token: token})
+
+  // Need to package tileInfo as a string
+  meta.tileInfo = JSON.stringify(meta.tileInfo)
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
     writeFile('master', dataConfig.metaDirectory + '/' + meta.file + '.json', JSON.stringify(meta, null, 2), 'Updated meta', {encode: true})
