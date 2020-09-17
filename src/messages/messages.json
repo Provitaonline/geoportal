@@ -20,7 +20,7 @@
       "batchjobwarning": "Any changes in the color table (section below this message) will trigger the (re)generation of the tile layer associated with this data set.",
       "dataconflictmessage": "Metadata has been changed by another user, therefore your changes will be canceled",
       "surveyheader": "Would you like to complete a survey to help us serve you better?",
-      "confirmpublishsite": "This operation will publish the data to the site and make it visible to end users"
+      "confirmpublishsite": "This operation will publish the data to the site and make it visible to end users. It can take 2 to 5 minutes for the changes to take effect."
     },
     "label": {
       "main": "Main",
@@ -171,7 +171,7 @@
       "batchjobwarning": "Cualquier cambio en la tabla de colores (sección debajo de éste mensaje) iniciará la (re)generación de la capa de teselas asociada con éste archivo de datos.",
       "dataconflictmessage": "Los metadatos han sido modificados por otro usuario, por lo tanto tus cambios no se han efectuado.",
       "surveyheader": "¿Deseas completar una encuesta para ayudarnos a servirte mejor?",
-      "confirmpublishsite": "Esta operación publicará los datos al sitio web y los hará visibles a los usuarios"
+      "confirmpublishsite": "Esta operación publicará los datos al sitio web y los hará visibles a los usuarios. Puede tomar de 2 a 5 minutos para que los cambios estén disponibles."
     },
     "label": {
       "main": "Página Principal",
