@@ -55,9 +55,6 @@ export default function (Vue, { router, head, isClient, appOptions }) {
       setVisibleTileLayers (state, visibleTileLayers) {
         state.visibleTileLayers = visibleTileLayers
       },
-      setFileList (state, fileList) {
-        state.fileList = fileList
-      },
       setMapStyleUri (state, mapStyleUri) {
         state.mapStyleUri = mapStyleUri
       },

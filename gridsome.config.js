@@ -42,6 +42,13 @@ module.exports = {
       }
     },
     {
+      use: '@gridsome/source-filesystem',
+      options: {
+        path: 'data/meta/*.json',
+        typeName: 'MetaData'
+      }
+    },
+    {
       use: "gridsome-plugin-i18n",
       options: {
         locales: [ // locales list

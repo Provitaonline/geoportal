@@ -157,12 +157,41 @@
   }
 </style>
 
+<page-query>
+  query {
+    allMetaData: allMetaData {
+      edges {
+        node {
+          date
+          description {
+            en
+            es
+          }
+          file
+          format
+          keywords {
+            en
+            es
+          }
+          name {
+            en
+            es
+          }
+          source
+          tiles
+          tileInfo
+        }
+      }
+    }
+  }
+</page-query>
+
 <script>
   import InteractiveMap from '~/components/InteractiveMap.vue'
   import UserSurveyForm from '~/components/UserSurveyForm'
 
   import {dataConfig} from '~/utils/config'
-  import * as data from '~/utils/data'
+  import {getFileSize} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
 
   export default {
@@ -188,26 +217,18 @@
       InteractiveMap
     },
     created() {
-      this.fileList = this.$store.state.fileList
-      if (this.fileList.length === 0) {
-        data.getMetaEntries().then((result) => {
-          this.fileList =  result.data.collection
-          this.isLoading = false
-          this.fileList.forEach(item => {
-            this.$set(item, 'expanded', false)
-            if (item.file) {
-              data.getFileSize(item.file).then((fileSize) => {
-                this.$set(item, 'fileSize', fileSize)
-              })
-            }
-          })
-          this.$store.commit('setFileList', this.fileList)
-        }).catch((error) => {
-          if (error.response.status !== 404) {
-            console.log('Error accessing meta', error)
+      this.fileList = this.$page.allMetaData.edges.map(item => item.node)
+      this.fileList.forEach(item => {
+        this.$set(item, 'expanded', false)
+        if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
+        if (item.file) {
+          if (!item.fileSize) {
+            getFileSize(item.file).then((fileSize) => {
+              this.$set(item, 'fileSize', fileSize)
+            })
           }
-        })
-      }
+        }
+      })
     },
     mounted() {
       this.$eventBus.$on('showpopupmodal', (info) => {
@@ -231,7 +252,6 @@
         } else {
           this.$eventBus.$emit('removetilelayer', item.tiles)
         }
-        this.$store.commit('setFileList', this.fileList)
       },
       isMatch(item) {
         if (this.searchString.length < 3) return true
