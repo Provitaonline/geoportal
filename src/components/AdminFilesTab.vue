@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob} from '~/utils/data'
+  import {getListOfFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
   import NewsItemEditor from '~/components/NewsItemEditor'
   import MetaEntryEditor from '~/components/MetaEntryEditor'
@@ -64,9 +64,9 @@
     },
     mounted() {
       this.getListOfFiles()
-      getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-        this.metaFromRepo = result.data.collection
-        this.metaSha = result.sha
+      getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
+        console.log('retrieve list from meta')
+        this.metaFromRepo = result
         this.isLoading = false
       })
       this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
@@ -78,21 +78,7 @@
         })
       },
       editMeta(fileName) {
-        getMetaSha(sessionStorage.githubtoken).then((sha) => {
-          if (sha !== this.metaSha) {
-            // Meta changed, we must refresh
-            console.log('Metadata has been edited')
-            getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-              this.metaFromRepo = result.data.collection
-              this.metaSha = result.sha
-              this.addOrEditMeta(fileName)
-            })
-          } else {
-            this.addOrEditMeta(fileName)
-          }
-        }).catch((e) => {
-          console.log('error retrieving meta sha', e)
-        })
+        this.addOrEditMeta(fileName)
       },
       addOrEditMeta(fileName) {
         let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
@@ -111,38 +97,16 @@
           canCancel: ['escape', 'x'],
           component: MetaEntryEditor,
           props: {
-            metaEntry: metaEntry,
-            listOfFiles: this.listOfFiles.map(f => f.name)
+            metaEntry: metaEntry
           }
         })
       },
       acceptMetaChanges(m) {
-
-        getMetaSha(sessionStorage.githubtoken).then((sha) => {
-          if (sha === this.metaSha) { // Can only save if meta has not been changed
-            this.$set(this.metaFromRepo, this.currentIndex, m.metaEntry)
-            saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
-              console.log('meta data saved')
-              // Refresh meta sha
-              getMetaSha(sessionStorage.githubtoken).then((sha) => {
-                this.metaSha = sha
-              })
-              if (m.job) {
-                this.submitRtilesJob(m.job)
-              }
-            }).catch((e) => {
-              console.log('error saving data to repo ', e)
-            })
-          } else {
-            // Display error message
-            this.$buefy.dialog.alert({title: this.$t('label.error'), message: this.$t('message.dataconflictmessage'), type: 'is-danger', hasIcon: true})
-            // And refresh meta
-            getMetaFromRepo(sessionStorage.githubtoken).then((result) => {
-              this.metaFromRepo = result.data.collection
-              this.metaSha = result.sha
-            })
-          }
-        })
+        console.log('accept changes')
+        this.$set(this.metaFromRepo, this.currentIndex, m.metaEntry)
+        if (m.job) {
+          this.submitRtilesJob(m.job)
+        }
       },
       submitRtilesJob(job) {
         submitJob(sessionStorage.githubtoken, job).then((response) => {
@@ -198,24 +162,26 @@
         })
       },
       deleteFilesAndMeta(filesToDelete) {
+        this.isLoading = true
         let oLength = this.metaFromRepo.length
         this.metaFromRepo = this.metaFromRepo.filter((item) => !filesToDelete.includes(item.file))
         if (oLength != this.metaFromRepo.length) { // We have meta to delete
-          saveMetaFromRepo(sessionStorage.githubtoken, this.metaFromRepo).then(() => {
-            console.log('meta data saved')
+          deleteMetaListFromRepo(sessionStorage.githubtoken, filesToDelete).then(() => {
             deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
               this.fileListCheckedRows = []
               this.getListOfFiles()
+              this.isLoading = false
             }).catch((e) => {
               console.log('error deleting files ', e.response)
             })
           }).catch((e) => {
-            console.log('error saving data to repo ', e)
+            console.log('error deleting meta from repo ', e)
           })
         } else {
           deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
             this.fileListCheckedRows = []
             this.getListOfFiles()
+            this.isLoading = false
           }).catch((e) => {
             console.log('error deleting files ', e.response)
           })

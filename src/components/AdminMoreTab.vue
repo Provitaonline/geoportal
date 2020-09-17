@@ -35,12 +35,8 @@
     created() {
     },
     mounted() {
-      this.$eventBus.$on('moretabvisible', this.getMore)
     },
     methods: {
-      getMore() {
-        console.log('No need for an event here')
-      },
       editAbout() {
         this.$buefy.modal.open({
           parent: this,

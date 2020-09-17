@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <b-loading v-model="isLoading" :is-full-page="false"></b-loading>
     <ValidationObserver v-slot="{passes, dirty}">
       <div style="position: sticky; top: 0; z-index: 45; background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
@@ -253,6 +254,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
+import { getMetaFromRepo, saveMetaFromRepo } from '~/utils/data'
 
 let flatten = require('flat')
 let unflatten = require('flat').unflatten
@@ -260,14 +262,14 @@ let unflatten = require('flat').unflatten
 export default {
   name: 'MetaEntryEditor',
   props: {
-    metaEntry: { type: Object, required: true },
-    listOfFiles: { type: Array, required: true }
+    metaEntry: { type: Object, required: true }
   },
   data() {
     return {
       metaEntryFlat: flatten(this.metaEntry),
       savedTileInfo: null,
-      formDate: null
+      formDate: null,
+      isLoading: false
     }
   },
   components: {
@@ -278,9 +280,16 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
-    if (this.metaEntry.date) this.formDate = new Date(this.metaEntry.date)
-    if (this.metaEntry.tileInfo) {
-      this.savedTileInfo = JSON.stringify(this.metaEntry.tileInfo)
+    if (!this.metaEntry.format) { // Populate only if empty
+      this.isLoading = true
+      getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
+        this.metaEntryFlat = flatten(result)
+        if (result.date) this.formDate = new Date(result.date)
+        if (result.tileInfo) {
+          this.savedTileInfo = JSON.stringify(result.tileInfo)
+        }
+        this.isLoading = false
+      })
     }
   },
   methods: {
@@ -306,8 +315,12 @@ export default {
       if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
         job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
       }
-      this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
-      this.$parent.close()
+
+      saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
+        console.log('saved meta entry')
+        this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
+        this.$parent.close()
+      })
     },
     unflattenTags(lang) {
       let kwds = []
@@ -391,16 +404,6 @@ export default {
       },
       set(val) {
         this.reflattenTags('en', val)
-      }
-    },
-    filteredListOfFiles() {
-      if (this.metaEntryFlat['file']) {
-        return this.listOfFiles.filter((option) => {
-          return option
-            .toString()
-            .toLowerCase()
-            .indexOf(this.metaEntryFlat['file'].toLowerCase()) >= 0
-        })
       }
     },
     isShapefile() {
