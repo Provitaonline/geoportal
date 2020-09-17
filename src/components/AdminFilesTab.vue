@@ -166,8 +166,7 @@
         let oLength = this.metaFromRepo.length
         this.metaFromRepo = this.metaFromRepo.filter((item) => !filesToDelete.includes(item.file))
         if (oLength != this.metaFromRepo.length) { // We have meta to delete
-          deleteMetaListFromRepo(sessionStorage.githubtoken, filesToDelete).then((response) => {
-            console.log('deleted meta entries', response)
+          deleteMetaListFromRepo(sessionStorage.githubtoken, filesToDelete).then(() => {
             deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
               this.fileListCheckedRows = []
               this.getListOfFiles()
