@@ -1,6 +1,7 @@
 import GitHub from 'github-api'
 import axios from 'axios'
-import {Base64} from 'js-base64'
+import base64 from 'base-64'
+import utf8 from 'utf8'
 import {adminConfig, dataConfig} from '~/utils/config'
 import {makeColorTableParameter} from '~/utils/misc'
 
@@ -53,7 +54,7 @@ export async function getMetaFromRepo(token, file) {
     }
   }
   if (response !== undefined) {
-    result = JSON.parse(Base64.decode(response.data.content))
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
     // Need to unpack tileInfo back to object
     result.tileInfo = JSON.parse(result.tileInfo)
   }
@@ -156,7 +157,7 @@ export async function getSurveyTemplateFromRepo(token) {
   let github = new GitHub({token: token})
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.surveyTemplateName)
-  return JSON.parse(Base64.decode(response.data.content))
+  return JSON.parse(utf8.decode(base64.decode(response.data.content)))
 }
 
 export async function sendSurvey(survey, version) {
@@ -169,7 +170,7 @@ export async function getFAQFromRepo(token) {
 
   try {
     let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.faqFileName)
-    return JSON.parse(Base64.decode(response.data.content)).questions
+    return JSON.parse(utf8.decode(base64.decode(response.data.content))).questions
   } catch(err) {
     throw err
   }
@@ -236,7 +237,7 @@ export async function getAboutFromRepo(token) {
         throw err
       }
     }
-    if (response !== undefined) result[item.fieldName] = Base64.decode(response.data.content)
+    if (response !== undefined) result[item.fieldName] = utf8.decode(base64.decode(response.data.content))
 
     // Yank frontmatter
     let idx = result[item.fieldName].substr(4).indexOf('---\n')
