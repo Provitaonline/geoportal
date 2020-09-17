@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <b-loading v-model="isLoading" :is-full-page="false"></b-loading>
     <ValidationObserver v-slot="{passes, dirty}">
       <div style="position: sticky; top: 0; z-index: 45; background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
@@ -267,7 +268,8 @@ export default {
     return {
       metaEntryFlat: flatten(this.metaEntry),
       savedTileInfo: null,
-      formDate: null
+      formDate: null,
+      isLoading: false
     }
   },
   components: {
@@ -279,6 +281,7 @@ export default {
   },
   created() {
     if (!this.metaEntry.format) { // Populate only if empty
+      this.isLoading = true
       getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
         console.log('here is the meta', result)
         this.metaEntryFlat = flatten(result)
@@ -286,6 +289,7 @@ export default {
         if (result.tileInfo) {
           this.savedTileInfo = JSON.stringify(result.tileInfo)
         }
+        this.isLoading = false
       })
     }
   },
