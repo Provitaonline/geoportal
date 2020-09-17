@@ -283,7 +283,6 @@ export default {
     if (!this.metaEntry.format) { // Populate only if empty
       this.isLoading = true
       getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
-        console.log('here is the meta', result)
         this.metaEntryFlat = flatten(result)
         if (result.date) this.formDate = new Date(result.date)
         if (result.tileInfo) {

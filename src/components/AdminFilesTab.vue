@@ -65,7 +65,7 @@
     mounted() {
       this.getListOfFiles()
       getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
-        console.log('retrieve list from meta', result)
+        console.log('retrieve list from meta')
         this.metaFromRepo = result
         this.isLoading = false
       })
