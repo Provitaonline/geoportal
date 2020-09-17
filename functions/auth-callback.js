@@ -25,7 +25,6 @@ exports.handler = async (event, context) => {
     })
 
     const authResult = oauth.accessToken.create(authorizationToken)
-    console.log('Auth result', authResult)
 
     let eLang = state.substr(0,2)
     let langPath = (config.defaultLang === eLang) ? '' : '/' + eLang
