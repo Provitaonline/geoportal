@@ -75,6 +75,7 @@
             this.$set(this.listOfNewsItems, this.listOfNewsItems.length, newsItem)
           }
           this.isLoading = false
+          this.$store.commit('setPublishIndicator', true)
         }).catch((e) => {
           console.log('error saving news item to github ', e)
         })
@@ -100,15 +101,8 @@
 
           this.listOfNewsItems = this.listOfNewsItems.filter(item => !itemsToDelete.includes(item.key))
           this.newsItemListCheckedRows = []
+          this.$store.commit('setPublishIndicator', true)
         })
-
-        /* deleteObjects(sessionStorage.githubtoken, JSON.stringify(itemsToDelete)).then(() => {
-          this.newsItemListCheckedRows = []
-          this.reloadListOfNewsItems()
-          deleteObjects(sessionStorage.githubtoken, JSON.stringify(thumbsToDelete))
-        }).catch((e) => {
-          console.log('error deleting news items ', e.response)
-        }) */
       }
     },
     computed: {

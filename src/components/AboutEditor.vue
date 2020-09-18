@@ -84,6 +84,7 @@
         saveAbout(sessionStorage.githubtoken, JSON.parse(JSON.stringify(this.about))).then(() => {
           console.log('saved About')
           this.isLoading = false
+          this.$store.commit('setPublishIndicator', true)
           this.$parent.close()
         }).catch((e) => {
           console.log('error saving About to github ', e)

@@ -8,7 +8,7 @@
     <br>
     <section class="container">
       <div class="buttons" style="justify-content: flex-end;">
-        <b-button @click="confirmPublish()" style="width: 140px;" type="is-warning"><font-awesome :icon="['far', 'newspaper']"/>&nbsp;{{$t('label.publish')}}</b-button>
+        <b-button @click="confirmPublish()" style="width: 140px;" :type="$store.state.publishIndicator ? 'is-warning' : ''"><font-awesome :icon="['far', 'newspaper']"/>&nbsp;{{$t('label.publish')}}</b-button>
       </div>
       <b-tabs @input="tabChanged()" v-model="activeTab" type="is-boxed" :animated="false">
         <b-tab-item value="files" :label="$t('label.files')">
@@ -175,6 +175,7 @@ export default {
     publishSite() {
       publishSite().then(() => {
         console.log('site deploy requested')
+        this.$store.commit('setPublishIndicator', false)
       }).catch(err => {
         console.log('publish error', err)
       })

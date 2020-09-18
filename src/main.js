@@ -48,7 +48,8 @@ export default function (Vue, { router, head, isClient, appOptions }) {
       mapView: {},
       login: null,
       name: null,
-      avatar: null
+      avatar: null,
+      publishIndicator: false
     },
     mutations: {
       setVisibleTileLayers (state, visibleTileLayers) {
@@ -68,6 +69,9 @@ export default function (Vue, { router, head, isClient, appOptions }) {
       },
       setAvatar (state, avatar) {
         state.avatar = avatar
+      },
+      setPublishIndicator (state, publishIndicator) {
+        state.publishIndicator = publishIndicator
       }
     }
   })

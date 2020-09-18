@@ -110,6 +110,7 @@
         saveFAQ(sessionStorage.githubtoken, this.FAQ).then(() => {
           console.log('saved FAQ')
           this.isChanged = false
+          this.$store.commit('setPublishIndicator', true)
         }).catch((e) => {
           console.log('error saving FAQ to github ', e)
         })

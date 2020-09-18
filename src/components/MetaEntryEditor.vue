@@ -318,6 +318,7 @@ export default {
 
       saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
         console.log('saved meta entry')
+        this.$store.commit('setPublishIndicator', true)
         this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
         this.$parent.close()
       })
