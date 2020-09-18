@@ -76,7 +76,6 @@
 </page-query>
 
 <script>
-  import {getListOfNewsItems} from '~/utils/data'
 
   export default {
     metaInfo() {
@@ -93,11 +92,7 @@
       this.listOfNewsItems = this.$page.allNewsData.edges.map(item => item.node)
     },
     methods: {
-      getListOfNewsItems() {
-        getListOfNewsItems().then((result) => {
-          this.listOfNewsItems = result
-        })
-      }
+
     },
     computed: {
       sortedListOfNewsItems() {

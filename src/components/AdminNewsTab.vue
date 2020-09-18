@@ -93,7 +93,7 @@
       },
       deleteNewsItems() {
         let itemsToDelete = this.newsItemListCheckedRows.map((item) => item.key)
-        let thumbsToDelete = this.newsItemListCheckedRows.map((item) => item.thumb ? item.thumb.substr(2) : null).filter((t) => t)
+        let thumbsToDelete = this.newsItemListCheckedRows.map((item) => item.thumb ? 'news' + item.thumb.substr(1) : null).filter((t) => t)
 
         deleteItemsFromRepo(sessionStorage.githubtoken, thumbsToDelete).then(() => {
           deleteItemsFromRepo(sessionStorage.githubtoken, itemsToDelete)
