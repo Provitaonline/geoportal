@@ -345,7 +345,7 @@ export async function isPublishDue(token) {
   if (deployDate > 0) {
     response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getDetails()
     let pushedDate = Date.parse(response.data.pushed_at)
-    if (deployDate > pushedDate) {
+    if (deployDate < pushedDate) {
       return true
     }
   }
