@@ -147,7 +147,12 @@
       "downloadsurveydata": "Download survey data",
       "aboutspanish": "\"About\" content in spanish",
       "aboutenglish": "\"About\" content in english",
-      "publish": "Publish"
+      "publish": "Publish",
+      "organization": "Organization",
+      "address": "Address",
+      "email": "Email",
+      "Phone": "Phone",
+      "web": "Web address"
     }
   },
   "es": {
@@ -298,7 +303,12 @@
       "downloadsurveydata": "Descargar datos de la encuesta",
       "aboutspanish": "Contenido de \"Acerca de\" en español",
       "aboutenglish": "Contenido de \"Acerca de\" en inglés",
-      "publish": "Publicar"
+      "publish": "Publicar",
+      "organization": "Organización",
+      "address": "Dirección",
+      "email": "Email",
+      "Phone": "Teléfono",
+      "web": "Dirección Web"
     }
   }
 }

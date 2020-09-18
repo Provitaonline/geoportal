@@ -9,7 +9,8 @@
       "colorhexa": "Color code must be in css hexa format",
       "oneOf": "Field must be one of the items on the list",
       "url": "Field must be a valid URL",
-      "size": "File must be smaller than {size}K"
+      "size": "File must be smaller than {size}K",
+      "email": "Field must be a valid email"
     }
   },
   "es": {
@@ -22,7 +23,8 @@
       "colorhexa": "El código de color debe ser en formato css hexa",
       "oneOf": "El valor del campo debe ser uno de los elementos de la lista",
       "url": "El valor del campo debe ser un URL válido",
-      "size": "El tamaño del archivo debe ser menor de {size}K"
+      "size": "El tamaño del archivo debe ser menor de {size}K",
+      "email": "El valor del campo debe ser un email válido"
     }
   }
 }

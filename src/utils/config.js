@@ -53,6 +53,7 @@ export const dataConfig = {
   metaDirectory: 'meta',
   surveyTemplateName: 'survey-template.json',
   faqFileName: 'faq.json',
+  contactFileName: 'contact.json',
   aboutDirName: 'about',
   newsDirName: 'news',
   aboutLocItems: [

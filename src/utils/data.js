@@ -332,6 +332,21 @@ export async function saveAbout(token, about) {
   return
 }
 
+export async function getContactFromRepo(token) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.contactFileName)
+  return JSON.parse(utf8.decode(base64.decode(response.data.content)))
+}
+
+export async function saveContact(token, contact) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+    writeFile('master', dataConfig.contactFileName, JSON.stringify(contact, null, 2), 'Updated contact', {encode: true})
+  return response
+}
+
 export async function publishSite() {
   let response = await axios.post(dataConfig.deployHookUrl, 'publish')
   return response

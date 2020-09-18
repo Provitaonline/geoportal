@@ -1,5 +1,5 @@
 import { extend, configure } from 'vee-validate'
-import { required, numeric, decimal, min, regex, oneOf, size } from 'vee-validate/dist/rules'
+import { required, numeric, decimal, min, regex, oneOf, size, email } from 'vee-validate/dist/rules'
 import VueI18n from 'vue-i18n'
 
 const i18n = new VueI18n()
@@ -48,6 +48,10 @@ extend('url', {
 
 extend('size', {
   ...size
+})
+
+extend('email', {
+  ...email
 })
 
 configure({

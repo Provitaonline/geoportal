@@ -4,7 +4,7 @@
     <div style="display: flex; flex-direction: column; align-items: center">
   <!-- <div style="display: flex; flex-direction: column; align-items: center"> -->
       <b-button @click="editAbout()" class="more-button"><font-awesome :icon="['far', 'edit']"/>&nbsp;{{$t('label.editabout')}}</b-button>
-      <b-button @click="" class="more-button"><font-awesome :icon="['far', 'edit']"/>&nbsp;{{$t('label.editcontact')}}</b-button>
+      <b-button @click="editContact()" class="more-button"><font-awesome :icon="['far', 'edit']"/>&nbsp;{{$t('label.editcontact')}}</b-button>
       <b-button @click="" class="more-button"><font-awesome :icon="['fas', 'download']"/>&nbsp;{{$t('label.downloadsurveydata')}}</b-button>
     </div>
   </div>
@@ -23,6 +23,7 @@
 
 <script>
   import AboutEditor from '~/components/AboutEditor'
+  import ContactEditor from '~/components/ContactEditor'
   import {} from '~/utils/data'
 
   export default {
@@ -42,6 +43,13 @@
           parent: this,
           canCancel: ['escape', 'x'],
           component: AboutEditor
+        })
+      },
+      editContact() {
+        this.$buefy.modal.open({
+          parent: this,
+          canCancel: ['escape', 'x'],
+          component: ContactEditor
         })
       }
     }
