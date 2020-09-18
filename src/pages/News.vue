@@ -24,7 +24,7 @@
           </div>
           <figure v-if="item.thumb" class="media-right">
             <p class="image">
-              <img :src="item.thumb">
+              <g-image :src="item.thumb"></g-image>
             </p>
           </figure>
         </article>
@@ -52,6 +52,29 @@
 
 </style>
 
+<page-query>
+  query {
+    allNewsData: allNewsData {
+      edges {
+        node {
+          headline {
+            en
+            es
+          }
+          text {
+            en
+            es
+          }
+          date
+          key
+          reference
+          thumb
+        }
+      }
+    }
+  }
+</page-query>
+
 <script>
   import {getListOfNewsItems} from '~/utils/data'
 
@@ -67,7 +90,7 @@
       }
     },
     mounted() {
-      this.getListOfNewsItems()
+      this.listOfNewsItems = this.$page.allNewsData.edges.map(item => item.node)
     },
     methods: {
       getListOfNewsItems() {
