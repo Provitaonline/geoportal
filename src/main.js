@@ -44,7 +44,6 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   appOptions.store = new Vuex.Store({
     state: {
       visibleTileLayers: {},
-      fileList: [],
       mapStyleUri: null,
       mapView: {},
       login: null,
