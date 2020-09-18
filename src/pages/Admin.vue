@@ -64,7 +64,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, publishSite} from '~/utils/data'
+import {getListOfFiles, getMetaFromRepo, getMetaSha, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, publishSite, isPublishDue} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
 import {getPureText} from '~/utils/misc'
 import AdminFilesTab from '~/components/AdminFilesTab'
@@ -132,7 +132,9 @@ export default {
         this.isLoginActive = false
       }
     }
+
     this.$eventBus.$on('userlogoff', this.userLogoff)
+    isPublishDue().then(isDue => this.$store.commit('setPublishIndicator', isDue))
   },
   mounted () {
 

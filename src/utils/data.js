@@ -336,3 +336,18 @@ export async function publishSite() {
   let response = await axios.post(dataConfig.deployHookUrl, 'publish')
   return response
 }
+
+export async function isPublishDue(token) {
+  let github = new GitHub({token: token})
+
+  let response = await axios.get(dataConfig.deployDatePath)
+  let deployDate = Date.parse(response.data)
+  if (deployDate > 0) {
+    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getDetails()
+    let pushedDate = Date.parse(response.data.pushed_at)
+    if (deployDate > pushedDate) {
+      return true
+    }
+  }
+  return false
+}

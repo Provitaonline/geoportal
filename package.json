@@ -7,10 +7,11 @@
   },
   "scripts": {
     "prebuild": "cd functions && npm i",
-    "build": "npm run subm && gridsome build",
-    "develop": "npm run subm && gridsome develop",
+    "build": "npm run subm && npm run timestamp && gridsome build",
+    "develop": "npm run subm && npm run timestamp && gridsome develop",
     "explore": "gridsome explore",
-    "subm": "git submodule update --remote"
+    "subm": "git submodule update --remote",
+    "timestamp": "echo `date -u \"+%FT%TZ\"`\\\\c > static/deployDate.txt"
   },
   "author": "Ricardo Morin",
   "license": "MIT",

@@ -8,6 +8,7 @@ dist
 .env.*
 package-lock.json
 yarn.lock
+static/deployDate.txt
 
 # Local Netlify folder
 .netlify
