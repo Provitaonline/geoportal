@@ -8,23 +8,23 @@
     <br>
     <div class="container">
       <div class="box">
-        <article v-for="item, index in sortedListOfNewsItems" class="media">
+        <article v-for="item, index in $page.allNewsData.edges" class="media">
           <div class="media-content">
             <div class="content">
               <p>
-                <div class="is-size-5 has-text-weight-bold">{{item.headline[$i18n.locale.substr(0, 2)]}}</div>
-                <small>{{$d(new Date(item.date), 'long')}}</small>
+                <div class="is-size-5 has-text-weight-bold">{{item.node.headline[$i18n.locale.substr(0, 2)]}}</div>
+                <small>{{$d(new Date(item.node.date), 'long')}}</small>
                 <br><br>
-                {{item.text[$i18n.locale.substr(0, 2)]}}
+                {{item.node.text[$i18n.locale.substr(0, 2)]}}
               </p>
-              <p v-if="item.reference" class="has-text-weight-semibold">
-                <g-link :to="item.reference">{{$t('label.readmore')}}</g-link>
+              <p v-if="item.node.reference" class="has-text-weight-semibold">
+                <g-link :to="item.node.reference">{{$t('label.readmore')}}</g-link>
               </p>
             </div>
           </div>
-          <figure v-if="item.thumb" class="media-right">
+          <figure v-if="item.node.thumb" class="media-right">
             <p class="image">
-              <g-image :src="item.thumb"></g-image>
+              <g-image :src="item.node.thumb"></g-image>
             </p>
           </figure>
         </article>
@@ -54,7 +54,7 @@
 
 <page-query>
   query {
-    allNewsData: allNewsData {
+    allNewsData: allNewsData (sortBy: "date", order: DESC, limit: 50) {
       edges {
         node {
           headline {
@@ -81,24 +81,6 @@
     metaInfo() {
       return {
         title: this.$t('label.news')
-      }
-    },
-    data() {
-      return {
-        listOfNewsItems: []
-      }
-    },
-    mounted() {
-      this.listOfNewsItems = this.$page.allNewsData.edges.map(item => item.node)
-    },
-    methods: {
-
-    },
-    computed: {
-      sortedListOfNewsItems() {
-        if (this.listOfNewsItems.length) {
-          return this.listOfNewsItems.sort((a, b) => (a.date > b.date) ? -1 : 1)
-        }
       }
     }
   }
