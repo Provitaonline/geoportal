@@ -104,9 +104,20 @@ export async function deleteMetaListFromRepo(token, fileList) {
   let github = new GitHub({token: token})
 
   let responses = []
-  console.log('delete file list from repo', fileList)
   for (const file of fileList) {
     let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).deleteFile('master', dataConfig.metaDirectory + '/' + file + '.json')
+    responses.push(response)
+  }
+
+  return responses
+}
+
+export async function deleteItemsFromRepo(token, itemList) {
+  let github = new GitHub({token: token})
+
+  let responses = []
+  for (const item of itemList) {
+    let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).deleteFile('master', item)
     responses.push(response)
   }
 
@@ -200,10 +211,65 @@ export function getListOfNewsItems() {
   })
 }
 
-export async function saveNewsItem(token, newsItem) {
+export async function getListOfNewsItemsFromRepo(token) {
+  let github = new GitHub({token: token})
+
+  let response
+  let result = []
+
+  try {
+    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.newsDirName)
+  } catch (err) {
+    if (err.response.status != 404) {
+      throw err
+    }
+  }
+  if (response === undefined) return result
+
+  response.data.forEach(async item => {
+    if (item.type === 'file') {
+      let nI = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', item.path)
+      result.push(JSON.parse(utf8.decode(base64.decode(nI.data.content))))
+    }
+  })
+
+  return result
+}
+
+export async function getNewsItemThumb(token, key) {
+  let github = new GitHub({token: token})
+
+  let result = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', key)
+  return 'data:image/' + key.substr(key.lastIndexOf('.') + 1) + ';base64,' + result.data.content
+}
+
+export async function saveNewsItemFromRepo(token, newsItem) {
+  let github = new GitHub({token: token})
+
+  console.log(newsItem)
+
+  // Save thumbnail if included
+  if (newsItem.thumb && newsItem.thumb.startsWith('data:')) {
+    let parts = newsItem.thumb.split(',')
+    let info = parts[0].split(/[:;]/)
+    let thumbKey = newsItem.key.replace(/news\//,'news/thumbs/') + '.' + info[1].split('/')[1]
+    await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+      writeFile('master', thumbKey, parts[1], 'Saved news item thumbnail', {encode: false})
+    newsItem.thumb = './' + thumbKey
+  } else {
+    console.log('no need to upload thumb') // Delete me
+  }
+
+  await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+    writeFile('master', newsItem.key, JSON.stringify(newsItem), 'Saved news item', {encode: true})
+
+  return
+}
+
+/*export async function saveNewsItem(token, newsItem) {
   let response = await axios.put('/.netlify/functions/save-news-item?token=' + token, newsItem)
   return response
-}
+}*/
 
 export async function saveSurveyTemplate(token, surveyTemplate) {
   let github = new GitHub({token: token})

@@ -23,7 +23,7 @@
 
 <script>
 
-  import {getListOfNewsItems, saveNewsItem, deleteObjects} from '~/utils/data'
+  import {deleteItemsFromRepo, getListOfNewsItemsFromRepo, saveNewsItemFromRepo} from '~/utils/data'
   import NewsItemEditor from '~/components/NewsItemEditor'
 
   export default {
@@ -42,15 +42,12 @@
     methods: {
       getListOfNewsItems() {
         if (!this.listOfNewsItems) {
-          this.reloadListOfNewsItems()
+          console.log('get list of news items')
+          getListOfNewsItemsFromRepo(sessionStorage.githubtoken).then(result => {
+            this.listOfNewsItems = result
+            this.isLoading = false
+          })
         }
-      },
-      reloadListOfNewsItems() {
-        console.log('get news items')
-        getListOfNewsItems().then((result) => {
-          this.listOfNewsItems = result
-          this.isLoading = false
-        })
       },
       editInfo(index) {
         this.openNewsItemEditor(JSON.parse(JSON.stringify(this.sortedListOfNewsItems[index])))
@@ -69,15 +66,17 @@
         })
       },
       acceptNewsItemChanges(newsItem) {
-        saveNewsItem(sessionStorage.githubtoken, newsItem).then(() => {
+        this.isLoading = true
+        saveNewsItemFromRepo(sessionStorage.githubtoken, newsItem).then(() => {
           let index = this.listOfNewsItems.findIndex(item => item.key === newsItem.key)
           if (index != -1) {
             this.$set(this.listOfNewsItems, index, newsItem)
           } else {
-            this.listOfNewsItems.push(newsItem)
+            this.$set(this.listOfNewsItems, this.listOfNewsItems.length, newsItem)
           }
+          this.isLoading = false
         }).catch((e) => {
-          console.log('error saving news item to s3 ', e)
+          console.log('error saving news item to github ', e)
         })
       },
       confirmDelete() {
@@ -94,15 +93,22 @@
       },
       deleteNewsItems() {
         let itemsToDelete = this.newsItemListCheckedRows.map((item) => item.key)
-        let thumbsToDelete = this.newsItemListCheckedRows.map((item) => item.thumb ? item.thumb.substring(item.thumb.indexOf('amazonaws.com/') + 14) : null).filter((t) => t)
+        let thumbsToDelete = this.newsItemListCheckedRows.map((item) => item.thumb ? item.thumb.substr(2) : null).filter((t) => t)
 
-        deleteObjects(sessionStorage.githubtoken, JSON.stringify(itemsToDelete)).then(() => {
+        deleteItemsFromRepo(sessionStorage.githubtoken, thumbsToDelete).then(() => {
+          deleteItemsFromRepo(sessionStorage.githubtoken, itemsToDelete)
+
+          this.listOfNewsItems = this.listOfNewsItems.filter(item => !itemsToDelete.includes(item.key))
+          this.newsItemListCheckedRows = []
+        })
+
+        /* deleteObjects(sessionStorage.githubtoken, JSON.stringify(itemsToDelete)).then(() => {
           this.newsItemListCheckedRows = []
           this.reloadListOfNewsItems()
           deleteObjects(sessionStorage.githubtoken, JSON.stringify(thumbsToDelete))
         }).catch((e) => {
           console.log('error deleting news items ', e.response)
-        })
+        }) */
       }
     },
     computed: {

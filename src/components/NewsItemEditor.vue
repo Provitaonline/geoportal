@@ -82,6 +82,8 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
 import {adminConfig} from '~/utils/config'
+import {getNewsItemThumb} from '~/utils/data'
+
 
 export default {
   name: 'NewsItemEditor',
@@ -92,6 +94,7 @@ export default {
     return {
       imagePreview: null,
       imageToUpload: null,
+      imageUploaded: false,
       maxNewsImageKB: adminConfig.maxNewsImageKB,
       formDate: new Date()
     }
@@ -105,7 +108,16 @@ export default {
   },
   created() {
     if (this.newsItem.date) this.formDate = new Date(this.newsItem.date)
-    if (this.newsItem.thumb) this.imagePreview = this.newsItem.thumb
+    if (this.newsItem.thumb) {
+      if (this.newsItem.thumb.startsWith('./')) {
+        console.log(this.newsItem.thumb.substr(2))
+        getNewsItemThumb(sessionStorage.githubtoken, this.newsItem.thumb.substr(2)).then(result => {
+          this.imagePreview = result
+        })
+      } else {
+        this.imagePreview = this.newsItem.thumb
+      }
+    }
   },
   methods: {
     uploadImage(imageFile) {
@@ -114,13 +126,14 @@ export default {
 
         reader.addEventListener('load', () => {
           this.imagePreview = reader.result
+          this.imageUploaded = true
         }, false)
 
         reader.readAsDataURL(imageFile)
       }
     },
     acceptChanges() {
-      if (this.imagePreview) {
+      if (this.imagePreview && this.imageUploaded) {
         this.newsItem.thumb = this.imagePreview
       }
       if (!this.newsItem.key) {
