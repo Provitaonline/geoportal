@@ -47,7 +47,6 @@
   import { ValidationObserver, ValidationProvider } from 'vee-validate'
   import * as validation from '~/utils/validation'
   import {getAboutFromRepo, saveAbout} from '~/utils/data'
-  import {adminConfig} from '~/utils/config'
 
   export default {
     name: 'AboutEditor',

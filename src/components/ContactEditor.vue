@@ -51,7 +51,6 @@
   import { ValidationObserver, ValidationProvider } from 'vee-validate'
   import * as validation from '~/utils/validation'
   import {getContactFromRepo, saveContact} from '~/utils/data'
-  import {adminConfig} from '~/utils/config'
 
   export default {
     name: 'ContactEditor',
