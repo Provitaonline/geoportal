@@ -110,7 +110,6 @@ export default {
     if (this.newsItem.date) this.formDate = new Date(this.newsItem.date)
     if (this.newsItem.thumb) {
       if (this.newsItem.thumb.startsWith('./')) {
-        console.log(this.newsItem.thumb.substr(2))
         getNewsItemThumb(sessionStorage.githubtoken, 'news' + this.newsItem.thumb.substr(1)).then(result => {
           this.imagePreview = result
         })

@@ -248,8 +248,6 @@ export async function getNewsItemThumb(token, key) {
 export async function saveNewsItemFromRepo(token, newsItem) {
   let github = new GitHub({token: token})
 
-  console.log(newsItem)
-
   // Save thumbnail if included
   if (newsItem.thumb && newsItem.thumb.startsWith('data:')) {
     let parts = newsItem.thumb.split(',')
@@ -258,8 +256,6 @@ export async function saveNewsItemFromRepo(token, newsItem) {
     await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
       writeFile('master', thumbKey, parts[1], 'Saved news item thumbnail', {encode: false})
     newsItem.thumb = './' + thumbKey.replace(/news\//, '')
-  } else {
-    console.log('no need to upload thumb') // Delete me
   }
 
   await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).

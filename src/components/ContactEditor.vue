@@ -71,7 +71,7 @@
       validation.localize(this.$i18n.locale.toString().substr(0,2))
     },
     created() {
-      console.log('get about')
+      console.log('get contact')
       this.getContact()
     },
     methods: {
