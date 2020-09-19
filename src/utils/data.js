@@ -172,7 +172,9 @@ export async function getSurveyTemplateFromRepo(token) {
 }
 
 export async function sendSurvey(survey, version) {
-  let response = await axios.put('/.netlify/functions/send-survey?version=' + version, survey)
+  let response = await axios.get(dataConfig.geoIpLookupUrl)
+  survey.countryCode = response.data.country_code ? response.data.country_code : '??'
+  response = await axios.put('/.netlify/functions/send-survey?version=' + version, survey)
   return response
 }
 

@@ -61,5 +61,6 @@ export const dataConfig = {
     {fieldName: 'aboutes', filePath: '/es-ve/content.md', frontMatter: '---\ntitle: Acerca de\nlocale: es-ve\n---\n'}
   ],
   deployHookUrl: 'https://api.netlify.com/build_hooks/5f613a7b19eca57156ffbe80',
-  deployDatePath: '/deployDate.txt'
+  deployDatePath: '/deployDate.txt',
+  geoIpLookupUrl: 'https://json.geoiplookup.io'
 }
