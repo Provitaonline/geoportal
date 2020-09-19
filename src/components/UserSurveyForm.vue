@@ -73,8 +73,9 @@ export default {
   methods: {
     downloadFile(withSurvey) {
       if (withSurvey) {
-        console.log('Submit survey data', this.surveyData)
+        console.log('Submit survey data')
         this.surveyData.version = this.$static.userSurveyTemplate.version
+        this.surveyData.languageCode = this.$i18n.locale.substr(0, 2)
         sendSurvey(this.surveyData, this.$static.userSurveyTemplate.version)
       }
       document.getElementById('download-' + this.downloadFileIndex).click()
