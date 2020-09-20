@@ -364,3 +364,8 @@ export async function isPublishDue(token) {
   }
   return false
 }
+
+export async function getSurveyVersions(token) {
+  let response = await axios.get('/.netlify/functions/get-survey-versions?token=' + token)
+  return response.data
+}
