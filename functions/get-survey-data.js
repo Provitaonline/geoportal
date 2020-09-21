@@ -1,6 +1,7 @@
 let AWS = require('aws-sdk')
 let GitHub = require('github-api')
 let converter = require('json-2-csv')
+const {gzip} = require('node-gzip')
 const {config} = require('./utils/s3Config')
 
 AWS.config.update({credentials: config.credentials, region: config.region})
@@ -71,11 +72,20 @@ exports.handler = async (event, context) => {
     let listOfFiles = await getListOfFiles()
 
     for (const fileKey of listOfFiles) {
-      result.push(await getFile(fileKey))
+      let record = await getFile(fileKey)
+      // Add the date
+      let part1 = fileKey.substring(0, fileKey.lastIndexOf('-'))
+      record.date = part1.substring(part1.lastIndexOf('/') + 1)
+      result.push(record)
     }
-    let csvContent = await convertToCsv(result)
+    let csvContent = await gzip(await convertToCsv(result))
 
-    return {statusCode: 200, body: csvContent}
+    return {
+      statusCode: 200,
+      headers: {'Content-Encoding': 'gzip'},
+      body: csvContent.toString('base64'),
+      isBase64Encoded: true
+    }
   } else {
     return {statusCode: 401, body: 'User must be a repository collaborator'}
   }

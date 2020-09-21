@@ -20,7 +20,7 @@
           </b-field>
         </div>
       </div>
-
+      <a id="download-file" download="surveydata.csv" :href="downloadLink"></a>
       <div class="card-footer" style="padding: 24px; justify-content: flex-end;">
         <div class="buttons">
           <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
@@ -50,7 +50,8 @@
       return {
         isLoading: true,
         versions: null,
-        selectedVersion: null
+        selectedVersion: null,
+        downloadLink: null
       }
     },
     created() {
@@ -68,9 +69,16 @@
         }
       },
       getSurveyData() {
-        console.log(this.selectedVersion)
+        this.isLoading = true
         getSurveyData(sessionStorage.githubtoken, this.selectedVersion).then(result => {
-          console.log(result)
+          this.downloadLink = URL.createObjectURL(new Blob([result]))
+          this.$nextTick(() => {
+            document.getElementById('download-file').click()
+            this.$parent.close()
+            URL.revokeObjectURL(this.downloadLink)
+            this.downloadLink = null
+            this.isLoading = false
+          })
         })
       }
     }
