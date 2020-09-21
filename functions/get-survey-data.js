@@ -25,21 +25,6 @@ exports.handler = async (event, context) => {
     })
   }
 
-  /*function getListOfFiles() {
-    return new Promise((resolve, reject) => {
-      s3.listObjectsV2({
-        Bucket: config.bucket,
-        Prefix: 'surveydata/version-' + version
-      }, ((err, data) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve (data.Contents.map(item => item.Key))
-        }
-      }))
-    })
-  }*/
-
   async function getListOfFiles(params, allFiles = []) {
     const response = await s3.listObjectsV2(params).promise()
 
