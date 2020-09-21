@@ -369,3 +369,8 @@ export async function getSurveyVersions(token) {
   let response = await axios.get('/.netlify/functions/get-survey-versions?token=' + token)
   return response.data
 }
+
+export async function getSurveyData(token, version) {
+  let response = await axios.get('/.netlify/functions/get-survey-data?token=' + token + '&version=' + version)
+  return response.data
+}

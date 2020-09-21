@@ -10,6 +10,7 @@
   "dependencies": {
     "aws-sdk": "^2.714.2",
     "github-api": "^3.3.0",
+    "json-2-csv": "^3.7.6",
     "sanitize-html": "^1.27.3",
     "simple-oauth2": "^3.4.0"
   }

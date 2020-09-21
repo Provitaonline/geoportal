@@ -9,7 +9,7 @@
       <div class="card-content">
         <div class="content">
           <b-field horizontal custom-class="version-label" label="Versión de la encuesta">
-              <b-select v-model="defaultVersion" horizontal placeholder="Versión">
+              <b-select v-model="selectedVersion" horizontal placeholder="Versión">
                   <option
                       v-for="version in versions"
                       :value="version"
@@ -24,7 +24,7 @@
       <div class="card-footer" style="padding: 24px; justify-content: flex-end;">
         <div class="buttons">
           <b-button @click="$parent.close()" style="width: 140px;"><font-awesome :icon="['fas', 'times']"/>&nbsp;{{$t('label.cancel')}}</b-button>
-          <b-button @click="" style="width: 140px;"><font-awesome :icon="['fas', 'download']"/>&nbsp;{{$t('label.download')}}</b-button>
+          <b-button @click="getSurveyData()" style="width: 140px;"><font-awesome :icon="['fas', 'download']"/>&nbsp;{{$t('label.download')}}</b-button>
         </div>
       </div>
 
@@ -40,7 +40,7 @@
 </style>
 
 <script>
-  import {getSurveyVersions} from '~/utils/data'
+  import {getSurveyVersions, getSurveyData} from '~/utils/data'
 
   export default {
     name: 'SurveyDataDownloader',
@@ -50,7 +50,7 @@
       return {
         isLoading: true,
         versions: null,
-        defaultVersion: null
+        selectedVersion: null
       }
     },
     created() {
@@ -62,10 +62,16 @@
         if (!this.versions) {
           getSurveyVersions(sessionStorage.githubtoken).then((result) => {
             this.versions = result
-            this.defaultVersion = result[this.versions.length - 1]
+            this.selectedVersion = result[this.versions.length - 1]
             this.isLoading = false
           })
         }
+      },
+      getSurveyData() {
+        console.log(this.selectedVersion)
+        getSurveyData(sessionStorage.githubtoken, this.selectedVersion).then(result => {
+          console.log(result)
+        })
       }
     }
   }
