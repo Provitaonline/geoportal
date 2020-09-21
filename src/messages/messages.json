@@ -152,7 +152,8 @@
       "address": "Address",
       "email": "Email",
       "Phone": "Phone",
-      "web": "Web address"
+      "web": "Web address",
+      "surveyversion": "Survey version"
     }
   },
   "es": {
@@ -308,7 +309,8 @@
       "address": "Dirección",
       "email": "Email",
       "Phone": "Teléfono",
-      "web": "Dirección Web"
+      "web": "Dirección Web",
+      "surveyversion": "Versión de la encuesta"
     }
   }
 }

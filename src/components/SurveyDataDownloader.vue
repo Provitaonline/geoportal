@@ -8,8 +8,8 @@
       </div>
       <div class="card-content">
         <div class="content">
-          <b-field horizontal custom-class="version-label" label="Versión de la encuesta">
-              <b-select v-model="selectedVersion" horizontal placeholder="Versión">
+          <b-field horizontal custom-class="version-label" :label="$t('label.surveyversion')">
+              <b-select v-model="selectedVersion" horizontal>
                   <option
                       v-for="version in versions"
                       :value="version"
