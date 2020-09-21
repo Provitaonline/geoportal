@@ -25,7 +25,7 @@ exports.handler = async (event, context) => {
     })
   }
 
-  function getListOfFiles() {
+  /*function getListOfFiles() {
     return new Promise((resolve, reject) => {
       s3.listObjectsV2({
         Bucket: config.bucket,
@@ -38,6 +38,17 @@ exports.handler = async (event, context) => {
         }
       }))
     })
+  }*/
+
+  async function getListOfFiles(params, allFiles = []) {
+    const response = await s3.listObjectsV2(params).promise()
+
+    allFiles = allFiles.concat(response.Contents.map(item => item.Key))
+    if (response.NextContinuationToken) {
+      params.ContinuationToken = response.NextContinuationToken
+      await getListOfFiles(params, allFiles)
+    }
+    return allFiles
   }
 
   function getFile(key) {
@@ -69,7 +80,7 @@ exports.handler = async (event, context) => {
 
   let result = []
   if (await isAuthorized()) {
-    let listOfFiles = await getListOfFiles()
+    let listOfFiles = await getListOfFiles({ Bucket: config.bucket, Prefix: 'surveydata/version-' + version })
 
     for (const fileKey of listOfFiles) {
       let record = await getFile(fileKey)
