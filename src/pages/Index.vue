@@ -22,6 +22,16 @@
                 </span>
               </div>
             </div>
+            <div class="panel-block">
+              <b-taginput
+                icon="tag"
+                v-model="tags"
+                autocomplete
+                :data="filteredTags"
+                @typing="getFilteredTags"
+                :placeholder="$t('label.filter')">
+              </b-taginput>
+            </div>
           </div>
           <div v-for="item, index in sortedFileList">
             <div v-show="isMatch(item)" class="card"  >
@@ -210,7 +220,10 @@
         popupModalData: {},
         popUpModalHeading: '',
         searchString: '',
-        surveyTemplate: null
+        surveyTemplate: null,
+        tags: [],
+        allKeywords: {en: [], es: []},
+        filteredTags: null
       }
     },
     components: {
@@ -218,6 +231,21 @@
     },
     created() {
       this.fileList = this.$page.allMetaData.edges.map(item => item.node)
+      this.$page.allMetaData.edges.forEach(item => {
+        //console.log(item.node.keywords)
+        item.node.keywords['en'].forEach(kw => {
+          if (!this.allKeywords.en.includes(kw)) {
+            this.allKeywords.en.push(kw)
+          }
+        })
+        item.node.keywords['es'].forEach(kw => {
+          if (!this.allKeywords.es.includes(kw)) {
+            this.allKeywords.es.push(kw)
+          }
+        })
+        this.filteredTags = this.sortedKeywordList
+        //this.allKeywords.push(...item.node.keywords[this.$i18n.locale.substr(0, 2)])
+      })
       this.fileList.forEach(item => {
         this.$set(item, 'expanded', false)
         if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
@@ -254,10 +282,17 @@
         }
       },
       isMatch(item) {
-        if (this.searchString.length < 3) return true
-        if (getPureText(item.name[this.locale]).includes(getPureText(this.searchString))) return true
-        if (getPureText(item.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return true
+        if (this.tags.length === 0 && this.searchString.length < 3) return true
+        if (getPureText(item.name[this.locale]).includes(getPureText(this.searchString))) {
+          if (this.tags.length === 0 || item.keywords[this.locale].some(k => this.tags.includes(k))) return true
+        }
+        // if (getPureText(item.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return true
         return false
+      },
+      getFilteredTags(text) {
+        this.filteredTags = this.allKeywords[this.locale].filter((option) => {
+          return getPureText(option).includes(getPureText(text))
+        })
       },
       downloadFile(index) {
         this.openUserSurvey(index)
@@ -271,7 +306,7 @@
             downloadFileIndex: index
           }
         })
-      },
+      }
     },
     computed: {
       getNumRows() {
@@ -283,6 +318,10 @@
           return this.fileList.sort((a, b) => (collator.compare(a.name[this.locale], b.name[this.locale])))
           //return this.fileList.sort((a, b) => (a.name[locale].normalize('NFD') > b.name[locale].normalize('NFD')) ? 1 : -1)
         }
+      },
+      sortedKeywordList() {
+        let collator = new Intl.Collator()
+        return this.allKeywords[this.locale].sort((a, b) => (collator.compare(a, b)))
       },
       popUpModalColumns() {
         return [

@@ -153,7 +153,8 @@
       "email": "Email",
       "Phone": "Phone",
       "web": "Web address",
-      "surveyversion": "Survey version"
+      "surveyversion": "Survey version",
+      "filter": "Filter"
     }
   },
   "es": {
@@ -310,7 +311,8 @@
       "email": "Email",
       "Phone": "Teléfono",
       "web": "Dirección Web",
-      "surveyversion": "Versión de la encuesta"
+      "surveyversion": "Versión de la encuesta",
+      "filter": "Filtrar"
     }
   }
 }
