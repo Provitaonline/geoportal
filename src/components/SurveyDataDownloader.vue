@@ -9,14 +9,14 @@
       <div class="card-content">
         <div class="content">
           <b-field horizontal custom-class="version-label" :label="$t('label.surveyversion')">
-              <b-select v-model="selectedVersion" horizontal>
-                  <option
-                      v-for="version in versions"
-                      :value="version"
-                      :key="version">
-                      {{ version }}
-                  </option>
-              </b-select>
+            <b-select v-model="selectedVersion" horizontal>
+              <option
+                v-for="version in versions"
+                :value="version"
+                :key="version">
+                {{ version }}
+              </option>
+            </b-select>
           </b-field>
         </div>
       </div>
