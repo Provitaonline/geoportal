@@ -27,7 +27,7 @@
                 icon="tag"
                 v-model="tags"
                 autocomplete
-                :data="filteredTags"
+                :data="sortedFilteredTags"
                 @typing="getFilteredTags"
                 :placeholder="$t('label.filter')">
               </b-taginput>
@@ -243,7 +243,7 @@
             this.allKeywords.es.push(kw)
           }
         })
-        this.filteredTags = this.sortedKeywordList
+        this.filteredTags = this.allKeywords[this.locale]
         //this.allKeywords.push(...item.node.keywords[this.$i18n.locale.substr(0, 2)])
       })
       this.fileList.forEach(item => {
@@ -283,10 +283,10 @@
       },
       isMatch(item) {
         if (this.tags.length === 0 && this.searchString.length < 3) return true
-        if (getPureText(item.name[this.locale]).includes(getPureText(this.searchString))) {
+        if (getPureText(item.name[this.locale]).includes(getPureText(this.searchString)) ||
+            getPureText(item.description[this.locale]).includes(getPureText(this.searchString))) {
           if (this.tags.length === 0 || item.keywords[this.locale].some(k => this.tags.includes(k))) return true
         }
-        // if (getPureText(item.keywords[this.locale].join(' ')).includes(getPureText(this.searchString))) return true
         return false
       },
       getFilteredTags(text) {
@@ -319,9 +319,9 @@
           //return this.fileList.sort((a, b) => (a.name[locale].normalize('NFD') > b.name[locale].normalize('NFD')) ? 1 : -1)
         }
       },
-      sortedKeywordList() {
+      sortedFilteredTags() {
         let collator = new Intl.Collator()
-        return this.allKeywords[this.locale].sort((a, b) => (collator.compare(a, b)))
+        return this.filteredTags.sort((a, b) => (collator.compare(a, b)))
       },
       popUpModalColumns() {
         return [
