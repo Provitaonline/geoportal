@@ -13,7 +13,8 @@ import { faFacebookF, faTwitter, faInstagram, faGithub } from '@fortawesome/free
 import {
   faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown,
   faAngleUp, faSearch, faTrashAlt, faCloudUploadAlt, faPlus, faCheck, faExclamationCircle,
-  faTimesCircle, faExclamationTriangle, faAngleLeft, faAngleRight, faCalendar, faArrowUp, faTag
+  faTimesCircle, faExclamationTriangle, faAngleLeft, faAngleRight, faCalendar, faArrowUp,
+  faTag, faRss
 } from '@fortawesome/free-solid-svg-icons'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -23,7 +24,7 @@ library.add(
   faInstagram, faGithub, faTimes, faBars, faAngleDown, faAngleUp, faSearch, faTrashAlt,
   faCloudUploadAlt, faPlus, faCheck, faPlusSquare, faMinusSquare, faExclamationCircle,
   faTimesCircle, faExclamationTriangle, faAngleLeft, faAngleRight, faCalendar, faArrowUp,
-  faNewspaper, faTag
+  faNewspaper, faTag, faRss
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {
