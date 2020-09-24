@@ -9,6 +9,7 @@ dist
 package-lock.json
 yarn.lock
 static/deployDate.txt
+static/rss.xml
 
 # Local Netlify folder
 .netlify

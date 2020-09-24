@@ -40,6 +40,7 @@
     "@gridsome/source-filesystem": "^0.6.2",
     "@gridsome/transformer-json": "^0.2.1",
     "@gridsome/transformer-remark": "^0.6.1",
+    "gridsome-plugin-rss": "^1.2.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2"
   }
