@@ -120,7 +120,7 @@ module.exports = {
       options: {
         exclude: ['/admin']
       }
-    },
-    'gridsome-plugin-robots-txt'
+    }/*,
+    'gridsome-plugin-robots-txt'*/
   ]
 }
