@@ -118,7 +118,7 @@ module.exports = {
     {
       use: '@gridsome/plugin-sitemap',
       options: {
-        exclude: ['/admin']
+        exclude: ['/admin', '/en/admin', '/es', '/es/*', '/en/404']
       }
     }/*,
     'gridsome-plugin-robots-txt'*/
