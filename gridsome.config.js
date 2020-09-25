@@ -6,6 +6,7 @@
 
 module.exports = {
   siteName: 'Geoportal Provita',
+  siteUrl: 'https://geoportalp.netlify.app/',
   plugins: [
     {
       use: '@gridsome/source-filesystem',
@@ -112,6 +113,12 @@ module.exports = {
           dir: './static',
           name: 'rss.xml'
         }
+      }
+    },
+    {
+      use: '@gridsome/plugin-sitemap',
+      options: {
+        exclude: ['/admin']
       }
     }
   ]
