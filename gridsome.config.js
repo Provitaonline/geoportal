@@ -5,8 +5,8 @@
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
 module.exports = {
+  siteUrl: 'https://geoportalp.netlify.app',
   siteName: 'Geoportal Provita',
-  siteUrl: 'https://geoportalp.netlify.app/',
   plugins: [
     {
       use: '@gridsome/source-filesystem',
@@ -120,6 +120,7 @@ module.exports = {
       options: {
         exclude: ['/admin']
       }
-    }
+    },
+    'gridsome-plugin-robots-txt'
   ]
 }
