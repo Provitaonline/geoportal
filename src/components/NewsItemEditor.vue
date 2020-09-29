@@ -138,6 +138,7 @@ export default {
       if (!this.newsItem.key) {
         this.newsItem.date = this.formDate.toISOString()
         this.newsItem.key = 'news/' + this.newsItem.date + '-' + (new Date().getTime()).toString(36) + '.json'
+        this.newsItem.yyyymm = this.newsItem.date.substr(0, 7)
       }
       this.$eventBus.$emit('acceptnewsitemchanges', this.newsItem)
       this.$parent.close()
