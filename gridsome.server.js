@@ -10,7 +10,32 @@ module.exports = function (api) {
     // Use the Data Store API here: https://gridsome.org/docs/data-store-api/
   })
 
-  api.createPages(({ createPage }) => {
-    // Use the Pages API here: https://gridsome.org/docs/pages-api/
+  api.createPages(async ({ createPage, graphql }) => {
+    const { data } = await graphql(`{
+      allNewsData {
+        edges {
+          node {
+            date
+          }
+        }
+      }
+    }`)
+
+    let yyyymm = {}
+
+    data.allNewsData.edges.forEach(({ node }) => {
+      let ym = node.date.substr(0, 7)
+      if (!yyyymm[ym]) yyyymm[ym] = true
+    })
+
+    for (const k in yyyymm) {
+      createPage({
+        path: `/news/${k}`,
+        component: './src/templates/News.vue',
+        context: {
+          yyyymm: k
+        }
+      })
+    }
   })
 }
