@@ -15,7 +15,7 @@ module.exports = function (api) {
       allNewsData {
         edges {
           node {
-            date
+            yyyymm
           }
         }
       }
@@ -24,8 +24,7 @@ module.exports = function (api) {
     let yyyymm = {}
 
     data.allNewsData.edges.forEach(({ node }) => {
-      let ym = node.date.substr(0, 7)
-      if (!yyyymm[ym]) yyyymm[ym] = true
+      if (!yyyymm[node.yyyymm]) yyyymm[node.yyyymm] = true
     })
 
     for (const k in yyyymm) {
