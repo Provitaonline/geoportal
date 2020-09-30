@@ -154,7 +154,8 @@
       "Phone": "Phone",
       "web": "Web address",
       "surveyversion": "Survey version",
-      "filter": "Filter"
+      "filter": "Filter",
+      "newsbymonth": "News by month"
     }
   },
   "es": {
@@ -312,7 +313,8 @@
       "Phone": "Teléfono",
       "web": "Dirección Web",
       "surveyversion": "Versión de la encuesta",
-      "filter": "Filtrar"
+      "filter": "Filtrar",
+      "newsbymonth": "Noticias por mes"
     }
   }
 }
