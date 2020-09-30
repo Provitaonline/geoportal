@@ -1,13 +1,7 @@
 <template>
-  <Layout>
-    <template slot="banner">
-      <h1 class="title is-uppercase">
-        {{ $t('label.news') }} <a title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'"><span class="is-size-5"><font-awesome :icon="['fas', 'rss']"/></span></a>
-      </h1>
-    </template>
-    <br>
+  <NewsLayout>
     <DisplayNews :news="$page.allNewsData.edges" />
-  </Layout>
+  </NewsLayout>
 </template>
 
 <page-query>
@@ -35,8 +29,8 @@
 
 <script>
 
+  import NewsLayout from '~/layouts/NewsLayout'
   import DisplayNews from '~/components/DisplayNews'
-
 
   export default {
     metaInfo() {
@@ -45,6 +39,7 @@
       }
     },
     components: {
+      NewsLayout,
       DisplayNews
     }
   }

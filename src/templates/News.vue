@@ -1,13 +1,7 @@
 <template>
-  <Layout>
-    <template slot="banner">
-      <h1 class="title is-uppercase">
-        {{ $t('label.news') }} ({{ new Date($context.yyyymm).toLocaleString($i18n.locale, { month: 'long' }) + ' ' + $context.yyyymm.substr(0, 4) }})
-      </h1>
-    </template>
-    <br>
+  <NewsLayout :yyyymm="$context.yyyymm">
     <DisplayNews :news="$page.allNewsData.edges" />
-  </Layout>
+  </NewsLayout>
 </template>
 
 <page-query>
@@ -35,6 +29,7 @@
 
 <script>
 
+  import NewsLayout from '~/layouts/NewsLayout'
   import DisplayNews from '~/components/DisplayNews'
 
   export default {
@@ -44,6 +39,7 @@
       }
     },
     components: {
+      NewsLayout,
       DisplayNews
     }
   }
