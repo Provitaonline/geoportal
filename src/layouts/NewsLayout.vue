@@ -70,20 +70,15 @@ export default {
 
         if (this.dateNav[yyyy]) {
           if (this.dateNav[yyyy][mm]) {
-            //this.dateNav[yyyy][mm]++
             this.$set(this.dateNav[yyyy], mm, this.dateNav[yyyy][mm] + 1)
           } else {
             this.$set(this.dateNav[yyyy], mm, 1)
-            //this.dateNav[yyyy][mm] = 1
           }
         } else {
           this.$set(this.dateNav, yyyy, {})
-          //this.dateNav[yyyy] = []
           this.$set(this.dateNav[yyyy], mm, 1)
-          //this.dateNav[yyyy][mm] = 1
         }
       })
-      //console.log(this.dateNav)
     }
   },
   methods: {
