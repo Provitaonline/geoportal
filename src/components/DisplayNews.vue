@@ -14,12 +14,15 @@
           </p>
         </div>
       </div>
-      <figure v-if="item.node.thumb" class="media-right">
-        <p class="image">
+      <figure @click="showImageModal(item.node.thumb)" v-if="item.node.thumb" class="media-right">
+        <a class="image">
           <g-image :src="item.node.thumb"></g-image>
-        </p>
+        </a>
       </figure>
     </article>
+    <b-modal v-if="image" v-model="isImageModalActive">
+      <g-image :src="image"></g-image>
+    </b-modal>
   </div>
 </template>
 
@@ -27,6 +30,14 @@
 
   .image {
     width: 300px;
+  }
+
+  ::v-deep .modal .modal-content {
+    width: auto !important;
+  }
+
+  ::v-deep .modal-close {
+    display: block !important;
   }
 
   @media screen and (max-width: 600px) {
@@ -48,6 +59,18 @@
     name: 'DisplayNews',
     props: {
       news: { type: Array, required: true }
+    },
+    data() {
+      return {
+        isImageModalActive: false,
+        image: null
+      }
+    },
+    methods: {
+      showImageModal (image) {
+        this.image = image
+        this.isImageModalActive = true
+      }
     }
   }
 </script>
