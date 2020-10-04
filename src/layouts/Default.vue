@@ -62,7 +62,7 @@
         </b-navbar-item>
       </template>
     </b-navbar>
-    <section class="hero">
+    <section v-if="hasBanner" class="hero">
       <div class="hero-body">
         <div class="container">
           <slot name="banner" />
@@ -158,6 +158,9 @@ query {
 import {version} from '../../package.json'
 
 export default {
+  props: {
+    hasBanner: { type: Boolean, required: false, default: true }
+  },
   data() {
     return {
       version: version,
