@@ -1,5 +1,8 @@
 <template>
-  <div id="map"></div>
+  <div>
+    <div id="map"></div>
+    <MapLegend :visibleTileLayers="visibleTileLayers" />
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -16,6 +19,7 @@
   import Mapbox from 'mapbox-gl'
   import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
   import MapPopUpContent from '~/components/MapPopUpContent.vue'
+  import MapLegend from '~/components/MapLegend.vue'
   import { ResetViewControl } from '~/utils/map'
   import { mapConfig } from '~/utils/config'
 
@@ -30,6 +34,9 @@
       return {
         visibleTileLayers: {}
       }
+    },
+    components: {
+      MapLegend
     },
     mounted() {
       if (process.isClient) {
@@ -174,13 +181,13 @@
         this.map.addLayer(lInfo)
 
         if (!this.visibleTileLayers[layer]) {
-          this.visibleTileLayers[layer] = item
+          this.$set(this.visibleTileLayers, layer, item)
           this.$store.commit('setVisibleTileLayers', this.visibleTileLayers)
         }
       },
       removeTileLayer: function (layer) {
         this.map.removeLayer(layer)
-        delete this.visibleTileLayers[layer]
+        this.$delete(this.visibleTileLayers, layer)
         this.$store.commit('setVisibleTileLayers', this.visibleTileLayers)
       },
       mapClickHandler: function(e) {
