@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="map"></div>
-    <MapLegend :visibleTileLayers="visibleTileLayers" />
+    <MapLegend :layerMeta="layerMeta" />
   </div>
 </template>
 

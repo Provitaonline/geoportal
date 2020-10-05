@@ -132,7 +132,7 @@
     overflow-y: auto;
     position: sticky;
     top: 0;
-    height: 100vh;
+    max-height: 80vh; 
   }
 
   @media only screen and (max-width: 768px) {
