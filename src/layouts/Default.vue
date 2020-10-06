@@ -2,7 +2,7 @@
   <div>
     <b-navbar :fixed-top="true">
       <template slot="brand">
-        <b-navbar-item class="logo">
+        <b-navbar-item class="logo" style="background-color: white;">
           <g-link style="margin: auto;" :to="$tp('/')">
             <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
           </g-link>
@@ -130,7 +130,6 @@ query {
   }
 
   .logo {
-    background-color: white;
     padding-top: 0px;
     padding-bottom: 0px;
     height: 4rem;
