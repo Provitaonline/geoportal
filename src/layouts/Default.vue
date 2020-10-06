@@ -136,6 +136,12 @@ query {
     width: 320px;
   }
 
+  @media only screen and (max-width: 375px) {
+    .logo {
+      width: 265px;
+    }
+  }
+
   .logo:hover {
     background-color: #F5F5F5 !important;
   }
