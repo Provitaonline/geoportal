@@ -1,13 +1,6 @@
 <template>
-  <Layout>
-    <template slot="banner">
-      <h1 class="title has-text-centered is-uppercase">
-        Geoportal Provita
-      </h1>
-    </template>
-
+  <Layout :hasBanner="false">
     <div class="columns is-gapless">
-
       <aside class="side-panel column is-narrow">
         <div class="side-panel-content">
           <div class="panel">
@@ -139,7 +132,7 @@
     overflow-y: auto;
     position: sticky;
     top: 0;
-    height: 70vh;
+    max-height: 80vh; 
   }
 
   @media only screen and (max-width: 768px) {
