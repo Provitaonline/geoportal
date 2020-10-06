@@ -3,38 +3,28 @@
     <b-navbar :fixed-top="true">
       <template slot="brand">
         <b-navbar-item class="logo">
-          <g-link :to="$tp('/')">
+          <g-link style="margin: auto;" :to="$tp('/')">
             <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
           </g-link>
         </b-navbar-item>
       </template>
       <template slot="end">
         <ClientOnly>
-          <b-navbar-item v-if="isAdminEnabled()" tag="div">
-            <g-link :to="$tp('/admin')">
-              {{ $t('label.adminabr') }}
-            </g-link>
+          <b-navbar-item v-if="isAdminEnabled()" tag="g-link" :to="$tp('/admin')">
+            {{ $t('label.adminabr') }}
           </b-navbar-item>
         </ClientOnly>
-        <b-navbar-item tag="div">
-          <g-link :to="$tp('/about')">
-            {{ $t('label.about') }}
-          </g-link>
+        <b-navbar-item tag="g-link" :to="$tp('/about')">
+          {{ $t('label.about') }}
         </b-navbar-item>
-        <b-navbar-item tag="div">
-          <g-link :to="$tp('/faq')">
-            {{ $t('label.faq') }}
-          </g-link>
+        <b-navbar-item tag="g-link" :to="$tp('/faq')">
+          {{ $t('label.faq') }}
         </b-navbar-item>
-        <b-navbar-item tag="div">
-          <g-link :to="$tp('/news')">
-            {{ $t('label.news') }}
-          </g-link>
+        <b-navbar-item tag="g-link" :to="$tp('/news')">
+          {{ $t('label.news') }}
         </b-navbar-item>
-        <b-navbar-item tag="div">
-          <g-link :to="$tp('/contact')">
-            {{ $t('label.contact') }}
-          </g-link>
+        <b-navbar-item tag="g-link" :to="$tp('/contact')">
+          {{ $t('label.contact') }}
         </b-navbar-item>
         <b-navbar-dropdown v-if="!is404Page" arrowless right>
           <template slot="label">
@@ -97,7 +87,7 @@
     <section>
       <footer class="footer">
         <div class="has-text-centered">
-          <div>
+          <div class="footer-text">
             <div class="social">
               &nbsp;
               <g-link to="https://www.instagram.com/provita_ong/"><font-awesome size="lg" :icon="['fab', 'instagram']"/></g-link>&nbsp;&nbsp;
@@ -130,6 +120,9 @@ query {
 </style>
 
 <style lang="scss" scoped>
+
+  @import "~/assets/style/_variables";
+
   .login-button {
     border-radius: 50%;
     padding-left: .70em;
@@ -137,13 +130,31 @@ query {
   }
 
   .logo {
+    background-color: white;
     padding-top: 0px;
     padding-bottom: 0px;
     height: 4rem;
+    width: 320px;
+  }
+
+  .logo:hover {
+    background-color: #F5F5F5 !important;
   }
 
   .hero {
     background-color: rgba(85,107,47, 0.1)
+  }
+
+  .footer-text {
+    color: $white;
+  }
+
+  .footer-text a {
+    color: $navbar-item-hover-color;
+  }
+
+  .footer-text a:hover{
+    color: $black;
   }
 
   @media only screen and (min-width: 1024px) {

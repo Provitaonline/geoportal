@@ -1,6 +1,6 @@
 <template>
-  <div class="columns is-multiline">
-    <div v-for="item, index in layerMeta" class="column is-one-third" v-if="showLegend(index)">
+  <div class="columns is-multiline" v-if="showLegend">
+    <div v-for="item, index in layerMeta" class="column is-one-third" v-if="showLayerLegend(index)">
       <div class="legend-box">
         <div class="legend-item" v-if="isSingleColor(index)" :style="'background:' + getColor(index)">
         </div>
@@ -45,7 +45,7 @@
       }
     },
     methods: {
-      showLegend(index) {
+      showLayerLegend(index) {
         return this.layerMeta[index].layerShow
       },
       isSingleColor(index) {
@@ -60,6 +60,11 @@
         if (this.layerMeta[index].tileInfo.style.paint['fill-color']) return this.layerMeta[index].tileInfo.style.paint['fill-color']
         if (this.layerMeta[index].tileInfo.style.paint['line-color']) return this.layerMeta[index].tileInfo.style.paint['line-color']
         return '#FFFFFF'
+      }
+    },
+    computed: {
+      showLegend() {
+        return this.layerMeta.some(item => item.layerShow)
       }
     }
   }
