@@ -1,13 +1,13 @@
 <template>
-  <Layout>
+  <Layout :bannerImage="bannerImage">
     <template slot="banner">
-      <h1 class="title is-uppercase">
-        {{ $t('label.news') }}
-        <span v-if="yyyymm">
-          ({{ getMonthName(yyyymm) + ' ' + yyyymm.substr(0, 4) }})
-        </span>
-        <a v-else title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'"><span class="is-size-5"><font-awesome :icon="['fas', 'rss']"/></span></a>
-      </h1>
+      {{ $t('label.news') }}
+      <span v-if="yyyymm">
+        ({{ getMonthName(yyyymm) + ' ' + yyyymm.substr(0, 4) }})
+      </span>
+      <a v-else title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'">
+        <span class="is-size-5 rss-icon"><font-awesome :icon="['fas', 'rss']"/></span>
+      </a>
     </template>
     <br>
 
@@ -38,6 +38,20 @@
   </Layout>
 </template>
 
+<style lang="scss" scoped>
+
+  @import "~/assets/style/_variables";
+
+  .rss-icon {
+    color: white;
+  }
+
+  .rss-icon:hover {
+    color: gray;
+  }
+
+</style>
+
 <static-query>
   query {
     allNewsData: allNewsData {
@@ -58,7 +72,8 @@ export default {
   },
   data() {
     return {
-      dateNav: null
+      dateNav: null,
+      bannerImage: require('~/../data/images/news.jpg')
     }
   },
   created() {
@@ -95,7 +110,6 @@ export default {
     sortedYears() {
       return Object.keys(this.dateNav).sort().reverse()
     }
-
   }
 }
 </script>

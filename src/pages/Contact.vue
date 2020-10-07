@@ -1,5 +1,8 @@
 <template>
-  <Layout :bannerImage="bannerImage" :bannerText="$t('label.contact')">
+  <Layout :bannerImage="bannerImage">
+    <template slot="banner">
+      {{$t('label.contact')}}
+    </template>
     <section class="section container">
       <div class="tile is-ancestor">
         <div class="tile ">

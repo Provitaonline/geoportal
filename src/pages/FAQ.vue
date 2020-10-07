@@ -1,5 +1,8 @@
 <template>
-  <Layout :bannerImage="bannerImage" :bannerText="$t('label.faqlong')">
+  <Layout :bannerImage="bannerImage">
+    <template slot="banner">
+      {{$t('label.faqlong')}}
+    </template>
     <br>
     <div class="container">
       <div class="box">

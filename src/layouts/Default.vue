@@ -56,7 +56,9 @@
       <g-image v-if="bannerImage" class="hero-bg-img" :src="bannerImage" />
       <div v-if="bannerImage" class="hero-body-outer">
         <div class="hero-body-container">
-          <div class="hero-body-with-image title is-size-2" v-html="bannerText"></div>
+          <div class="hero-body-with-image title is-size-2">
+            <slot name="banner" />
+          </div>
         </div>
       </div>
       <div v-else class="hero-body">
