@@ -1,9 +1,7 @@
 <template>
-  <Layout>
+  <Layout :bannerImage="bannerImage">
     <template slot="banner">
-      <h1 class="title is-uppercase">
-        {{ $t('label.faqlong') }}
-      </h1>
+      {{$t('label.faqlong')}}
     </template>
     <br>
     <div class="container">
@@ -39,6 +37,11 @@
     }
   }
 
+  .hero-bg-img {
+    width: 100%;
+    object-fit: cover;
+  }
+
 </style>
 
 <page-query>
@@ -70,7 +73,7 @@
     },
     data() {
       return {
-
+        bannerImage: require('~/../data/images/faq.jpg')
       }
     },
     mounted() {

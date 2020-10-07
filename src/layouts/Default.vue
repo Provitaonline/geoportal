@@ -4,7 +4,7 @@
       <template slot="brand">
         <b-navbar-item class="logo" style="background-color: white;">
           <g-link style="margin: auto;" :to="$tp('/')">
-            <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
+            <g-image style="max-height: 68px;" src="~/assets/images/logo.svg" alt="Logo" />
           </g-link>
         </b-navbar-item>
       </template>
@@ -53,7 +53,15 @@
       </template>
     </b-navbar>
     <section v-if="hasBanner" class="hero">
-      <div class="hero-body">
+      <g-image v-if="bannerImage" class="hero-bg-img" :src="bannerImage" />
+      <div v-if="bannerImage" class="hero-body-outer">
+        <div class="hero-body-container">
+          <div class="hero-body-with-image title is-size-2">
+            <slot name="banner" />
+          </div>
+        </div>
+      </div>
+      <div v-else class="hero-body">
         <div class="container">
           <slot name="banner" />
         </div>
@@ -61,22 +69,22 @@
     </section>
     <b-modal :active.sync="showLoginInfo" :width="400" scroll="keep">
       <div class="card">
-          <div class="card-header has-text-centered">
-            <p class="card-header-title" style="display: inline-block;">
-              {{$t('message.connected')}}
-            </p>
-          </div>
-          <div class="card-content has-text-centered">
-            <figure v-if="$store.state.avatar" class="image is-48x48" style="margin: auto;">
-              <img class="is-rounded" :src="$store.state.avatar">
-            </figure>
-            <br>
-            <b>{{$t('label.login')}}:</b> {{$store.state.login}}<br>
-            <b>{{$t('label.name')}}:</b> {{$store.state.name}}<br><br>
-            <a @click="userLogoff" class="button is-primary">
-                {{$t('label.disconnect')}}
-            </a>
-          </div>
+        <div class="card-header has-text-centered">
+          <p class="card-header-title" style="display: inline-block;">
+            {{$t('message.connected')}}
+          </p>
+        </div>
+        <div class="card-content has-text-centered">
+          <figure v-if="$store.state.avatar" class="image is-48x48" style="margin: auto;">
+            <img class="is-rounded" :src="$store.state.avatar">
+          </figure>
+          <br>
+          <b>{{$t('label.login')}}:</b> {{$store.state.login}}<br>
+          <b>{{$t('label.name')}}:</b> {{$store.state.name}}<br><br>
+          <a @click="userLogoff" class="button is-primary">
+              {{$t('label.disconnect')}}
+          </a>
+        </div>
       </div>
     </b-modal>
     <transition name="fade" appear>
@@ -168,6 +176,36 @@ query {
     }
   }
 
+  .hero-body-outer {
+    width: 100%;
+  }
+
+  .hero-body-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: -300px;
+    height: 300px;
+  }
+
+  .hero-body-with-image {
+    flex-grow: 0;
+    margin: auto;
+    color: white;
+  }
+
+  .hero-body {
+    margin: auto;
+  }
+
+  .hero-bg-img {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+  }
+
 </style>
 
 <script>
@@ -175,7 +213,9 @@ import {version} from '../../package.json'
 
 export default {
   props: {
-    hasBanner: { type: Boolean, required: false, default: true }
+    hasBanner: { type: Boolean, required: false, default: true },
+    bannerText: { type: String },
+    bannerImage: {type: String }
   },
   data() {
     return {

@@ -1,9 +1,7 @@
 <template>
-  <Layout>
+  <Layout :bannerImage="bannerImage">
     <template slot="banner">
-      <h1 class="title is-uppercase">
-        {{ $t('label.contact') }}
-      </h1>
+      {{$t('label.contact')}}
     </template>
     <section class="section container">
       <div class="tile is-ancestor">
@@ -46,6 +44,11 @@ export default {
   metaInfo() {
     return {
       title: this.$t('label.contact')
+    }
+  },
+  data() {
+    return {
+      bannerImage: require('~/../data/images/contact.jpg')
     }
   }
 }
