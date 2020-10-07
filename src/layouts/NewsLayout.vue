@@ -5,9 +5,7 @@
       <span v-if="yyyymm">
         ({{ getMonthName(yyyymm) + ' ' + yyyymm.substr(0, 4) }})
       </span>
-      <a v-else title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'">
-        <span class="is-size-5 rss-icon"><font-awesome :icon="['fas', 'rss']"/></span>
-      </a>
+      <a v-else title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'"><span class="is-size-5 rss-icon"><font-awesome :icon="['fas', 'rss']"/></span></a>
     </template>
     <br>
 
