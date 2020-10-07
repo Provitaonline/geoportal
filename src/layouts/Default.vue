@@ -4,7 +4,7 @@
       <template slot="brand">
         <b-navbar-item class="logo" style="background-color: white;">
           <g-link style="margin: auto;" :to="$tp('/')">
-            <g-image style="max-height: 68px;" src="~/assets/images/logo.svg" alt="Logo" />
+            <g-image style="max-height: 64px;" src="~/assets/images/logo.svg" alt="Logo" />
           </g-link>
         </b-navbar-item>
       </template>
