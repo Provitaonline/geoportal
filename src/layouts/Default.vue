@@ -3,7 +3,7 @@
     <b-navbar :fixed-top="true">
       <template slot="brand">
         <b-navbar-item class="logo" style="background-color: white;">
-          <g-link style="margin: auto;" :to="$tp('/')">
+          <g-link style="margin: auto; max-height: 64px;" :to="$tp('/')">
             <g-image style="max-height: 64px;" src="~/assets/images/logo.svg" alt="Logo" />
           </g-link>
         </b-navbar-item>
