@@ -4,7 +4,7 @@
       <aside class="side-panel column is-narrow">
         <div class="side-panel-content">
           <div class="panel">
-            <p class="panel-heading">
+            <p class="panel-heading has-text-centered is-size-5">
               <b>{{$t('label.files')}}</b>
             </p>
             <div class="panel-block">
@@ -132,7 +132,7 @@
     overflow-y: auto;
     position: sticky;
     top: 0;
-    max-height: 80vh; 
+    max-height: 80vh;
   }
 
   @media only screen and (max-width: 768px) {
@@ -149,6 +149,11 @@
       width: auto;
       max-width: 90vw;
     }
+  }
+
+  .panel-heading {
+    color: $site-color;
+    background-color: #FAFAFA;
   }
 
   .card {

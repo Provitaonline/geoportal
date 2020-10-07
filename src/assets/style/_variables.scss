@@ -7,6 +7,7 @@
 @import "~bulma/sass/utilities/_all";
 
 // Set your colors
+$site-color: #2CA243;
 $primary: #556B2F;
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
@@ -17,7 +18,7 @@ $twitter-invert: findColorInvert($twitter);
 $navbar-height: 4rem;
 $navbar-breakpoint: 800px;
 
-$navbar-background-color: #2CA243;
+$navbar-background-color: $site-color;
 $navbar-item-color: $white;
 $navbar-item-hover-background-color: $navbar-background-color;
 $navbar-item-hover-color: #DCDCDC;
