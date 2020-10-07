@@ -26,7 +26,7 @@
                 {{year}}
                 <ul>
                   <li v-for="month in sortedMonths(year)" v-if="dateNav[year][month]">
-                    <g-link :to="'/news/' + year + '-' + month">{{getMonthName(year + '-' + month)}} ({{dateNav[year][month]}})</g-link>
+                    <g-link :to="$tp('/news') + '/' + year + '-' + month">{{getMonthName(year + '-' + month)}} ({{dateNav[year][month]}})</g-link>
                   </li>
                 </ul>
               </li>
