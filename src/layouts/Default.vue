@@ -215,7 +215,7 @@ export default {
   props: {
     hasBanner: { type: Boolean, required: false, default: true },
     bannerText: { type: String },
-    bannerImage: {type: String }
+    bannerImage: {type: Object }
   },
   data() {
     return {

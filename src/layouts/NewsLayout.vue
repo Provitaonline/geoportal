@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       dateNav: null,
-      bannerImage: require('~/../data/images/news.jpg')
+      bannerImage: require('!!assets-loader!~/../data/images/news.jpg')
     }
   },
   created() {

@@ -73,7 +73,7 @@
     },
     data() {
       return {
-        bannerImage: require('~/../data/images/faq.jpg')
+        bannerImage: require('!!assets-loader!~/../data/images/faq.jpg')
       }
     },
     mounted() {

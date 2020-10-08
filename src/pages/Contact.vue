@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      bannerImage: require('~/../data/images/contact.jpg')
+      bannerImage: require('!!assets-loader!~/../data/images/contact.jpg')
     }
   }
 }
