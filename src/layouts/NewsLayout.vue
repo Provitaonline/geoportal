@@ -7,8 +7,8 @@
           ({{ getMonthName(yyyymm) + ' ' + yyyymm.substr(0, 4) }})
         </div>
         <div v-else>
-          <a title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'">
-            &nbsp;<span class="is-size-5 rss-icon"><font-awesome :icon="['fas', 'rss']"/></span>
+          <a class="is-size-5 rss-icon" title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'">
+            &nbsp;<font-awesome :icon="['fas', 'rss']"/>
           </a>
         </div>
       </div>
