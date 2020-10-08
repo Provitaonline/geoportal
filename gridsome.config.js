@@ -98,12 +98,17 @@ module.exports = {
       use: 'gridsome-plugin-rss',
       options: {
         contentTypeName: 'NewsData',
+        feedOptions: {
+          title: 'Noticias Geoportal Provita',
+          site_url: 'https://geoportalp.netlify.app'
+        },
         latest: true,
         language: 'es',
         feedItemOptions: node => ({
           title: node.headline.es,
           description: node.text.es,
-          date: node.date
+          date: node.date,
+          url: 'https://geoportalp.netlify.app/news'
         }),
         output: {
           dir: './static',
@@ -115,12 +120,17 @@ module.exports = {
       use: 'gridsome-plugin-rss',
       options: {
         contentTypeName: 'NewsData',
+        feedOptions: {
+          title: 'Geoportal Provita News',
+          site_url: 'https://geoportalp.netlify.app'
+        },
         latest: true,
         language: 'en',
         feedItemOptions: node => ({
           title: node.headline.en,
           description: node.text.en,
-          date: node.date
+          date: node.date,
+          url: 'https://geoportalp.netlify.app/en/news'
         }),
         output: {
           dir: './static',
