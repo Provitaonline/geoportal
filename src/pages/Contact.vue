@@ -7,28 +7,28 @@
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
           <div class="tile is-parent">
-            <div style="display: flex; align-items: center; padding: 10px;" class="tile is-child is-size-5 is-size-6-mobile">
+            <div class="link-block tile is-child is-size-5 is-size-6-mobile">
               <g-image src="~/assets/svgs/mail.svg"/>&nbsp;
               <a target="_blank" :href="'mailto:' + $page.contactData.email">{{$page.contactData.email}}</a>
             </div>
-            <div style="display: flex; align-items: center; padding: 10px;" class="tile is-child is-size-5 is-size-6-mobile">
-              <font-awesome style="color: #FDBE57;" size="2x" :icon="['fas', 'globe']"/>&nbsp;
+            <div class="link-block tile is-child is-size-5 is-size-6-mobile">
+              <font-awesome class="icon-color" size="2x" :icon="['fas', 'globe']"/>&nbsp;
               <a target="_blank" :href="$page.contactData.web">{{$page.contactData.web}}</a>
             </div>
           </div>
           <hr>
           <div class="tile is-parent">
-            <div style="display: flex; align-items: flex-start; padding: 10px;" class="tile is-child is-size-5">
+            <div class="address-block tile is-child is-size-5">
               <g-image src="~/assets/svgs/location.svg"/>&nbsp;
-              <div style="padding: 10px;">
+              <div class="address-text">
                 <p class="is-size-4 has-text-weight-semibold">{{$page.contactData.addressname}}</p>
                 <br>
                 <p class="is-size-6" v-html="$page.contactData.address"></p>
               </div>
             </div>
-            <div style="display: flex; align-items: flex-start; padding: 10px;" class="tile is-child is-size-5">
+            <div class="address-block tile is-child is-size-5">
               <g-image src="~/assets/svgs/location.svg"/>&nbsp;
-              <div style="padding: 10px;">
+              <div class="address-text">
                 <p class="is-size-4 has-text-weight-semibold">{{$page.contactData.address2name}}</p>
                 <br>
                 <p class="is-size-6" v-html="$page.contactData.address2"></p>
@@ -40,6 +40,31 @@
     </section>
   </Layout>
 </template>
+
+<style lang="scss" scoped>
+  @import "~/assets/style/_variables";
+
+  .link-block {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .address-block {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .address-text {
+    padding: 10px;
+  }
+
+  .icon-color {
+    color: #FDBE57;
+  }
+
+</style>
 
 <page-query>
   query Contact {
