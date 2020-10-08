@@ -14,8 +14,23 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.address')" :type="{ 'is-danger': errors[0] }" :message="errors">
+            <b-field :label="$t('label.name') + '(1)'" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="contact.addressname"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.address') + '(1)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="contact.address" type="textarea"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.name') + '(2)'" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="contact.address2name"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.address') + '(2)'" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="contact.address2" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="email" v-slot="{ errors, valid }">
