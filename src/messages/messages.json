@@ -155,7 +155,9 @@
       "web": "Web address",
       "surveyversion": "Survey version",
       "filter": "Filter",
-      "newsbymonth": "News by month"
+      "newsbymonth": "News by month",
+      "subject": "Subject",
+      "faqsubjects": ["Geoportal usage", "Data features", "Use policies"]
     }
   },
   "es": {
@@ -314,7 +316,9 @@
       "web": "Dirección Web",
       "surveyversion": "Versión de la encuesta",
       "filter": "Filtrar",
-      "newsbymonth": "Noticias por mes"
+      "newsbymonth": "Noticias por mes",
+      "subject": "Tema",
+      "faqsubjects": ["Uso del Geoportal", "Características de los datos", "Políticas de uso"]
     }
   }
 }

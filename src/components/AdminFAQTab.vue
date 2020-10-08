@@ -20,6 +20,9 @@
       <b-table-column field="question" :label="$t('label.question')" v-slot="props">
         {{props.row.question[$i18n.locale.substr(0, 2)]}}
       </b-table-column>
+      <b-table-column field="subject" :label="$t('label.subject')" v-slot="props">
+        {{$t('label.faqsubjects')[props.row.subject]}}
+      </b-table-column>
       <b-table-column label="Info" centered v-slot="props">
         <a @click="editFAQQuestion(props.index)">
           <font-awesome :icon="['far', 'edit']"/>

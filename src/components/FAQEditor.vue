@@ -9,6 +9,13 @@
       </div>
       <div class="card-content">
         <div class="content">
+          <ValidationProvider rules="required" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.subject')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-select v-model="q.subject" value="0">
+                <option v-for="subj, idx in subjects" :value="idx">{{subj}}</option>
+              </b-select>
+            </b-field>
+          </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.questionspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="q.question.es"></b-input>
@@ -65,7 +72,8 @@ export default {
   data() {
     return {
       q: this.faqQuestion,
-      isNew: false
+      isNew: false,
+      subjects: this.$t('label.faqsubjects')
     }
   },
   components: {
