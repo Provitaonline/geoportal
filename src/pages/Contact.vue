@@ -61,7 +61,7 @@
   }
 
   .icon-color {
-    color: #FDBE57;
+    color: $site-icon-color;
   }
 
 </style>
