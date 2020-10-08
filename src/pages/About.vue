@@ -1,9 +1,7 @@
 <template>
-  <Layout>
+  <Layout :bannerImage="bannerImage">
     <template slot="banner">
-      <h1 class="title is-uppercase">
-        {{ $t('label.about') }}
-      </h1>
+      {{ $t('label.about') }}
     </template>
     <div class="container" v-html="$page.about.edges[0].node.content"></div>
   </Layout>
@@ -35,6 +33,11 @@ export default {
   metaInfo() {
     return {
       title: this.$t('label.about')
+    }
+  },
+  data() {
+    return {
+      bannerImage: require('!!assets-loader!~/../data/images/about.jpg')
     }
   }
 }
