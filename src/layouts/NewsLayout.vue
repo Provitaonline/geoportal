@@ -6,11 +6,6 @@
         <div v-if="yyyymm">
           ({{ getMonthName(yyyymm) + ' ' + yyyymm.substr(0, 4) }})
         </div>
-        <div v-else>
-          <a class="is-size-5 rss-icon" title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'">
-            &nbsp;<font-awesome :icon="['fas', 'rss']"/>
-          </a>
-        </div>
       </div>
     </template>
     <br>
@@ -22,6 +17,9 @@
         </div>
         <div class="column is-one-fifth">
           <aside class="menu">
+            <a class="is-size-5" title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'">
+              <font-awesome :icon="['fas', 'rss']"/>
+            </a>
             <p class="menu-label">
               {{$t('label.newsbymonth')}}
             </p>
@@ -46,13 +44,6 @@
 
   @import "~/assets/style/_variables";
 
-  .rss-icon {
-    color: white;
-  }
-
-  .rss-icon:hover {
-    color: gray;
-  }
 
 </style>
 
