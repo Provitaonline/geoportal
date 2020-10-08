@@ -5,22 +5,30 @@
     </template>
     <br>
     <div class="container">
-      <div class="box">
-        <article v-for="item, index in $page.faqData.questions" class="media">
-            <div class="content">
-              <div>
-                <div class="is-size-4 has-text-weight-bold is-italic">{{item.question[$i18n.locale.substr(0, 2)]}}</div>
-                <br>
-                <div v-html="answerHTML(index)"></div>
-              </div>
-            </div>
-        </article>
+      <div v-for="subject, idx in questionsBySubject">
+        <div class="subject is-size-3 has-text-weight-bold">
+          {{$t('label.faqsubjects')[idx]}}
+        </div>
+        <b-collapse :open="false" class="card" animation="slide" v-for="itemindex in subject" v-bind:key="itemindex">
+          <div slot="trigger" slot-scope="props" class="card-header is-size-4 has-text-weight-semibold">
+            <p class="card-header-title" v-bind:class="{'open-question': props.open}">
+              {{$page.faqData.questions[itemindex].question[$i18n.locale.substr(0, 2)]}}
+            </p>
+            <a class="card-header-icon" v-bind:class="{'open-question': props.open}">
+              <b-icon
+                :icon="props.open ? 'angle-up' : 'angle-down'">
+              </b-icon>
+            </a>
+          </div>
+          <div class="card-content" v-html="answerHTML(itemindex)"></div>
+        </b-collapse>
       </div>
     </div>
   </Layout>
 </template>
 
 <style lang="scss" scoped>
+  @import "~/assets/style/_variables";
 
   .image {
     width: 300px;
@@ -42,12 +50,21 @@
     object-fit: cover;
   }
 
+  .subject {
+    color: $site-color;
+  }
+
+  .open-question {
+    color: $site-icon-color;
+  }
+
 </style>
 
 <page-query>
   query FAQ {
     faqData: faqData (id: "faq") {
       questions {
+        subject
         question {
           en
           es
@@ -81,6 +98,19 @@
     methods: {
       answerHTML(index) {
         return marked(this.$page.faqData.questions[index].answer[this.$i18n.locale.substr(0, 2)])
+      }
+    },
+    computed: {
+      questionsBySubject() {
+        let questionsBySubject = []
+        this.$page.faqData.questions.forEach((question, index) => {
+          if (questionsBySubject[question.subject]) {
+            questionsBySubject[question.subject].push(index)
+          } else {
+            questionsBySubject[question.subject] = [index]
+          }
+        })
+        return questionsBySubject
       }
     }
   }
