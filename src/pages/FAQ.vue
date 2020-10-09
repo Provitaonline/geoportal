@@ -6,7 +6,7 @@
     <br>
     <div class="container">
       <div v-for="subject, idx in questionsBySubject">
-        <div class="subject is-size-3 has-text-weight-bold">
+        <div :id="'subject-' + idx" class="subject is-size-3 has-text-weight-bold">
           {{$t('label.faqsubjects')[idx]}}
         </div>
         <b-collapse :open="false" class="card" animation="slide" v-for="itemindex in subject" v-bind:key="itemindex">
@@ -24,6 +24,7 @@
         </b-collapse>
       </div>
     </div>
+    <br>
   </Layout>
 </template>
 
