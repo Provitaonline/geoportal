@@ -28,10 +28,10 @@
         </div>
         <div class="column is-narrow">
           <div class="nwidget">
-            <p class="nwidget-heading has-text-weight-semibold">Buscar por tema</p>
+            <p class="nwidget-heading has-text-weight-semibold">{{$t('label.findbysubject')}}</p>
             <p v-for="subject, idx in questionsBySubject">
-              <g-link :to="'/faq#subject-' + idx">{{$t('label.faqsubjects')[idx]}}</g-link>
-          </p>
+              <a v-scroll-to="'#subject-' + idx">{{$t('label.faqsubjects')[idx]}}</a>
+            </p>
           </div>
         </div>
       </div>
@@ -91,6 +91,19 @@
     padding-bottom: 10px;
   }
 
+</style>
+
+<style lang="scss">
+
+  @import "~/assets/style/_variables";
+
+  /* This is needed to adjust the anchors to account for fixed navbar */
+  [id]::before {
+    content: '';
+    display: block;
+    height: $navbar-height;
+    margin-top: -$navbar-height;
+  }
 </style>
 
 <page-query>

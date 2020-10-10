@@ -157,7 +157,8 @@
       "filter": "Filter",
       "newsbymonth": "News by month",
       "subject": "Subject",
-      "faqsubjects": ["Geoportal usage", "Data features", "Use policies"]
+      "faqsubjects": ["Geoportal usage", "Data features", "Use policies"],
+      "findbysubject": "Find by subject"
     }
   },
   "es": {
@@ -318,7 +319,8 @@
       "filter": "Filtrar",
       "newsbymonth": "Noticias por mes",
       "subject": "Tema",
-      "faqsubjects": ["Uso del Geoportal", "Características de los datos", "Políticas de uso"]
+      "faqsubjects": ["Uso del Geoportal", "Características de los datos", "Políticas de uso"],
+      "findbysubject": "Buscar por tema"
     }
   }
 }
