@@ -5,23 +5,35 @@
     </template>
     <br>
     <div class="container">
-      <div v-for="subject, idx in questionsBySubject">
-        <div :id="'subject-' + idx" class="subject is-size-3 has-text-weight-bold">
-          {{$t('label.faqsubjects')[idx]}}
-        </div>
-        <b-collapse :open="false" class="card" animation="slide" v-for="itemindex in subject" v-bind:key="itemindex">
-          <div slot="trigger" slot-scope="props" class="card-header is-size-4 has-text-weight-semibold">
-            <p class="card-header-title" v-bind:class="{'open-question': props.open}">
-              {{$page.faqData.questions[itemindex].question[$i18n.locale.substr(0, 2)]}}
-            </p>
-            <a class="card-header-icon" v-bind:class="{'open-question': props.open}">
-              <b-icon
-                :icon="props.open ? 'angle-up' : 'angle-down'">
-              </b-icon>
-            </a>
+      <div class="columns">
+        <div class="column">
+          <div v-for="subject, idx in questionsBySubject">
+            <div :id="'subject-' + idx" class="subject is-size-3 has-text-weight-bold">
+              {{$t('label.faqsubjects')[idx]}}
+            </div>
+            <b-collapse :open="false" class="card" animation="slide" v-for="itemindex in subject" v-bind:key="itemindex">
+              <div slot="trigger" slot-scope="props" class="card-header is-size-4 has-text-weight-semibold">
+                <p class="card-header-title" v-bind:class="{'open-question': props.open}">
+                  {{$page.faqData.questions[itemindex].question[$i18n.locale.substr(0, 2)]}}
+                </p>
+                <a class="card-header-icon" v-bind:class="{'open-question': props.open}">
+                  <b-icon
+                    :icon="props.open ? 'angle-up' : 'angle-down'">
+                  </b-icon>
+                </a>
+              </div>
+              <div class="card-content" v-html="answerHTML(itemindex)"></div>
+            </b-collapse>
           </div>
-          <div class="card-content" v-html="answerHTML(itemindex)"></div>
-        </b-collapse>
+        </div>
+        <div class="column is-narrow">
+          <div class="nwidget">
+            <p class="nwidget-heading has-text-weight-semibold">Buscar por tema</p>
+            <p v-for="subject, idx in questionsBySubject">
+              <g-link :to="'/faq#subject-' + idx">{{$t('label.faqsubjects')[idx]}}</g-link>
+          </p>
+          </div>
+        </div>
       </div>
     </div>
     <br>
@@ -57,6 +69,26 @@
 
   .open-question {
     color: $site-icon-color;
+  }
+
+  @media screen and (max-width: 768px) {
+    .nwidget {
+      display: none;
+    }
+  }
+
+  .nwidget {
+    background-color: #FAFAFA;
+    box-shadow: 0px 3px 6px #00000029;
+    padding: 36px;
+    position: sticky;
+    top: 100px;
+    margin-top: -50px;
+  }
+
+  .nwidget-heading {
+    color: $site-color;
+    padding-bottom: 10px;
   }
 
 </style>
