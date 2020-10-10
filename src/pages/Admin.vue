@@ -34,7 +34,7 @@
         <div class="card">
           <div class="card-header has-text-centered">
             <div class="card-header-title" style="display: inline-block;">
-              <g-image style="max-height: 61px;" src="~/assets/images/logo.png" alt="Logo" />
+              <g-image style="max-height: 70px;" src="~/assets/svgs/logo.svg" alt="Logo" />
               <br><br>{{$t('message.adminconnect')}}<br>
               <span style="font-weight: normal;">{{$t('message.admincolab')}}</span>
             </div>

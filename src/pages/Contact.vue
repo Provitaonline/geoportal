@@ -12,7 +12,7 @@
               <a target="_blank" :href="'mailto:' + $page.contactData.email">{{$page.contactData.email}}</a>
             </div>
             <div class="link-block tile is-child is-size-5 is-size-6-mobile">
-              <font-awesome class="icon-color" size="2x" :icon="['fas', 'globe']"/>&nbsp;
+              <g-image src="~/assets/svgs/globe.svg"/>&nbsp;
               <a target="_blank" :href="$page.contactData.web">{{$page.contactData.web}}</a>
             </div>
           </div>
