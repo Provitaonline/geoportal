@@ -159,7 +159,8 @@
       "subject": "Subject",
       "faqsubjects": ["Geoportal usage", "Data features", "Use policies"],
       "findbysubject": "Find by subject",
-      "pixelvalue": "Pixel value"
+      "pixelvalue": "Pixel value",
+      "legend": "Legend"
     }
   },
   "es": {
@@ -322,7 +323,8 @@
       "subject": "Tema",
       "faqsubjects": ["Uso del Geoportal", "Características de los datos", "Políticas de uso"],
       "findbysubject": "Buscar por tema",
-      "pixelvalue": "Valor del pixel"
+      "pixelvalue": "Valor del pixel",
+      "legend": "Leyenda"
     }
   }
 }

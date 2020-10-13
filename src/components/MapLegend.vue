@@ -1,6 +1,6 @@
 <template>
   <div class="legend" v-if="showLegend">
-    <span class="menu-label">LEYENDA</span>
+    <span class="menu-label">{{$t('label.legend')}}</span>
     <div class="columns is-multiline">
       <div v-for="item, index in layerMeta" class="column is-one-third" v-if="showLayerLegend(index)">
         <div class="legend-box">
