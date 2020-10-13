@@ -4,7 +4,7 @@
       <div class="media-content">
         <div class="content">
           <p>
-            <div class="is-size-5 has-text-weight-bold">{{item.node.headline[$i18n.locale.substr(0, 2)]}}</div>
+            <div class="headline is-size-5 has-text-weight-bold">{{item.node.headline[$i18n.locale.substr(0, 2)]}}</div>
             <small>{{$d(new Date(item.node.date), 'long')}}</small>
             <br><br>
             {{item.node.text[$i18n.locale.substr(0, 2)]}}
@@ -28,6 +28,8 @@
 
 <style lang="scss" scoped>
 
+  @import "~/assets/style/_variables";
+
   .image {
     width: 300px;
   }
@@ -38,6 +40,10 @@
 
   ::v-deep .modal-close {
     display: block !important;
+  }
+
+  .headline {
+    color: $site-color
   }
 
   @media screen and (max-width: 600px) {

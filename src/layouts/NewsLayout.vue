@@ -20,7 +20,7 @@
             <a class="is-size-5" title="RSS feed" :href="'/rss-' + $i18n.locale.substr(0, 2) + '.xml'">
               <font-awesome :icon="['fas', 'rss']"/>
             </a>
-            <p class="menu-label">
+            <p class="menu-label has-text-weight-semibold">
               {{$t('label.newsbymonth')}}
             </p>
             <ul class="menu-list">
@@ -44,6 +44,9 @@
 
   @import "~/assets/style/_variables";
 
+  .menu-label {
+    color: $site-color;
+  }
 
 </style>
 
