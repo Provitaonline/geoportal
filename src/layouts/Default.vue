@@ -30,13 +30,9 @@
           <template slot="label">
             {{ $t('flag') }}
           </template>
-          <ClientOnly>
-            <b-navbar-item v-for="locale in availableLocales" :key="locale">
-              <a @click="changeLocale(locale)">
-                {{ $t('flag', locale) }}&nbsp;&nbsp;&nbsp;{{ $t('language', locale) }}
-              </a>
-            </b-navbar-item>
-          </ClientOnly>
+          <b-navbar-item v-for="locale in availableLocales" :key="locale" tag="div" @click.capture="changeLocale(locale)">
+            <g-link :to="localeLink(locale)">{{ $t('flag', locale) }}&nbsp;&nbsp;&nbsp;{{ $t('language', locale) }}</g-link>
+          </b-navbar-item>
         </b-navbar-dropdown>
         <b-navbar-item v-if="isAdminPage" tag="div">
           <ClientOnly>
@@ -235,11 +231,11 @@ export default {
     }
   },
   methods: {
+    localeLink: function (locale) {
+      return this.$tp(this.$route.path, locale, true)
+    },
     changeLocale: function (locale) {
       if (this.$i18n.locale.toString() != locale) {
-        this.$router.push({
-          path: this.$tp(this.$route.path, locale, true)
-        })
         this.$eventBus.$emit('localechanged', locale)
       }
     },
