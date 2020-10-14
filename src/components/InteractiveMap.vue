@@ -1,8 +1,12 @@
 <template>
   <div>
+    <div>
+      <g-image v-show="isCapturing" :immediate="true" src="~/assets/images/logo.png" />
+    </div>
     <div id="map"></div>
     <MapLegend :layerMeta="layerMeta" />
     <b-loading  v-model="isCapturing"></b-loading>
+    <audio id="cameraClick" src="/sound/camera-shutter-click.mp3"></audio>
   </div>
 </template>
 
@@ -73,10 +77,10 @@
             pitch: mapConfig.mapPitch
           })
           this.map.addControl(resetView, 'top-right')
-          mapSwitcher = new MapboxStyleSwitcherControl(styles)
-          this.map.addControl(mapSwitcher, 'top-right')
           const screenshot = new ScreenshotControl(this.screenShot)
           this.map.addControl(screenshot, 'top-right')
+          mapSwitcher = new MapboxStyleSwitcherControl(styles)
+          this.map.addControl(mapSwitcher, 'top-right')
           this.locControls(this.$i18n.locale)
           this.addLayers()
           this.map.on('styledata',() => {
@@ -126,6 +130,7 @@
         document.getElementsByClassName('mapboxgl-ctrl-zoom-in')[0].title = this.$t('label.zoomin', locale)
         document.getElementsByClassName('mapboxgl-ctrl-zoom-out')[0].title = this.$t('label.zoomout', locale)
         document.getElementsByClassName('mapboxgl-ctrl-compass')[0].title = this.$t('label.resetbearing', locale)
+        document.getElementsByClassName('screenshot-control')[0].title = this.$t('label.screenshot', locale)
       },
       addLayers: function() {
         if (!this.map.getLayer('venezuela')) {
@@ -240,17 +245,20 @@
       },
       screenShot: function() {
         this.isCapturing = true
-        let mbControls = document.getElementsByClassName('mapboxgl-ctrl-top-right')
-        mbControls[0].style.display = 'none'
-        html2canvas(document.getElementById('mapColumn')).then((canvas) => {
-          let link = document.createElement('a')
-          link.setAttribute('download', 'map.png')
-          link.href = canvas.toDataURL()
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-          mbControls[0].style.display = 'block'
-          this.isCapturing = false
+        this.$nextTick(() => {
+          document.getElementById('cameraClick').play()
+          let mbControls = document.getElementsByClassName('mapboxgl-ctrl-top-right')
+          mbControls[0].style.display = 'none'
+          html2canvas(document.getElementById('mapColumn')).then((canvas) => {
+            let link = document.createElement('a')
+            link.setAttribute('download', 'map.png')
+            link.href = canvas.toDataURL()
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            mbControls[0].style.display = 'block'
+            this.isCapturing = false
+          })
         })
       }
     },
