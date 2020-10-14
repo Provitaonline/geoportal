@@ -20,3 +20,23 @@ export class ResetViewControl {
     this.map.flyTo(this.flyToParms)
   }
 }
+
+export class ScreenshotControl {
+  constructor (screenshotFunction) {
+    this.screenshotFunction = screenshotFunction
+  }
+  onAdd(map) {
+    this.map = map
+    this.container = document.createElement('div')
+    this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group'
+    this.button = document.createElement('button')
+    this.button.className = 'mapboxgl-ctrl-icon screenshot-control'
+    this.container.appendChild(this.button)
+    this.button.addEventListener('click', this.screenshotFunction.bind(this))
+    return this.container;
+  }
+  onRemove() {
+    this.container.parentNode.removeChild(this.container);
+    this.map = undefined;
+  }
+}

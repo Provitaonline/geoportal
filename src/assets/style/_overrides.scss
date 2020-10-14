@@ -16,3 +16,10 @@ body {
 .taginput-container {
   padding-right: 0px !important;
 }
+
+.screenshot-control {
+  background-image: url(~@/assets/svgs/camera.svg);
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
