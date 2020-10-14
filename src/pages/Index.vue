@@ -1,5 +1,6 @@
 <template>
   <Layout :hasBanner="false">
+    <div @click="captureMap">hola</div>
     <div class="columns is-gapless">
       <aside class="side-panel column is-narrow">
         <div class="side-panel-content">
@@ -80,7 +81,7 @@
         </div>
       </aside>
 
-      <div class="column">
+      <div id="mapColumn" class="column">
         <InteractiveMap :layerMeta="fileList" class="map-container" ref="interactivemap">
         </InteractiveMap>
       </div>
@@ -202,6 +203,8 @@
   import {getFileSize} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
 
+  import html2canvas from 'html2canvas'
+
   export default {
     metaInfo() {
       return {
@@ -303,6 +306,12 @@
           props: {
             downloadFileIndex: index
           }
+        })
+      },
+      captureMap() {
+        console.log('capture map')
+        html2canvas(document.getElementById('mapColumn'), {removeContainer: false}).then(function(canvas) {
+          document.body.appendChild(canvas);
         })
       }
     },

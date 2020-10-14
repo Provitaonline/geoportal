@@ -57,7 +57,8 @@
           bearing: this.$store.state.mapView.bearing ||  mapConfig.mapBearing,
           pitch: this.$store.state.mapView.pitch ||  mapConfig.mapPitch,
           maxBounds: mapConfig.maxBounds,
-          maxZoom: mapConfig.maxZoom
+          maxZoom: mapConfig.maxZoom,
+          preserveDrawingBuffer: true // So that we can take screen shots (performance issues?)
         })
         let mapSwitcher
         this.map.on('load',( () => {
