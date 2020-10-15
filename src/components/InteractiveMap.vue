@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      <g-image v-show="isCapturing" :immediate="true" src="~/assets/images/logo.png" />
+    <div v-show="isCapturing">
+      <g-image :immediate="true" src="~/assets/images/logo.png" />
     </div>
     <div id="map"></div>
     <MapLegend :layerMeta="layerMeta" />
