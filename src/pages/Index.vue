@@ -80,7 +80,7 @@
         </div>
       </aside>
 
-      <div class="column">
+      <div id="mapColumn" class="column">
         <InteractiveMap :layerMeta="fileList" class="map-container" ref="interactivemap">
         </InteractiveMap>
       </div>

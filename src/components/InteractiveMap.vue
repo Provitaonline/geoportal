@@ -1,7 +1,12 @@
 <template>
   <div>
+    <div v-show="isCapturing">
+      <g-image :immediate="true" src="~/assets/images/logo.png" />
+    </div>
     <div id="map"></div>
     <MapLegend :layerMeta="layerMeta" />
+    <b-loading  v-model="isCapturing"></b-loading>
+    <audio id="cameraClick" src="/sound/camera-shutter-click.mp3"></audio>
   </div>
 </template>
 
@@ -20,8 +25,9 @@
   import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
   import MapPopUpContent from '~/components/MapPopUpContent.vue'
   import MapLegend from '~/components/MapLegend.vue'
-  import { ResetViewControl } from '~/utils/map'
+  import { ResetViewControl, ScreenshotControl } from '~/utils/map'
   import { mapConfig } from '~/utils/config'
+  import html2canvas from 'html2canvas'
 
   var MapPopUpContentClass = Vue.extend(MapPopUpContent)
 
@@ -32,7 +38,8 @@
     },
     data() {
       return {
-        visibleTileLayers: {}
+        visibleTileLayers: {},
+        isCapturing: false
       }
     },
     components: {
@@ -57,7 +64,8 @@
           bearing: this.$store.state.mapView.bearing ||  mapConfig.mapBearing,
           pitch: this.$store.state.mapView.pitch ||  mapConfig.mapPitch,
           maxBounds: mapConfig.maxBounds,
-          maxZoom: mapConfig.maxZoom
+          maxZoom: mapConfig.maxZoom,
+          preserveDrawingBuffer: true // So that we can take screen shots (performance issues?)
         })
         let mapSwitcher
         this.map.on('load',( () => {
@@ -69,6 +77,8 @@
             pitch: mapConfig.mapPitch
           })
           this.map.addControl(resetView, 'top-right')
+          const screenshot = new ScreenshotControl(this.screenShot)
+          this.map.addControl(screenshot, 'top-right')
           mapSwitcher = new MapboxStyleSwitcherControl(styles)
           this.map.addControl(mapSwitcher, 'top-right')
           this.locControls(this.$i18n.locale)
@@ -120,6 +130,7 @@
         document.getElementsByClassName('mapboxgl-ctrl-zoom-in')[0].title = this.$t('label.zoomin', locale)
         document.getElementsByClassName('mapboxgl-ctrl-zoom-out')[0].title = this.$t('label.zoomout', locale)
         document.getElementsByClassName('mapboxgl-ctrl-compass')[0].title = this.$t('label.resetbearing', locale)
+        document.getElementsByClassName('screenshot-control')[0].title = this.$t('label.screenshot', locale)
       },
       addLayers: function() {
         if (!this.map.getLayer('venezuela')) {
@@ -231,6 +242,24 @@
         } else {
           this.map.getCanvas().style.cursor = ''
         }
+      },
+      screenShot: function() {
+        this.isCapturing = true
+        this.$nextTick(() => {
+          document.getElementById('cameraClick').play()
+          let mbControls = document.getElementsByClassName('mapboxgl-ctrl-top-right')
+          mbControls[0].style.display = 'none'
+          html2canvas(document.getElementById('mapColumn')).then((canvas) => {
+            let link = document.createElement('a')
+            link.setAttribute('download', 'map.png')
+            link.href = canvas.toDataURL()
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            mbControls[0].style.display = 'block'
+            this.isCapturing = false
+          })
+        })
       }
     },
     beforeDestroy () {
