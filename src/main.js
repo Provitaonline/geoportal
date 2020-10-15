@@ -8,6 +8,8 @@ import DefaultLayout from '~/layouts/Default.vue'
 
 import VueScrollTo from 'vue-scrollto'
 
+import InfiniteLoading from 'vue-infinite-loading'
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
 import { faUser, faEdit, faPlusSquare, faMinusSquare, faNewspaper } from '@fortawesome/free-regular-svg-icons'
@@ -45,6 +47,8 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   Vue.use(Vuex)
 
   Vue.use(VueScrollTo)
+
+  Vue.use(InfiniteLoading)
 
   appOptions.store = new Vuex.Store({
     state: {

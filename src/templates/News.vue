@@ -1,6 +1,8 @@
 <template>
   <NewsLayout :yyyymm="$context.yyyymm">
-    <DisplayNews :news="$page.allNewsData.edges" />
+    <div class="box">
+      <DisplayNewsItem v-for="item, index in $page.allNewsData.edges" :key="item.id" :item="item" />
+    </div>
   </NewsLayout>
 </template>
 
@@ -30,7 +32,7 @@
 <script>
 
   import NewsLayout from '~/layouts/NewsLayout'
-  import DisplayNews from '~/components/DisplayNews'
+  import DisplayNewsItem from '~/components/DisplayNewsItem'
 
   export default {
     metaInfo() {
@@ -40,7 +42,7 @@
     },
     components: {
       NewsLayout,
-      DisplayNews
+      DisplayNewsItem
     }
   }
 </script>
