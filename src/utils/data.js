@@ -264,11 +264,6 @@ export async function saveNewsItemFromRepo(token, newsItem) {
   return
 }
 
-/*export async function saveNewsItem(token, newsItem) {
-  let response = await axios.put('/.netlify/functions/save-news-item?token=' + token, newsItem)
-  return response
-}*/
-
 export async function saveSurveyTemplate(token, surveyTemplate) {
   let github = new GitHub({token: token})
 
