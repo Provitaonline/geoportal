@@ -136,7 +136,8 @@
         if (!this.map.getLayer('venezuela')) {
           this.map.addSource('venezuela', {
             type: 'geojson',
-            data: '/mapdata/venezuela.geojson'
+            data: '/mapdata/venezuela.geojson',
+            attribution: 'IGVSB'
           })
           this.map.addLayer({
             id: 'venezuela',
