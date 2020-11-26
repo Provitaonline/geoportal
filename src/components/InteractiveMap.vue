@@ -5,7 +5,7 @@
     </div>
     <div id="map"></div>
     <MapLegend :layerMeta="layerMeta" />
-    <b-loading  v-model="isCapturing"></b-loading>
+    <!-- <b-loading  v-model="isCapturing"></b-loading> -->
     <audio id="cameraClick" src="/sound/camera-shutter-click.mp3"></audio>
   </div>
 </template>
