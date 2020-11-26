@@ -48,8 +48,7 @@
 
   .legend-color-box {
     height: 24px;
-    width: 38px;
-    display: inline-block;
+    flex: 0 0 38px;
   }
 
   .legend-title {
