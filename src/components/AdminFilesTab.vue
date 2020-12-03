@@ -167,6 +167,7 @@
         this.metaFromRepo = this.metaFromRepo.filter((item) => !filesToDelete.includes(item.file))
         if (oLength != this.metaFromRepo.length) { // We have meta to delete
           deleteMetaListFromRepo(sessionStorage.githubtoken, filesToDelete).then(() => {
+            this.$store.commit('setPublishIndicator', true)
             deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
               this.fileListCheckedRows = []
               this.getListOfFiles()
