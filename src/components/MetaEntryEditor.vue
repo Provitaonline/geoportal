@@ -280,17 +280,15 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
-    if (!this.metaEntry.format) { // Populate only if empty
-      this.isLoading = true
-      getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
-        this.metaEntryFlat = flatten(result)
-        if (result.date) this.formDate = new Date(result.date)
-        if (result.tileInfo) {
-          this.savedTileInfo = JSON.stringify(result.tileInfo)
-        }
-        this.isLoading = false
-      })
-    }
+    this.isLoading = true
+    getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
+      this.metaEntryFlat = flatten(result)
+      if (result.date) this.formDate = new Date(result.date)
+      if (result.tileInfo) {
+        this.savedTileInfo = JSON.stringify(result.tileInfo)
+      }
+      this.isLoading = false
+    })
   },
   methods: {
     acceptChanges() {
