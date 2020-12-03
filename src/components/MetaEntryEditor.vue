@@ -63,7 +63,7 @@
           <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tilelayername')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="metaEntryFlat['tiles']"></b-input>
+              <b-input disabled v-model="metaEntryFlat['tiles']"></b-input>
             </b-field>
           </ValidationProvider>
           <div class="columns">
@@ -286,6 +286,10 @@ export default {
       if (result.date) this.formDate = new Date(result.date)
       if (result.tileInfo) {
         this.savedTileInfo = JSON.stringify(result.tileInfo)
+      }
+      // Prepopulate name of tile layer
+      if (!this.metaEntryFlat.tiles) {
+        this.metaEntryFlat.tiles = (this.metaEntryFlat.file.replace(/\.[^/.]+$/, '')).toLowerCase()
       }
       this.isLoading = false
     })
