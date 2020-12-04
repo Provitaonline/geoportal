@@ -104,7 +104,7 @@ export async function saveMetaFromRepo(token, meta) {
     repo: adminConfig.githubInfo.repo,
     path: dataConfig.metaDirectory + '/' + meta.file + '.json',
     sha: sha,
-    content: base64.encode(JSON.stringify(meta, null, 2)),
+    content: base64.encode(utf8.encode(JSON.stringify(meta, null, 2))),
     message: 'Updated meta'
   })
 
