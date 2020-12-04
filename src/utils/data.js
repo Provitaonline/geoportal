@@ -1,4 +1,7 @@
 import GitHub from 'github-api'
+
+import { Octokit } from '@octokit/rest'
+
 import axios from 'axios'
 import base64 from 'base-64'
 import utf8 from 'utf8'
@@ -41,15 +44,20 @@ export function getListOfFiles() {
 
 // This retrieves live meta from github repo
 export async function getMetaFromRepo(token, file) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
   let response
   let result = {file: file}
 
   try {
-    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaDirectory + '/' + file + '.json')
+    response = await octokit.repos.getContent({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo,
+      path: dataConfig.metaDirectory + '/' + file + '.json',
+      headers: {'If-None-Match': ''}
+    })
   } catch (err) {
-    if (err.response.status != 404) {
+    if (err.status != 404) {
       throw err
     }
   }
@@ -57,6 +65,7 @@ export async function getMetaFromRepo(token, file) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
     // Need to unpack tileInfo back to object
     result.tileInfo = JSON.parse(result.tileInfo)
+    result.sha = response.data.sha // Add the sha to enable update
   }
   return result
 }
@@ -80,23 +89,25 @@ export async function getMetaListFromRepo(token) {
   return result
 }
 
-// This gets the sha of the meta file
-export async function getMetaSha(token) {
-  let github = new GitHub({token: token})
-
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getTree('master')
-  return (response.data.tree.find(item => item.path === dataConfig.metaFileName)).sha
-}
-
 // This saves meta to the github repo
 export async function saveMetaFromRepo(token, meta) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
+
+  let sha = meta.sha
+  delete meta.sha
 
   // Need to package tileInfo as a string
   meta.tileInfo = JSON.stringify(meta.tileInfo)
 
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.metaDirectory + '/' + meta.file + '.json', JSON.stringify(meta, null, 2), 'Updated meta', {encode: true})
+  let response = await octokit.repos.createOrUpdateFileContents({
+    owner: adminConfig.githubInfo.owner,
+    repo: adminConfig.githubInfo.repo,
+    path: dataConfig.metaDirectory + '/' + meta.file + '.json',
+    sha: sha,
+    content: base64.encode(JSON.stringify(meta, null, 2)),
+    message: 'Updated meta'
+  })
+
   return response
 }
 
