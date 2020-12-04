@@ -16,7 +16,7 @@
             <span class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</span>
             <div class="legend-item" v-for="legendItem in getColorList(index)">
               <div class="legend-color-box" :style="'background:' + legendItem[1]"></div>
-              <span class="legend-subtitle">{{legendItem[0]}}</span>
+              <div class="legend-subtitle">{{legendItem[0]}}</div>
             </div>
           </div>
         </div>
