@@ -129,6 +129,16 @@
                   <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.circle-radius']"></b-input>
                 </b-field>
               </ValidationProvider>
+              <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.circlestrokewidth')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.circle-stroke-width']"></b-input>
+                </b-field>
+              </ValidationProvider>
+              <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.circlestrokecolor')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.circle-stroke-color']"></b-input>
+                </b-field>
+              </ValidationProvider>
             </div>
             <div v-if="metaEntryFlat['tileInfo.style.type'] === 'fill'">
               <ValidationProvider rules="required" v-slot="{ errors, valid }">
