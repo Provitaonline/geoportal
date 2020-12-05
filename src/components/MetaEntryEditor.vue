@@ -97,6 +97,7 @@
                 <b-select v-model="metaEntryFlat['tileInfo.style.type']">
                   <option value="fill">{{$t('label.polygon')}}</option>
                   <option value="line">{{$t('label.line')}}</option>
+                  <option value="circle">{{$t('label.point')}}</option>
                 </b-select>
               </b-field>
             </ValidationProvider>
@@ -112,7 +113,24 @@
                 </b-field>
               </ValidationProvider>
             </div>
-            <div v-else>
+            <div v-if="metaEntryFlat['tileInfo.style.type'] === 'circle'">
+              <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.circlecolor')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaEntryFlat['tileInfo.style.paint.circle-color']"></b-input>
+                </b-field>
+              </ValidationProvider>
+              <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.circleopacity')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.circle-opacity']"></b-input>
+                </b-field>
+              </ValidationProvider>
+              <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.circleradius')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.circle-radius']"></b-input>
+                </b-field>
+              </ValidationProvider>
+            </div>
+            <div v-if="metaEntryFlat['tileInfo.style.type'] === 'fill'">
               <ValidationProvider rules="required" v-slot="{ errors, valid }">
                 <b-field :label="$t('label.colormethod')" :type="{ 'is-danger': errors[0] }" :message="errors">
                   <b-select v-model="colorMethod">
