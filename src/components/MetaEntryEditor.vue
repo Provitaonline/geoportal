@@ -245,10 +245,17 @@
                   {{$t('label.colortable')}} <a @click="addTablePair('tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'plus-square']"/></a>
                 </label>
               </div>
-              <div class="column">
+              <div class="column is-narrow">
                 <ValidationProvider>
                   <b-field class="field">
                     <b-checkbox v-model="metaEntryFlat['tileInfo.gradient']">{{$t('label.gradient')}}</b-checkbox>
+                  </b-field>
+                </ValidationProvider>
+              </div>
+              <div class="column">
+                <ValidationProvider>
+                  <b-field class="field">
+                    <b-checkbox v-model="metaEntryFlat['tileInfo.hideNoData']">{{$t('label.hidenodata')}}</b-checkbox>
                   </b-field>
                 </ValidationProvider>
               </div>
@@ -333,7 +340,6 @@ export default {
       this.metaEntryFlat.date = this.formDate.toISOString()
       let updatedMetaEntry = unflatten(this.metaEntryFlat)
 
-      // Cleanup before exiting
       if (updatedMetaEntry.tileInfo === 'vector') {
         delete updatedMetaEntry.tileInfo.colorTable
       } else {
@@ -343,6 +349,9 @@ export default {
       let metaEntry = unflatten(this.metaEntryFlat)
       let job = null
       if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
+        if (updatedMetaEntry.tileInfo.colorTable && updatedMetaEntry.tileInfo.hideNoData) {
+          updatedMetaEntry.tileInfo.colorTable.push(['nv', '#ffffff00'])
+        }
         job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
       }
 
