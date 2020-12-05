@@ -84,6 +84,7 @@
         if (this.layerMeta[index].tileInfo.style) {
           if (typeof(this.layerMeta[index].tileInfo.style.paint['fill-color']) === 'string') return true
           if (typeof(this.layerMeta[index].tileInfo.style.paint['line-color']) === 'string') return true
+          if (typeof(this.layerMeta[index].tileInfo.style.paint['circle-color']) === 'string') return true
         }
         return false
       },
@@ -96,6 +97,7 @@
       getColor(index) {
         if (this.layerMeta[index].tileInfo.style.paint['fill-color']) return this.layerMeta[index].tileInfo.style.paint['fill-color']
         if (this.layerMeta[index].tileInfo.style.paint['line-color']) return this.layerMeta[index].tileInfo.style.paint['line-color']
+        if (this.layerMeta[index].tileInfo.style.paint['circle-color']) return this.layerMeta[index].tileInfo.style.paint['circle-color']
         return '#FFFFFF'
       },
       getColorList(index) {
