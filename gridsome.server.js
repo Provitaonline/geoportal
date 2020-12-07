@@ -34,6 +34,15 @@ module.exports = function (api) {
             return marked(node.description.es)
           }
         }
+      },
+      FaqData: {
+        questions(obj) {
+          return obj.questions.map(q => {
+            q.answer.es = marked(q.answer.es)
+            q.answer.en = marked(q.answer.en)
+            return q
+          })
+        }
       }
     })
     // Use the Data Store API here: https://gridsome.org/docs/data-store-api/

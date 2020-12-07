@@ -22,7 +22,7 @@
                   </b-icon>
                 </a>
               </div>
-              <div class="card-content" v-html="answerHTML(itemindex)"></div>
+              <div class="card-content" v-html="$page.faqData.questions[itemindex].answer[$i18n.locale.substr(0, 2)]"></div>
             </b-collapse>
           </div>
         </div>
@@ -126,7 +126,6 @@
 
 <script>
   import {getFAQ} from '~/utils/data'
-  import marked from 'marked'
 
   export default {
     metaInfo() {
@@ -140,11 +139,6 @@
       }
     },
     mounted() {
-    },
-    methods: {
-      answerHTML(index) {
-        return marked(this.$page.faqData.questions[index].answer[this.$i18n.locale.substr(0, 2)])
-      }
     },
     computed: {
       questionsBySubject() {
