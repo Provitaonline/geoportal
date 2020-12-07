@@ -19,20 +19,12 @@ marked.setOptions({
 
 module.exports = function (api) {
   api.loadSource(({ addSchemaResolvers }) => {
-
     addSchemaResolvers({
       MetaData: {
-        description_en: {
-          type: 'String',
-          resolve(node, args) {
-            return marked(node.description.en)
-          }
-        },
-        description_es: {
-          type: 'String',
-          resolve(node, args) {
-            return marked(node.description.es)
-          }
+        description(obj) {
+          obj.description.en = marked(obj.description.en)
+          obj.description.es = marked(obj.description.es)
+          return obj.description
         }
       },
       FaqData: {
@@ -45,7 +37,6 @@ module.exports = function (api) {
         }
       }
     })
-    // Use the Data Store API here: https://gridsome.org/docs/data-store-api/
   })
 
   api.createPages(async ({ createPage, graphql }) => {

@@ -71,8 +71,7 @@
                     </span>
                     <br><br>
                   </div>
-                  <!-- <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span> -->
-                  <div class="md-text" v-html="item['description_' + $i18n.locale.substr(0, 2)]"></div>
+                  <div class="md-text" v-html="item.description[$i18n.locale.substr(0, 2)]"></div>
                 </div>
               </transition>
             </div>
@@ -172,8 +171,10 @@
       edges {
         node {
           date
-          description_en
-          description_es
+          description {
+            en
+            es
+          }
           file
           format
           keywords {
