@@ -50,12 +50,12 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.descriptionspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+            <b-field :label="$t('label.descriptionspanish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="metaEntryFlat['description.es']" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.descriptionenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+            <b-field :label="$t('label.descriptionenglish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="metaEntryFlat['description.en']" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
