@@ -5,8 +5,37 @@
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
+let marked = require('marked')
+
+var renderer = new marked.Renderer()
+renderer.link = function(href, title, text) {
+    var link = marked.Renderer.prototype.link.apply(this, arguments)
+    return link.replace("<a","<a target='_blank'")
+};
+
+marked.setOptions({
+    renderer: renderer
+})
+
 module.exports = function (api) {
-  api.loadSource(({ addCollection }) => {
+  api.loadSource(({ addSchemaResolvers }) => {
+
+    addSchemaResolvers({
+      MetaData: {
+        description_en: {
+          type: 'String',
+          resolve(node, args) {
+            return marked(node.description.en)
+          }
+        },
+        description_es: {
+          type: 'String',
+          resolve(node, args) {
+            return marked(node.description.es)
+          }
+        }
+      }
+    })
     // Use the Data Store API here: https://gridsome.org/docs/data-store-api/
   })
 

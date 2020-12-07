@@ -71,7 +71,8 @@
                     </span>
                     <br><br>
                   </div>
-                  <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span>
+                  <!-- <span v-html="item.description[$i18n.locale.substr(0, 2)]"></span> -->
+                  <div class="md-text" v-html="item['description_' + $i18n.locale.substr(0, 2)]"></div>
                 </div>
               </transition>
             </div>
@@ -104,15 +105,15 @@
 </template>
 
 <style lang="scss" scoped>
+  @import "~/assets/style/_variables";
 
   .card-header {
     background-color: rgba(85,107,47, 0.1);
   }
 
-</style>
-
-<style lang="scss" scoped>
-  @import "~/assets/style/_variables";
+  .md-text p {
+    margin-bottom: 10px !important;
+  }
 
   @media only screen and (min-width: 769px) {
     .side-panel {
@@ -171,10 +172,8 @@
       edges {
         node {
           date
-          description {
-            en
-            es
-          }
+          description_en
+          description_es
           file
           format
           keywords {

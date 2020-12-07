@@ -286,6 +286,15 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+
+  ::v-deep textarea {
+    font-family: monospace;
+    font-size: 0.9rem;
+  }
+
+</style>
+
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
