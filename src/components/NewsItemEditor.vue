@@ -25,12 +25,12 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.textspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+            <b-field :label="$t('label.textspanish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="newsItem.text.es" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.textenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+            <b-field :label="$t('label.textenglish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="newsItem.text.en" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
@@ -74,6 +74,11 @@
   .image {
     height: 270px;
     width: 270px;
+  }
+
+  ::v-deep textarea {
+    font-family: monospace;
+    font-size: 0.9rem;
   }
 
 </style>

@@ -6,7 +6,7 @@
           <div class="headline is-size-5 has-text-weight-bold">{{item.node.headline[$i18n.locale.substr(0, 2)]}}</div>
           <small>{{$d(new Date(item.node.date), 'long')}}</small>
           <br><br>
-          {{item.node.text[$i18n.locale.substr(0, 2)]}}
+          <div class="md-text" v-html="item.node.text[$i18n.locale.substr(0, 2)]"></div>
         </p>
         <p v-if="item.node.reference" class="has-text-weight-semibold">
           <g-link :to="item.node.reference">{{$t('label.readmore')}}</g-link>

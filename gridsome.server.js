@@ -35,7 +35,14 @@ module.exports = function (api) {
             return q
           })
         }
-      }
+      },
+      NewsData: {
+        text(obj) {
+          obj.text.en = marked(obj.text.en)
+          obj.text.es = marked(obj.text.es)
+          return obj.text
+        }
+      },
     })
   })
 
