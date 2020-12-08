@@ -2,7 +2,7 @@
   <div class="legend" v-if="showLegend">
     <span class="menu-label">{{$t('label.legend')}}</span>
     <div class="columns is-multiline">
-      <div v-for="item, index in layerMeta" class="column is-one-third" v-if="showLayerLegend(index)">
+      <div v-for="item, index in layerMeta" class="column" v-bind:class="colSizeLimit" v-if="showLayerLegend(index)">
         <div class="legend-item" v-if="isSingleColor(index)">
           <div class="legend-color-box" :style="'background:' + getColor(index)"></div>
           <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
@@ -121,6 +121,10 @@
     computed: {
       showLegend() {
         return this.layerMeta.some(item => item.layerShow)
+      },
+      colSizeLimit() {
+        console.log(this.layerMeta.filter(item => item.layerShow).length)
+        return this.layerMeta.filter(item => item.layerShow).length > 2 ? 'is-one-third' : ''
       }
     }
   }
