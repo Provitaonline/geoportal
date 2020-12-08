@@ -11,7 +11,7 @@
       hoverable
       :header-checkable="false"
       v-if="FAQ"
-      :data="FAQ"
+      :data="FAQ.questions"
       :checked-rows.sync="questionListCheckedRows"
       draggable
       @dragstart="dragStart"
@@ -59,10 +59,10 @@
         if (!this.FAQ) {
           console.log('get faq')
           getFAQFromRepo(sessionStorage.githubtoken).then((result) => {
-            this.FAQ = result.questions
+            this.FAQ = result
             this.isLoading = false
           }).catch((err) => {
-            this.FAQ = []
+            this.FAQ = {}
             this.isLoading = false
             if (err.response.status != 404) {
               console.log('error getting faq from repo')
@@ -73,7 +73,7 @@
       editFAQQuestion(index) {
         this.isNew = false
         this.currentIndex = index
-        this.openFAQEditor(JSON.parse(JSON.stringify(this.FAQ[index])))
+        this.openFAQEditor(JSON.parse(JSON.stringify(this.FAQ.questions[index])))
       },
       addFAQQuestion() {
         this.isNew = true
@@ -92,9 +92,9 @@
       acceptFAQQuestionChanges(question) {
         this.isChanged = true
         if (this.isNew) {
-          this.FAQ.push(question)
+          this.FAQ.questions.push(question)
         } else {
-          this.$set(this.FAQ, this.currentIndex, question)
+          this.$set(this.FAQ.questions, this.currentIndex, question)
         }
       },
       confirmDelete() {
@@ -119,7 +119,7 @@
         })
       },
       deleteFAQQuestions() {
-        this.FAQ = this.FAQ.filter(x => !this.questionListCheckedRows.includes(x))
+        this.FAQ.questions = this.FAQ.questions.filter(x => !this.questionListCheckedRows.includes(x))
         this.isChanged = true
       },
       dragStart(payload) {
@@ -131,9 +131,9 @@
         payload.event.preventDefault()
       },
       dropRow(payload) {
-        var element = this.FAQ[this.draggingRowIndex]
-        this.FAQ.splice(this.draggingRowIndex, 1)
-        this.FAQ.splice(payload.index, 0, element)
+        var element = this.FAQ.questions[this.draggingRowIndex]
+        this.FAQ.questions.splice(this.draggingRowIndex, 1)
+        this.FAQ.questions.splice(payload.index, 0, element)
         this.isChanged = true
       }
     }

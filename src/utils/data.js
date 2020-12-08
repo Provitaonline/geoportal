@@ -211,6 +211,32 @@ export async function getFAQFromRepo(token) {
   return result
 }
 
+/*export async function saveFAQ(token, FAQ) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+    writeFile('master', dataConfig.faqFileName, JSON.stringify({id: 'faq', questions: FAQ}, null, 2), 'Updated FAQ', {encode: true})
+  return response
+}*/
+
+export async function saveFAQ(token, FAQ) {
+  let octokit = new Octokit({auth: token})
+
+  let sha = FAQ.sha
+  delete FAQ.sha
+
+  let response = await octokit.repos.createOrUpdateFileContents({
+    owner: adminConfig.githubInfo.owner,
+    repo: adminConfig.githubInfo.repo,
+    path: dataConfig.faqFileName,
+    sha: sha,
+    content: base64.encode(utf8.encode(JSON.stringify(FAQ, null, 2))),
+    message: 'Updated FAQ'
+  })
+
+  return response
+}
+
 async function getNewsItem(key) {
   let response = await axios.get(dataConfig.filesBaseUrl + key)
   return response.data
@@ -291,14 +317,6 @@ export async function saveSurveyTemplate(token, surveyTemplate) {
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
     writeFile('master', dataConfig.surveyTemplateName, JSON.stringify(surveyTemplate, null, 2), 'Updated survey template', {encode: true})
-  return response
-}
-
-export async function saveFAQ(token, FAQ) {
-  let github = new GitHub({token: token})
-
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.faqFileName, JSON.stringify({id: 'faq', questions: FAQ}, null, 2), 'Updated FAQ', {encode: true})
   return response
 }
 

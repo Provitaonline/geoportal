@@ -22,7 +22,7 @@
                   </b-icon>
                 </a>
               </div>
-              <div class="card-content" v-html="$page.faqData.questions[itemindex].answer[$i18n.locale.substr(0, 2)]"></div>
+              <div class="card-content content" v-html="$page.faqData.questions[itemindex].answer[$i18n.locale.substr(0, 2)]"></div>
             </b-collapse>
           </div>
         </div>
