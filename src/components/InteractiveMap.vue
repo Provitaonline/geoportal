@@ -26,6 +26,7 @@
   import MapPopUpContent from '~/components/MapPopUpContent.vue'
   import MapLegend from '~/components/MapLegend.vue'
   import { ResetViewControl, ScreenshotControl } from '~/utils/map'
+  import { stripePattern } from '~/utils/misc'
   import { mapConfig } from '~/utils/config'
   import html2canvas from 'html2canvas'
 
@@ -150,7 +151,7 @@
               'line-width': 2
             }
           })
-          this.map.loadImage('/images/stripes.png', ((err, image) => {
+          stripePattern('black').then((image) => {
             this.map.addImage('pattern', image)
             this.map.addLayer({
               id: 'guyana',
@@ -163,7 +164,7 @@
                 'fill-opacity': 0.3
               }
             })
-          }))
+          })
         }
 
         for (const item in this.visibleTileLayers) {

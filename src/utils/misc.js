@@ -25,3 +25,19 @@ export function makeColorTableParameter(colorTable) {
   })
   return ctp
 }
+
+export function stripePattern(color) {
+  return new Promise((resolve, reject) => {
+    let canvas = document.createElement('canvas')
+    let ctx = canvas.getContext('2d')
+    let img = new Image()
+    img.src = '/images/stripes.svg'
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0)
+      ctx.globalCompositeOperation = 'source-in'
+      ctx.fillStyle = color
+      ctx.fillRect(0, 0, 10, 10)
+      resolve(ctx.getImageData(0, 0, 10, 10))
+    }
+  })
+}
