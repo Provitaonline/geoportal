@@ -150,6 +150,20 @@
               'line-width': 2
             }
           })
+          this.map.loadImage('/images/stripes.png', ((err, image) => {
+            this.map.addImage('pattern', image)
+            this.map.addLayer({
+              id: 'guyana',
+              type: 'fill',
+              source: 'venezuela',
+              layout: {},
+              filter: ['==', 'NAME', 'Guyana'],
+              paint: {
+                'fill-pattern': 'pattern',
+                'fill-opacity': 0.3
+              }
+            })
+          }))
         }
 
         for (const item in this.visibleTileLayers) {
