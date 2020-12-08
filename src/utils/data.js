@@ -190,14 +190,25 @@ export async function sendSurvey(survey, version) {
 }
 
 export async function getFAQFromRepo(token) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
+  let response
+  let result = {}
 
   try {
-    let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.faqFileName)
-    return JSON.parse(utf8.decode(base64.decode(response.data.content))).questions
+    response = await octokit.repos.getContent({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo,
+      path: dataConfig.faqFileName,
+      headers: {'If-None-Match': ''}
+    })
   } catch(err) {
     throw err
   }
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+    result.sha = response.data.sha // Add the sha to enable update
+  }
+  return result
 }
 
 async function getNewsItem(key) {

@@ -59,7 +59,7 @@
         if (!this.FAQ) {
           console.log('get faq')
           getFAQFromRepo(sessionStorage.githubtoken).then((result) => {
-            this.FAQ = result
+            this.FAQ = result.questions
             this.isLoading = false
           }).catch((err) => {
             this.FAQ = []
