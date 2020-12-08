@@ -123,7 +123,6 @@
         return this.layerMeta.some(item => item.layerShow)
       },
       colSizeLimit() {
-        console.log(this.layerMeta.filter(item => item.layerShow).length)
         return this.layerMeta.filter(item => item.layerShow).length > 2 ? 'is-one-third' : ''
       }
     }
