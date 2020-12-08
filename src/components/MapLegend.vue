@@ -3,21 +3,19 @@
     <span class="menu-label">{{$t('label.legend')}}</span>
     <div class="columns is-multiline">
       <div v-for="item, index in layerMeta" class="column is-one-third" v-if="showLayerLegend(index)">
-        <div class="legend-box">
-          <div class="legend-item" v-if="isSingleColor(index)">
-            <div class="legend-color-box" :style="'background:' + getColor(index)"></div>
-            <span class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</span>
-          </div>
-          <div class="legend-item" v-else-if="isColorGradient(index)">
-            <div class="legend-color-box" :style="'background-image: linear-gradient(to right,' + getColorGradient(index) + ');'"></div>
-            <span class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</span>
-          </div>
-          <div v-else>
-            <span class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</span>
-            <div class="legend-item" v-for="legendItem in getColorList(index)">
-              <div class="legend-color-box" :style="'background:' + legendItem[1]"></div>
-              <div class="legend-subtitle">{{legendItem[0]}}</div>
-            </div>
+        <div class="legend-item" v-if="isSingleColor(index)">
+          <div class="legend-color-box" :style="'background:' + getColor(index)"></div>
+          <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
+        </div>
+        <div class="legend-item" v-else-if="isColorGradient(index)">
+          <div class="legend-color-box" :style="'background-image: linear-gradient(to right,' + getColorGradient(index) + ');'"></div>
+          <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
+        </div>
+        <div v-else>
+          <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
+          <div class="legend-item" v-for="legendItem in getColorList(index)">
+            <div class="legend-color-box" :style="'background:' + legendItem[1]"></div>
+            <div class="legend-subtitle">{{legendItem[0]}}</div>
           </div>
         </div>
       </div>
