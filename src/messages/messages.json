@@ -172,7 +172,8 @@
       "legend": "Legend",
       "screenshot": "Download map image",
       "tiles": "Tiles",
-      "tilesfor": "Tiles for"
+      "tilesfor": "Tiles for",
+      "zoomrange": "Zoom range"
     }
   },
   "es": {
@@ -348,7 +349,8 @@
       "legend": "Leyenda",
       "screenshot": "Descargar la imagen del mapa",
       "tiles": "Teselas",
-      "tilesfor": "Teselas de"
+      "tilesfor": "Teselas de",
+      "zoomrange": "Rango de zoom"
     }
   }
 }

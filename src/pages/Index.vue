@@ -314,10 +314,9 @@
         })
       },
       displayTilesInfo(item) {
-        console.log('open', item.tileInfo)
         this.$buefy.modal.open({
           parent: this,
-          canCancel: ['escape', 'x'],
+          canCancel: ['escape', 'x', 'outside'],
           component: TilesInfo,
           props: {
             metaData: item

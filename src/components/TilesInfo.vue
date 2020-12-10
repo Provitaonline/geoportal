@@ -28,6 +28,14 @@
       </div>
       <div class="columns">
         <div class="column is-one-fifth has-text-weight-bold">
+          {{ $t('label.zoomrange') }}:
+        </div>
+        <div class="column">
+          4-10
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-one-fifth has-text-weight-bold">
           {{ $t('label.attribution') }}:
         </div>
         <div class="column">
