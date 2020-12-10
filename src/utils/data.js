@@ -211,14 +211,6 @@ export async function getFAQFromRepo(token) {
   return result
 }
 
-/*export async function saveFAQ(token, FAQ) {
-  let github = new GitHub({token: token})
-
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.faqFileName, JSON.stringify({id: 'faq', questions: FAQ}, null, 2), 'Updated FAQ', {encode: true})
-  return response
-}*/
-
 export async function saveFAQ(token, FAQ) {
   let octokit = new Octokit({auth: token})
 
