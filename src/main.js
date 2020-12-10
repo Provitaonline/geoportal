@@ -12,13 +12,13 @@ import InfiniteLoading from 'vue-infinite-loading'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
-import { faUser, faEdit, faPlusSquare, faMinusSquare, faNewspaper } from '@fortawesome/free-regular-svg-icons'
+import { faUser, faEdit, faPlusSquare, faMinusSquare, faNewspaper, faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFacebookF, faTwitter, faInstagram, faGithub } from '@fortawesome/free-brands-svg-icons'
 import {
   faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown,
   faAngleUp, faSearch, faTrashAlt, faCloudUploadAlt, faPlus, faCheck, faExclamationCircle,
   faTimesCircle, faExclamationTriangle, faAngleLeft, faAngleRight, faCalendar, faArrowUp,
-  faTag, faRss, faGlobe
+  faTag, faRss, faGlobe, faLink
 } from '@fortawesome/free-solid-svg-icons'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -28,7 +28,7 @@ library.add(
   faInstagram, faGithub, faTimes, faBars, faAngleDown, faAngleUp, faSearch, faTrashAlt,
   faCloudUploadAlt, faPlus, faCheck, faPlusSquare, faMinusSquare, faExclamationCircle,
   faTimesCircle, faExclamationTriangle, faAngleLeft, faAngleRight, faCalendar, faArrowUp,
-  faNewspaper, faTag, faRss, faGlobe
+  faNewspaper, faTag, faRss, faGlobe, faLink, faCopy
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {

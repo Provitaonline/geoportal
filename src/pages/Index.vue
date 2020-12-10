@@ -27,7 +27,7 @@
             </div>
           </div>
           <div v-for="item, index in sortedFileList">
-            <div v-show="isMatch(item)" class="card"  >
+            <div v-show="isMatch(item)" class="card">
               <div class="card-header">
                 <p class="card-header-title">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
                 <a href="#" @click="item.expanded = !item.expanded" class="card-header-icon" aria-label="more options">
@@ -39,22 +39,29 @@
               </div>
               <transition name="slide">
                 <div v-show="item.expanded" class="card-content">
-                  <div class="buttons">
-                    <b-button @click="downloadFile(index)" tag="button" v-bind:disabled="!item.file" style="width: 48%;" type="is-text" size="is-small">
-                      <font-awesome :icon="['fas', 'download']"/>
+                  <a @click="downloadFile(index)" v-bind:disabled="!item.file">
+                    <small><font-awesome :icon="['fas', 'download']"/>
                       <b> {{ $t('label.download') }}</b>
                       ({{mFormatter(item.fileSize)}})
-                    </b-button>
-                    <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
-                    <b-field>
-                      <b-switch
-                        @input="addToMap(item, $event)"
-                        v-bind:disabled="!item.tiles"
-                        v-model="item.layerShow"
-                        size="is-small">
-                        {{ $t('label.addtomap') }}
-                      </b-switch>
-                    </b-field>
+                    </small>
+                  </a>
+                  <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
+                  <br><br>
+                  <div class="columns">
+                    <div class="column is-narrow">
+                      <small><a @click="displayTilesInfo(item)"><font-awesome :icon="['fas', 'link']"/><b> {{ $t('label.tiles') }}</b></a></small>
+                    </div>
+                    <div class="column">
+                      <b-field>
+                        <b-switch
+                          @input="addToMap(item, $event)"
+                          v-bind:disabled="!item.tiles"
+                          v-model="item.layerShow"
+                          size="is-small">
+                          {{ $t('label.addtomap') }}
+                        </b-switch>
+                      </b-field>
+                    </div>
                   </div>
                   <div class="columns" style="margin-bottom: 0px;">
                     <div class="column is-narrow">
@@ -197,6 +204,7 @@
 <script>
   import InteractiveMap from '~/components/InteractiveMap.vue'
   import UserSurveyForm from '~/components/UserSurveyForm'
+  import TilesInfo from '~/components/TilesInfo'
 
   import {dataConfig} from '~/utils/config'
   import {getFileSize} from '~/utils/data'
@@ -302,6 +310,17 @@
           component: UserSurveyForm,
           props: {
             downloadFileIndex: index
+          }
+        })
+      },
+      displayTilesInfo(item) {
+        console.log('open', item.tileInfo)
+        this.$buefy.modal.open({
+          parent: this,
+          canCancel: ['escape', 'x'],
+          component: TilesInfo,
+          props: {
+            metaData: item
           }
         })
       }

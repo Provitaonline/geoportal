@@ -70,6 +70,7 @@
       "file": "Data set",
       "tiledisplay": "Tile display",
       "tiletype": "Tile type",
+      "tilescheme": "Tile scheme",
       "raster": "Raster",
       "vector": "Vector",
       "mapdisplayattribute": "Map display attribute",
@@ -128,6 +129,7 @@
       "textspanish": "Spanish text",
       "textenglish": "English text",
       "reference": "Reference",
+      "attribution": "Attribution",
       "addimage": "Add thumbnail",
       "upto": "Up to",
       "newitem": "New item",
@@ -168,7 +170,9 @@
       "findbysubject": "Find by subject",
       "pixelvalue": "Pixel value",
       "legend": "Legend",
-      "screenshot": "Download map image"
+      "screenshot": "Download map image",
+      "tiles": "Tiles",
+      "tilesfor": "Tiles for"
     }
   },
   "es": {
@@ -242,6 +246,7 @@
       "file": "Archivo de datos",
       "tiledisplay": "Despliegue de teselas",
       "tiletype": "Tipo de teselas",
+      "tilescheme": "Esquema de teselas",
       "raster": "Ráster",
       "vector": "Vector",
       "mapdisplayattribute": "Atributo para desplegar en el mapa",
@@ -300,6 +305,7 @@
       "textspanish": "Texto en español",
       "textenglish": "Texto en inglés",
       "reference": "Referencia",
+      "attribution": "Atribución",
       "addimage": "Añadir miniatura",
       "upto": "hasta",
       "newitem": "Artículo nuevo",
@@ -340,7 +346,9 @@
       "findbysubject": "Buscar por tema",
       "pixelvalue": "Valor del pixel",
       "legend": "Leyenda",
-      "screenshot": "Descargar la imagen del mapa"
+      "screenshot": "Descargar la imagen del mapa",
+      "tiles": "Teselas",
+      "tilesfor": "Teselas de"
     }
   }
 }
