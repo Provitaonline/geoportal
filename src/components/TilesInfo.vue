@@ -19,7 +19,7 @@
         <div class="column is-one-fifth has-text-weight-bold">
           {{ $t('label.tilescheme') }}:
         </div>
-        <div class="column">
+        <div class="column" style="word-wrap: break-word;">
           <a title="Copiar" class="copy-tile-scheme-to-clipboard" :data-clipboard-text="tileScheme">
             <font-awesome :icon="['far', 'copy']"/>
           </a>
