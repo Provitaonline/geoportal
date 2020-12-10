@@ -39,14 +39,17 @@
               </div>
               <transition name="slide">
                 <div v-show="item.expanded" class="card-content">
-                  <a @click="downloadFile(index)" v-bind:disabled="!item.file">
-                    <small><font-awesome :icon="['fas', 'download']"/>
-                      <b> {{ $t('label.download') }}</b>
-                      ({{mFormatter(item.fileSize)}})
-                    </small>
-                  </a>
-                  <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
-                  <br><br>
+                  <div class="columns">
+                    <div class="column">
+                    <a @click="downloadFile(index)" v-bind:disabled="!item.file">
+                        <small><font-awesome :icon="['fas', 'download']"/>
+                          <b> {{ $t('label.download') }}</b>
+                          ({{mFormatter(item.fileSize)}})
+                        </small>
+                      </a>
+                      <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
+                    </div>
+                  </div>
                   <div class="columns">
                     <div class="column is-narrow">
                       <small><a @click="displayTilesInfo(item)"><font-awesome :icon="['fas', 'link']"/><b> {{ $t('label.tiles') }}</b></a></small>
