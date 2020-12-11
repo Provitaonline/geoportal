@@ -9,7 +9,7 @@
           <div class="md-text" v-html="item.node.text[$i18n.locale.substr(0, 2)]"></div>
         </p>
         <p v-if="item.node.reference" class="has-text-weight-semibold">
-          <a :href="item.node.reference">{{$t('label.readmore')}}</a>
+          <a :href="item.node.reference" target="_blank">{{$t('label.readmore')}}</a>
         </p>
       </div>
     </div>
