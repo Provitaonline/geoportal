@@ -18,6 +18,27 @@ marked.setOptions({
 })
 
 module.exports = function (api) {
+
+  // Pre-define NewsData schema to avoid missing data schema errors
+  api.loadSource(({ addSchemaTypes }) => {
+    addSchemaTypes(`
+      type NewsData implements Node {
+        headline: TextLang
+        text: TextLang
+        date: Date
+        key: String
+        reference: String
+        thumb: Image
+        yyyymm: Date
+      }
+      type TextLang {
+        en: String
+        es: String
+      }
+    `)
+  })
+
+  // Load markdown so the client doesn't have to do it
   api.loadSource(({ addSchemaResolvers }) => {
     addSchemaResolvers({
       MetaData: {
@@ -46,6 +67,7 @@ module.exports = function (api) {
     })
   })
 
+  // Create YearMonth News pages
   api.createPages(async ({ createPage, graphql }) => {
     const { data } = await graphql(`{
       allNewsData {
