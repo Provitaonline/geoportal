@@ -378,17 +378,42 @@ export async function saveAbout(token, about) {
 }
 
 export async function getContactFromRepo(token) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
+  let response
+  let result = {}
 
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.contactFileName)
-  return JSON.parse(utf8.decode(base64.decode(response.data.content)))
+  try {
+    response = await octokit.repos.getContent({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo,
+      path: dataConfig.contactFileName,
+      headers: {'If-None-Match': ''}
+    })
+  } catch(err) {
+    throw err
+  }
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+    result.sha = response.data.sha // Add the sha to enable update
+  }
+  return result
 }
 
 export async function saveContact(token, contact) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.contactFileName, JSON.stringify(contact, null, 2), 'Updated contact', {encode: true})
+  let sha = contact.sha
+  delete contact.sha
+
+  let response = await octokit.repos.createOrUpdateFileContents({
+    owner: adminConfig.githubInfo.owner,
+    repo: adminConfig.githubInfo.repo,
+    path: dataConfig.contactFileName,
+    sha: sha,
+    content: base64.encode(utf8.encode(JSON.stringify(contact, null, 2))),
+    message: 'Updated contact'
+  })
+
   return response
 }
 
