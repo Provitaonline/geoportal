@@ -105,9 +105,10 @@
       },
       saveChanges() {
         this.surveyTemplate.version++
-        saveSurveyTemplate(sessionStorage.githubtoken, this.surveyTemplate).then(() => {
+        saveSurveyTemplate(sessionStorage.githubtoken, this.surveyTemplate).then((response) => {
           console.log('saved survey template')
           this.isChanged = false
+          this.surveyTemplate.sha = response.data.content.sha
           this.$store.commit('setPublishIndicator', true)
         }).catch((e) => {
           console.log('error saving survey template to github ', e)

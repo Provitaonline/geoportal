@@ -170,16 +170,60 @@ export async function submitJob(token, job) {
   return response
 }
 
-export async function getSurveyTemplate() {
-  let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.surveyTemplateName)
-  return response.data
-}
-
-export async function getSurveyTemplateFromRepo(token) {
+/*export async function getSurveyTemplateFromRepo(token) {
   let github = new GitHub({token: token})
 
   let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.surveyTemplateName)
   return JSON.parse(utf8.decode(base64.decode(response.data.content)))
+}*/
+
+export async function getSurveyTemplateFromRepo(token) {
+  let octokit = new Octokit({auth: token})
+  let response
+  let result = {}
+
+  try {
+    response = await octokit.repos.getContent({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo,
+      path: dataConfig.surveyTemplateName,
+      headers: {'If-None-Match': ''}
+    })
+  } catch(err) {
+    throw err
+  }
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+    result.sha = response.data.sha // Add the sha to enable update
+  }
+  return result
+}
+
+
+/*export async function saveSurveyTemplate(token, surveyTemplate) {
+  let github = new GitHub({token: token})
+
+  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
+    writeFile('master', dataConfig.surveyTemplateName, JSON.stringify(surveyTemplate, null, 2), 'Updated survey template', {encode: true})
+  return response
+}*/
+
+export async function saveSurveyTemplate(token, surveyTemplate) {
+  let octokit = new Octokit({auth: token})
+
+  let sha = surveyTemplate.sha
+  delete surveyTemplate.sha
+
+  let response = await octokit.repos.createOrUpdateFileContents({
+    owner: adminConfig.githubInfo.owner,
+    repo: adminConfig.githubInfo.repo,
+    path: dataConfig.surveyTemplateName,
+    sha: sha,
+    content: base64.encode(utf8.encode(JSON.stringify(surveyTemplate, null, 2))),
+    message: 'Updated survey template'
+  })
+
+  return response
 }
 
 export async function sendSurvey(survey, version) {
@@ -302,14 +346,6 @@ export async function saveNewsItemFromRepo(token, newsItem) {
     writeFile('master', newsItem.key, JSON.stringify(newsItem), 'Saved news item', {encode: true})
 
   return
-}
-
-export async function saveSurveyTemplate(token, surveyTemplate) {
-  let github = new GitHub({token: token})
-
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.surveyTemplateName, JSON.stringify(surveyTemplate, null, 2), 'Updated survey template', {encode: true})
-  return response
 }
 
 export async function getAboutFromRepo(token) {
