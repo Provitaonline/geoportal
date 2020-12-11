@@ -41,7 +41,7 @@ export const adminConfig = {
     owner : 'jimmyangel',
     repo: 'geoportal-data'
   },
-  maxNewsImageKB: 100
+  maxNewsImageKB: 500
 }
 
 export const dataConfig = {
