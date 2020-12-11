@@ -170,13 +170,6 @@ export async function submitJob(token, job) {
   return response
 }
 
-/*export async function getSurveyTemplateFromRepo(token) {
-  let github = new GitHub({token: token})
-
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.surveyTemplateName)
-  return JSON.parse(utf8.decode(base64.decode(response.data.content)))
-}*/
-
 export async function getSurveyTemplateFromRepo(token) {
   let octokit = new Octokit({auth: token})
   let response
@@ -198,15 +191,6 @@ export async function getSurveyTemplateFromRepo(token) {
   }
   return result
 }
-
-
-/*export async function saveSurveyTemplate(token, surveyTemplate) {
-  let github = new GitHub({token: token})
-
-  let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', dataConfig.surveyTemplateName, JSON.stringify(surveyTemplate, null, 2), 'Updated survey template', {encode: true})
-  return response
-}*/
 
 export async function saveSurveyTemplate(token, surveyTemplate) {
   let octokit = new Octokit({auth: token})
