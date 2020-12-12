@@ -136,14 +136,16 @@
       addLayers: function() {
         if (!this.map.getLayer('venezuela')) {
           this.map.addSource('venezuela', {
-            type: 'geojson',
-            data: '/mapdata/venezuela.geojson',
+            type: 'vector',
+            maxzoom: 10,
+            tiles: [mapConfig.vectorTilesBaseUrl + 'venezuela' + '/{z}/{x}/{y}.pbf'],
             attribution: 'IGVSB'
           })
           this.map.addLayer({
             id: 'venezuela',
             type: 'line',
             source: 'venezuela',
+            'source-layer': 'venezuela',
             layout: {},
             paint: {
               'line-color': '#504f54',
@@ -154,11 +156,12 @@
           stripePattern('black').then((image) => {
             this.map.addImage('pattern', image)
             this.map.addLayer({
-              id: 'guyana',
+              id: 'esequibo-layer',
               type: 'fill',
               source: 'venezuela',
+              'source-layer': 'venezuela',
               layout: {},
-              filter: ['==', 'NAME', 'Guyana'],
+              filter: ['==', 'NAME', 'Territorio Esequibo'],
               paint: {
                 'fill-pattern': 'pattern',
                 'fill-opacity': 0.3
