@@ -71,20 +71,25 @@ export async function getMetaFromRepo(token, file) {
 }
 
 export async function getMetaListFromRepo(token) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
   let response
   let result = []
 
   try {
-    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.metaDirectory)
+    response = await octokit.repos.getContent({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo,
+      path: dataConfig.metaDirectory,
+      headers: {'If-None-Match': ''}
+    })
   } catch (err) {
-    if (err.response.status != 404) {
+    if (err.status != 404) {
       throw err
     }
   }
   if (response !== undefined) result = response.data.map(item => {
-    return {file: item.name.substr(0, item.name.lastIndexOf('.'))}
+    return {file: item.name.substr(0, item.name.lastIndexOf('.')), sha: item.sha}
   })
   return result
 }
