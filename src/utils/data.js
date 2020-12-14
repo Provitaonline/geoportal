@@ -339,7 +339,7 @@ export async function saveNewsItemFromRepo(token, newsItem) {
 
 export async function getAboutFromRepo(token) {
 
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
   let response
   let result = {}
@@ -347,13 +347,21 @@ export async function getAboutFromRepo(token) {
   dataConfig.aboutLocItems.forEach(async item => {
     result[item.fieldName] = ''
     try {
-      response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.aboutDirName + item.filePath)
+      response = await octokit.repos.getContent({
+        owner: adminConfig.githubInfo.owner,
+        repo: adminConfig.githubInfo.repo,
+        path: dataConfig.aboutDirName + item.filePath,
+        headers: {'If-None-Match': ''}
+      })
     } catch (err) {
-      if (err.response.status != 404) {
+      if (err.status != 404) {
         throw err
       }
     }
-    if (response !== undefined) result[item.fieldName] = utf8.decode(base64.decode(response.data.content))
+    if (response !== undefined) {
+      result[item.fieldName] = utf8.decode(base64.decode(response.data.content))
+      result[item.fieldName + '_sha'] = response.data.sha
+    }
 
     // Yank frontmatter
     let idx = result[item.fieldName].substr(4).indexOf('---\n')
@@ -364,7 +372,7 @@ export async function getAboutFromRepo(token) {
 }
 
 export async function saveAbout(token, about) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
   let response
 
@@ -373,8 +381,14 @@ export async function saveAbout(token, about) {
     about[dataConfig.aboutLocItems[idx].fieldName] = dataConfig.aboutLocItems[idx].frontMatter + about[dataConfig.aboutLocItems[idx].fieldName]
 
     try {
-      response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-        writeFile('master', dataConfig.aboutDirName + dataConfig.aboutLocItems[idx].filePath, about[dataConfig.aboutLocItems[idx].fieldName], 'Updated About', {encode: true})
+      let response = await octokit.repos.createOrUpdateFileContents({
+        owner: adminConfig.githubInfo.owner,
+        repo: adminConfig.githubInfo.repo,
+        path: dataConfig.aboutDirName + dataConfig.aboutLocItems[idx].filePath,
+        sha: about[dataConfig.aboutLocItems[idx].fieldName + '_sha'],
+        content: base64.encode(utf8.encode(about[dataConfig.aboutLocItems[idx].fieldName])),
+        message: 'Updated survey template'
+      })
     } catch (err) {
       throw err
     }
