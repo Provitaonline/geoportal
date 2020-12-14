@@ -428,12 +428,16 @@ export async function publishSite() {
 }
 
 export async function isPublishDue(token) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
   let response = await axios.get(dataConfig.deployDatePath)
   let deployDate = Date.parse(response.data)
   if (deployDate > 0) {
-    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getDetails()
+    response = await octokit.repos.get({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo
+    })
+
     let pushedDate = Date.parse(response.data.pushed_at)
     if (deployDate < pushedDate) {
       return true
