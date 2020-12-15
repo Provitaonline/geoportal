@@ -81,18 +81,11 @@ export async function saveMetaFromRepo(token, meta) {
   return response
 }
 
-export async function deleteMetaListFromRepo(token, fileAndShaList) {
-  let octokit = new Octokit({auth: token})
+export async function deleteMetaListFromRepo(token, fileList) {
 
   let responses = []
-  for (const fileAndSha of fileAndShaList) {
-    let response = await octokit.repos.deleteFile({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo,
-      path: dataConfig.metaDirectory + '/' + fileAndSha.file + '.json',
-      sha: fileAndSha.sha,
-      message: 'Deleted meta'
-    })
+  for (const file of fileList) {
+    let response = await oK.deleteFile(token, dataConfig.metaDirectory + '/' + file + '.json')
     responses.push(response)
   }
 
@@ -146,41 +139,24 @@ export async function submitJob(token, job) {
 }
 
 export async function getSurveyTemplateFromRepo(token) {
-  let octokit = new Octokit({auth: token})
-  let response
   let result = {}
 
-  try {
-    response = await octokit.repos.getContent({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo,
-      path: dataConfig.surveyTemplateName,
-      headers: {'If-None-Match': ''}
-    })
-  } catch(err) {
-    throw err
-  }
+  let response = await oK.getContent(token, dataConfig.surveyTemplateName)
+
   if (response !== undefined) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
-    result.sha = response.data.sha // Add the sha to enable update
   }
   return result
 }
 
 export async function saveSurveyTemplate(token, surveyTemplate) {
-  let octokit = new Octokit({auth: token})
 
-  let sha = surveyTemplate.sha
-  delete surveyTemplate.sha
-
-  let response = await octokit.repos.createOrUpdateFileContents({
-    owner: adminConfig.githubInfo.owner,
-    repo: adminConfig.githubInfo.repo,
-    path: dataConfig.surveyTemplateName,
-    sha: sha,
-    content: base64.encode(utf8.encode(JSON.stringify(surveyTemplate, null, 2))),
-    message: 'Updated survey template'
-  })
+  let response = await oK.writeFile(
+    token,
+    dataConfig.surveyTemplateName,
+    base64.encode(utf8.encode(JSON.stringify(surveyTemplate, null, 2))),
+    'Updated survey template'
+  )
 
   return response
 }
@@ -193,41 +169,19 @@ export async function sendSurvey(survey, version) {
 }
 
 export async function getFAQFromRepo(token) {
-  let octokit = new Octokit({auth: token})
-  let response
   let result = {}
 
-  try {
-    response = await octokit.repos.getContent({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo,
-      path: dataConfig.faqFileName,
-      headers: {'If-None-Match': ''}
-    })
-  } catch(err) {
-    throw err
-  }
+  let response = await oK.getContent(token, dataConfig.faqFileName)
+
   if (response !== undefined) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
-    result.sha = response.data.sha // Add the sha to enable update
   }
   return result
 }
 
 export async function saveFAQ(token, FAQ) {
-  let octokit = new Octokit({auth: token})
 
-  let sha = FAQ.sha
-  delete FAQ.sha
-
-  let response = await octokit.repos.createOrUpdateFileContents({
-    owner: adminConfig.githubInfo.owner,
-    repo: adminConfig.githubInfo.repo,
-    path: dataConfig.faqFileName,
-    sha: sha,
-    content: base64.encode(utf8.encode(JSON.stringify(FAQ, null, 2))),
-    message: 'Updated FAQ'
-  })
+  let response = await oK.writeFile(token, dataConfig.faqFileName, base64.encode(utf8.encode(JSON.stringify(FAQ, null, 2))), 'Updated FAQ')
 
   return response
 }
@@ -257,35 +211,16 @@ export function getListOfNewsItems() {
 }
 
 export async function getListOfNewsItemsFromRepo(token) {
-  let octokit = new Octokit({auth: token})
 
-  let response
   let result = []
 
-  try {
-    response = await octokit.repos.getContent({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo,
-      path: dataConfig.newsDirName,
-      headers: {'If-None-Match': ''}
-    })
-  } catch (err) {
-    if (err.status != 404) {
-      throw err
-    }
-  }
+  let response = await oK.getContent(token, dataConfig.newsDirName)
+
   if (response === undefined) return result
 
   response.data.forEach(async item => {
     if (item.type === 'file') {
-
-      let nI = await octokit.repos.getContent({
-        owner: adminConfig.githubInfo.owner,
-        repo: adminConfig.githubInfo.repo,
-        path: item.path,
-        headers: {'If-None-Match': ''}
-      })
-
+      let nI = await oK.getContent(token, item.path)
       result.push(JSON.parse(utf8.decode(base64.decode(nI.data.content))))
     }
   })
@@ -294,14 +229,9 @@ export async function getListOfNewsItemsFromRepo(token) {
 }
 
 export async function getNewsItemThumb(token, key) {
-  let octokit = new Octokit({auth: token})
 
-  let result = await octokit.repos.getContent({
-    owner: adminConfig.githubInfo.owner,
-    repo: adminConfig.githubInfo.repo,
-    path: key,
-    headers: {'If-None-Match': ''}
-  })
+  let result = await oK.getContent(token, key)
+
   return 'data:image/' + key.substr(key.lastIndexOf('.') + 1) + ';base64,' + result.data.content
 }
 
@@ -325,25 +255,13 @@ export async function saveNewsItemFromRepo(token, newsItem) {
 
 export async function getAboutFromRepo(token) {
 
-  let octokit = new Octokit({auth: token})
-
-  let response
   let result = {}
 
   dataConfig.aboutLocItems.forEach(async item => {
     result[item.fieldName] = ''
-    try {
-      response = await octokit.repos.getContent({
-        owner: adminConfig.githubInfo.owner,
-        repo: adminConfig.githubInfo.repo,
-        path: dataConfig.aboutDirName + item.filePath,
-        headers: {'If-None-Match': ''}
-      })
-    } catch (err) {
-      if (err.status != 404) {
-        throw err
-      }
-    }
+
+    let response = await oK.getContent(token, dataConfig.aboutDirName + item.filePath)
+
     if (response !== undefined) {
       result[item.fieldName] = utf8.decode(base64.decode(response.data.content))
       result[item.fieldName + '_sha'] = response.data.sha
@@ -358,26 +276,16 @@ export async function getAboutFromRepo(token) {
 }
 
 export async function saveAbout(token, about) {
-  let octokit = new Octokit({auth: token})
-
-  let response
 
   for (const idx in dataConfig.aboutLocItems) {
     // Prepend frontmatter
     about[dataConfig.aboutLocItems[idx].fieldName] = dataConfig.aboutLocItems[idx].frontMatter + about[dataConfig.aboutLocItems[idx].fieldName]
 
-    try {
-      let response = await octokit.repos.createOrUpdateFileContents({
-        owner: adminConfig.githubInfo.owner,
-        repo: adminConfig.githubInfo.repo,
-        path: dataConfig.aboutDirName + dataConfig.aboutLocItems[idx].filePath,
-        sha: about[dataConfig.aboutLocItems[idx].fieldName + '_sha'],
-        content: base64.encode(utf8.encode(about[dataConfig.aboutLocItems[idx].fieldName])),
-        message: 'Updated survey template'
-      })
-    } catch (err) {
-      throw err
-    }
+    await oK.writeFile(
+      token,
+      dataConfig.aboutDirName + dataConfig.aboutLocItems[idx].filePath,
+      base64.encode(utf8.encode(about[dataConfig.aboutLocItems[idx].fieldName])),
+      'Updated about')
   }
   return
 }
