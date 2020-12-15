@@ -364,8 +364,9 @@ export default {
         job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
       }
 
-      saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
+      saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then((response) => {
         console.log('saved meta entry')
+        metaEntry.sha = response.data.content.sha
         this.$store.commit('setPublishIndicator', true)
         this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
         this.$parent.close()

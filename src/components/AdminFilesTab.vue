@@ -163,10 +163,17 @@
       },
       deleteFilesAndMeta(filesToDelete) {
         this.isLoading = true
+        let filesAndShaToDelete = filesToDelete.map(fileToDelete => {
+          return {
+            file: fileToDelete,
+            sha: this.metaFromRepo.find(item => item.file === fileToDelete).sha
+          }
+        })
+
         let oLength = this.metaFromRepo.length
         this.metaFromRepo = this.metaFromRepo.filter((item) => !filesToDelete.includes(item.file))
         if (oLength != this.metaFromRepo.length) { // We have meta to delete
-          deleteMetaListFromRepo(sessionStorage.githubtoken, filesToDelete).then(() => {
+          deleteMetaListFromRepo(sessionStorage.githubtoken, filesAndShaToDelete).then(() => {
             this.$store.commit('setPublishIndicator', true)
             deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
               this.fileListCheckedRows = []

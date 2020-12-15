@@ -116,12 +116,18 @@ export async function saveMetaFromRepo(token, meta) {
   return response
 }
 
-export async function deleteMetaListFromRepo(token, fileList) {
-  let github = new GitHub({token: token})
+export async function deleteMetaListFromRepo(token, fileAndShaList) {
+  let octokit = new Octokit({auth: token})
 
   let responses = []
-  for (const file of fileList) {
-    let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).deleteFile('master', dataConfig.metaDirectory + '/' + file + '.json')
+  for (const fileAndSha of fileAndShaList) {
+    let response = await octokit.repos.deleteFile({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo,
+      path: dataConfig.metaDirectory + '/' + fileAndSha.file + '.json',
+      sha: fileAndSha.sha,
+      message: 'Deleted meta'
+    })
     responses.push(response)
   }
 
