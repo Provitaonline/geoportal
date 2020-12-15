@@ -11,7 +11,7 @@
           <b-field horizontal custom-class="version-label" :label="$t('label.surveyversion')">
             <b-select v-model="selectedVersion" horizontal>
               <option
-                v-for="version in versions"
+                v-for="version in sortedVersions"
                 :value="version"
                 :key="version">
                 {{ version }}
@@ -49,7 +49,7 @@
     data() {
       return {
         isLoading: true,
-        versions: null,
+        versions: [],
         selectedVersion: null,
         downloadLink: null
       }
@@ -60,10 +60,10 @@
     },
     methods: {
       getSurveyVersions() {
-        if (!this.versions) {
+        if (!this.versions.length) {
           getSurveyVersions(sessionStorage.githubtoken).then((result) => {
             this.versions = result
-            this.selectedVersion = result[this.versions.length - 1]
+            this.selectedVersion = this.sortedVersions[this.versions.length - 1]
             this.isLoading = false
           })
         }
@@ -80,6 +80,11 @@
             this.isLoading = false
           })
         })
+      }
+    },
+    computed: {
+      sortedVersions() {
+        return this.versions.sort((a, b) => a - b)
       }
     }
   }
