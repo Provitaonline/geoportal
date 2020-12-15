@@ -293,15 +293,20 @@ export function getListOfNewsItems() {
 }
 
 export async function getListOfNewsItemsFromRepo(token) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
   let response
   let result = []
 
   try {
-    response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', dataConfig.newsDirName)
+    response = await octokit.repos.getContent({
+      owner: adminConfig.githubInfo.owner,
+      repo: adminConfig.githubInfo.repo,
+      path: dataConfig.newsDirName,
+      headers: {'If-None-Match': ''}
+    })
   } catch (err) {
-    if (err.response.status != 404) {
+    if (err.status != 404) {
       throw err
     }
   }
@@ -309,7 +314,14 @@ export async function getListOfNewsItemsFromRepo(token) {
 
   response.data.forEach(async item => {
     if (item.type === 'file') {
-      let nI = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', item.path)
+
+      let nI = await octokit.repos.getContent({
+        owner: adminConfig.githubInfo.owner,
+        repo: adminConfig.githubInfo.repo,
+        path: item.path,
+        headers: {'If-None-Match': ''}
+      })
+
       result.push(JSON.parse(utf8.decode(base64.decode(nI.data.content))))
     }
   })
