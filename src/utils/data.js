@@ -1,5 +1,3 @@
-import GitHub from 'github-api'
-
 import { Octokit } from '@octokit/rest'
 
 import axios from 'axios'
@@ -7,6 +5,8 @@ import base64 from 'base-64'
 import utf8 from 'utf8'
 import {adminConfig, dataConfig} from '~/utils/config'
 import {makeColorTableParameter} from '~/utils/misc'
+
+import * as oK from '~/utils/octokitwrapper'
 
 let parseString = require('xml2js').parseString
 
@@ -44,23 +44,9 @@ export function getListOfFiles() {
 
 // This retrieves live meta from github repo
 export async function getMetaFromRepo(token, file) {
-  let octokit = new Octokit({auth: token})
-
-  let response
   let result = {file: file}
+  let response = await oK.getContent(token, dataConfig.metaDirectory + '/' + file + '.json')
 
-  try {
-    response = await octokit.repos.getContent({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo,
-      path: dataConfig.metaDirectory + '/' + file + '.json',
-      headers: {'If-None-Match': ''}
-    })
-  } catch (err) {
-    if (err.status != 404) {
-      throw err
-    }
-  }
   if (response !== undefined) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
     // Need to unpack tileInfo back to object
@@ -71,23 +57,9 @@ export async function getMetaFromRepo(token, file) {
 }
 
 export async function getMetaListFromRepo(token) {
-  let octokit = new Octokit({auth: token})
-
-  let response
   let result = []
+  let response = await oK.getContent(token, dataConfig.metaDirectory)
 
-  try {
-    response = await octokit.repos.getContent({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo,
-      path: dataConfig.metaDirectory,
-      headers: {'If-None-Match': ''}
-    })
-  } catch (err) {
-    if (err.status != 404) {
-      throw err
-    }
-  }
   if (response !== undefined) result = response.data.map(item => {
     return {file: item.name.substr(0, item.name.lastIndexOf('.')), sha: item.sha}
   })
@@ -96,22 +68,15 @@ export async function getMetaListFromRepo(token) {
 
 // This saves meta to the github repo
 export async function saveMetaFromRepo(token, meta) {
-  let octokit = new Octokit({auth: token})
-
-  let sha = meta.sha
-  delete meta.sha
-
-  // Need to package tileInfo as a string
+  // Package tileInfo as a string
   meta.tileInfo = JSON.stringify(meta.tileInfo)
 
-  let response = await octokit.repos.createOrUpdateFileContents({
-    owner: adminConfig.githubInfo.owner,
-    repo: adminConfig.githubInfo.repo,
-    path: dataConfig.metaDirectory + '/' + meta.file + '.json',
-    sha: sha,
-    content: base64.encode(utf8.encode(JSON.stringify(meta, null, 2))),
-    message: 'Updated meta'
-  })
+  let response = await oK.writeFile(
+    token,
+    dataConfig.metaDirectory + '/' + meta.file + '.json',
+    base64.encode(utf8.encode(JSON.stringify(meta, null, 2))),
+    'Updated meta'
+  )
 
   return response
 }
@@ -135,11 +100,10 @@ export async function deleteMetaListFromRepo(token, fileAndShaList) {
 }
 
 export async function deleteItemsFromRepo(token, itemList) {
-  let github = new GitHub({token: token})
 
   let responses = []
   for (const item of itemList) {
-    let response = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).deleteFile('master', item)
+    let response = await oK.deleteFile(token, item)
     responses.push(response)
   }
 
@@ -342,20 +306,19 @@ export async function getNewsItemThumb(token, key) {
 }
 
 export async function saveNewsItemFromRepo(token, newsItem) {
-  let github = new GitHub({token: token})
 
   // Save thumbnail if included
   if (newsItem.thumb && newsItem.thumb.startsWith('data:')) {
     let parts = newsItem.thumb.split(',')
     let info = parts[0].split(/[:;]/)
     let thumbKey = newsItem.key.replace(/news\//,'news/thumbs/') + '.' + info[1].split('/')[1]
-    await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-      writeFile('master', thumbKey, parts[1], 'Saved news item thumbnail', {encode: false})
+
+    await oK.writeFile(token, thumbKey, parts[1], 'Saved news item thumbnail')
+
     newsItem.thumb = './' + thumbKey.replace(/news\//, '')
   }
 
-  await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).
-    writeFile('master', newsItem.key, JSON.stringify(newsItem), 'Saved news item', {encode: true})
+  await oK.writeFile(token, newsItem.key, base64.encode(utf8.encode(JSON.stringify(newsItem))), 'Saved news item')
 
   return
 }
