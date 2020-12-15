@@ -330,9 +330,14 @@ export async function getListOfNewsItemsFromRepo(token) {
 }
 
 export async function getNewsItemThumb(token, key) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
-  let result = await github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getContents('master', key)
+  let result = await octokit.repos.getContent({
+    owner: adminConfig.githubInfo.owner,
+    repo: adminConfig.githubInfo.repo,
+    path: key,
+    headers: {'If-None-Match': ''}
+  })
   return 'data:image/' + key.substr(key.lastIndexOf('.') + 1) + ';base64,' + result.data.content
 }
 
