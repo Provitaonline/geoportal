@@ -65,7 +65,7 @@ export async function deleteFile(token, path) {
 export async function getContent(token, path) {
 
   let octokit = new Octokit({auth: token})
-  
+
   let response
 
   try {
@@ -80,6 +80,19 @@ export async function getContent(token, path) {
       throw err
     }
   }
+
+  return response
+}
+
+export async function getRepo(token) {
+
+  let octokit = new Octokit({auth: token})
+
+  let response = await octokit.repos.get({
+    owner: adminConfig.githubInfo.owner,
+    repo: adminConfig.githubInfo.repo,
+    headers: {'If-None-Match': ''}
+  })
 
   return response
 }

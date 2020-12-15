@@ -99,10 +99,9 @@
       },
       saveChanges() {
         this.isLoading = true
-        saveContact(sessionStorage.githubtoken, JSON.parse(JSON.stringify(this.contact))).then((response) => {
+        saveContact(sessionStorage.githubtoken, JSON.parse(JSON.stringify(this.contact))).then(() => {
           console.log('saved Contact')
           this.isLoading = false
-          this.contact.sha = response.data.content.sha
           this.$store.commit('setPublishIndicator', true)
           this.$parent.close()
         }).catch((e) => {

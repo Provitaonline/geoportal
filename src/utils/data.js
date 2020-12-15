@@ -1,5 +1,3 @@
-import { Octokit } from '@octokit/rest'
-
 import axios from 'axios'
 import base64 from 'base-64'
 import utf8 from 'utf8'
@@ -291,42 +289,19 @@ export async function saveAbout(token, about) {
 }
 
 export async function getContactFromRepo(token) {
-  let octokit = new Octokit({auth: token})
-  let response
+
   let result = {}
 
-  try {
-    response = await octokit.repos.getContent({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo,
-      path: dataConfig.contactFileName,
-      headers: {'If-None-Match': ''}
-    })
-  } catch(err) {
-    throw err
-  }
+  let response = await oK.getContent(token, dataConfig.contactFileName)
+
   if (response !== undefined) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
-    result.sha = response.data.sha // Add the sha to enable update
   }
   return result
 }
 
 export async function saveContact(token, contact) {
-  let octokit = new Octokit({auth: token})
-
-  let sha = contact.sha
-  delete contact.sha
-
-  let response = await octokit.repos.createOrUpdateFileContents({
-    owner: adminConfig.githubInfo.owner,
-    repo: adminConfig.githubInfo.repo,
-    path: dataConfig.contactFileName,
-    sha: sha,
-    content: base64.encode(utf8.encode(JSON.stringify(contact, null, 2))),
-    message: 'Updated contact'
-  })
-
+  let response = await oK.writeFile(token, dataConfig.contactFileName, base64.encode(utf8.encode(JSON.stringify(contact, null, 2))), 'Updated contact')
   return response
 }
 
@@ -336,16 +311,10 @@ export async function publishSite() {
 }
 
 export async function isPublishDue(token) {
-  let octokit = new Octokit({auth: token})
-
   let response = await axios.get(dataConfig.deployDatePath)
   let deployDate = Date.parse(response.data)
   if (deployDate > 0) {
-    response = await octokit.repos.get({
-      owner: adminConfig.githubInfo.owner,
-      repo: adminConfig.githubInfo.repo
-    })
-
+    response = await oK.getRepo(token)
     let pushedDate = Date.parse(response.data.pushed_at)
     if (deployDate < pushedDate) {
       return true
