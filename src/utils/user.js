@@ -1,4 +1,4 @@
-import GitHub from 'github-api'
+import { Octokit } from '@octokit/rest'
 import {adminConfig} from '~/utils/config'
 
 export function getStateToken() {
@@ -9,17 +9,17 @@ export function getStateToken() {
 }
 
 export function getUserInfo(token) {
-  let github = new GitHub({token: token})
+  let octokit = new Octokit({auth: token})
 
   return new Promise(function (resolve, reject) {
-    github.getUser().getProfile().then((profile) => {
-      github.getRepo(adminConfig.githubInfo.owner, adminConfig.githubInfo.repo).getCollaborators().then(() => {
+    octokit.users.getAuthenticated().then((profile) => {
+      octokit.repos.listCollaborators({owner: adminConfig.githubInfo.owner, repo: adminConfig.githubInfo.repo}).then(() => {
         resolve({name: profile.data.name, login: profile.data.login, avatar: profile.data.avatar_url})
       }).catch((e) => {
-        reject(e.response)
+        reject(e)
       })
     }).catch((e) => {
-      reject(e.response)
+      reject(e)
     })
   })
 }
