@@ -76,7 +76,7 @@ function checkJobQueue(jobs, inputFile) {
 
 exports.handler = (event, context, callback) => {
 
-  const token = event.queryStringParameters.token
+  const token = event.headers.authorization
   const file = event.queryStringParameters.file
   const type = event.queryStringParameters.type
   const ctable = event.queryStringParameters.ctable

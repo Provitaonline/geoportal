@@ -122,12 +122,12 @@ export async function deleteFiles(token, files) {
 }
 
 export async function submitJob(token, job) {
-  let funcUrl = '/.netlify/functions/submit-job?token=' + token + '&file=' + job.file + '&type=' + job.tileInfo.type
+  let funcUrl = '/.netlify/functions/submit-job?file=' + job.file + '&type=' + job.tileInfo.type
   if (job.tileInfo.type === 'raster') {
     funcUrl += '&ctable=' + makeColorTableParameter(job.tileInfo.colorTable)
     funcUrl += '&exact=' + ((job.tileInfo.gradient) ? 'gradient' : 'exact')
   }
-  let response = await axios.get(funcUrl)
+  let response = await axios.get(funcUrl, {headers: {authorization: token}})
   return response
 }
 
