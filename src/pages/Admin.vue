@@ -64,9 +64,8 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {getListOfFiles, getMetaFromRepo, saveMetaFromRepo, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, publishSite, isPublishDue} from '~/utils/data'
+import {publishSite, isPublishDue} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
-import {getPureText} from '~/utils/misc'
 import AdminFilesTab from '~/components/AdminFilesTab'
 import AdminNewsTab from '~/components/AdminNewsTab'
 import AdminSurveyTab from '~/components/AdminSurveyTab'
