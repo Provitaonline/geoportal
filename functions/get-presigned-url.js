@@ -8,7 +8,7 @@ const s3 = new AWS.S3()
 
 exports.handler = (event, context, callback) => {
 
-  const token = event.queryStringParameters.token
+  const token = event.headers.authorization
   const name = event.queryStringParameters.name
   const type = event.queryStringParameters.type
 

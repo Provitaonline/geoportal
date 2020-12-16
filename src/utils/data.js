@@ -102,7 +102,7 @@ export async function deleteItemsFromRepo(token, itemList) {
 }
 
 export async function getPresignedUrl(token, name, type) {
-  let response = await axios.get('/.netlify/functions/get-presigned-url?token=' + token + '&name=' + name + '&type=' + type)
+  let response = await axios.get('/.netlify/functions/get-presigned-url?name=' + name + '&type=' + type, {headers: {authorization: token}})
   return response
 }
 
@@ -117,12 +117,7 @@ export async function uploadFileToS3(url, formData, uploadProgress) {
 }
 
 export async function deleteFiles(token, files) {
-  let response = await axios.get('/.netlify/functions/delete-files?token=' + token + '&files=' + encodeURIComponent(files))
-  return response
-}
-
-export async function deleteObjects(token, objects) {
-  let response = await axios.get('/.netlify/functions/delete-objects?token=' + token + '&objects=' + encodeURIComponent(objects))
+  let response = await axios.get('/.netlify/functions/delete-files?files=' + encodeURIComponent(files), {headers: {authorization: token}})
   return response
 }
 
