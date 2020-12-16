@@ -8,7 +8,7 @@ const s3 = new AWS.S3()
 
 exports.handler = (event, context, callback) => {
 
-  const token = event.queryStringParameters.token
+  const token = event.headers.authorization
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {

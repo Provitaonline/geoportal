@@ -324,11 +324,11 @@ export async function isPublishDue(token) {
 }
 
 export async function getSurveyVersions(token) {
-  let response = await axios.get('/.netlify/functions/get-survey-versions?token=' + token)
+  let response = await axios.get('/.netlify/functions/get-survey-versions', {headers: {authorization: token}})
   return response.data
 }
 
 export async function getSurveyData(token, version) {
-  let response = await axios.get('/.netlify/functions/get-survey-data?token=' + token + '&version=' + version)
+  let response = await axios.get('/.netlify/functions/get-survey-data?version=' + version, {headers: {authorization: token}})
   return response.data
 }

@@ -10,7 +10,7 @@ const s3 = new AWS.S3()
 
 exports.handler = async (event, context) => {
 
-  const token = event.queryStringParameters.token
+  const token = event.headers.authorization
   const version = event.queryStringParameters.version
 
   function isAuthorized() {
