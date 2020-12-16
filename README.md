@@ -25,8 +25,9 @@ content - Static content (markdown, images)
 src - Source code (Gridsome application)
 
 static - Static content copied directly onto "dist"
-   mapstyles - Mapbox-compatible style documents
-   mapdata - Auxiliary Geojson map data (e.g., country borders)
+  images - Various images used in the app
+  mapstyles - Mapbox-compatible style documents
+  sound - Sounds used by the app (e.g., camera click)
 ```
 
 ## Licenses
