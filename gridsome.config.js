@@ -4,9 +4,12 @@
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
+const siteUrl = 'https://geoportalp.netlify.app'
+const siteName = 'Geoportal Provita'
+
 module.exports = {
-  siteUrl: 'https://geoportalp.netlify.app',
-  siteName: 'Geoportal Provita',
+  siteUrl: siteUrl,
+  siteName: siteName,
   plugins: [
     {
       use: '@gridsome/source-filesystem',
@@ -99,8 +102,8 @@ module.exports = {
       options: {
         contentTypeName: 'NewsData',
         feedOptions: {
-          title: 'Noticias Geoportal Provita',
-          site_url: 'https://geoportalp.netlify.app'
+          title: 'Noticias ' + siteName,
+          site_url: siteUrl
         },
         latest: true,
         language: 'es',
@@ -108,7 +111,7 @@ module.exports = {
           title: node.headline.es,
           description: node.text.es,
           date: node.date,
-          url: 'https://geoportalp.netlify.app/news'
+          url: siteUrl + '/news'
         }),
         output: {
           dir: './static',
@@ -121,8 +124,8 @@ module.exports = {
       options: {
         contentTypeName: 'NewsData',
         feedOptions: {
-          title: 'Geoportal Provita News',
-          site_url: 'https://geoportalp.netlify.app'
+          title: siteName + ' News',
+          site_url: siteUrl
         },
         latest: true,
         language: 'en',
@@ -130,7 +133,7 @@ module.exports = {
           title: node.headline.en,
           description: node.text.en,
           date: node.date,
-          url: 'https://geoportalp.netlify.app/en/news'
+          url: siteUrl + '/en/news'
         }),
         output: {
           dir: './static',
