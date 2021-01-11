@@ -49,7 +49,6 @@ export async function getMetaFromRepo(token, file) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
     // Need to unpack tileInfo back to object
     result.tileInfo = JSON.parse(result.tileInfo)
-    result.sha = response.data.sha // Add the sha to enable update
   }
   return result
 }
@@ -59,7 +58,7 @@ export async function getMetaListFromRepo(token) {
   let response = await oK.getContent(token, dataConfig.metaDirectory)
 
   if (response !== undefined) result = response.data.map(item => {
-    return {file: item.name.substr(0, item.name.lastIndexOf('.')), sha: item.sha}
+    return {file: item.name.substr(0, item.name.lastIndexOf('.'))}
   })
   return result
 }
@@ -257,7 +256,6 @@ export async function getAboutFromRepo(token) {
 
     if (response !== undefined) {
       result[item.fieldName] = utf8.decode(base64.decode(response.data.content))
-      result[item.fieldName + '_sha'] = response.data.sha
     }
 
     // Yank frontmatter
