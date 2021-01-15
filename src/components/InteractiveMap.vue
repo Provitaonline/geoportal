@@ -154,7 +154,7 @@
             }
           })
           stripePattern('black').then((image) => {
-            this.map.addImage('pattern', image)
+            if (!this.map.hasImage('pattern')) this.map.addImage('pattern', image)
             this.map.addLayer({
               id: 'esequibo-layer',
               type: 'fill',
