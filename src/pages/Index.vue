@@ -47,7 +47,7 @@
                           ({{mFormatter(item.fileSize)}})
                         </small>
                       </a>
-                      <a :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
+                      <a style="display: none;" :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
                     </div>
                   </div>
                   <div class="columns">
