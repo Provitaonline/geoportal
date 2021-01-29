@@ -45,6 +45,8 @@
   import NewsItemEditor from '~/components/NewsItemEditor'
   import MetaEntryEditor from '~/components/MetaEntryEditor'
 
+  import unzip from 'unzip-js'
+
   export default {
     name: 'AdminFilesTab',
     data() {
@@ -116,35 +118,65 @@
       },
       uploadFile(file) {
         if (file) {
-          this.uploadInProgress = true
-          getPresignedUrl(sessionStorage.githubtoken, file.name, file.type).then((result) => {
-            let formData = new FormData()
-            Object.entries(result.data.fields).forEach(([k, v]) => {
-              formData.append(k, v)
-            })
-            formData.append('file', file)
-            uploadFileToS3(result.data.url, formData, this.uploadProgress).then((response) => {
-              this.resetProgressIndicator()
-              this.getListOfFiles()
-              if (file.name.split('.').pop().toLowerCase() === 'zip') { // For the time being
-                let job = {file: file.name, tileInfo: {type: 'vector'}}
-                submitJob(sessionStorage.githubtoken, job).then((response) => {
-                  console.log('batch job submitted')
-                }).catch((e) => {
-                  console.log('error submitting batch job ', e.response)
-                })
+          if (file.name.split('.').pop() === 'zip') {
+            unzip(file, (err, zfile) => {
+              if (err) {
+                this.zipFileError()
+                return
               }
-            }).catch((e) => {
-              console.log('error uploading file to S3 ', e, e.response)
-              this.resetProgressIndicator()
+              let commonName = file.name.replace(/\.[^/.]+$/, '')
+              zfile.readEntries((err, entries) => {
+                // The name of the .shp file must equal the name of the .zip file
+                if (entries.some(entry => entry.name === commonName + '/' + commonName + '.shp')) {
+                  this.doUpload(file)
+                } else {
+                  this.zipFileError()
+                }
+              })
             })
-          }).catch((e) => {
-            console.log('error getting presigned post ', e.response)
-            this.resetProgressIndicator()
-          })
+          } else {
+            this.doUpload(file)
+          }
         }
         this.$nextTick(() => {
           this.fileToUpload = null // Reset input upload
+        })
+      },
+      doUpload(file) {
+        this.uploadInProgress = true
+        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type).then((result) => {
+          let formData = new FormData()
+          Object.entries(result.data.fields).forEach(([k, v]) => {
+            formData.append(k, v)
+          })
+          formData.append('file', file)
+          uploadFileToS3(result.data.url, formData, this.uploadProgress).then((response) => {
+            this.resetProgressIndicator()
+            this.getListOfFiles()
+            if (file.name.split('.').pop().toLowerCase() === 'zip') { // For the time being
+              let job = {file: file.name, tileInfo: {type: 'vector'}}
+              submitJob(sessionStorage.githubtoken, job).then((response) => {
+                console.log('batch job submitted')
+              }).catch((e) => {
+                console.log('error submitting batch job ', e.response)
+              })
+            }
+          }).catch((e) => {
+            console.log('error uploading file to S3 ', e, e.response)
+            this.resetProgressIndicator()
+          })
+        }).catch((e) => {
+          console.log('error getting presigned post ', e.response)
+          this.resetProgressIndicator()
+        })
+      },
+      zipFileError() {
+        this.$buefy.dialog.alert({
+          title: this.$t('label.error'),
+          message: this.$t('message.fileerror'),
+          hasIcon: true,
+          canCancel: ['escape'],
+          type: 'is-warning'
         })
       },
       confirmDelete() {
