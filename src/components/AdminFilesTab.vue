@@ -23,6 +23,9 @@
       <b-table-column field="name" :label="$t('label.name')" v-slot="props">
         {{props.row.name}}
       </b-table-column>
+      <b-table-column field="format" :label="$t('label.format')" v-slot="props">
+        {{$t('label.' + props.row.format)}}
+      </b-table-column>
       <b-table-column field="size" :label="$t('label.size')" centered v-slot="props">
         {{$n(props.row.size)}}
       </b-table-column>
@@ -128,9 +131,13 @@
               zfile.readEntries((err, entries) => {
                 // The name of the .shp file must equal the name of the .zip file
                 if (entries.some(entry => entry.name === commonName + '/' + commonName + '.shp')) {
-                  this.doUpload(file)
+                  this.doUpload(file, 'shapefile')
                 } else {
-                  this.zipFileError()
+                  if (entries.some(entry => entry.name === commonName + '/' + commonName + '.tif')) {
+                    this.doUpload(file, 'geotiff')
+                  } else {
+                    this.zipFileError()
+                  }
                 }
               })
             })
@@ -142,9 +149,9 @@
           this.fileToUpload = null // Reset input upload
         })
       },
-      doUpload(file) {
+      doUpload(file, fileFormat) {
         this.uploadInProgress = true
-        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type).then((result) => {
+        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type, fileFormat).then((result) => {
           let formData = new FormData()
           Object.entries(result.data.fields).forEach(([k, v]) => {
             formData.append(k, v)
@@ -153,7 +160,7 @@
           uploadFileToS3(result.data.url, formData, this.uploadProgress).then((response) => {
             this.resetProgressIndicator()
             this.getListOfFiles()
-            if (file.name.split('.').pop().toLowerCase() === 'zip') { // For the time being
+            if (fileFormat === 'shapefile') {
               let job = {file: file.name, tileInfo: {type: 'vector'}}
               submitJob(sessionStorage.githubtoken, job).then((response) => {
                 console.log('batch job submitted')

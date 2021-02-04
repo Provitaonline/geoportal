@@ -11,6 +11,7 @@ exports.handler = (event, context, callback) => {
   const token = event.headers.authorization
   const name = event.queryStringParameters.name
   const type = event.queryStringParameters.type
+  const format = event.queryStringParameters.format
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
@@ -22,7 +23,7 @@ exports.handler = (event, context, callback) => {
       Fields: {
         'acl': 'public-read',
         'Content-Type': type,
-        'key': 'files/' + name
+        'key': 'files/' + format + '/' + name
       }
     })
     callback(null, {statusCode: 200, body: JSON.stringify(presignedPost)})
