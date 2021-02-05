@@ -47,7 +47,7 @@
                           ({{mFormatter(item.fileSize)}})
                         </small>
                       </a>
-                      <a style="display: none;" :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.file"></a>
+                      <a style="display: none;" :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.format + '/' + item.file"></a>
                     </div>
                   </div>
                   <div class="columns">
@@ -260,7 +260,7 @@
         if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
         if (item.file) {
           if (!item.fileSize) {
-            getFileSize(item.file).then((fileSize) => {
+            getFileSize(item.format + '/' + item.file).then((fileSize) => {
               this.$set(item, 'fileSize', fileSize)
             })
           }

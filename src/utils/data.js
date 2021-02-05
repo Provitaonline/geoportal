@@ -28,9 +28,16 @@ export function getListOfFiles() {
       parseString(response.data, (err, result) => {
         if (result.ListBucketResult.Contents) {
           resolve(
-            result.ListBucketResult.Contents.map(item => {
-              return {name: item.Key[0].replace('files/', ''), size: item.Size[0], date: item.LastModified[0]}
-            }).filter(el => el.name != '')
+            result.ListBucketResult.Contents.filter(item => {
+              return item.Key[0].match(/files\/(shapefile|geotiff)\//)
+            }).map(el => {
+              if (el.Key[0].match(/files\/shapefile\//)) {
+                return {name: el.Key[0].replace('files/shapefile/', ''), format: 'shapefile', size: el.Size[0], date: el.LastModified[0]}
+              }
+              if (el.Key[0].match(/files\/geotiff\//)) {
+                return {name: el.Key[0].replace('files/geotiff/', ''), format: 'geotiff', size: el.Size[0], date: el.LastModified[0]}
+              }
+            }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
           )
         } else {
           resolve([])
@@ -100,8 +107,8 @@ export async function deleteItemsFromRepo(token, itemList) {
   return responses
 }
 
-export async function getPresignedUrl(token, name, type) {
-  let response = await axios.get('/.netlify/functions/get-presigned-url?name=' + name + '&type=' + type, {headers: {authorization: token}})
+export async function getPresignedUrl(token, name, type, fileFormat) {
+  let response = await axios.get('/.netlify/functions/get-presigned-url?name=' + name + '&type=' + type + '&format=' + fileFormat, {headers: {authorization: token}})
   return response
 }
 
