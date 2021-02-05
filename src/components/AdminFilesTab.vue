@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="max-width: 800px;">
+  <div class="container" style="max-width: 900px;">
     <b-loading v-model="isLoading"></b-loading>
     <div class="buttons" style="justify-content: center;">
       <b-button @click="confirmDelete" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
