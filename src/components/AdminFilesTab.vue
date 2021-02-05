@@ -188,7 +188,7 @@
       },
       confirmDelete() {
         console.log('confirm delete')
-        let filesToDelete = this.fileListCheckedRows.map((item) => item.name)
+        let filesToDelete = this.fileListCheckedRows.map((item) => item.format + '/' + item.name)
         this.$buefy.dialog.confirm({
           title: this.$t('message.removefiles'),
           message: this.$t('message.removefileswarning') + ':<br><br>' + filesToDelete.join(', '),
@@ -201,11 +201,12 @@
       },
       deleteFilesAndMeta(filesToDelete) {
         this.isLoading = true
+        let filesMetaToDelete = filesToDelete.map(f => f.split('/').pop())
 
         let oLength = this.metaFromRepo.length
-        this.metaFromRepo = this.metaFromRepo.filter((item) => !filesToDelete.includes(item.file))
+        this.metaFromRepo = this.metaFromRepo.filter((item) => !filesMetaToDelete.includes(item.file))
         if (oLength != this.metaFromRepo.length) { // We have meta to delete
-          deleteMetaListFromRepo(sessionStorage.githubtoken, filesToDelete).then(() => {
+          deleteMetaListFromRepo(sessionStorage.githubtoken, filesMetaToDelete).then(() => {
             this.$store.commit('setPublishIndicator', true)
             deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
               this.fileListCheckedRows = []
