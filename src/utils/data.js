@@ -37,7 +37,7 @@ export function getListOfFiles() {
               if (el.Key[0].match(/files\/geotiff\//)) {
                 return {name: el.Key[0].replace('files/geotiff/', ''), format: 'geotiff', size: el.Size[0], date: el.LastModified[0]}
               }
-            })
+            }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
           )
         } else {
           resolve([])
