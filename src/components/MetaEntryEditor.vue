@@ -331,6 +331,7 @@ export default {
       if (result.tileInfo) {
         this.savedTileInfo = JSON.stringify(result.tileInfo)
       }
+      if (!this.metaEntryFlat.format) this.metaEntryFlat.format = this.metaEntry.format
       // Prepopulate name of tile layer
       if (!this.metaEntryFlat.tiles) {
         this.metaEntryFlat.tiles = (this.metaEntryFlat.file.replace(/\.[^/.]+$/, '')).toLowerCase()
@@ -340,7 +341,7 @@ export default {
   },
   methods: {
     acceptChanges() {
-      this.metaEntryFlat['format'] = (this.isShapefile) ? 'shapefile' : 'geotiff'
+      //this.metaEntryFlat['format'] = (this.isShapefile) ? 'shapefile' : 'geotiff'
       if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
         this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
@@ -456,7 +457,7 @@ export default {
       }
     },
     isShapefile() {
-      return this.metaEntryFlat['file'].split('.').pop().toLowerCase() === 'zip'
+      return this.metaEntryFlat['format'] === 'shapefile'
     }
   }
 }

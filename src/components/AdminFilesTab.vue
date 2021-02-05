@@ -33,7 +33,7 @@
         {{$d(new Date(props.row.date), 'long')}}
       </b-table-column>
       <b-table-column label="Meta" centered v-slot="props">
-        <a @click="editMeta(props.row.name)">
+        <a @click="editMeta(props.row.name, props.row.format)">
           <font-awesome v-if="fileHasMeta(props.row.name)" :icon="['far', 'edit']"/>
           <font-awesome v-else :icon="['fas', 'plus']"/>
         </a>
@@ -81,10 +81,10 @@
           this.listOfFiles = result
         })
       },
-      editMeta(fileName) {
-        this.addOrEditMeta(fileName)
+      editMeta(fileName, format) {
+        this.addOrEditMeta(fileName, format)
       },
-      addOrEditMeta(fileName) {
+      addOrEditMeta(fileName, format) {
         let idx = this.metaFromRepo.findIndex(({ file }) => file === fileName)
         if (idx != -1) {
           this.currentIndex = idx
@@ -92,7 +92,7 @@
           this.openMetaEditor(this.currentEntry)
         } else {
           this.currentIndex = this.metaFromRepo.length
-          this.openMetaEditor({file: fileName})
+          this.openMetaEditor({file: fileName, format: format})
         }
       },
       openMetaEditor(metaEntry) {
