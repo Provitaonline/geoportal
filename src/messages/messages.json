@@ -21,7 +21,8 @@
       "dataconflictmessage": "Metadata has been changed by another user, therefore your changes will be canceled",
       "surveyheader": "Would you answer the questions below to help us serve you better?",
       "confirmpublishsite": "This operation will publish the data to the site and make it visible to end users. It can take 2 to 5 minutes for the changes to take effect.",
-      "fileerror": "Unable to read file.<br>Please check file format and content."
+      "fileerror": "Unable to read file.<br>Please check file format.",
+      "zipccontenterror": "ZIP file must contain a .shp or a .tif file.<br>Please check file content."
     },
     "label": {
       "main": "Main",
@@ -199,7 +200,8 @@
       "dataconflictmessage": "Los metadatos han sido modificados por otro usuario, por lo tanto tus cambios no se han efectuado.",
       "surveyheader": "¿Responderías a las preguntas siguientes para ayudarnos a servirte mejor?",
       "confirmpublishsite": "Esta operación publicará los datos al sitio web y los hará visibles a los usuarios. Puede tomar de 2 a 5 minutos para que los cambios estén disponibles.",
-      "fileerror": "No se pudo leer el archivo.<br>Favor verificar formato y contenido."
+      "fileerror": "No se pudo leer el archivo.<br>Favor verificar el formato.",
+      "zipccontenterror": "El archivo ZIP debe incluir un archivo .shp o .tif.<br>Favor verificar el contenido."
     },
     "label": {
       "main": "Página Principal",

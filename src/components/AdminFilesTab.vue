@@ -124,7 +124,8 @@
           if (file.name.split('.').pop() === 'zip') {
             unzip(file, (err, zfile) => {
               if (err) {
-                this.zipFileError()
+                console.log('error reading zip file', err.message)
+                this.zipFileError(this.$t('message.fileerror'))
                 return
               }
               let commonName = file.name.replace(/\.[^/.]+$/, '')
@@ -136,7 +137,7 @@
                   if (entries.some(entry => entry.name === commonName + '/' + commonName + '.tif')) {
                     this.doUpload(file, 'geotiff')
                   } else {
-                    this.zipFileError()
+                    this.zipFileError(this.$t('message.zipccontenterror'))
                   }
                 }
               })
@@ -177,10 +178,10 @@
           this.resetProgressIndicator()
         })
       },
-      zipFileError() {
+      zipFileError(message) {
         this.$buefy.dialog.alert({
           title: this.$t('label.error'),
-          message: this.$t('message.fileerror'),
+          message: message,
           hasIcon: true,
           canCancel: ['escape'],
           type: 'is-warning'
