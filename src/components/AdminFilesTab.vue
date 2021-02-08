@@ -125,7 +125,7 @@
             unzip(file, (err, zfile) => {
               if (err) {
                 console.log('error reading zip file', err.message)
-                this.zipFileError(this.$t('message.fileerror'))
+                this.zipFileError(this.$t('message.fileerror') + '<br>(' + err.message + ')')
                 return
               }
               let commonName = file.name.replace(/\.[^/.]+$/, '')
