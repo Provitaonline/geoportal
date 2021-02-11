@@ -38,14 +38,14 @@ export const mapConfig = {
 
 export const adminConfig = {
   githubInfo: {
-    owner : 'jimmyangel',
+    owner : 'Provitaonline',
     repo: 'geoportal-data'
   },
   maxNewsImageKB: 500
 }
 
 export const dataConfig = {
-  metaBaseUrl: 'https://raw.githubusercontent.com/jimmyangel/geoportal-data/master/',
+  metaBaseUrl: 'https://raw.githubusercontent.com/Provitaonline/geoportal-data/master/',
   filesBaseUrl: 'https://' + awsConfig.bucket + '.s3-' + awsConfig.region + '.amazonaws.com/',
   filesDirectory: 'files',
   newsDirectory: 'news',

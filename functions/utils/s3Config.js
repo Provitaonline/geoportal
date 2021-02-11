@@ -6,7 +6,7 @@ const config = {
   region: 'us-east-2',
   bucket: 'geoportalp-files',
   githubInfo: {
-    owner : 'jimmyangel',
+    owner : 'Provitaonline',
     repo: 'geoportal-data'
   }
 }
