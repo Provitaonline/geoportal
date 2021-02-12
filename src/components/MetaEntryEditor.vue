@@ -348,6 +348,16 @@ export default {
         this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
       }
       this.metaEntryFlat.date = this.formDate.toISOString()
+
+      // Cleanup tileInfo paint elements
+      Object.keys(this.metaEntryFlat).forEach(key => {
+        if (key.startsWith('tileInfo.style.paint.')) {
+          if (!key.startsWith('tileInfo.style.paint.' + this.metaEntryFlat['tileInfo.style.type'])) {
+            delete this.metaEntryFlat[key]
+          }
+        }
+      })
+
       let updatedMetaEntry = unflatten(this.metaEntryFlat)
 
       if (updatedMetaEntry.tileInfo === 'vector') {
