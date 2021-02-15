@@ -175,7 +175,8 @@
       "screenshot": "Download map image",
       "tiles": "Tiles",
       "tilesfor": "Tiles for",
-      "zoomrange": "Zoom range"
+      "zoomrange": "Zoom range",
+      "addtagtofilter": "Add tag to filter"
     }
   },
   "es": {
@@ -354,7 +355,8 @@
       "screenshot": "Descargar la imagen del mapa",
       "tiles": "Teselas",
       "tilesfor": "Teselas de",
-      "zoomrange": "Rango de zoom"
+      "zoomrange": "Rango de zoom",
+      "addtagtofilter": "Añadir etiqueta al filtro"
     }
   }
 }

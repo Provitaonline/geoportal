@@ -76,9 +76,9 @@
                   </div>
                   <div><small><b>{{ $t('label.source') }}: </b>{{ item.source }}</small></div><br>
                   <div v-if="item.keywords">
-                    <span class="tag" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
+                    <a class="tag" @click="addTagToFilterList(kwd)" :title="$t('label.addtagtofilter')" style="margin-right: 0.5em;" v-for="kwd in item.keywords[$i18n.locale.substr(0, 2)]">
                       {{ kwd }}
-                    </span>
+                    </a>
                     <br><br>
                   </div>
                   <div class="content" v-html="item.description[$i18n.locale.substr(0, 2)]"></div>
@@ -325,6 +325,9 @@
             metaData: item
           }
         })
+      },
+      addTagToFilterList(tag) {
+        if (!this.tags.includes(tag)) this.tags.push(tag)
       }
     },
     computed: {
