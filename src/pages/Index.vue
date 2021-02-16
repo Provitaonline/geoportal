@@ -41,7 +41,7 @@
                 <div v-show="item.expanded" class="card-content">
                   <div class="columns">
                     <div class="column">
-                    <a @click="downloadFile(index)" v-bind:disabled="!item.file">
+                    <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
                         <small><font-awesome :icon="['fas', 'download']"/>
                           <b> {{ $t('label.download') }}</b>
                           ({{mFormatter(item.fileSize)}})
@@ -304,7 +304,11 @@
         })
       },
       downloadFile(index) {
-        this.openUserSurvey(index)
+        if (localStorage.surveySubmitted) {
+          document.getElementById('download-' + index).click()
+        } else {
+          this.openUserSurvey(index)
+        }
       },
       openUserSurvey(index) {
         this.$buefy.modal.open({

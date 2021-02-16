@@ -77,6 +77,7 @@ export default {
         this.surveyData.version = this.$static.userSurveyTemplate.version
         this.surveyData.languageCode = this.$i18n.locale.substr(0, 2)
         sendSurvey(this.surveyData, this.$static.userSurveyTemplate.version)
+        localStorage.surveySubmitted = true
       }
       document.getElementById('download-' + this.downloadFileIndex).click()
     }
