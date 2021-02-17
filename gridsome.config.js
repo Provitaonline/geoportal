@@ -4,7 +4,7 @@
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
-const siteUrl = 'https://geoportalp.netlify.app'
+const siteUrl = 'https://geoportal.provita.org.ve'
 const siteName = 'Geoportal Provita'
 
 module.exports = {
