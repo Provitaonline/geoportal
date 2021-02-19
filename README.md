@@ -2,7 +2,7 @@
 
 This project is the source for Provita's Geographical Information Portal.
 
-This project is currently under development, and it is not ready to use.
+This project is currently in Beta test.
 
 ## Development environment
 
