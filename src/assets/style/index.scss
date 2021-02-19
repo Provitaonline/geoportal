@@ -11,6 +11,10 @@
 @import "~mapbox-gl/dist/mapbox-gl.css";
 @import "~mapbox-gl-style-switcher/styles.css";
 
+/** Import Vue cookie accept decline **/
+
+@import '~vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
+
 /** Import overrides */
 
 @import "overrides";

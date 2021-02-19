@@ -58,7 +58,8 @@ import {sendSurvey} from '~/utils/data'
 export default {
   name: 'UserSurveyForm',
   props: {
-    downloadFileIndex: { type: Number, required: true }
+    downloadFileIndex: { type: Number, required: true },
+    file: {type: String, required: true}
   },
   data() {
     return {
@@ -80,6 +81,7 @@ export default {
         localStorage.surveySubmitted = true
       }
       document.getElementById('download-' + this.downloadFileIndex).click()
+      this.$ga.event('files', 'downloaded', this.file)
     }
   }
 }

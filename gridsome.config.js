@@ -142,6 +142,13 @@ module.exports = {
       }
     },
     {
+      use: '@gridsome/plugin-google-analytics',
+      options: {
+        id: 'UA-64070309-6',
+        ignoreRoutes: ['/admin']
+      }
+    },
+    {
       use: '@gridsome/plugin-sitemap',
       options: {
         exclude: ['/admin', '/en/admin', '/es', '/es/*', '/en/404']

@@ -306,6 +306,7 @@
       downloadFile(index) {
         if (localStorage.surveySubmitted) {
           document.getElementById('download-' + index).click()
+          this.$ga.event('files', 'downloaded', this.sortedFileList[index].file)
         } else {
           this.openUserSurvey(index)
         }
@@ -316,7 +317,8 @@
           canCancel: ['escape', 'x'],
           component: UserSurveyForm,
           props: {
-            downloadFileIndex: index
+            downloadFileIndex: index,
+            file: this.sortedFileList[index].file
           }
         })
       },

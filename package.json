@@ -1,6 +1,6 @@
 {
   "name": "geoportal",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/Provitaonline/geoportal.git"
@@ -31,6 +31,7 @@
     "unzip-js": "^1.0.0",
     "utf8": "^3.0.0",
     "vee-validate": "^3.3.9",
+    "vue-cookie-accept-decline": "^5.4.0",
     "vue-infinite-loading": "^2.4.5",
     "vue-scrollto": "^2.19.1",
     "vuex": "^3.5.1",
@@ -42,6 +43,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/vue-fontawesome": "^0.1.10",
+    "@gridsome/plugin-google-analytics": "^0.1.2",
     "@gridsome/plugin-sitemap": "^0.4.0",
     "@gridsome/source-filesystem": "^0.6.2",
     "@gridsome/transformer-json": "^0.2.1",

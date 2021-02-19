@@ -83,6 +83,14 @@
         </div>
       </div>
     </b-modal>
+    <vue-cookie-accept-decline v-if="!isAdminPage" :elementId="'cookiePanel'" :position="'bottom-right'" :type="'floating'"
+      @status="cookieStatus"
+      @clicked-accept="cookieClickedAccept"
+      @clicked-decline="cookieClickedDecline">
+      <div slot="message" class="messageText">{{$t('message.sitecookiesmsg')}}</div>
+      <div slot="acceptContent">{{$t('label.accept')}}</div>
+      <div slot="declineContent">{{$t('label.decline')}}</div>
+    </vue-cookie-accept-decline>
     <transition name="fade" appear>
       <section>
         <slot />
@@ -202,6 +210,25 @@ query {
     object-fit: cover;
   }
 
+
+  /*
+  ::v-deep .cookie__bar__buttons__button--accept {
+    background: $site-color;
+  }
+
+  ::v-deep .cookie__bar__buttons__button--accept:hover {
+    opacity: 0.8;
+  }
+
+  ::v-deep .cookie__bar__buttons__button--decline {
+    background: $danger;
+  }
+
+  ::v-deep .cookie__bar__buttons__button--decline:hover {
+    opacity: 0.8;
+  }
+  */
+
 </style>
 
 <script>
@@ -220,7 +247,7 @@ export default {
       isAdminPage: this.$route.path.includes('/admin'),
       is404Page: this.$route.name === '*',
       showLoginInfo: false,
-      userInfo: {}
+      userInfo: {},
     }
   },
   mounted() {
@@ -245,6 +272,19 @@ export default {
     },
     isAdminEnabled: function() {
       return process.isClient ? sessionStorage.userInfo != undefined : false
+    },
+    cookieStatus(status) {
+      if (status != 'accept') {
+        this.$ga.disable()
+      }
+    },
+    cookieClickedAccept() {
+      this.$ga.enable()
+      // Record current page view
+      this.$ga.page(this.$route.path)
+    },
+    cookieClickedDecline() {
+      this.$ga.disable()
     }
   }
 }
