@@ -7,20 +7,6 @@
   </Layout>
 </template>
 
-<style lang="scss" scoped>
-  @import "~/assets/style/_variables";
-
-  @media only screen and (max-width: 768px) {
-    .map-container {
-      flex-grow: 1;
-      margin: 0 auto;
-      position: relative;
-      width: auto;
-      max-width: 90vw;
-    }
-  }
-</style>
-
 <page-query>
   query {
     allMetaData: allMetaData {
