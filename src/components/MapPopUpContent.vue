@@ -16,7 +16,7 @@
 
 <script>
   export default {
-    name: 'InteractiveMap',
+    name: 'MapPopUpContent',
     props: {
       popUpItems: { type: Array, required: true }
     },
