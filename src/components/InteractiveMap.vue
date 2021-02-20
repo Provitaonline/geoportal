@@ -3,10 +3,26 @@
     <div v-show="isCapturing">
       <g-image :immediate="true" src="~/assets/images/logo.png" />
     </div>
-    <div id="map"></div>
-    <MapLegend :layerMeta="layerMeta" />
+    <div class="map-container">
+      <div id="map"></div>
+      <MapLegend :layerMeta="layerMeta" />
+    </div>
     <!-- <b-loading  v-model="isCapturing"></b-loading> -->
     <audio id="cameraClick" src="/sound/camera-shutter-click.mp3"></audio>
+    <b-modal :active.sync="isPopupModalModalActive" :width="640" scroll="keep">
+      <div class="card">
+          <div class="card-header has-text-centered">
+            <p class="card-header-title" style="display: inline-block;">
+              {{popUpModalHeading}}
+            </p>
+          </div>
+          <div class="card-content">
+              <div class="content">
+                <b-table :data="popupModalData" :columns="popUpModalColumns"></b-table>
+              </div>
+          </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -15,6 +31,25 @@
   #map {
     width: 100%;
     height: 80vh;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .map-container {
+      flex-grow: 1;
+      margin: 0 auto;
+      position: relative;
+      width: auto;
+      max-width: 90vw;
+    }
+  }
+
+  .card {
+    border: 1px solid rgba(85,107,47, 0.2);
+  }
+
+  .card-header {
+    background-color: rgba(85,107,47, 0.1);
+    border-bottom: 1px solid rgba(85,107,47, 0.2);
   }
 
 </style>
@@ -40,7 +75,10 @@
     data() {
       return {
         visibleTileLayers: {},
-        isCapturing: false
+        isCapturing: false,
+        isPopupModalModalActive: false,
+        popupModalData: {},
+        popUpModalHeading: ''
       }
     },
     components: {
@@ -115,6 +153,14 @@
               }
             }
           }
+        })
+
+        this.$eventBus.$on('showpopupmodal', (info) => {
+          this.popupModalData = Object.keys(info.itemProperties).map(key => {
+            return {id: key, value: info.itemProperties[key]}
+          }).sort((a, b) => a.id.localeCompare(b.id))
+          this.popUpModalHeading = info.layerName + ': ' + info.itemText
+          this.isPopupModalModalActive = true
         })
       }
     },
@@ -279,6 +325,19 @@
             this.isCapturing = false
           })
         })
+      }
+    },
+    computed: {
+      popUpModalColumns() {
+        return [
+          {
+            field: 'id',
+            label: this.$t('label.fieldid')
+          },
+          { field: 'value',
+            label: this.$t('label.fieldvalue')
+          }
+        ]
       }
     },
     beforeDestroy () {
