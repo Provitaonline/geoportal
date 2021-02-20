@@ -3,8 +3,10 @@
     <div v-show="isCapturing">
       <g-image :immediate="true" src="~/assets/images/logo.png" />
     </div>
-    <div id="map"></div>
-    <MapLegend :layerMeta="layerMeta" />
+    <div class="map-container">
+      <div id="map"></div>
+      <MapLegend :layerMeta="layerMeta" />
+    </div>
     <!-- <b-loading  v-model="isCapturing"></b-loading> -->
     <audio id="cameraClick" src="/sound/camera-shutter-click.mp3"></audio>
     <b-modal :active.sync="isPopupModalModalActive" :width="640" scroll="keep">
@@ -29,6 +31,16 @@
   #map {
     width: 100%;
     height: 80vh;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .map-container {
+      flex-grow: 1;
+      margin: 0 auto;
+      position: relative;
+      width: auto;
+      max-width: 90vw;
+    }
   }
 
   .card {
