@@ -24,7 +24,7 @@
 <script>
 
   import {deleteItemsFromRepo, getListOfNewsItemsFromRepo, saveNewsItemFromRepo} from '~/utils/data'
-  import NewsItemEditor from '~/components/NewsItemEditor'
+  import NewsItemEditor from '~/components/admin/NewsItemEditor'
 
   export default {
     name: 'AdminNewsTab',

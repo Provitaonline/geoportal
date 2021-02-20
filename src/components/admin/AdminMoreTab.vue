@@ -22,9 +22,9 @@
 </style>
 
 <script>
-  import AboutEditor from '~/components/AboutEditor'
-  import ContactEditor from '~/components/ContactEditor'
-  import SurveyDataDownloader from '~/components/SurveyDataDownloader'
+  import AboutEditor from '~/components/admin/AboutEditor'
+  import ContactEditor from '~/components/admin/ContactEditor'
+  import SurveyDataDownloader from '~/components/admin/SurveyDataDownloader'
   import {getSurveyVersions} from '~/utils/data'
 
   export default {

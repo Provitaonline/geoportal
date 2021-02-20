@@ -3,28 +3,28 @@
     <b-loading v-model="isLoading"></b-loading>
     <div class="buttons" style="justify-content: center;">
       <b-button @click="confirmDelete()" style="width: 160px;" :disabled="!questionListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-      <b-button @click="addQuestion()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
+      <b-button @click="addFAQQuestion()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
       <b-button @click="saveChanges()" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
     </div>
     <b-table style="cursor: grab;"
       checkable
       hoverable
       :header-checkable="false"
-      v-if="surveyTemplate"
-      :data="surveyTemplate.fields"
+      v-if="FAQ"
+      :data="FAQ.questions"
       :checked-rows.sync="questionListCheckedRows"
       draggable
       @dragstart="dragStart"
       @dragover="dragOver"
       @drop="dropRow">
-      <b-table-column field="fieldname" :label="$t('label.name')" v-slot="props">
-        {{props.row.fieldname}}
+      <b-table-column field="question" :label="$t('label.question')" v-slot="props">
+        {{props.row.question[$i18n.locale.substr(0, 2)]}}
       </b-table-column>
-      <b-table-column field="label" :label="$t('label.question')" v-slot="props">
-        {{props.row.label[$i18n.locale.substr(0, 2)]}}
+      <b-table-column field="subject" :label="$t('label.subject')" v-slot="props">
+        {{$t('label.faqsubjects')[props.row.subject]}}
       </b-table-column>
       <b-table-column label="Info" centered v-slot="props">
-        <a @click="editQuestion(props.index)">
+        <a @click="editFAQQuestion(props.index)">
           <font-awesome :icon="['far', 'edit']"/>
         </a>
       </b-table-column>
@@ -34,14 +34,14 @@
 </template>
 
 <script>
-  import {getSurveyTemplateFromRepo, saveSurveyTemplate} from '~/utils/data'
-  import SurveyTemplateEditor from '~/components/SurveyTemplateEditor'
+  import {getFAQFromRepo, saveFAQ} from '~/utils/data'
+  import FAQEditor from '~/components/admin/FAQEditor'
 
   export default {
-    name: 'AdminSurveyTab',
+    name: 'AdminFAQTab',
     data() {
       return {
-        surveyTemplate: null,
+        FAQ: null,
         questionListCheckedRows: [],
         isLoading: true,
         currentIndex: 0,
@@ -51,44 +51,50 @@
       }
     },
     mounted() {
-      this.$eventBus.$on('surveytabvisible', this.getSurveyTemplate)
-      this.$eventBus.$on('acceptquestionchanges', this.acceptQuestionChanges)
+      this.$eventBus.$on('faqtabvisible', this.getFAQ)
+      this.$eventBus.$on('acceptfaqquestionchanges', this.acceptFAQQuestionChanges)
     },
     methods: {
-      getSurveyTemplate() {
-        if (!this.surveyTemplate) {
-          console.log('get survey template')
-          getSurveyTemplateFromRepo(sessionStorage.githubtoken).then((result) => {
-            this.surveyTemplate = result
+      getFAQ() {
+        if (!this.FAQ) {
+          console.log('get faq')
+          getFAQFromRepo(sessionStorage.githubtoken).then((result) => {
+            this.FAQ = result
             this.isLoading = false
+          }).catch((err) => {
+            this.FAQ = {}
+            this.isLoading = false
+            if (err.response.status != 404) {
+              console.log('error getting faq from repo')
+            }
           })
         }
       },
-      editQuestion(index) {
+      editFAQQuestion(index) {
         this.isNew = false
         this.currentIndex = index
-        this.openSurveyTemplateEditor(JSON.parse(JSON.stringify(this.surveyTemplate.fields[index])))
+        this.openFAQEditor(JSON.parse(JSON.stringify(this.FAQ.questions[index])))
       },
-      addQuestion() {
+      addFAQQuestion() {
         this.isNew = true
-        this.openSurveyTemplateEditor({label:{en: '', es: ''}})
+        this.openFAQEditor({question:{en: '', es: ''}, answer:{en: '', es: ''}})
       },
-      openSurveyTemplateEditor(question) {
+      openFAQEditor(question) {
         this.$buefy.modal.open({
           parent: this,
           canCancel: ['escape', 'x'],
-          component: SurveyTemplateEditor,
+          component: FAQEditor,
           props: {
-            question: question
+            faqQuestion: question
           }
         })
       },
-      acceptQuestionChanges(question) {
+      acceptFAQQuestionChanges(question) {
         this.isChanged = true
         if (this.isNew) {
-          this.surveyTemplate.fields.push(question)
+          this.FAQ.questions.push(question)
         } else {
-          this.$set(this.surveyTemplate.fields, this.currentIndex, question)
+          this.$set(this.FAQ.questions, this.currentIndex, question)
         }
       },
       confirmDelete() {
@@ -100,21 +106,20 @@
           cancelText: this.$t('label.cancel'),
           type: 'none',
           focusOn: 'cancel',
-          onConfirm: () => {this.deleteQuestions()}
+          onConfirm: () => {this.deleteFAQQuestions()}
         })
       },
       saveChanges() {
-        this.surveyTemplate.version++
-        saveSurveyTemplate(sessionStorage.githubtoken, this.surveyTemplate).then(() => {
-          console.log('saved survey template')
+        saveFAQ(sessionStorage.githubtoken, this.FAQ).then(() => {
+          console.log('saved FAQ')
           this.isChanged = false
           this.$store.commit('setPublishIndicator', true)
         }).catch((e) => {
-          console.log('error saving survey template to github ', e)
+          console.log('error saving FAQ to github ', e)
         })
       },
-      deleteQuestions() {
-        this.surveyTemplate.fields = this.surveyTemplate.fields.filter(x => !this.questionListCheckedRows.includes(x))
+      deleteFAQQuestions() {
+        this.FAQ.questions = this.FAQ.questions.filter(x => !this.questionListCheckedRows.includes(x))
         this.isChanged = true
       },
       dragStart(payload) {
@@ -126,9 +131,9 @@
         payload.event.preventDefault()
       },
       dropRow(payload) {
-        var element = this.surveyTemplate.fields[this.draggingRowIndex]
-        this.surveyTemplate.fields.splice(this.draggingRowIndex, 1)
-        this.surveyTemplate.fields.splice(payload.index, 0, element)
+        var element = this.FAQ.questions[this.draggingRowIndex]
+        this.FAQ.questions.splice(this.draggingRowIndex, 1)
+        this.FAQ.questions.splice(payload.index, 0, element)
         this.isChanged = true
       }
     }

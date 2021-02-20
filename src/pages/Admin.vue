@@ -66,11 +66,11 @@
 import {getStateToken, getUserInfo} from '~/utils/user'
 import {publishSite, isPublishDue} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
-import AdminFilesTab from '~/components/AdminFilesTab'
-import AdminNewsTab from '~/components/AdminNewsTab'
-import AdminSurveyTab from '~/components/AdminSurveyTab'
-import AdminFAQTab from '~/components/AdminFAQTab'
-import AdminMoreTab from '~/components/AdminMoreTab'
+import AdminFilesTab from '~/components/admin/AdminFilesTab'
+import AdminNewsTab from '~/components/admin/AdminNewsTab'
+import AdminSurveyTab from '~/components/admin/AdminSurveyTab'
+import AdminFAQTab from '~/components/admin/AdminFAQTab'
+import AdminMoreTab from '~/components/admin/AdminMoreTab'
 
 export default {
   metaInfo() {

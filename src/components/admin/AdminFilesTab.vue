@@ -45,8 +45,7 @@
 <script>
   import {getListOfFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
-  import NewsItemEditor from '~/components/NewsItemEditor'
-  import MetaEntryEditor from '~/components/MetaEntryEditor'
+  import MetaEntryEditor from '~/components/admin/MetaEntryEditor'
 
   import unzip from 'unzip-js'
 
