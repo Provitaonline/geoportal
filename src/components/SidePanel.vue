@@ -167,6 +167,9 @@
     },
     created() {
       this.fileList.forEach(item => {
+        // Auto add format as keyword
+        if (!item.keywords['en'].includes(item.format)) item.keywords['en'].push(item.format)
+        if (!item.keywords['es'].includes(item.format)) item.keywords['es'].push(item.format)
 
         item.keywords['en'].forEach(kw => {
           if (!this.allKeywords.en.includes(kw)) {
