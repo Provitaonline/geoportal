@@ -23,20 +23,21 @@ export async function getFileSize(fileName) {
 
 // This gets the list of stored files
 export function getListOfFiles() {
+  let fileTypes = 'shapefile|geotiff|pdf'
+  let re = new RegExp('files\/(' + fileTypes + ')\/')
+  function scrubbedFileEntry(el) {
+    let m = el.Key[0].match(re)[1]
+    return {name: el.Key[0].replace(re, ''), format: m, size: el.Size[0], date: el.LastModified[0]}
+  }
   return new Promise((resolve, reject) => {
     axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.filesDirectory).then(response => {
       parseString(response.data, (err, result) => {
         if (result.ListBucketResult.Contents) {
           resolve(
             result.ListBucketResult.Contents.filter(item => {
-              return item.Key[0].match(/files\/(shapefile|geotiff)\//)
+              return item.Key[0].match(re)
             }).map(el => {
-              if (el.Key[0].match(/files\/shapefile\//)) {
-                return {name: el.Key[0].replace('files/shapefile/', ''), format: 'shapefile', size: el.Size[0], date: el.LastModified[0]}
-              }
-              if (el.Key[0].match(/files\/geotiff\//)) {
-                return {name: el.Key[0].replace('files/geotiff/', ''), format: 'geotiff', size: el.Size[0], date: el.LastModified[0]}
-              }
+              return scrubbedFileEntry(el)
             }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
           )
         } else {

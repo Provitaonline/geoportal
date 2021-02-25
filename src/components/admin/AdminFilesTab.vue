@@ -3,7 +3,7 @@
     <b-loading v-model="isLoading"></b-loading>
     <div class="buttons" style="justify-content: center;">
       <b-button @click="confirmDelete" style="width: 160px;" :disabled="!fileListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-      <b-upload @input="uploadFile" :disabled="uploadInProgress" native accept=".zip,.tif" v-model="fileToUpload">
+      <b-upload @input="uploadFile" :disabled="uploadInProgress" native accept=".zip" v-model="fileToUpload">
         <a style="width: 160px;" class="button" :disabled="uploadInProgress">
           <font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.upload')}}
         </a>
@@ -127,22 +127,18 @@
                 this.zipFileError(this.$t('message.fileerror') + '<br>(' + err.message + ')')
                 return
               }
-              let commonName = file.name.replace(/\.[^/.]+$/, '')
               zfile.readEntries((err, entries) => {
-                // The name of the .shp file must equal the name of the .zip file
-                if (entries.some(entry => entry.name === commonName + '/' + commonName + '.shp')) {
-                  this.doUpload(file, 'shapefile')
+                let contentType = this.getZipContentType(file.name, entries)
+                if (contentType) {
+                  this.doUpload(file, contentType)
                 } else {
-                  if (entries.some(entry => entry.name === commonName + '/' + commonName + '.tif')) {
-                    this.doUpload(file, 'geotiff')
-                  } else {
-                    this.zipFileError(this.$t('message.zipccontenterror'))
-                  }
+                  this.zipFileError(this.$t('message.zipccontenterror'))
                 }
               })
             })
           } else {
-            this.doUpload(file)
+            // This should not happen
+            this.zipFileError(this.$t('message.fileerror'))
           }
         }
         this.$nextTick(() => {
@@ -176,6 +172,13 @@
           console.log('error getting presigned post ', e.response)
           this.resetProgressIndicator()
         })
+      },
+      getZipContentType(fileName, entries) {
+        let commonName = fileName.replace(/\.[^/.]+$/, '')
+        if (entries.some(entry => entry.name === commonName + '/' + commonName + '.shp')) return 'shapefile'
+        if (entries.some(entry => entry.name === commonName + '/' + commonName + '.tif')) return 'geotiff'
+        if (entries.some(entry => entry.name.endsWith('.pdf'))) return 'pdf'
+        return null
       },
       zipFileError(message) {
         this.$buefy.dialog.alert({
