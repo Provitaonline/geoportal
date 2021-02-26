@@ -22,7 +22,7 @@ export async function getFileSize(fileName) {
 }
 
 // This gets the list of stored files
-export function getListOfFiles() {
+export function getListOfPublicFiles() {
   let fileTypes = 'shapefile|geotiff|pdf'
   let re = new RegExp('files\/(' + fileTypes + ')\/')
   function scrubbedFileEntry(el) {
