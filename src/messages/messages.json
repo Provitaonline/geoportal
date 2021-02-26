@@ -22,7 +22,7 @@
       "surveyheader": "Would you answer the questions below to help us serve you better?",
       "confirmpublishsite": "This operation will publish the data to the site and make it visible to end users. It can take 2 to 5 minutes for the changes to take effect.",
       "fileerror": "Unable to read file.<br>Please check file format.",
-      "zipccontenterror": "ZIP file must contain a .shp, .tif or .pdf file.<br>Please check file content.",
+      "zipccontenterror": "ZIP file must contain a .shp or a .tif file. Public ZIP files can also contain one or more .pdf files.<br>Please check file content.",
       "sitecookiesmsg": "This web site uses \"Cookies\" to collect anonymous information about the user's navigation experience."
     },
     "label": {
@@ -207,7 +207,7 @@
       "surveyheader": "¿Responderías a las preguntas siguientes para ayudarnos a servirte mejor?",
       "confirmpublishsite": "Esta operación publicará los datos al sitio web y los hará visibles a los usuarios. Puede tomar de 2 a 5 minutos para que los cambios estén disponibles.",
       "fileerror": "No se pudo leer el archivo.<br>Favor verificar el formato.",
-      "zipccontenterror": "El archivo ZIP debe incluir un archivo .shp, .tif o .pdf.<br>Favor verificar el contenido.",
+      "zipccontenterror": "El archivo ZIP debe incluir un archivo .shp o .tif. Archivos ZIP públicos pueden tener uno o mas archivos .pdf.<br>Favor verificar el contenido.",
       "sitecookiesmsg": "Este sitio web usa \"Cookies\" para recopilar información anónima sobre la experiencia de navegación del usuario."
     },
     "label": {

@@ -194,7 +194,7 @@
         let commonName = fileName.replace(/\.[^/.]+$/, '')
         if (entries.some(entry => entry.name === commonName + '/' + commonName + '.shp')) return 'shapefile'
         if (entries.some(entry => entry.name === commonName + '/' + commonName + '.tif')) return 'geotiff'
-        if (entries.some(entry => entry.name.endsWith('.pdf'))) return 'pdf'
+        if (this.isPublic && entries.some(entry => entry.name.endsWith('.pdf'))) return 'pdf'
         return null
       },
       zipFileError(message) {
