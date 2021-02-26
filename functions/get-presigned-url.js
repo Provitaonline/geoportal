@@ -18,7 +18,7 @@ exports.handler = (event, context, callback) => {
     let presignedPost = s3.createPresignedPost({
       Bucket: config.bucket,
       Conditions: [
-        ["content-length-range", 	0, 1000000000],
+        ["content-length-range", 	0, 2000000000],
       ],
       Fields: {
         'acl': 'public-read',
