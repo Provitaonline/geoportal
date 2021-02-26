@@ -53,7 +53,7 @@
 </style>
 
 <script>
-  import {getListOfPublicFiles, getPresignedPost, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
+  import {getListOfStoredFiles, getPresignedPost, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
   import MetaEntryEditor from '~/components/admin/MetaEntryEditor'
 
@@ -93,7 +93,7 @@
     },
     methods: {
       getListOfFiles() {
-        getListOfPublicFiles().then((result) => {
+        getListOfStoredFiles().then((result) => {
           this.listOfFiles = result
         })
       },
