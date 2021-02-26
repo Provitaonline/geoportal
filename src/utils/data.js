@@ -124,8 +124,8 @@ export async function uploadFileToS3(url, formData, uploadProgress) {
   return response
 }
 
-export async function deleteFiles(token, files) {
-  let response = await axios.get('/.netlify/functions/delete-files?files=' + encodeURIComponent(files), {headers: {authorization: token}})
+export async function deleteFiles(token, files, isPublic) {
+  let response = await axios.get('/.netlify/functions/delete-files?files=' + encodeURIComponent(files) + '&isPublic=' + isPublic, {headers: {authorization: token}})
   return response
 }
 

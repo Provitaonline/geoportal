@@ -10,8 +10,10 @@ exports.handler = (event, context, callback) => {
 
   const token = event.headers.authorization
   const files = event.queryStringParameters.files
+  const isPublic = ((event.queryStringParameters.isPublic+'').toLowerCase() === 'true')
+  const directory = isPublic ? 'files' : 'pfiles'
 
-  let objects = JSON.parse(decodeURIComponent(files)).map((name) => {return {Key: 'files/' + name}})
+  let objects = JSON.parse(decodeURIComponent(files)).map((name) => {return {Key: directory + '/' + name}})
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {

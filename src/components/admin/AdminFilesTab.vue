@@ -228,7 +228,7 @@
         if (oLength != this.metaFromRepo.length) { // We have meta to delete
           deleteMetaListFromRepo(sessionStorage.githubtoken, filesMetaToDelete).then(() => {
             this.$store.commit('setPublishIndicator', true)
-            deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
+            deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete), this.isPublic).then(() => {
               this.fileListCheckedRows = []
               this.getListOfFiles()
               this.isLoading = false
@@ -239,7 +239,7 @@
             console.log('error deleting meta from repo ', e)
           })
         } else {
-          deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
+          deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete), this.isPublic).then(() => {
             this.fileListCheckedRows = []
             this.getListOfFiles()
             this.isLoading = false
