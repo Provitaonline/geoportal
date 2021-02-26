@@ -22,7 +22,8 @@ export async function getFileSize(fileName) {
 }
 
 // This gets the list of stored files
-export function getListOfStoredFiles() {
+export function getListOfStoredFiles(isPublic) {
+  let filesDirectory = isPublic ? dataConfig.filesDirectory : dataConfig.privateFilesDirectory
   let fileTypes = 'shapefile|geotiff|pdf'
   let re = new RegExp('files\/(' + fileTypes + ')\/')
   function scrubbedFileEntry(el) {
@@ -30,7 +31,7 @@ export function getListOfStoredFiles() {
     return {name: el.Key[0].replace(re, ''), format: m, size: el.Size[0], date: el.LastModified[0]}
   }
   return new Promise((resolve, reject) => {
-    axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.filesDirectory).then(response => {
+    axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + filesDirectory).then(response => {
       parseString(response.data, (err, result) => {
         if (result.ListBucketResult.Contents) {
           resolve(

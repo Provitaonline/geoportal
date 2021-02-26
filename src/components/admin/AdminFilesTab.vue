@@ -93,7 +93,7 @@
     },
     methods: {
       getListOfFiles() {
-        getListOfStoredFiles().then((result) => {
+        getListOfStoredFiles(this.isPublic).then((result) => {
           this.listOfFiles = result
         })
       },

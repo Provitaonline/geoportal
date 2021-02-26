@@ -14,10 +14,10 @@
         <b-tab-item value="files" :label="$t('label.files')">
           <b-tabs type="is-toggle" expanded style="max-width: 1000px; margin: auto;">
             <b-tab-item value="publicfiles" :label="$t('label.public')">
-              <AdminFilesTab :isPublic="true"/>
+              <AdminFilesTab :isPublic="true" />
             </b-tab-item>
             <b-tab-item value="privatefiles" :label="$t('label.private')">
-              <AdminFilesTab />
+              <AdminFilesTab :isPublic="false" />
             </b-tab-item>
           </b-tabs>
         </b-tab-item>
