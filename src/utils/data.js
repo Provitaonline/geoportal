@@ -25,7 +25,7 @@ export async function getFileSize(fileName) {
 export function getListOfStoredFiles(isPublic) {
   let filesDirectory = isPublic ? dataConfig.filesDirectory : dataConfig.privateFilesDirectory
   let fileTypes = 'shapefile|geotiff|pdf'
-  let re = new RegExp('files\/(' + fileTypes + ')\/')
+  let re = new RegExp(filesDirectory + '\/(' + fileTypes + ')\/')
   function scrubbedFileEntry(el) {
     let m = el.Key[0].match(re)[1]
     return {name: el.Key[0].replace(re, ''), format: m, size: el.Size[0], date: el.LastModified[0]}
