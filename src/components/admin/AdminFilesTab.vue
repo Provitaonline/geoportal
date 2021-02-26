@@ -21,7 +21,7 @@
     </div>
     <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :checked-rows.sync="fileListCheckedRows" :row-class="matchClass">
       <b-table-column field="name" :label="$t('label.name')" v-slot="props">
-        {{props.row.name}}
+        <span style="word-break:break-all;">{{props.row.name}}</span>
       </b-table-column>
       <b-table-column field="format" :label="$t('label.format')" v-slot="props">
         {{$t('label.' + props.row.format)}}
@@ -41,6 +41,11 @@
     </b-table>
   </div>
 </template>
+
+<style lang="scss" scoped>
+
+
+</style>
 
 <script>
   import {getListOfFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
