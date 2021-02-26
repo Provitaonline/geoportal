@@ -12,6 +12,13 @@ exports.handler = (event, context, callback) => {
   const name = event.queryStringParameters.name
   const type = event.queryStringParameters.type
   const format = event.queryStringParameters.format
+  const isPublic = ((event.queryStringParameters.isPublic+'').toLowerCase() === 'true')
+  const directory = isPublic ? 'files' : 'pfiles'
+  const acl = isPublic ? 'public-read' : 'authenticated-read'
+
+  console.log(directory, acl)
+
+  console.log(event.queryStringParameters.isPublic)
 
   const github = new GitHub({token: token})
   github.getRepo(config.githubInfo.owner, config.githubInfo.repo).getCollaborators().then(() => {
@@ -21,9 +28,9 @@ exports.handler = (event, context, callback) => {
         ["content-length-range", 	0, 2000000000],
       ],
       Fields: {
-        'acl': 'public-read',
+        'acl': acl,
         'Content-Type': type,
-        'key': 'files/' + format + '/' + name
+        'key': directory + '/' + format + '/' + name
       }
     })
     callback(null, {statusCode: 200, body: JSON.stringify(presignedPost)})

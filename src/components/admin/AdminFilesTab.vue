@@ -164,7 +164,7 @@
       },
       doUpload(file, fileFormat) {
         this.uploadInProgress = true
-        getPresignedPost(sessionStorage.githubtoken, file.name, file.type, fileFormat).then((result) => {
+        getPresignedPost(sessionStorage.githubtoken, file.name, file.type, fileFormat, this.isPublic).then((result) => {
           let formData = new FormData()
           Object.entries(result.data.fields).forEach(([k, v]) => {
             formData.append(k, v)

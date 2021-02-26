@@ -109,8 +109,8 @@ export async function deleteItemsFromRepo(token, itemList) {
   return responses
 }
 
-export async function getPresignedPost(token, name, type, fileFormat) {
-  let response = await axios.get('/.netlify/functions/get-presigned-post?name=' + name + '&type=' + type + '&format=' + fileFormat, {headers: {authorization: token}})
+export async function getPresignedPost(token, name, type, fileFormat, isPublic) {
+  let response = await axios.get('/.netlify/functions/get-presigned-post?name=' + name + '&type=' + type + '&format=' + fileFormat + '&isPublic=' + isPublic, {headers: {authorization: token}})
   return response
 }
 
