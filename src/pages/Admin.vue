@@ -12,7 +12,7 @@
       </div>
       <b-tabs @input="tabChanged()" v-model="activeTab" type="is-boxed" :animated="false">
         <b-tab-item value="files" :label="$t('label.files')">
-          <b-tabs type="is-toggle">
+          <b-tabs type="is-toggle" expanded style="max-width: 1000px; margin: auto;">
             <b-tab-item value="publicfiles" :label="$t('label.public')">
               <AdminFilesTab :isPublic="true"/>
             </b-tab-item>
