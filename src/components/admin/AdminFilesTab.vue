@@ -32,7 +32,7 @@
       <b-table-column field="date" :label="$t('label.uploaddate')" v-slot="props">
         {{$d(new Date(props.row.date), 'long')}}
       </b-table-column>
-      <b-table-column label="Meta" centered v-slot="props">
+      <b-table-column v-if="isPublic" label="Meta" centered v-slot="props">
         <a @click="editMeta(props.row.name, props.row.format)">
           <font-awesome v-if="fileHasMeta(props.row.name)" :icon="['far', 'edit']"/>
           <font-awesome v-else :icon="['fas', 'plus']"/>
@@ -51,6 +51,9 @@
 
   export default {
     name: 'AdminFilesTab',
+    props: {
+      isPublic: { type: Boolean, required: false }
+    },
     data() {
       return {
         listOfFiles: [],
@@ -67,12 +70,16 @@
     },
     mounted() {
       this.getListOfFiles()
-      getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
-        console.log('retrieve list from meta')
-        this.metaFromRepo = result
+      if (this.isPublic) {
+        getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
+          console.log('retrieve list from meta')
+          this.metaFromRepo = result
+          this.isLoading = false
+        })
+        this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
+      } else {
         this.isLoading = false
-      })
-      this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
+      }
     },
     methods: {
       getListOfFiles() {

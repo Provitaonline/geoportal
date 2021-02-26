@@ -179,7 +179,9 @@
       "tiles": "Tiles",
       "tilesfor": "Tiles for",
       "zoomrange": "Zoom range",
-      "addtagtofilter": "Add tag to filter"
+      "addtagtofilter": "Add tag to filter",
+      "public": "Public",
+      "private": "Private"
     }
   },
   "es": {
@@ -362,7 +364,9 @@
       "tiles": "Teselas",
       "tilesfor": "Teselas de",
       "zoomrange": "Rango de zoom",
-      "addtagtofilter": "Añadir etiqueta al filtro"
+      "addtagtofilter": "Añadir etiqueta al filtro",
+      "public": "Públicos",
+      "private": "Privados"
     }
   }
 }
