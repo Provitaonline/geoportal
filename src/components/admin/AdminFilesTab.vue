@@ -21,7 +21,7 @@
     </div>
     <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :checked-rows.sync="fileListCheckedRows" :row-class="matchClass">
       <b-table-column field="name" :label="$t('label.name')" v-slot="props">
-        <span style="word-break:break-all;">{{props.row.name}}</span>
+        <span class="name-cell">{{props.row.name}}</span>
       </b-table-column>
       <b-table-column field="format" :label="$t('label.format')" v-slot="props">
         {{$t('label.' + props.row.format)}}
@@ -44,11 +44,16 @@
 
 <style lang="scss" scoped>
 
+  @media screen and (max-width: 768px) {
+    .name-cell {
+      word-break: break-all;
+    }
+  }
 
 </style>
 
 <script>
-  import {getListOfFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
+  import {getListOfPublicFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
   import MetaEntryEditor from '~/components/admin/MetaEntryEditor'
 
@@ -88,7 +93,7 @@
     },
     methods: {
       getListOfFiles() {
-        getListOfFiles().then((result) => {
+        getListOfPublicFiles().then((result) => {
           this.listOfFiles = result
         })
       },
