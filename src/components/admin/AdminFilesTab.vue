@@ -53,7 +53,7 @@
 </style>
 
 <script>
-  import {getListOfPublicFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
+  import {getListOfPublicFiles, getPresignedPost, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
   import {getPureText} from '~/utils/misc'
   import MetaEntryEditor from '~/components/admin/MetaEntryEditor'
 
@@ -164,7 +164,7 @@
       },
       doUpload(file, fileFormat) {
         this.uploadInProgress = true
-        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type, fileFormat).then((result) => {
+        getPresignedPost(sessionStorage.githubtoken, file.name, file.type, fileFormat).then((result) => {
           let formData = new FormData()
           Object.entries(result.data.fields).forEach(([k, v]) => {
             formData.append(k, v)
