@@ -181,7 +181,9 @@
       "zoomrange": "Zoom range",
       "addtagtofilter": "Add tag to filter",
       "public": "Public",
-      "private": "Private"
+      "private": "Private",
+      "tilegensrc": "Tile generation source",
+      "filename": "File name"
     }
   },
   "es": {
@@ -366,7 +368,9 @@
       "zoomrange": "Rango de zoom",
       "addtagtofilter": "Añadir etiqueta al filtro",
       "public": "Públicos",
-      "private": "Privados"
+      "private": "Privados",
+      "tilegensrc": "Origen para la generación de teselas",
+      "filename": "Nombre de archivo"
     }
   }
 }
