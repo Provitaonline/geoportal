@@ -81,6 +81,7 @@ exports.handler = (event, context, callback) => {
   const type = event.queryStringParameters.type
   const ctable = event.queryStringParameters.ctable
   const exact = event.queryStringParameters.exact
+  const directory = event.queryStringParameters.directory
 
   let jobNameSuffix
   let parameters = {
@@ -91,6 +92,7 @@ exports.handler = (event, context, callback) => {
     jobNameSuffix = 'rtiles'
     parameters.colorTable = ctable
     parameters.exactColorEntry = exact ? exact : ''
+    parameters.sourceDirectory = directory
   } else {
     jobNameSuffix = 'vtiles'
   }

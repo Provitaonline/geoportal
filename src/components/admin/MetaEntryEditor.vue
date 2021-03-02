@@ -387,7 +387,14 @@ export default {
         if (updatedMetaEntry.tileInfo.colorTable && updatedMetaEntry.tileInfo.hideNoData) {
           updatedMetaEntry.tileInfo.colorTable.push(['nv', '#ffffff00'])
         }
-        job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
+        job = {tileInfo: updatedMetaEntry.tileInfo}
+        if (updatedMetaEntry.tileGenSrc) {
+          job.file = updatedMetaEntry.tileGenSrc
+          job.directory = dataConfig.privateFilesDirectory
+        } else {
+          job.file = updatedMetaEntry.file
+          job.directory = dataConfig.filesDirectory
+        }
       }
 
       saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
