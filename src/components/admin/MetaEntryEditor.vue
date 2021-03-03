@@ -61,11 +61,16 @@
           </ValidationProvider>
           <br>
           <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
-          <ValidationProvider rules="required" v-slot="{ errors, valid }">
+          <ValidationProvider v-if="isPdf" :rules="'required|oneOf:' + listOfTileSourceFiles.join()" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.tilegensrc')" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-autocomplete :data="listOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus></b-autocomplete>
+            </b-field>
+          </ValidationProvider>
+          <!-- <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tilelayername')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input disabled v-model="metaEntryFlat['tiles']"></b-input>
             </b-field>
-          </ValidationProvider>
+          </ValidationProvider> -->
           <div class="columns">
             <div class="column is-narrow">
               <ValidationProvider rules="required" v-slot="{ errors, valid }">
@@ -298,7 +303,8 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
-import { getMetaFromRepo, saveMetaFromRepo } from '~/utils/data'
+import { getMetaFromRepo, saveMetaFromRepo, getListOfStoredFiles } from '~/utils/data'
+import {dataConfig} from '~/utils/config'
 
 let flatten = require('flat')
 let unflatten = require('flat').unflatten
@@ -313,7 +319,8 @@ export default {
       metaEntryFlat: flatten(this.metaEntry),
       savedTileInfo: null,
       formDate: null,
-      isLoading: false
+      isLoading: false,
+      listOfTileSourceFiles: []
     }
   },
   components: {
@@ -333,8 +340,13 @@ export default {
       }
       if (!this.metaEntryFlat.format) this.metaEntryFlat.format = this.metaEntry.format
       // Prepopulate name of tile layer
-      if (!this.metaEntryFlat.tiles) {
+      /*if (!this.metaEntryFlat.tiles) {
         this.metaEntryFlat.tiles = (this.metaEntryFlat.file.replace(/\.[^/.]+$/, '')).toLowerCase()
+      }*/
+      if (this.isPdf) {
+        getListOfStoredFiles(false).then((result) => {
+          this.listOfTileSourceFiles = result.map(f => f.name)
+        })
       }
       this.isLoading = false
     })
@@ -348,6 +360,9 @@ export default {
         this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
       }
       this.metaEntryFlat.date = this.formDate.toISOString()
+
+      let tileSourceFile = this.isPdf ? this.metaEntryFlat.tileGenSrc : this.metaEntryFlat.file
+      this.metaEntryFlat.tiles = (tileSourceFile.replace(/\.[^/.]+$/, '')).toLowerCase()
 
       // Cleanup tileInfo paint elements
       Object.keys(this.metaEntryFlat).forEach(key => {
@@ -372,7 +387,14 @@ export default {
         if (updatedMetaEntry.tileInfo.colorTable && updatedMetaEntry.tileInfo.hideNoData) {
           updatedMetaEntry.tileInfo.colorTable.push(['nv', '#ffffff00'])
         }
-        job = {file: updatedMetaEntry.file, tileInfo: updatedMetaEntry.tileInfo}
+        job = {tileInfo: updatedMetaEntry.tileInfo}
+        if (updatedMetaEntry.tileGenSrc) {
+          job.file = updatedMetaEntry.tileGenSrc
+          job.directory = dataConfig.privateFilesDirectory
+        } else {
+          job.file = updatedMetaEntry.file
+          job.directory = dataConfig.filesDirectory
+        }
       }
 
       saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
@@ -468,6 +490,9 @@ export default {
     },
     isShapefile() {
       return this.metaEntryFlat['format'] === 'shapefile'
+    },
+    isPdf() {
+      return this.metaEntryFlat['format'] === 'pdf'
     }
   }
 }

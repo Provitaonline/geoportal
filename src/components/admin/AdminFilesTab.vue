@@ -21,7 +21,7 @@
     </div>
     <b-table :data="listOfFiles" checkable hoverable :header-checkable="false" :checked-rows.sync="fileListCheckedRows" :row-class="matchClass">
       <b-table-column field="name" :label="$t('label.name')" v-slot="props">
-        {{props.row.name}}
+        <span class="name-cell">{{props.row.name}}</span>
       </b-table-column>
       <b-table-column field="format" :label="$t('label.format')" v-slot="props">
         {{$t('label.' + props.row.format)}}
@@ -32,7 +32,7 @@
       <b-table-column field="date" :label="$t('label.uploaddate')" v-slot="props">
         {{$d(new Date(props.row.date), 'long')}}
       </b-table-column>
-      <b-table-column label="Meta" centered v-slot="props">
+      <b-table-column v-if="isPublic" label="Meta" centered v-slot="props">
         <a @click="editMeta(props.row.name, props.row.format)">
           <font-awesome v-if="fileHasMeta(props.row.name)" :icon="['far', 'edit']"/>
           <font-awesome v-else :icon="['fas', 'plus']"/>
@@ -42,8 +42,19 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+
+  @media screen and (max-width: 768px) {
+    .name-cell {
+      word-break: break-all;
+    }
+  }
+
+</style>
+
 <script>
-  import {getListOfFiles, getPresignedUrl, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
+  import {getListOfStoredFiles, getPresignedPost, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
+  import {dataConfig} from '~/utils/config'
   import {getPureText} from '~/utils/misc'
   import MetaEntryEditor from '~/components/admin/MetaEntryEditor'
 
@@ -51,6 +62,9 @@
 
   export default {
     name: 'AdminFilesTab',
+    props: {
+      isPublic: { type: Boolean, required: false }
+    },
     data() {
       return {
         listOfFiles: [],
@@ -67,16 +81,20 @@
     },
     mounted() {
       this.getListOfFiles()
-      getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
-        console.log('retrieve list from meta')
-        this.metaFromRepo = result
+      if (this.isPublic) {
+        getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
+          console.log('retrieve list from meta')
+          this.metaFromRepo = result
+          this.isLoading = false
+        })
+        this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
+      } else {
         this.isLoading = false
-      })
-      this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
+      }
     },
     methods: {
       getListOfFiles() {
-        getListOfFiles().then((result) => {
+        getListOfStoredFiles(this.isPublic).then((result) => {
           this.listOfFiles = result
         })
       },
@@ -147,7 +165,7 @@
       },
       doUpload(file, fileFormat) {
         this.uploadInProgress = true
-        getPresignedUrl(sessionStorage.githubtoken, file.name, file.type, fileFormat).then((result) => {
+        getPresignedPost(sessionStorage.githubtoken, file.name, file.type, fileFormat, this.isPublic).then((result) => {
           let formData = new FormData()
           Object.entries(result.data.fields).forEach(([k, v]) => {
             formData.append(k, v)
@@ -157,7 +175,11 @@
             this.resetProgressIndicator()
             this.getListOfFiles()
             if (fileFormat === 'shapefile') {
-              let job = {file: file.name, tileInfo: {type: 'vector'}}
+              let job = {
+                file: file.name,
+                directory: (this.isPublic ?  dataConfig.filesDirectory : dataConfig.privateFilesDirectory),
+                tileInfo: {type: 'vector'}
+              }
               submitJob(sessionStorage.githubtoken, job).then((response) => {
                 console.log('batch job submitted')
               }).catch((e) => {
@@ -177,7 +199,7 @@
         let commonName = fileName.replace(/\.[^/.]+$/, '')
         if (entries.some(entry => entry.name === commonName + '/' + commonName + '.shp')) return 'shapefile'
         if (entries.some(entry => entry.name === commonName + '/' + commonName + '.tif')) return 'geotiff'
-        if (entries.some(entry => entry.name.endsWith('.pdf'))) return 'pdf'
+        if (this.isPublic && entries.some(entry => entry.name.endsWith('.pdf'))) return 'pdf'
         return null
       },
       zipFileError(message) {
@@ -211,7 +233,7 @@
         if (oLength != this.metaFromRepo.length) { // We have meta to delete
           deleteMetaListFromRepo(sessionStorage.githubtoken, filesMetaToDelete).then(() => {
             this.$store.commit('setPublishIndicator', true)
-            deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
+            deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete), this.isPublic).then(() => {
               this.fileListCheckedRows = []
               this.getListOfFiles()
               this.isLoading = false
@@ -222,7 +244,7 @@
             console.log('error deleting meta from repo ', e)
           })
         } else {
-          deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete)).then(() => {
+          deleteFiles(sessionStorage.githubtoken, JSON.stringify(filesToDelete), this.isPublic).then(() => {
             this.fileListCheckedRows = []
             this.getListOfFiles()
             this.isLoading = false

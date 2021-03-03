@@ -22,15 +22,16 @@ export async function getFileSize(fileName) {
 }
 
 // This gets the list of stored files
-export function getListOfFiles() {
+export function getListOfStoredFiles(isPublic) {
+  let filesDirectory = isPublic ? dataConfig.filesDirectory : dataConfig.privateFilesDirectory
   let fileTypes = 'shapefile|geotiff|pdf'
-  let re = new RegExp('files\/(' + fileTypes + ')\/')
+  let re = new RegExp(filesDirectory + '\/(' + fileTypes + ')\/')
   function scrubbedFileEntry(el) {
     let m = el.Key[0].match(re)[1]
     return {name: el.Key[0].replace(re, ''), format: m, size: el.Size[0], date: el.LastModified[0]}
   }
   return new Promise((resolve, reject) => {
-    axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + dataConfig.filesDirectory).then(response => {
+    axios.get(dataConfig.filesBaseUrl + '?list-type=2&prefix=' + filesDirectory).then(response => {
       parseString(response.data, (err, result) => {
         if (result.ListBucketResult.Contents) {
           resolve(
@@ -108,8 +109,8 @@ export async function deleteItemsFromRepo(token, itemList) {
   return responses
 }
 
-export async function getPresignedUrl(token, name, type, fileFormat) {
-  let response = await axios.get('/.netlify/functions/get-presigned-url?name=' + name + '&type=' + type + '&format=' + fileFormat, {headers: {authorization: token}})
+export async function getPresignedPost(token, name, type, fileFormat, isPublic) {
+  let response = await axios.get('/.netlify/functions/get-presigned-post?name=' + name + '&type=' + type + '&format=' + fileFormat + '&isPublic=' + isPublic, {headers: {authorization: token}})
   return response
 }
 
@@ -123,8 +124,8 @@ export async function uploadFileToS3(url, formData, uploadProgress) {
   return response
 }
 
-export async function deleteFiles(token, files) {
-  let response = await axios.get('/.netlify/functions/delete-files?files=' + encodeURIComponent(files), {headers: {authorization: token}})
+export async function deleteFiles(token, files, isPublic) {
+  let response = await axios.get('/.netlify/functions/delete-files?files=' + encodeURIComponent(files) + '&isPublic=' + isPublic, {headers: {authorization: token}})
   return response
 }
 
@@ -134,6 +135,7 @@ export async function submitJob(token, job) {
     funcUrl += '&ctable=' + makeColorTableParameter(job.tileInfo.colorTable)
     funcUrl += '&exact=' + ((job.tileInfo.gradient) ? 'gradient' : 'exact')
   }
+  funcUrl += '&directory=' + job.directory
   let response = await axios.get(funcUrl, {headers: {authorization: token}})
   return response
 }

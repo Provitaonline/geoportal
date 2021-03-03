@@ -81,10 +81,12 @@ exports.handler = (event, context, callback) => {
   const type = event.queryStringParameters.type
   const ctable = event.queryStringParameters.ctable
   const exact = event.queryStringParameters.exact
+  const directory = event.queryStringParameters.directory
 
   let jobNameSuffix
   let parameters = {
-    inputFile: file
+    inputFile: file,
+    sourceDirectory: directory
   }
 
   if (type === 'raster') {
