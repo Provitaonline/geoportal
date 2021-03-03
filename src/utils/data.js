@@ -134,8 +134,8 @@ export async function submitJob(token, job) {
   if (job.tileInfo.type === 'raster') {
     funcUrl += '&ctable=' + makeColorTableParameter(job.tileInfo.colorTable)
     funcUrl += '&exact=' + ((job.tileInfo.gradient) ? 'gradient' : 'exact')
-    funcUrl += '&directory=' + job.directory
   }
+  funcUrl += '&directory=' + job.directory
   let response = await axios.get(funcUrl, {headers: {authorization: token}})
   return response
 }

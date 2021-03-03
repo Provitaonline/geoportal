@@ -54,6 +54,7 @@
 
 <script>
   import {getListOfStoredFiles, getPresignedPost, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
+  import {dataConfig} from '~/utils/config'
   import {getPureText} from '~/utils/misc'
   import MetaEntryEditor from '~/components/admin/MetaEntryEditor'
 
@@ -174,7 +175,11 @@
             this.resetProgressIndicator()
             this.getListOfFiles()
             if (fileFormat === 'shapefile') {
-              let job = {file: file.name, tileInfo: {type: 'vector'}}
+              let job = {
+                file: file.name,
+                directory: (this.isPublic ?  dataConfig.filesDirectory : dataConfig.privateFilesDirectory),
+                tileInfo: {type: 'vector'}
+              }
               submitJob(sessionStorage.githubtoken, job).then((response) => {
                 console.log('batch job submitted')
               }).catch((e) => {

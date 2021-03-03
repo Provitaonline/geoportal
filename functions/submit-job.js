@@ -85,14 +85,14 @@ exports.handler = (event, context, callback) => {
 
   let jobNameSuffix
   let parameters = {
-    inputFile: file
+    inputFile: file,
+    sourceDirectory: directory
   }
 
   if (type === 'raster') {
     jobNameSuffix = 'rtiles'
     parameters.colorTable = ctable
     parameters.exactColorEntry = exact ? exact : ''
-    parameters.sourceDirectory = directory
   } else {
     jobNameSuffix = 'vtiles'
   }
