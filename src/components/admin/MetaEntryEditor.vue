@@ -343,7 +343,6 @@ export default {
       /*if (!this.metaEntryFlat.tiles) {
         this.metaEntryFlat.tiles = (this.metaEntryFlat.file.replace(/\.[^/.]+$/, '')).toLowerCase()
       }*/
-      console.log(this.metaEntryFlat['format'])
       if (this.isPdf) {
         getListOfStoredFiles(false).then((result) => {
           this.listOfTileSourceFiles = result.map(f => f.name)
@@ -364,7 +363,6 @@ export default {
 
       let tileSourceFile = this.isPdf ? this.metaEntryFlat.tileGenSrc : this.metaEntryFlat.file
       this.metaEntryFlat.tiles = (tileSourceFile.replace(/\.[^/.]+$/, '')).toLowerCase()
-      console.log(this.metaEntryFlat.tiles)
 
       // Cleanup tileInfo paint elements
       Object.keys(this.metaEntryFlat).forEach(key => {
