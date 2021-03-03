@@ -304,6 +304,7 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
 import { getMetaFromRepo, saveMetaFromRepo, getListOfStoredFiles } from '~/utils/data'
+import {dataConfig} from '~/utils/config'
 
 let flatten = require('flat')
 let unflatten = require('flat').unflatten
@@ -342,13 +343,14 @@ export default {
       /*if (!this.metaEntryFlat.tiles) {
         this.metaEntryFlat.tiles = (this.metaEntryFlat.file.replace(/\.[^/.]+$/, '')).toLowerCase()
       }*/
+      console.log(this.metaEntryFlat['format'])
+      if (this.isPdf) {
+        getListOfStoredFiles(false).then((result) => {
+          this.listOfTileSourceFiles = result.map(f => f.name)
+        })
+      }
       this.isLoading = false
     })
-    if (this.isPdf) {
-      getListOfStoredFiles(false).then((result) => {
-        this.listOfTileSourceFiles = result.map(f => f.name)
-      })
-    }
   },
   methods: {
     acceptChanges() {
