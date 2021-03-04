@@ -63,14 +63,9 @@
           <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
           <ValidationProvider v-if="isPdf" :rules="'required|oneOf:' + listOfTileSourceFiles.join()" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tilegensrc')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-autocomplete :data="listOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus></b-autocomplete>
+              <b-autocomplete :data="listOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus :loading="isTileSourceLoading"></b-autocomplete>
             </b-field>
           </ValidationProvider>
-          <!-- <ValidationProvider rules="required" v-slot="{ errors, valid }">
-            <b-field :label="$t('label.tilelayername')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input disabled v-model="metaEntryFlat['tiles']"></b-input>
-            </b-field>
-          </ValidationProvider> -->
           <div class="columns">
             <div class="column is-narrow">
               <ValidationProvider rules="required" v-slot="{ errors, valid }">
@@ -320,6 +315,7 @@ export default {
       savedTileInfo: null,
       formDate: null,
       isLoading: false,
+      isTileSourceLoading: false,
       listOfTileSourceFiles: []
     }
   },
@@ -330,28 +326,28 @@ export default {
   beforeCreate() {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
-  created() {
-    this.isLoading = true
-    getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file).then(result => {
+  async created() {
+    await this.populateForm()
+    if (this.isPdf) {
+      this.isTileSourceLoading = true
+      getListOfStoredFiles(false).then((result) => {
+        this.listOfTileSourceFiles = result.map(f => f.name)
+        this.isTileSourceLoading = false
+      })
+    }
+  },
+  methods: {
+    async populateForm() {
+      this.isLoading = true
+      let result = await getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file)
       this.metaEntryFlat = flatten(result)
       if (result.date) this.formDate = new Date(result.date)
       if (result.tileInfo) {
         this.savedTileInfo = JSON.stringify(result.tileInfo)
       }
       if (!this.metaEntryFlat.format) this.metaEntryFlat.format = this.metaEntry.format
-      // Prepopulate name of tile layer
-      /*if (!this.metaEntryFlat.tiles) {
-        this.metaEntryFlat.tiles = (this.metaEntryFlat.file.replace(/\.[^/.]+$/, '')).toLowerCase()
-      }*/
-      if (this.isPdf) {
-        getListOfStoredFiles(false).then((result) => {
-          this.listOfTileSourceFiles = result.map(f => f.name)
-        })
-      }
       this.isLoading = false
-    })
-  },
-  methods: {
+    },
     acceptChanges() {
       //this.metaEntryFlat['format'] = (this.isShapefile) ? 'shapefile' : 'geotiff'
       if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
