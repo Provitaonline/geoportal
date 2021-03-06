@@ -183,7 +183,10 @@
       "public": "Public",
       "private": "Private",
       "tilegensrc": "Tile generation source",
-      "filename": "File name"
+      "filename": "File name",
+      "copymeta": "Copy metadata from another file",
+      "copy": "Copy",
+      "tocopy": "Copy"
     }
   },
   "es": {
@@ -370,7 +373,10 @@
       "public": "Públicos",
       "private": "Privados",
       "tilegensrc": "Origen para la generación de teselas",
-      "filename": "Nombre de archivo"
+      "filename": "Nombre de archivo",
+      "copymeta": "Copy metadata de otro archivo",
+      "copy": "Copia",
+      "tocopy": "Copiar"
     }
   }
 }

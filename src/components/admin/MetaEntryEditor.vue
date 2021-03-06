@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <b-loading v-model="isLoading" :is-full-page="false"></b-loading>
-    <ValidationObserver v-slot="{passes, dirty}">
+    <ValidationObserver ref="observer" v-slot="{passes, dirty}">
       <div style="position: sticky; top: 0; z-index: 45; background-color: white; padding: 12px;" class="card-header">
         <p class="card-header-title is-size-4">
           {{metaEntryFlat['file']}}: {{metaEntryFlat['name.' + $i18n.locale.substr(0, 2)]}}
@@ -13,6 +13,29 @@
       </div>
       <div class="card-content">
         <div class="content">
+          <b-field>
+            <template #label>
+              <div class="columns">
+                <div class="column is-narrow">
+                  <i>{{$t('label.copymeta')}}</i>
+                </div>
+                <div class="column">
+                  <b-field>
+                    <b-checkbox v-model="enableCopyModel"></b-checkbox>
+                  </b-field>
+                </div>
+              </div>
+            </template>
+            <div v-if="enableCopyModel" class="columns">
+              <div class="column">
+                <b-autocomplete autocomplete="nope" :data="filteredListOfModelCandidates" v-model="selectedMetaModel" field="name" open-on-focus clearable></b-autocomplete>
+              </div>
+              <div class="column is-2">
+                <b-button @click="copyFromModel(selectedMetaModel)" :disabled="!modelFound">{{$t('label.tocopy')}}</b-button>
+              </div>
+            </div>
+          </b-field>
+          <hr>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.titlespanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-input v-model="metaEntryFlat['name.es']"></b-input>
@@ -307,7 +330,8 @@ let unflatten = require('flat').unflatten
 export default {
   name: 'MetaEntryEditor',
   props: {
-    metaEntry: { type: Object, required: true }
+    metaEntry: { type: Object, required: true },
+    listOfModelCandidates: {type: Array, required: true }
   },
   data() {
     return {
@@ -316,7 +340,9 @@ export default {
       formDate: null,
       isLoading: false,
       isTileSourceLoading: false,
-      listOfTileSourceFiles: []
+      listOfTileSourceFiles: [],
+      selectedMetaModel: '',
+      enableCopyModel: false
     }
   },
   components: {
@@ -327,7 +353,7 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   async created() {
-    await this.populateForm()
+    await this.populateForm(this.metaEntry.file)
     if (this.isPdf) {
       this.isTileSourceLoading = true
       getListOfStoredFiles(false).then((result) => {
@@ -337,9 +363,9 @@ export default {
     }
   },
   methods: {
-    async populateForm() {
+    async populateForm(file) {
       this.isLoading = true
-      let result = await getMetaFromRepo(sessionStorage.githubtoken, this.metaEntry.file)
+      let result = await getMetaFromRepo(sessionStorage.githubtoken, file)
       this.metaEntryFlat = flatten(result)
       if (result.date) this.formDate = new Date(result.date)
       if (result.tileInfo) {
@@ -442,6 +468,20 @@ export default {
           this.$delete(this.metaEntryFlat, prefix + sufix)
         }
       })
+    },
+    async copyFromModel(model) {
+      let savedFileName = this.metaEntryFlat.file
+      let savedTiles = this.metaEntryFlat.tiles
+      await this.populateForm(model)
+      this.metaEntryFlat.file = savedFileName
+      this.metaEntryFlat.tiles = savedTiles
+      if (this.metaEntryFlat.tileGenSrc) delete this.metaEntryFlat.tileGenSrc
+      this.metaEntryFlat['name.es'] += ` (${this.$t('label.copy', 'es-ve').toUpperCase()})`
+      this.metaEntryFlat['name.en'] += ` (${this.$t('label.copy', 'en-us').toUpperCase()})`
+      this.savedTileInfo = null
+      this.$nextTick(() => {
+        this.$refs.observer.reset()
+      })
     }
   },
   computed: {
@@ -489,6 +529,17 @@ export default {
     },
     isPdf() {
       return this.metaEntryFlat['format'] === 'pdf'
+    },
+    filteredListOfModelCandidates() {
+      return this.listOfModelCandidates.filter(
+        item =>
+          (item.name !== this.metaEntryFlat.file) &&
+          (item.format === this.metaEntryFlat.format) &&
+          (item.name.toLowerCase().includes(this.selectedMetaModel.trim().toLowerCase()))
+        )
+    },
+    modelFound() {
+      return this.listOfModelCandidates.find(item => item.name === this.selectedMetaModel)
     }
   }
 }

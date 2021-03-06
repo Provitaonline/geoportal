@@ -118,7 +118,10 @@
           canCancel: ['escape', 'x'],
           component: MetaEntryEditor,
           props: {
-            metaEntry: metaEntry
+            metaEntry: metaEntry,
+            listOfModelCandidates: this.listOfFiles.filter(file => {
+              return this.metaFromRepo.find(meta => meta.file === file.name)
+            })
           }
         })
       },
