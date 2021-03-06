@@ -86,7 +86,7 @@
           <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
           <ValidationProvider v-if="isPdf" :rules="'required|oneOf:' + listOfTileSourceFiles.join()" v-slot="{ errors, valid }">
             <b-field :label="$t('label.tilegensrc')" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-autocomplete :data="listOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus :loading="isTileSourceLoading"></b-autocomplete>
+              <b-autocomplete autocomplete="nope" :data="filteredListOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus :loading="isTileSourceLoading"></b-autocomplete>
             </b-field>
           </ValidationProvider>
           <div class="columns">
@@ -540,6 +540,9 @@ export default {
     },
     modelFound() {
       return this.listOfModelCandidates.find(item => item.name === this.selectedMetaModel)
+    },
+    filteredListOfTileSourceFiles() {
+      return this.listOfTileSourceFiles.filter(item => item.toLowerCase().includes(this.metaEntryFlat.tileGenSrc.trim().toLowerCase()))
     }
   }
 }
