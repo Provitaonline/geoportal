@@ -374,7 +374,7 @@
       "private": "Privados",
       "tilegensrc": "Origen para la generación de teselas",
       "filename": "Nombre de archivo",
-      "copymeta": "Copy metadata de otro archivo",
+      "copymeta": "Copiar metadata de otro archivo",
       "copy": "Copia",
       "tocopy": "Copiar"
     }

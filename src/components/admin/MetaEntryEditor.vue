@@ -542,7 +542,7 @@ export default {
       return this.listOfModelCandidates.find(item => item.name === this.selectedMetaModel)
     },
     filteredListOfTileSourceFiles() {
-      return this.listOfTileSourceFiles.filter(item => item.toLowerCase().includes(this.metaEntryFlat.tileGenSrc.trim().toLowerCase()))
+      return this.listOfTileSourceFiles.filter(item => !this.metaEntryFlat.tileGenSrc || item.toLowerCase().includes(this.metaEntryFlat.tileGenSrc.trim().toLowerCase()))
     }
   }
 }
