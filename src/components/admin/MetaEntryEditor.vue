@@ -300,6 +300,19 @@
                     </b-field>
                   </ValidationProvider>
                 </div>
+                <div class="column">
+                  <div class="columns">
+                    <div class="column is-narrow input-color-container" style="margin-left: 12px;">
+                      <input @input="inputColor($event, key.slice(0, -1) + '1')"  :value="narrowColorValue(metaEntryFlat[key.slice(0, -1) + '1'])" class="input-color" type="color" id="html5colorpicker" />
+                    </div>
+                    <div class="column is-narrow" style="margin: auto; padding-right: 0px;">
+                      Opacidad
+                    </div>
+                    <div class="column">
+                      <b-slider @input="inputOpacity($event, key.slice(0, -1) + '1')" :value="getOpacity(metaEntryFlat[key.slice(0, -1) + '1'])"></b-slider>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -314,6 +327,25 @@
   ::v-deep textarea {
     font-family: monospace;
     font-size: 0.9rem;
+  }
+
+  .input-color-container {
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    width: 40px;
+    height: 30px;
+    border: none;
+  }
+
+  .input-color {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    width: 60px;
+    height: 56px;
+    border: none;
+    cursor: pointer;
   }
 
 </style>
@@ -482,6 +514,37 @@ export default {
       this.$nextTick(() => {
         this.$refs.observer.reset()
       })
+    },
+    inputColor(e, item) {
+      if (this.metaEntryFlat[item].length === 9)
+        this.metaEntryFlat[item] = e.target.value + this.metaEntryFlat[item].substr(7,2)
+      else
+        this.metaEntryFlat[item] = e.target.value + this.metaEntryFlat[item].substr(4,2)
+    },
+    getOpacity(v) {
+      if (v.length === 9) return Math.round(parseInt(v.slice(7, 9), 16) * 100/255)
+      if (v.length === 5) return Math.round(parseInt(v.slice(4, 5), 16) * 100/255)
+    },
+    inputOpacity(o, item) {
+      let v = this.metaEntryFlat[item]
+      let oh = Math.round(o*255/100).toString(16)
+      if (v.length === 9) {
+        this.metaEntryFlat[item] = v.substr(0,7) + oh.padStart(2, '0')
+        return
+      }
+      if (v.length === 5 && oh.length === 1) {
+        this.metaEntryFlat[item] = v.substr(0,4) + oh
+        return
+      }
+      if (v.length === 5 && oh.length === 2) {
+        this.metaEntryFlat[item] = '#0' + v.substr(1,1) + '0' + v.substr(2,1) + '0' + v.substr(3,1) + oh
+      }
+    },
+    narrowColorValue(v) {
+      if (v.length === 9)
+        return v.substr(0,7)
+      else
+        return '#0' + v.substr(1,1) + '0' + v.substr(2,1) + '0' + v.substr(3,1)
     }
   },
   computed: {
