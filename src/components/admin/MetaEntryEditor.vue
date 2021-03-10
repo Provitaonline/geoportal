@@ -410,19 +410,20 @@
                   </ValidationProvider>
                 </div>
                 <div class="column">
-                  <ValidationProvider>
                   <div class="columns">
                     <div class="column is-narrow input-color-container" style="margin-left: 12px;">
-                      <input @input="inputColor($event, key.slice(0, -1) + '1')" :value="narrowColorValue(metaEntryFlat[key.slice(0, -1) + '1'])" class="input-color" type="color" id="html5colorpicker" />
-                    </div>
-                    <div class="column is-narrow" style="margin: auto; padding-right: 0px;">
-                      Opacidad
+                      <ValidationProvider>
+                        <input @input="inputColor($event, key.slice(0, -1) + '1')" :value="narrowColorValue(metaEntryFlat[key.slice(0, -1) + '1'])" class="input-color" type="color" id="html5colorpicker" />
+                      </ValidationProvider>
                     </div>
                     <div class="column">
-                      <b-slider lazy @input="inputOpacity($event, key.slice(0, -1) + '1')" :value="getOpacity(metaEntryFlat[key.slice(0, -1) + '1'])"></b-slider>
+                      <ValidationProvider>
+                        <b-tooltip always type="is-light" :label="getOpacity(metaEntryFlat[key.slice(0, -1) + '1']) + '%'" position="is-right">
+                          <input lazy type="range" min="0" max="100" expanded @input="inputOpacity($event, key.slice(0, -1) + '1')" :value="getOpacity(metaEntryFlat[key.slice(0, -1) + '1'])"></input>
+                        </b-tooltip>
+                      </ValidationProvider>
                     </div>
                   </div>
-                  </ValidationProvider>
                 </div>
               </div>
             </div>
@@ -458,6 +459,10 @@
     height: 56px;
     border: none;
     cursor: pointer;
+  }
+
+  ::v-deep .b-tooltip .tooltip-content {
+    box-shadow: none;
   }
 
 </style>
@@ -637,7 +642,8 @@ export default {
       if (v.length === 9) return Math.round(parseInt(v.slice(7, 9), 16) * 100/255)
       if (v.length === 5) return Math.round(parseInt(v.slice(4, 5), 16) * 100/255)
     },
-    inputOpacity(o, item) {
+    inputOpacity(event, item) {
+      let o = event.target.value
       let v = this.metaEntryFlat[item]
       let oh = Math.round(o*255/100).toString(16)
       if (v.length === 9) {
