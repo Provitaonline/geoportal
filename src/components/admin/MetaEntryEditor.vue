@@ -137,7 +137,9 @@
                   <b-field>
                     <template slot="label">&nbsp;</template>
                     <div class="input-color-container" style="margin-left: 12px;">
-                      <input v-model="metaEntryFlat['tileInfo.style.paint.line-color']" class="input-color" type="color" />
+                      <ValidationProvider>
+                        <input v-model="metaEntryFlat['tileInfo.style.paint.line-color']" class="input-color" type="color" />
+                      </ValidationProvider>
                     </div>
                   </b-field>
                 </div>
@@ -161,7 +163,9 @@
                   <b-field>
                     <template slot="label">&nbsp;</template>
                     <div class="input-color-container" style="margin-left: 12px;">
-                      <input v-model="metaEntryFlat['tileInfo.style.paint.circle-color']" class="input-color" type="color" />
+                      <ValidationProvider>
+                        <input v-model="metaEntryFlat['tileInfo.style.paint.circle-color']" class="input-color" type="color" />
+                      </ValidationProvider>
                     </div>
                   </b-field>
                 </div>
@@ -193,7 +197,9 @@
                   <b-field>
                     <template slot="label">&nbsp;</template>
                     <div class="input-color-container" style="margin-left: 12px;">
-                      <input v-model="metaEntryFlat['tileInfo.style.paint.circle-stroke-color']" class="input-color" type="color" />
+                      <ValidationProvider>
+                        <input v-model="metaEntryFlat['tileInfo.style.paint.circle-stroke-color']" class="input-color" type="color" />
+                      </ValidationProvider>
                     </div>
                   </b-field>
                 </div>
@@ -222,7 +228,9 @@
                     <b-field>
                       <template slot="label">&nbsp;</template>
                       <div class="input-color-container" style="margin-left: 12px;">
-                        <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color']" class="input-color" type="color" />
+                        <ValidationProvider>
+                          <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color']" class="input-color" type="color" />
+                        </ValidationProvider>
                       </div>
                     </b-field>
                   </div>
@@ -254,7 +262,9 @@
                       <b-field>
                         <template slot="label">&nbsp;</template>
                         <div class="input-color-container" style="margin-left: 12px;">
-                          <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.4']" class="input-color" type="color" />
+                          <ValidationProvider>
+                            <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.4']" class="input-color" type="color" />
+                          </ValidationProvider>
                         </div>
                       </b-field>
                     </div>
@@ -280,7 +290,9 @@
                       <b-field>
                         <template slot="label">&nbsp;</template>
                         <div class="input-color-container" style="margin-left: 12px;">
-                          <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.6']" class="input-color" type="color" />
+                          <ValidationProvider>
+                            <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.6']" class="input-color" type="color" />
+                          </ValidationProvider>
                         </div>
                       </b-field>
                     </div>
@@ -305,7 +317,9 @@
                     <b-field>
                       <template slot="label">&nbsp;</template>
                       <div class="input-color-container" style="margin-left: 12px;">
-                        <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.default']" class="input-color" type="color" />
+                        <ValidationProvider>
+                          <input v-model="metaEntryFlat['tileInfo.style.paint.fill-color.default']" class="input-color" type="color" />
+                        </ValidationProvider>
                       </div>
                     </b-field>
                   </div>
@@ -335,7 +349,9 @@
                         </div>
                         <div class="column">
                           <div class="input-color-container" style="margin-left: 12px;">
-                            <input v-model="metaEntryFlat[key.slice(0, -1) + '1']" class="input-color" type="color" />
+                            <ValidationProvider>
+                              <input v-model="metaEntryFlat[key.slice(0, -1) + '1']" class="input-color" type="color" />
+                            </ValidationProvider>
                           </div>
                         </div>
                       </div>
@@ -360,7 +376,9 @@
                   <b-field>
                     <template slot="label">&nbsp;</template>
                     <div class="input-color-container" style="margin-left: 12px;">
-                      <input v-model="metaEntryFlat['tileInfo.style.paint.fill-outline-color']" class="input-color" type="color" />
+                      <ValidationProvider>
+                        <input v-model="metaEntryFlat['tileInfo.style.paint.fill-outline-color']" class="input-color" type="color" />
+                      </ValidationProvider>
                     </div>
                   </b-field>
                 </div>
