@@ -14,7 +14,7 @@ exports.handler = (event, context, callback) => {
   const format = event.queryStringParameters.format
   const isPublic = ((event.queryStringParameters.isPublic+'').toLowerCase() === 'true')
   const directory = isPublic ? 'files' : 'pfiles'
-  const acl = isPublic ? 'public-read' : 'authenticated-read'
+  const acl = isPublic ? 'public-read' : 'private'
 
   console.log(directory, acl)
 
