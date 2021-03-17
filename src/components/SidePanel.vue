@@ -21,6 +21,7 @@
             autocomplete
             :data="sortedFilteredTags"
             @typing="getFilteredTags"
+            @input="inputTag"
             :placeholder="$t('label.filter')">
           </b-taginput>
         </div>
@@ -29,7 +30,7 @@
         <div v-show="isMatch(item)" class="card">
           <div class="card-header">
             <p class="card-header-title">{{ item.name[$i18n.locale.substr(0, 2)] }}</p>
-            <a href="#" @click="item.expanded = !item.expanded" class="card-header-icon" aria-label="more options">
+            <a href="#" @click="openCloseItem(item)" class="card-header-icon" aria-label="more options">
               <span class="icon">
                 <font-awesome v-if="item.expanded" :icon="['fas', 'angle-up']"/>
                 <font-awesome v-else :icon="['fas', 'angle-down']"/>
@@ -162,11 +163,20 @@
         surveyTemplate: null,
         tags: [],
         allKeywords: {en: [], es: []},
-        filteredTags: null
+        filteredTags: null,
+        openItems: [],
+        tileLayersOn: []
       }
     },
     created() {
+      console.log(this.$route.query)
+      if (this.$route.query.s) this.searchString = this.$route.query.s
+      if (this.$route.query.k) this.tags = this.$route.query.k.split(',')
+      if (this.$route.query.o) this.openItems = this.$route.query.o.split(',')
+      if (this.$route.query.t) this.openItems = this.$route.query.t.split(',')
+
       this.fileList.forEach(item => {
+        console.log(item.hashCode)
         // Auto add format as keyword
         if (!item.keywords['en'].includes(item.format)) item.keywords['en'].push(item.format)
         if (!item.keywords['es'].includes(item.format)) item.keywords['es'].push(item.format)
@@ -201,12 +211,21 @@
       mFormatter: function (num) {
           if (num) return Math.abs(num) > 999999 ? this.$n(Math.sign(num)*((Math.abs(num)/1000000).toFixed(1))) + 'M' : this.kFormatter(num)
       },
+      openCloseItem(item) {
+        if (item.expanded) this.openItems = this.openItems.filter(oI => oI !== item.hashCode)
+        else this.openItems.push(item.hashCode)
+        item.expanded = !item.expanded
+        if (this.$route.query.o != this.openItems.join()) this.updateQueryParms()
+      },
       addToMap: function (item, isOn) {
         if (isOn) {
           this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo, source: item.source})
+          this.tileLayersOn.push(item.hashCode)
         } else {
           this.$eventBus.$emit('removetilelayer', item.tiles)
+          this.tileLayersOn = this.tileLayersOn.filter(oI => oI !== item.hashCode)
         }
+        this.updateQueryParms()
       },
       isMatch(item) {
         if (this.tags.length === 0 && this.searchString.length < 3) return true
@@ -252,6 +271,17 @@
       },
       addTagToFilterList(tag) {
         if (!this.tags.includes(tag)) this.tags.push(tag)
+      },
+      inputTag(t) {
+      },
+      updateQueryParms() {
+        let query = {}
+        if (this.tags.length > 0) query.k = this.tags.join()
+        if (this.searchString) query.s = this.searchString
+        if (this.openItems.length > 0) query.o = this.openItems.join()
+        if (this.tileLayersOn.length > 0) query.t = this.tileLayersOn.join()
+
+        this.$router.replace({query: query})
       }
     },
     computed: {
@@ -271,6 +301,14 @@
       },
       locale() {
         return this.$i18n.locale.toString().substr(0,2)
+      }
+    },
+    watch: {
+      searchString() {
+        if (this.$route.query.s != this.searchString) this.updateQueryParms()
+      },
+      tags() {
+        if (this.$route.query.k != this.tags.join()) this.updateQueryParms()
       }
     }
   }
