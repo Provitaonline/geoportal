@@ -30,6 +30,7 @@
           source
           tiles
           tileInfo
+          hashCode
         }
       }
     }
