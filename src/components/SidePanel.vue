@@ -173,7 +173,7 @@
       if (this.$route.query.s) this.searchString = this.$route.query.s
       if (this.$route.query.k) this.tags = this.$route.query.k.split(',')
       if (this.$route.query.o) this.openItems = this.$route.query.o.split(',')
-      if (this.$route.query.t) this.openItems = this.$route.query.t.split(',')
+      if (this.$route.query.t) this.tileLayersOn = this.$route.query.t.split(',')
 
       this.fileList.forEach(item => {
         console.log(item.hashCode)

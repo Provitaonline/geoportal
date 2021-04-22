@@ -58,6 +58,10 @@
     },
     created() {
       this.fileList = this.$page.allMetaData.edges.map(item => item.node)
+    },
+    beforeRouteEnter (to, from, next) {
+      console.log(to)
+      next()
     }
   }
 </script>
