@@ -186,7 +186,8 @@
       "filename": "File name",
       "copymeta": "Copy metadata from another file",
       "copy": "Copy",
-      "tocopy": "Copy"
+      "tocopy": "Copy",
+      "label": "Label"
     }
   },
   "es": {
@@ -376,7 +377,8 @@
       "filename": "Nombre de archivo",
       "copymeta": "Copiar metadata de otro archivo",
       "copy": "Copia",
-      "tocopy": "Copiar"
+      "tocopy": "Copiar",
+      "label": "Etiqueta"
     }
   }
 }

@@ -413,7 +413,7 @@
             <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.colorTable.'))">
               <div v-if="(index%2 == 0)" class="columns">
                 <div class="column is-narrow"><a @click="removeTablePair(key,'tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
-                <div class="column">
+                <div class="column is-2">
                   <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                     <b-field :label="$t('label.value')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
                       <b-input type="number" expanded v-model.number="metaEntryFlat[key]"></b-input>
@@ -421,6 +421,13 @@
                   </ValidationProvider>
                 </div>
                 <div class="column">
+                  <ValidationProvider v-slot="{ errors, valid }">
+                    <b-field :label="$t('label.label')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
+                      <b-input v-model="metaEntryFlat['tileLabels.' + index/2]"></b-input>
+                    </b-field>
+                  </ValidationProvider>
+                </div>
+                <div class="column is-2">
                   <ValidationProvider rules="required|colorhexa" v-slot="{ errors, valid }">
                     <b-field :label="$t('label.color')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
                       <b-input maxlength="9" expanded v-model="metaEntryFlat[key.slice(0, -1) + '1']"></b-input>
