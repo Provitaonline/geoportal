@@ -412,7 +412,7 @@
             </div>
             <div v-for="(key, index) in Object.keys(metaEntryFlat).filter(k => k.includes('tileInfo.colorTable.'))">
               <div v-if="(index%2 == 0)" class="columns">
-                <div class="column is-narrow"><a @click="removeTablePair(key,'tileInfo.colorTable.')"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
+                <div class="column is-narrow"><a @click="removeTablePair(key,'tileInfo.colorTable.', index/2)"><font-awesome size="lg" :icon="['far', 'minus-square']"/></a></div>
                 <div class="column is-2">
                   <ValidationProvider rules="required|numeric" v-slot="{ errors, valid }">
                     <b-field :label="$t('label.value')" label-position="on-border" expanded :type="{ 'is-danger': errors[0] }" :message="errors">
@@ -623,9 +623,9 @@ export default {
     addTablePair(tablePrefix) {
       let nCats = Object.keys(this.metaEntryFlat).filter(k => k.includes(tablePrefix)).length/2
       this.$set(this.metaEntryFlat, tablePrefix + nCats + '.0', '')
-      this.$set(this.metaEntryFlat, tablePrefix + nCats + '.1', '')
+      this.$set(this.metaEntryFlat, tablePrefix + nCats + '.1', '#00000000')
     },
-    removeTablePair(cKey, tablePrefix) {
+    removeTablePair(cKey, tablePrefix, idx) {
       // First, delete item
       this.$delete(this.metaEntryFlat, cKey)
       this.$delete(this.metaEntryFlat, cKey.slice(0, -1) + '1')
@@ -642,6 +642,21 @@ export default {
           this.$delete(this.metaEntryFlat, prefix + sufix)
         }
       })
+
+      // Finally, remove associated tileLabels entry
+      if (idx != undefined) {
+        this.$delete(this.metaEntryFlat, 'tileLabels.' + idx)
+
+        // And compact the list
+        keys = Object.keys(this.metaEntryFlat).filter(k => k.includes('tileLabels'))
+        keys.forEach((key, i) => {
+          let sufix = key.split('.').pop()
+          if (i != sufix) {
+            this.$set(this.metaEntryFlat, 'tileLabels.' + i, this.metaEntryFlat[key])
+            this.$delete(this.metaEntryFlat, key)
+          }
+        })
+      }
     },
     async copyFromModel(model) {
       let savedFileName = this.metaEntryFlat.file
