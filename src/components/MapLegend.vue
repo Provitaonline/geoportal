@@ -14,8 +14,8 @@
         <div v-else>
           <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
           <div class="legend-item" v-for="legendItem in getColorList(index)">
-            <div class="legend-color-box" :style="'background:' + legendItem[1]"></div>
-            <div class="legend-subtitle">{{legendItem[0]}}</div>
+            <div v-if="isVisible(legendItem[1])" class="legend-color-box" :style="'background:' + legendItem[1]"></div>
+            <div v-if="isVisible(legendItem[1])" class="legend-subtitle">{{legendItem[0]}}</div>
           </div>
         </div>
       </div>
@@ -106,7 +106,9 @@
           return this.layerMeta[index].tileInfo.style.paint['fill-color'].stops
         } else {
           if (this.layerMeta[index].tileInfo.colorTable) {
-            return this.layerMeta[index].tileInfo.colorTable.map(item => [this.$t('label.pixelvalue') + ': ' + item[0], item[1]])
+            return this.layerMeta[index].tileInfo.colorTable.map((item, idx) => {
+              return this.layerMeta[index].tileLabels[idx] ? [this.layerMeta[index].tileLabels[idx], item[1]] : [this.$t('label.pixelvalue') + ': ' + item[0], item[1]]
+           })
           }
         }
         return []
@@ -116,6 +118,13 @@
           return this.layerMeta[index].tileInfo.style.paint['fill-color'][4] + ',' + this.layerMeta[index].tileInfo.style.paint['fill-color'][6]
         }
         return '#FFFFFF'
+      },
+      isVisible(color) {
+        if (color.length > 7) {
+          return color.substr(7, 2) != '00'
+        } else {
+          return true
+        }
       }
     },
     computed: {
