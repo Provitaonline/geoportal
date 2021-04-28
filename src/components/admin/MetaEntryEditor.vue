@@ -523,7 +523,7 @@ export default {
       listOfTileSourceFiles: [],
       selectedMetaModel: '',
       enableCopyModel: false,
-      addFillOutline: true
+      addFillOutline: false
     }
   },
   components: {
@@ -553,6 +553,9 @@ export default {
         this.savedTileInfo = JSON.stringify(result.tileInfo)
       }
       if (!this.metaEntryFlat.format) this.metaEntryFlat.format = this.metaEntry.format
+      if (this.metaEntryFlat['tileInfo.style.paint.fill-outline-color']) {
+        this.addFillOutline = true
+      }
       this.isLoading = false
     },
     acceptChanges() {
