@@ -187,7 +187,8 @@
       "copymeta": "Copy metadata from another file",
       "copy": "Copy",
       "tocopy": "Copy",
-      "label": "Label"
+      "label": "Label",
+      "addfilloutline": "Add a fill outline"
     }
   },
   "es": {
@@ -378,7 +379,8 @@
       "copymeta": "Copiar metadata de otro archivo",
       "copy": "Copia",
       "tocopy": "Copiar",
-      "label": "Etiqueta"
+      "label": "Etiqueta",
+      "addfilloutline": "Añadir un borde al relleno"
     }
   }
 }

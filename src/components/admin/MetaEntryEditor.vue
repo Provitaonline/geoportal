@@ -364,7 +364,13 @@
                   <b-input type="number" step="any" v-model.number="metaEntryFlat['tileInfo.style.paint.fill-opacity']"></b-input>
                 </b-field>
               </ValidationProvider>
-              <div class="columns">
+              <ValidationProvider>
+                <b-field class="field">
+                  <template slot="label">&nbsp;</template>
+                  <b-checkbox v-model="addFillOutline"><b>{{$t('label.addfilloutline')}}</b></b-checkbox>
+                </b-field>
+              </ValidationProvider>
+              <div v-if="addFillOutline" class="columns">
                 <div class="column">
                   <ValidationProvider rules="required|colorhex" v-slot="{ errors, valid }">
                     <b-field :label="$t('label.filloutlinecolor')" :type="{ 'is-danger': errors[0] }" :message="errors">
@@ -516,7 +522,8 @@ export default {
       isTileSourceLoading: false,
       listOfTileSourceFiles: [],
       selectedMetaModel: '',
-      enableCopyModel: false
+      enableCopyModel: false,
+      addFillOutline: true
     }
   },
   components: {
@@ -568,6 +575,10 @@ export default {
           }
         }
       })
+
+      if (!this.addFillOutline) {
+        delete this.metaEntryFlat['tileInfo.style.paint.fill-outline-color']
+      }
 
       let updatedMetaEntry = unflatten(this.metaEntryFlat)
 
