@@ -145,7 +145,10 @@ module.exports = {
       use: '@gridsome/plugin-google-analytics',
       options: {
         id: 'UA-64070309-6',
-        ignoreRoutes: ['/admin', '/en/admin']
+        ignoreRoutes: ['/admin', '/en/admin'],
+        autoTracking: {
+          transformQueryString: false
+        }
       }
     },
     {
