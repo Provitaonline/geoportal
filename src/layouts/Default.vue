@@ -123,6 +123,7 @@
 query {
   metadata {
     siteName
+    keywords
   }
 }
 </static-query>
@@ -239,6 +240,16 @@ export default {
     hasBanner: { type: Boolean, required: false, default: true },
     bannerText: { type: String },
     bannerImage: {type: Object }
+  },
+  metaInfo() {
+    return {
+      meta: [
+        {
+          property: 'keywords',
+          content: this.$static.metadata.keywords
+        }
+      ]
+    }
   },
   data() {
     return {
