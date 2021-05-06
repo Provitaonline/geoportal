@@ -10,6 +10,11 @@ const siteName = 'Geoportal Provita'
 module.exports = {
   siteUrl: siteUrl,
   siteName: siteName,
+  siteDescription: 'This Geoportal, created by Provita, makes available to the general public a variety of geospatial data sources about Venezuela.',
+  metadata: {
+    twitterId: '@provita_ong',
+    keywords: 'venezuela,geoportal,gis,maps,provita,conservation,ecology,ecosystems'
+  },
   plugins: [
     {
       use: '@gridsome/source-filesystem',
