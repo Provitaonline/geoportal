@@ -123,6 +123,8 @@
 query {
   metadata {
     siteName
+    siteDescription
+    siteUrl
     keywords
   }
 }
@@ -211,25 +213,6 @@ query {
     object-fit: cover;
   }
 
-
-  /*
-  ::v-deep .cookie__bar__buttons__button--accept {
-    background: $site-color;
-  }
-
-  ::v-deep .cookie__bar__buttons__button--accept:hover {
-    opacity: 0.8;
-  }
-
-  ::v-deep .cookie__bar__buttons__button--decline {
-    background: $danger;
-  }
-
-  ::v-deep .cookie__bar__buttons__button--decline:hover {
-    opacity: 0.8;
-  }
-  */
-
 </style>
 
 <script>
@@ -242,12 +225,27 @@ export default {
     bannerImage: {type: Object }
   },
   metaInfo() {
+    const schema = {
+      "@context": "http://schema.org/",
+      "type": "DataCatalog",
+      "description": this.$static.metadata.siteDescription,
+      "image": "https://geoportal.provita.org.ve/images/siteimage.jpg",
+      "name": this.$static.metadata.siteName,
+      "publisher": {
+        "type": "Organization",
+        "name": "Provita"
+      },
+      "url": "https://geoportal.provita.org.ve/"
+    }
     return {
       meta: [
         {
           property: 'keywords',
           content: this.$static.metadata.keywords
         }
+      ],
+      script: [
+        { innerHTML: JSON.stringify(schema), type: 'application/ld+json' }
       ]
     }
   },
