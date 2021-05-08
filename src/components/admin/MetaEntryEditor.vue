@@ -559,16 +559,15 @@ export default {
       this.isLoading = false
     },
     acceptChanges() {
-      //this.metaEntryFlat['format'] = (this.isShapefile) ? 'shapefile' : 'geotiff'
+      let tileSourceFile = this.isPdf ? this.metaEntryFlat.tileGenSrc : this.metaEntryFlat.file
+      this.metaEntryFlat['tiles'] = (tileSourceFile.replace(/\.[^/.]+$/, '')).toLowerCase()
+
       if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
         this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
         this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
       }
       this.metaEntryFlat.date = this.formDate.toISOString()
-
-      let tileSourceFile = this.isPdf ? this.metaEntryFlat.tileGenSrc : this.metaEntryFlat.file
-      this.metaEntryFlat.tiles = (tileSourceFile.replace(/\.[^/.]+$/, '')).toLowerCase()
 
       // Cleanup tileInfo paint elements
       Object.keys(this.metaEntryFlat).forEach(key => {
@@ -606,7 +605,6 @@ export default {
           job.directory = dataConfig.filesDirectory
         }
       }
-
       saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
         console.log('saved meta entry')
         this.$store.commit('setPublishIndicator', true)
