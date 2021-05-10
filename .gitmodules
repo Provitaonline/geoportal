@@ -3,3 +3,4 @@
 	path = data
 	url = https://github.com/Provitaonline/geoportal-data.git
 	merge
+  ignore = dirty
