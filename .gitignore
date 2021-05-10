@@ -13,3 +13,9 @@ static/rss*.xml
 
 # Local Netlify folder
 .netlify
+
+# Exclude data
+data/*
+
+# But keep folder
+!data/.gitkeep
