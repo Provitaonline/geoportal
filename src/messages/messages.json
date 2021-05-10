@@ -219,7 +219,7 @@
     },
     "label": {
       "main": "Página Principal",
-      "about": "Acerca De",
+      "about": "Acerca de",
       "contact": "Contacto",
       "admin": "Administración del portal",
       "adminabr": "Admin",
@@ -305,7 +305,7 @@
       "tilelayername": "Nombre de la capa de teselas",
       "help": "Ayuda",
       "faq": "Ayuda",
-      "faqlong": "Ayuda - preguntas frecuentes",
+      "faqlong": "Ayuda - Preguntas frecuentes",
       "news": "Noticias",
       "skipautogen": "Generación manual",
       "shapefile": "Shapefile",

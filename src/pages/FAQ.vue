@@ -64,6 +64,7 @@
   }
 
   .subject {
+    padding-top: 15px;
     color: $site-color;
   }
 
