@@ -7,7 +7,7 @@
     <div class="container">
       <div class="columns">
         <div class="column">
-          <div v-for="subject, idx in questionsBySubject">
+          <div v-for="subject, idx in questionsBySubject" class="subject-content">
             <div :id="'subject-' + idx" class="subject is-size-3 has-text-weight-bold">
               {{$t('label.faqsubjects')[idx]}}
             </div>
@@ -66,6 +66,10 @@
   .subject {
     padding-top: 15px;
     color: $site-color;
+  }
+
+  .subject-content {
+    padding-bottom: 30px;
   }
 
   .open-question {
