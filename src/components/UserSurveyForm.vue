@@ -77,9 +77,15 @@ export default {
         console.log('Submit survey data')
         this.surveyData.version = this.$static.userSurveyTemplate.version
         this.surveyData.languageCode = this.$i18n.locale.substr(0, 2)
-        sendSurvey(this.surveyData, this.$static.userSurveyTemplate.version)
-        localStorage.surveySubmitted = true
+        sendSurvey(this.surveyData, this.$static.userSurveyTemplate.version).then(() => {
+          localStorage.surveySubmitted = true
+          this.doDownload()
+        })
+      } else {
+        this.doDownload()
       }
+    },
+    doDownload() {
       document.getElementById('download-' + this.downloadFileIndex).click()
       this.$ga.event('files', 'downloaded', this.file)
     }
