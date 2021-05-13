@@ -121,6 +121,7 @@
           mapSwitcher = new MapboxStyleSwitcherControl(styles)
           this.map.addControl(mapSwitcher, 'top-right')
           this.locControls(this.$i18n.locale)
+          this.map.addControl(new Mapbox.ScaleControl())
           this.addLayers()
           this.map.on('styledata',() => {
             this.addLayers()
