@@ -259,36 +259,18 @@ export async function getAboutFromRepo(token) {
 
   let result = {}
 
-  dataConfig.aboutLocItems.forEach(async item => {
-    result[item.fieldName] = ''
+  let response = await oK.getContent(token, dataConfig.aboutFileName)
 
-    let response = await oK.getContent(token, dataConfig.aboutDirName + item.filePath)
-
-    if (response !== undefined) {
-      result[item.fieldName] = utf8.decode(base64.decode(response.data.content))
-    }
-
-    // Yank frontmatter
-    let idx = result[item.fieldName].substr(4).indexOf('---\n')
-    idx = (idx === -1) ? 0 : idx + 8
-    result[item.fieldName] = result[item.fieldName].substr(idx)
-  })
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+  }
   return result
 }
 
 export async function saveAbout(token, about) {
 
-  for (const idx in dataConfig.aboutLocItems) {
-    // Prepend frontmatter
-    about[dataConfig.aboutLocItems[idx].fieldName] = dataConfig.aboutLocItems[idx].frontMatter + about[dataConfig.aboutLocItems[idx].fieldName]
-
-    await oK.writeFile(
-      token,
-      dataConfig.aboutDirName + dataConfig.aboutLocItems[idx].filePath,
-      base64.encode(utf8.encode(about[dataConfig.aboutLocItems[idx].fieldName])),
-      'Updated about')
-  }
-  return
+  let response = await oK.writeFile(token, dataConfig.aboutFileName, base64.encode(utf8.encode(JSON.stringify(about, null, 2))), 'Updated about')
+  return response
 }
 
 export async function getContactFromRepo(token) {

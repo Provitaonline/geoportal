@@ -55,12 +55,8 @@ export const dataConfig = {
   surveyTemplateName: 'survey-template.json',
   faqFileName: 'faq.json',
   contactFileName: 'contact.json',
-  aboutDirName: 'about',
+  aboutFileName: 'about.json',
   newsDirName: 'news',
-  aboutLocItems: [
-    {fieldName: 'abouten', filePath: '/en-us/content.md', frontMatter: '---\ntitle: About\nlocale: en-us\n---\n'},
-    {fieldName: 'aboutes', filePath: '/es-ve/content.md', frontMatter: '---\ntitle: Acerca de\nlocale: es-ve\n---\n'}
-  ],
   deployHookUrl: 'https://api.netlify.com/build_hooks/5f613a7b19eca57156ffbe80',
   deployDatePath: '/deployDate.txt',
   geoIpLookupUrl: 'https://json.geoiplookup.io'

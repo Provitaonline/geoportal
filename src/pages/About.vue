@@ -3,7 +3,7 @@
     <template slot="banner">
       {{ $t('label.about') }}
     </template>
-    <div class="container" v-html="$page.about.edges[0].node.content"></div>
+    <div class="container" v-html="$page.aboutData.text[$i18n.locale.substr(0, 2)]"></div>
   </Layout>
 </template>
 
@@ -16,12 +16,11 @@
 </style>
 
 <page-query>
-  query($locale: String) {
-    about: allAboutData(filter: { locale: { eq: $locale }}) {
-      edges {
-        node {
-          content
-        }
+  query About {
+    aboutData: aboutData (id: "about") {
+      text {
+        en
+        es
       }
     }
   }

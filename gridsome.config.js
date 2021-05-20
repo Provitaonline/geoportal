@@ -26,11 +26,8 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
-        path: 'data/about/**/*.md',
-        typeName: 'AboutData',
-        remark:{
-          autolinkHeadings: false
-        }
+        path: 'data/about.json',
+        typeName: 'AboutData'
       }
     },
     {

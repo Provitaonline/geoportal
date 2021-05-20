@@ -11,12 +11,12 @@
         <div class="content">
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.aboutspanish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="about.aboutes" type="textarea"></b-input>
+              <b-input v-model="about.text.es" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.aboutenglish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="about.abouten" type="textarea"></b-input>
+              <b-input v-model="about.text.en" type="textarea"></b-input>
             </b-field>
           </ValidationProvider>
         </div>

@@ -65,6 +65,13 @@ module.exports = function (api) {
           return obj.text
         }
       },
+      AboutData: {
+        text(obj) {
+          obj.text.en = marked(obj.text.en)
+          obj.text.es = marked(obj.text.es)
+          return obj.text
+        }
+      }
     })
   })
 
