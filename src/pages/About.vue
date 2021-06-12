@@ -3,7 +3,7 @@
     <template slot="banner">
       {{ $t('label.about') }}
     </template>
-    <div class="container" v-html="$page.aboutData.text[$i18n.locale.substr(0, 2)]"></div>
+    <div class="container site-text" v-html="$page.aboutData.text[$i18n.locale.substr(0, 2)]"></div>
   </Layout>
 </template>
 
