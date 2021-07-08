@@ -56,7 +56,7 @@
 
 <script>
   import Vue from 'vue'
-  import Mapbox from 'mapbox-gl'
+  import Maplibre from 'maplibre-gl'
   import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
   import MapPopUpContent from '~/components/MapPopUpContent.vue'
   import MapLegend from '~/components/MapLegend.vue'
@@ -95,7 +95,7 @@
           this.$store.commit('setMapStyleUri', styles[0].uri)
         }
 
-        this.map = new Mapbox.Map({
+        this.map = new Maplibre.Map({
           container: 'map',
           style: this.$store.state.mapStyleUri,
           center: this.$store.state.mapView.center || mapConfig.mapCenter,
@@ -108,7 +108,7 @@
         })
         let mapSwitcher
         this.map.on('load',( () => {
-          this.map.addControl(new Mapbox.NavigationControl(), 'top-right')
+          this.map.addControl(new Maplibre.NavigationControl(), 'top-right')
           const resetView = new ResetViewControl({
             center: mapConfig.mapCenter,
             zoom: mapConfig.mapZoom,
@@ -121,7 +121,7 @@
           mapSwitcher = new MapboxStyleSwitcherControl(styles)
           this.map.addControl(mapSwitcher, 'top-right')
           this.locControls(this.$i18n.locale)
-          this.map.addControl(new Mapbox.ScaleControl())
+          this.map.addControl(new Maplibre.ScaleControl())
           this.addLayers()
           this.map.on('styledata',() => {
             this.addLayers()
@@ -293,7 +293,7 @@
             let mapPopUpContent = (new MapPopUpContentClass({
               propsData: {popUpItems: popUpItems, $i18n: this.$i18n}
             })).$mount()
-            new Mapbox.Popup()
+            new Maplibre.Popup()
               .setLngLat(e.lngLat)
               .setDOMContent(mapPopUpContent.$el)
               .addTo(this.map)
