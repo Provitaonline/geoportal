@@ -23,3 +23,12 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.site-text a:link {
+  color: $site-color;
+  text-decoration: underline;
+}
+
+.site-text a:hover {
+  color: $primary;
+}

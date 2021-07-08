@@ -80,7 +80,7 @@
                 </a>
                 <br><br>
               </div>
-              <div class="content" v-html="item.description[$i18n.locale.substr(0, 2)]"></div>
+              <div class="content site-text" v-html="item.description[$i18n.locale.substr(0, 2)]"></div>
             </div>
           </transition>
         </div>
