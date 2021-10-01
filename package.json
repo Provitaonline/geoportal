@@ -10,7 +10,7 @@
     "build": "npm run subm && npm run timestamp && gridsome build",
     "develop": "npm run subm && npm run timestamp && gridsome develop",
     "explore": "gridsome explore",
-    "subm": "BR=`git branch --show-current` && echo On branch $BR && echo GRIDSOME_BRANCH=$BR > .env && git submodule update --remote && cd data && git checkout $BR",
+    "subm": "export BR=`git branch --show-current` && echo On branch $BR && echo GRIDSOME_BRANCH=$BR > .env && git submodule update --remote && cd data && git checkout $BR",
     "timestamp": "echo `date -u \"+%FT%TZ\"`\\\\c > static/deployDate.txt"
   },
   "author": "Ricardo Morin",
