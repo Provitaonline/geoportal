@@ -58,6 +58,7 @@
     },
     created() {
       this.fileList = this.$page.allMetaData.edges.map(item => item.node)
+      console.log('Branch ', process.env.GRIDSOME_BRANCH)
     }
   }
 </script>
