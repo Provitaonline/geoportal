@@ -45,7 +45,6 @@ export const adminConfig = {
 }
 
 export const dataConfig = {
-  metaBaseUrl: 'https://raw.githubusercontent.com/Provitaonline/geoportal-data/master/',
   filesBaseUrl: 'https://' + awsConfig.bucket + '.s3-' + awsConfig.region + '.amazonaws.com/',
   filesDirectory: 'files',
   privateFilesDirectory: 'pfiles',

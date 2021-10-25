@@ -8,13 +8,6 @@ import * as oK from '~/utils/octokitwrapper'
 
 let parseString = require('xml2js').parseString
 
-
-// This retrieves meta from the github cache
-export async function getMetaEntries() {
-  let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.metaFileName)
-  return response
-}
-
 // This gets the size of a file
 export async function getFileSize(fileName) {
   let response = await axios.head(dataConfig.filesBaseUrl + dataConfig.filesDirectory + '/' + fileName)
