@@ -181,7 +181,7 @@ export default {
       })
     },
     publishSite() {
-      publishSite().then(() => {
+      publishSite(process.env.GRIDSOME_BRANCH).then(() => {
         console.log('site deploy requested')
         this.$store.commit('setPublishIndicator', false)
       }).catch(err => {

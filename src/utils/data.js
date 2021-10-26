@@ -8,6 +8,11 @@ import * as oK from '~/utils/octokitwrapper'
 
 let parseString = require('xml2js').parseString
 
+// Set the branch of the data repo
+export function setRepoBranch(branch) {
+  oK.setRepoBranch(branch)
+}
+
 // This gets the size of a file
 export async function getFileSize(fileName) {
   let response = await axios.head(dataConfig.filesBaseUrl + dataConfig.filesDirectory + '/' + fileName)
@@ -283,8 +288,8 @@ export async function saveContact(token, contact) {
   return response
 }
 
-export async function publishSite() {
-  let response = await axios.post(dataConfig.deployHookUrl, 'publish')
+export async function publishSite(branch) {
+  let response = await axios.post(dataConfig.deployHookUrl + '?trigger_branch=' + branch, 'publish')
   return response
 }
 

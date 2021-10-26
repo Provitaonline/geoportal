@@ -2,6 +2,12 @@ import { Octokit } from '@octokit/rest'
 
 import {adminConfig} from '~/utils/config'
 
+let repoBranch
+
+export function setRepoBranch(branch) {
+  repoBranch = branch
+}
+
 async function getSha(token, path) {
 
   let octokit = new Octokit({auth: token})
@@ -12,6 +18,7 @@ async function getSha(token, path) {
       owner: adminConfig.githubInfo.owner,
       repo: adminConfig.githubInfo.repo,
       path: path,
+      ref: repoBranch,
       headers: {'If-None-Match': ''}
     })
   } catch (err) {
@@ -36,6 +43,7 @@ export async function writeFile(token, path, content, message) {
       repo: adminConfig.githubInfo.repo,
       path: path,
       sha: sha,
+      branch: repoBranch,
       content: content,
       message: message
     })
@@ -54,6 +62,7 @@ export async function deleteFile(token, path) {
     repo: adminConfig.githubInfo.repo,
     path: path,
     sha: sha,
+    branch: repoBranch,
     message: 'Deleted file'
   })
 
@@ -61,6 +70,8 @@ export async function deleteFile(token, path) {
 }
 
 export async function getContent(token, path) {
+
+  console.log('repoBranch', repoBranch)
 
   let octokit = new Octokit({auth: token})
 
@@ -71,6 +82,7 @@ export async function getContent(token, path) {
       owner: adminConfig.githubInfo.owner,
       repo: adminConfig.githubInfo.repo,
       path: path,
+      ref: repoBranch,
       headers: {'If-None-Match': ''}
     })
   } catch (err) {
