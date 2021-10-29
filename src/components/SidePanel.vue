@@ -38,6 +38,22 @@
           </div>
           <transition name="slide">
             <div v-show="item.expanded" class="card-content">
+              <div v-if="item.collectionId" class="block has-text-centered has-text-weight-bold collection-heading">{{ $t('label.collection') }}</div>
+              <div class="columns" v-if="item.collectionId">
+                <div class="column is-narrow" style="display: flex; align-items: center;">
+                  <small><b>{{ $t('label.collectionitem') }}:</b></small>
+                </div>
+                <div class="column" style="padding-left: 0px;">
+                  <b-select @input="collectionItemSelectionChange(index)" v-model="item.currentCollectionItemId" size="is-small">
+                    <option
+                      v-for="collectionItem in item.collectionItemInfo"
+                      :value="collectionItem.collectionItemId"
+                      :key="collectionItem.collectionItemId">
+                      {{collectionItem.collectionItemId}}
+                    </option>
+                  </b-select>
+                </div>
+              </div>
               <div class="columns">
                 <div class="column">
                 <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
@@ -139,6 +155,11 @@
     border-bottom: 1px solid rgba(85,107,47, 0.2);
   }
 
+  .collection-heading {
+    color: $site-color;
+    background-color: #FAFAFA;
+  }
+
 </style>
 
 <script>
@@ -185,6 +206,11 @@
 
         this.$set(item, 'expanded', false)
         if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
+        if (item.isCollectionItem) {
+          item.currentCollectionItemId = item.collectionItemInfo[0].collectionItemId
+          item.file = item.collectionItemInfo[0].file
+          item.tiles = item.collectionItemInfo[0].tiles
+        }
         if (item.file) {
           if (!item.fileSize) {
             getFileSize(item.format + '/' + item.file).then((fileSize) => {
@@ -252,6 +278,22 @@
       },
       addTagToFilterList(tag) {
         if (!this.tags.includes(tag)) this.tags.push(tag)
+      },
+      collectionItemSelectionChange(index) {
+        let collectionItem = (this.sortedFileList[index].collectionItemInfo.find(it => it.collectionItemId === this.sortedFileList[index].currentCollectionItemId))
+
+        // Should we use $set on these?
+        let previousTiles = this.sortedFileList[index].tiles
+        this.sortedFileList[index].file = collectionItem.file
+        this.sortedFileList[index].tiles = collectionItem.tiles
+        getFileSize(this.sortedFileList[index].format + '/' + this.sortedFileList[index].file).then((fileSize) => {
+          this.$set(this.sortedFileList[index], 'fileSize', fileSize)
+        })
+        console.log(this.sortedFileList[index].layerShow)
+        if (this.sortedFileList[index].layerShow) {
+          this.$eventBus.$emit('removetilelayer', previousTiles)
+          this.$eventBus.$emit('addtilelayer', {tiles: this.sortedFileList[index].tiles, tileInfo: this.sortedFileList[index].tileInfo, source: this.sortedFileList[index].source})
+        }
       }
     },
     computed: {

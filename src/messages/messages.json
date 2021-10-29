@@ -188,7 +188,9 @@
       "copy": "Copy",
       "tocopy": "Copy",
       "label": "Label",
-      "addfilloutline": "Add a fill outline"
+      "addfilloutline": "Add a fill outline",
+      "collection": "Data set collection",
+      "collectionitem": "Collection item"
     }
   },
   "es": {
@@ -380,7 +382,9 @@
       "copy": "Copia",
       "tocopy": "Copiar",
       "label": "Etiqueta",
-      "addfilloutline": "Añadir un borde al relleno"
+      "addfilloutline": "Añadir un borde al relleno",
+      "collection": "Colección de archivos de datos",
+      "collectionitem": "Item de la colección"
     }
   }
 }
