@@ -289,7 +289,6 @@
         getFileSize(this.sortedFileList[index].format + '/' + this.sortedFileList[index].file).then((fileSize) => {
           this.$set(this.sortedFileList[index], 'fileSize', fileSize)
         })
-        console.log(this.sortedFileList[index].layerShow)
         if (this.sortedFileList[index].layerShow) {
           this.$eventBus.$emit('removetilelayer', previousTiles)
           this.$eventBus.$emit('addtilelayer', {tiles: this.sortedFileList[index].tiles, tileInfo: this.sortedFileList[index].tileInfo, source: this.sortedFileList[index].source})

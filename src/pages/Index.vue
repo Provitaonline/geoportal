@@ -89,7 +89,6 @@
         } else {
           let collection = this.$page.collectionsData.collections.find(c => c.collectionId === item.node.collectionId)
           let idx = this.fileList.findIndex(el => el.collectionId === item.node.collectionId)
-          console.log(item.node.collectionItemId)
           if (idx === -1) {
             this.fileList.push({
               collectionItemInfo: [{collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles}],
@@ -101,7 +100,6 @@
           }
         }
       })
-      console.log(this.fileList)
       console.log('Branch ', process.env.GRIDSOME_BRANCH)
     }
   }
