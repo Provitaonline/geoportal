@@ -5,14 +5,14 @@
       <div v-for="item, index in layerMeta" class="column" v-bind:class="colSizeLimit" v-if="showLayerLegend(index)">
         <div class="legend-item" v-if="isSingleColor(index)">
           <div class="legend-color-box" :style="'background:' + getColor(index)"></div>
-          <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
+          <div class="legend-title">{{getLegendTitle(item)}}</div>
         </div>
         <div class="legend-item" v-else-if="isColorGradient(index)">
           <div class="legend-color-box" :style="'background-image: linear-gradient(to right,' + getColorGradient(index) + ');'"></div>
-          <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
+          <div class="legend-title">{{getLegendTitle(item)}}</div>
         </div>
         <div v-else>
-          <div class="legend-title">{{item.name[$i18n.locale.substr(0, 2)]}}</div>
+          <div class="legend-title">{{getLegendTitle(item)}}</div>
           <div class="legend-item" v-for="legendItem in getColorList(index)">
             <div v-if="isVisible(legendItem[1])" class="legend-color-box" :style="'background:' + legendItem[1]"></div>
             <div v-if="isVisible(legendItem[1])" class="legend-subtitle">{{legendItem[0]}}</div>
@@ -125,6 +125,9 @@
         } else {
           return true
         }
+      },
+      getLegendTitle(item) {
+        return (item.name[this.$i18n.locale.substr(0, 2)] + (item.isCollectionItem ? ' - ' + item.currentCollectionItemId : ''))
       }
     },
     computed: {

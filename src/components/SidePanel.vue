@@ -282,7 +282,6 @@
       collectionItemSelectionChange(index) {
         let collectionItem = (this.sortedFileList[index].collectionItemInfo.find(it => it.collectionItemId === this.sortedFileList[index].currentCollectionItemId))
 
-        // Should we use $set on these?
         let previousTiles = this.sortedFileList[index].tiles
         this.sortedFileList[index].file = collectionItem.file
         this.sortedFileList[index].tiles = collectionItem.tiles
@@ -290,7 +289,9 @@
           this.$set(this.sortedFileList[index], 'fileSize', fileSize)
         })
         if (this.sortedFileList[index].layerShow) {
+          this.sortedFileList[index].layerShow = false
           this.$eventBus.$emit('removetilelayer', previousTiles)
+          this.sortedFileList[index].layerShow = true
           this.$eventBus.$emit('addtilelayer', {tiles: this.sortedFileList[index].tiles, tileInfo: this.sortedFileList[index].tileInfo, source: this.sortedFileList[index].source})
         }
       }
