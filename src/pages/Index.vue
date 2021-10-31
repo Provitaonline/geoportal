@@ -82,6 +82,7 @@
       InteractiveMap
     },
     created() {
+      console.log(this.fileList)
       this.fileList = []
       this.$page.allMetaData.edges.forEach(item => {
         if (!item.node.isCollectionItem) {
@@ -90,11 +91,8 @@
           let collection = this.$page.collectionsData.collections.find(c => c.collectionId === item.node.collectionId)
           let idx = this.fileList.findIndex(el => el.collectionId === item.node.collectionId)
           if (idx === -1) {
-            this.fileList.push({
-              collectionItemInfo: [{collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles}],
-              isCollectionItem: true,
-              ...collection
-            })
+            let cII = {collectionItemInfo: [{collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles}]}
+            this.fileList.push(Object.assign(item.node, collection, cII))
           } else {
             this.fileList[idx].collectionItemInfo.push({collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles})
           }

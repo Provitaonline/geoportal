@@ -187,7 +187,7 @@
       }
     },
     created() {
-      this.fileList.forEach(item => {
+      this.fileList.forEach((item, index) => {
         // Auto add format as keyword
         if (!item.keywords['en'].includes(item.format)) item.keywords['en'].push(item.format)
         if (!item.keywords['es'].includes(item.format)) item.keywords['es'].push(item.format)
@@ -204,12 +204,13 @@
         })
         this.filteredTags = this.allKeywords[this.locale]
 
-        this.$set(item, 'expanded', false)
+        if (item.expanded === undefined) {
+          this.$set(item, 'expanded', false)
+        }
         if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
         if (item.isCollectionItem) {
-          item.currentCollectionItemId = item.collectionItemInfo[0].collectionItemId
-          item.file = item.collectionItemInfo[0].file
-          item.tiles = item.collectionItemInfo[0].tiles
+          item.currentCollectionItemId = ((item.currentCollectionItemId === undefined) ? item.collectionItemInfo[0].collectionItemId : item.currentCollectionItemId)
+          this.collectionItemSelectionChange(index)
         }
         if (item.file) {
           if (!item.fileSize) {
