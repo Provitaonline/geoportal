@@ -44,7 +44,7 @@
                   <small><b>{{ $t('label.collectionitem') }}:</b></small>
                 </div>
                 <div class="column" style="padding-left: 0px;">
-                  <b-select @input="collectionItemSelectionChange(index)" v-model="item.currentCollectionItemId" size="is-small">
+                  <b-select @input="collectionItemSelectionChange(item)" v-model="item.currentCollectionItemId" size="is-small">
                     <option
                       v-for="collectionItem in item.collectionItemInfo"
                       :value="collectionItem.collectionItemId"
@@ -210,7 +210,7 @@
         if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
         if (item.isCollectionItem) {
           item.currentCollectionItemId = ((item.currentCollectionItemId === undefined) ? item.collectionItemInfo[0].collectionItemId : item.currentCollectionItemId)
-          this.collectionItemSelectionChange(index)
+          this.collectionItemSelectionChange(item)
         }
         if (item.file) {
           if (!item.fileSize) {
@@ -280,20 +280,20 @@
       addTagToFilterList(tag) {
         if (!this.tags.includes(tag)) this.tags.push(tag)
       },
-      collectionItemSelectionChange(index) {
-        let collectionItem = (this.sortedFileList[index].collectionItemInfo.find(it => it.collectionItemId === this.sortedFileList[index].currentCollectionItemId))
+      collectionItemSelectionChange(item) {
+        let collectionItem = (item.collectionItemInfo.find(it => it.collectionItemId === item.currentCollectionItemId))
 
-        let previousTiles = this.sortedFileList[index].tiles
-        this.sortedFileList[index].file = collectionItem.file
-        this.sortedFileList[index].tiles = collectionItem.tiles
-        getFileSize(this.sortedFileList[index].format + '/' + this.sortedFileList[index].file).then((fileSize) => {
-          this.$set(this.sortedFileList[index], 'fileSize', fileSize)
+        let previousTiles = item.tiles
+        item.file = collectionItem.file
+        item.tiles = collectionItem.tiles
+        getFileSize(item.format + '/' + item.file).then((fileSize) => {
+          this.$set(item, 'fileSize', fileSize)
         })
-        if (this.sortedFileList[index].layerShow) {
-          this.sortedFileList[index].layerShow = false
+        if (item.layerShow) {
+          item.layerShow = false
           this.$eventBus.$emit('removetilelayer', previousTiles)
-          this.sortedFileList[index].layerShow = true
-          this.$eventBus.$emit('addtilelayer', {tiles: this.sortedFileList[index].tiles, tileInfo: this.sortedFileList[index].tileInfo, source: this.sortedFileList[index].source})
+          item.layerShow = true
+          this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo, source: item.source})
         }
       }
     },

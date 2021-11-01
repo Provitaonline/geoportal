@@ -82,7 +82,6 @@
       InteractiveMap
     },
     created() {
-      console.log(this.fileList)
       this.fileList = []
       this.$page.allMetaData.edges.forEach(item => {
         if (!item.node.isCollectionItem) {
