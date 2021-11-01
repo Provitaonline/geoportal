@@ -186,6 +186,24 @@ export async function saveFAQ(token, FAQ) {
   return response
 }
 
+export async function getCollectionsFromRepo(token) {
+  let result = {}
+
+  let response = await oK.getContent(token, dataConfig.collectionsFileName)
+
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+  }
+  return result
+}
+
+export async function saveCollections(token, FAQ) {
+
+  let response = await oK.writeFile(token, dataConfig.collectionsFileName, base64.encode(utf8.encode(JSON.stringify(FAQ, null, 2))), 'Updated Collections')
+
+  return response
+}
+
 async function getNewsItem(key) {
   let response = await axios.get(dataConfig.filesBaseUrl + key)
   return response.data

@@ -71,8 +71,6 @@ export async function deleteFile(token, path) {
 
 export async function getContent(token, path) {
 
-  console.log('repoBranch', repoBranch)
-
   let octokit = new Octokit({auth: token})
 
   let response

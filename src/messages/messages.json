@@ -190,7 +190,10 @@
       "label": "Label",
       "addfilloutline": "Add a fill outline",
       "collection": "Data set collection",
-      "collectionitem": "Collection item"
+      "collectionitem": "Collection item",
+      "collections": "Collections",
+      "collectionid": "Collection Id",
+      "collectionname": "Collection name"
     }
   },
   "es": {
@@ -384,7 +387,10 @@
       "label": "Etiqueta",
       "addfilloutline": "Añadir un borde al relleno",
       "collection": "Colección de archivos de datos",
-      "collectionitem": "Item de la colección"
+      "collectionitem": "Item de la colección",
+      "collections": "Colecciones",
+      "collectionid": "Id de la colección",
+      "collectionname": "Nombre de la colección"
     }
   }
 }

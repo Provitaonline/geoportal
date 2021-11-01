@@ -21,6 +21,9 @@
             </b-tab-item>
           </b-tabs>
         </b-tab-item>
+        <b-tab-item value="collections" :label="$t('label.collections')">
+          <AdminCollectionsTab />
+        </b-tab-item>
         <b-tab-item value="news" :label="$t('label.news')">
           <AdminNewsTab />
         </b-tab-item>
@@ -78,6 +81,7 @@ import AdminNewsTab from '~/components/admin/AdminNewsTab'
 import AdminSurveyTab from '~/components/admin/AdminSurveyTab'
 import AdminFAQTab from '~/components/admin/AdminFAQTab'
 import AdminMoreTab from '~/components/admin/AdminMoreTab'
+import AdminCollectionsTab from '~/components/admin/AdminCollectionsTab'
 
 export default {
   metaInfo() {
@@ -97,7 +101,8 @@ export default {
     AdminNewsTab,
     AdminSurveyTab,
     AdminFAQTab,
-    AdminMoreTab
+    AdminMoreTab,
+    AdminCollectionsTab
   },
   created() {
     if (this.$route.query.token) {
