@@ -20,8 +20,8 @@
               </b-field>
             </ValidationProvider>
           </div>
-          <!-- The below needs to go in a component -->
           <CommonMeta :commonMetaFlat="metaCollectionFlat"/>
+          <CommonTileInfo :commonMetaFlat="metaCollectionFlat"/>
         </div>
       </div>
 
@@ -41,6 +41,8 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import CommonMeta from '~/components/admin/CommonMeta.vue'
+import CommonTileInfo from '~/components/admin/CommonTileInfo.vue'
+
 import * as validation from '~/utils/validation'
 
 let flatten = require('flat')
@@ -61,7 +63,8 @@ export default {
   components: {
     ValidationObserver,
     ValidationProvider,
-    CommonMeta
+    CommonMeta,
+    CommonTileInfo
   },
   beforeCreate() {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
@@ -71,6 +74,7 @@ export default {
   },
   methods: {
     acceptChanges() {
+      this.c = unflatten(this.metaCollectionFlat)
       this.$eventBus.$emit('acceptcollectionchanges', this.c)
       this.$parent.close()
     }
