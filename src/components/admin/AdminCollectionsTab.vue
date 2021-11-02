@@ -3,7 +3,7 @@
     <b-loading v-model="isLoading"></b-loading>
     <div class="buttons" style="justify-content: center;">
       <b-button @click="confirmDelete()" style="width: 160px;" :disabled="!collectionListCheckedRows.length"><font-awesome :icon="['fas', 'trash-alt']"/>&nbsp;{{$t('label.removechecked')}}</b-button>
-      <b-button @click="addCollection()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addquestion')}}</b-button>
+      <b-button @click="addCollection()" style="width: 160px;"><font-awesome :icon="['fas', 'plus']"/>&nbsp;{{$t('label.addcollection')}}</b-button>
       <b-button @click="saveChanges()" style="width: 160px;" :disabled="!isChanged" :type="isChanged ? 'is-warning' : ''"><font-awesome :icon="['fas', 'cloud-upload-alt']"/>&nbsp;{{$t('label.savechanges')}}</b-button>
     </div>
     <b-table style="cursor: grab;"
@@ -35,7 +35,7 @@
 
 <script>
   import {getCollectionsFromRepo, saveCollections} from '~/utils/data'
-  //import CollectionsEditor from '~/components/admin/CollectionsEditor'
+  import CollectionEditor from '~/components/admin/CollectionEditor'
 
   export default {
     name: 'AdminCollectionsTab',
@@ -71,23 +71,24 @@
         }
       },
       editCollection(index) {
-        /*this.isNew = false
+        this.isNew = false
         this.currentIndex = index
-        this.openCollectionsEditor(JSON.parse(JSON.stringify(this.Collections.collections[index])))*/
+        this.openCollectionEditor(JSON.parse(JSON.stringify(this.Collections.collections[index])))
       },
       addCollection() {
-        /*this.isNew = true
-        this.openCollectionsEditor({collectionId: ''})*/
+        this.isNew = true
+        this.openCollectionEditor({collectionId: ''})
       },
-      openCollectionsEditor(collection) {
-        /*this.$buefy.modal.open({
+      openCollectionEditor(collection) {
+        console.log(collection)
+        this.$buefy.modal.open({
           parent: this,
           canCancel: ['escape', 'x'],
-          component: CollectionsEditor,
+          component: CollectionEditor,
           props: {
-            Collection: collection
+            collection: collection
           }
-        }) */
+        })
       },
       acceptCollectionChanges(question) {
         this.isChanged = true
@@ -110,13 +111,13 @@
         })
       },
       saveChanges() {
-        saveCollections(sessionStorage.githubtoken, this.Collections).then(() => {
+        /*saveCollections(sessionStorage.githubtoken, this.Collections).then(() => {
           console.log('saved collections')
           this.isChanged = false
           this.$store.commit('setPublishIndicator', true)
         }).catch((e) => {
           console.log('error saving collections to github ', e)
-        })
+        }) */
       },
       deleteCollections() {
         this.Collections.collections = this.Collections.collections.filter(x => !this.collectionListCheckedRows.includes(x))

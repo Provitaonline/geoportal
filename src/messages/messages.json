@@ -193,7 +193,9 @@
       "collectionitem": "Collection item",
       "collections": "Collections",
       "collectionid": "Collection Id",
-      "collectionname": "Collection name"
+      "collectionname": "Collection name",
+      "addcollection": "Add collection",
+      "newcollection": "New collection"
     }
   },
   "es": {
@@ -390,7 +392,9 @@
       "collectionitem": "Item de la colección",
       "collections": "Colecciones",
       "collectionid": "Id de la colección",
-      "collectionname": "Nombre de la colección"
+      "collectionname": "Nombre de la colección",
+      "addcollection": "Añadir colección",
+      "newcollection": "Colección nueva"
     }
   }
 }
