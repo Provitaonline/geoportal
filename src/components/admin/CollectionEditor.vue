@@ -24,7 +24,6 @@
           <CommonTileInfo :commonMetaFlat="metaCollectionFlat"/>
         </div>
       </div>
-
     </ValidationObserver>
   </div>
 </template>

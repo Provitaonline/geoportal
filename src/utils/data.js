@@ -193,6 +193,10 @@ export async function getCollectionsFromRepo(token) {
 
   if (response !== undefined) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+    result.collections = result.collections.map(c => {
+      c.tileInfo = JSON.parse(c.tileInfo)
+      return c
+    })
   }
   return result
 }
