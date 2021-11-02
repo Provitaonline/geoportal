@@ -21,18 +21,7 @@
             </ValidationProvider>
           </div>
           <!-- The below needs to go in a component -->
-          <div>
-            <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-              <b-field :label="$t('label.titlespanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
-                <b-input v-model="metaCollectionFlat['name.es']"></b-input>
-              </b-field>
-            </ValidationProvider>
-            <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-              <b-field :label="$t('label.titleenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
-                <b-input v-model="metaCollectionFlat['name.en']"></b-input>
-              </b-field>
-            </ValidationProvider>
-          </div>
+          <CommonMeta :commonMetaFlat="metaCollectionFlat"/>
         </div>
       </div>
 
@@ -51,6 +40,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import CommonMeta from '~/components/admin/CommonMeta.vue'
 import * as validation from '~/utils/validation'
 
 let flatten = require('flat')
@@ -70,7 +60,8 @@ export default {
   },
   components: {
     ValidationObserver,
-    ValidationProvider
+    ValidationProvider,
+    CommonMeta
   },
   beforeCreate() {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
