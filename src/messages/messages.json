@@ -197,7 +197,8 @@
       "collectionid": "Collection Id",
       "collectionname": "Collection name",
       "addcollection": "Add collection",
-      "newcollection": "New collection"
+      "newcollection": "New collection",
+      "iscollectionitem": "This file is a collection item"
     }
   },
   "es": {
@@ -398,7 +399,8 @@
       "collectionid": "Id de la colección",
       "collectionname": "Nombre de la colección",
       "addcollection": "Añadir colección",
-      "newcollection": "Colección nueva"
+      "newcollection": "Colección nueva",
+      "iscollectionitem": "Este archivo forma parte de una colección"
     }
   }
 }

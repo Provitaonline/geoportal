@@ -55,7 +55,7 @@ export async function getMetaFromRepo(token, file) {
   if (response !== undefined) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
     // Need to unpack tileInfo back to object
-    result.tileInfo = JSON.parse(result.tileInfo)
+    if (result.tileInfo) result.tileInfo = JSON.parse(result.tileInfo)
   }
   return result
 }
