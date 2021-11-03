@@ -3,7 +3,7 @@
     <p class="is-size-5 has-text-weight-bold">{{$t('label.tiledisplay')}}</p>
     <ValidationProvider rules="required" v-slot="{ errors, valid }">
       <b-field :label="$t('label.tiletype')" :type="{ 'is-danger': errors[0] }" :message="errors">
-        <b-select v-model="commonMetaFlat['tileInfo.type']" value="vector">
+        <b-select @input="cleanMeta($event)" v-model="commonMetaFlat['tileInfo.type']" value="vector">
           <option value="raster">{{$t('label.raster')}}</option>
           <option value="vector">{{$t('label.vector')}}</option>
         </b-select>
@@ -373,7 +373,7 @@ export default {
   },
   data() {
     return {
-      addFillOutline: false
+      //addFillOutline: false
       //formDate: null
     }
   },
@@ -385,6 +385,9 @@ export default {
     validation.localize(this.$i18n.locale.toString().substr(0,2))
   },
   created() {
+    /*if (this.commonMetaFlat['tileInfo.style.paint.fill-outline-color']) {
+      this.addFillOutline = true
+    } */
   },
   methods: {
     inputColor(e, item) {
@@ -457,6 +460,13 @@ export default {
         })
       }
     },
+    cleanMeta(value) {
+      Object.keys(this.commonMetaFlat).forEach(key => {
+        if (key.startsWith('tileInfo.') && key !== 'tileInfo.type') {
+          this.$delete(this.commonMetaFlat, key)
+        }
+      })
+    }
   },
   computed: {
     colorMethod: {
@@ -482,6 +492,15 @@ export default {
         this.$set(this.commonMetaFlat, 'tileInfo.style.paint.fill-color', '')
       }
     },
+    addFillOutline: {
+      get() {
+        return (this.commonMetaFlat['tileInfo.style.paint.fill-outline-color'] !== undefined) ? true : false
+      },
+      set(val) {
+        if (val) this.$set(this.commonMetaFlat, 'tileInfo.style.paint.fill-outline-color', '')
+        else this.$delete(this.commonMetaFlat, 'tileInfo.style.paint.fill-outline-color')
+      }
+    }
   }
 }
 </script>
