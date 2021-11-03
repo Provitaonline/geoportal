@@ -201,9 +201,18 @@ export async function getCollectionsFromRepo(token) {
   return result
 }
 
-export async function saveCollections(token, FAQ) {
+export async function saveCollections(token, Collections) {
 
-  let response = await oK.writeFile(token, dataConfig.collectionsFileName, base64.encode(utf8.encode(JSON.stringify(FAQ, null, 2))), 'Updated Collections')
+  // Make a copy to avoid clobbering tileInfo
+  Collections = JSON.parse(JSON.stringify(Collections))
+
+  Collections.collections = Collections.collections.map(c => {
+    c.tileInfo = JSON.stringify(c.tileInfo)
+    return c
+  })
+  console.log(Collections)
+
+  let response = await oK.writeFile(token, dataConfig.collectionsFileName, base64.encode(utf8.encode(JSON.stringify(Collections, null, 2))), 'Updated Collections')
 
   return response
 }

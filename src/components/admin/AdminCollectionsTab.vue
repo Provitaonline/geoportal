@@ -101,8 +101,8 @@
       confirmDelete() {
         console.log('confirm delete')
         this.$buefy.dialog.confirm({
-          title: this.$t('message.removequestions'),
-          message: this.$t('message.removequestionswarning'),
+          title: this.$t('message.removecollections'),
+          message: this.$t('message.removecollectionswarning'),
           confirmText: this.$t('label.confirm'),
           cancelText: this.$t('label.cancel'),
           type: 'none',
@@ -111,13 +111,13 @@
         })
       },
       saveChanges() {
-        /*saveCollections(sessionStorage.githubtoken, this.Collections).then(() => {
+        saveCollections(sessionStorage.githubtoken, this.Collections).then(() => {
           console.log('saved collections')
           this.isChanged = false
           this.$store.commit('setPublishIndicator', true)
         }).catch((e) => {
           console.log('error saving collections to github ', e)
-        }) */
+        })
       },
       deleteCollections() {
         this.Collections.collections = this.Collections.collections.filter(x => !this.collectionListCheckedRows.includes(x))
