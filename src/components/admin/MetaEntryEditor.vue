@@ -23,6 +23,18 @@
               </b-field>
             </div>
           </div>
+          <div v-if="metaEntryFlat['isCollectionItem']">
+            <ValidationProvider :rules="'required|oneOf:' + listOfCollectionIds.join()" v-slot="{ errors, valid }">
+              <b-field :label="$t('label.collectionid')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                <b-autocomplete :data="filteredListOfCollectionIds" :placeholder="$t('label.collectionid')" v-model="metaEntryFlat['collectionId']" open-on-focus clearable></b-autocomplete>
+              </b-field>
+            </ValidationProvider>
+            <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+              <b-field :label="$t('label.collectionitem')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                <b-input v-model="metaEntryFlat['collectionItemId']"></b-input>
+              </b-field>
+            </ValidationProvider>
+          </div>
           <div v-if="!metaEntryFlat['isCollectionItem']">
             <hr>
             <b-field>
@@ -526,7 +538,8 @@ export default {
   name: 'MetaEntryEditor',
   props: {
     metaEntry: { type: Object, required: true },
-    listOfModelCandidates: {type: Array, required: true }
+    collections: { type: Array, required: true },
+    listOfModelCandidates: { type: Array, required: true }
   },
   data() {
     return {
@@ -538,7 +551,8 @@ export default {
       listOfTileSourceFiles: [],
       selectedMetaModel: '',
       enableCopyModel: false,
-      addFillOutline: false
+      addFillOutline: false,
+      listOfCollectionIds: []
     }
   },
   components: {
@@ -557,6 +571,7 @@ export default {
         this.isTileSourceLoading = false
       })
     }
+    this.listOfCollectionIds = this.collections.map(c => c.collectionId)
   },
   methods: {
     async populateForm(file) {
@@ -792,6 +807,9 @@ export default {
     },
     filteredListOfTileSourceFiles() {
       return this.listOfTileSourceFiles.filter(item => !this.metaEntryFlat.tileGenSrc || item.toLowerCase().includes(this.metaEntryFlat.tileGenSrc.trim().toLowerCase()))
+    },
+    filteredListOfCollectionIds() {
+      return this.listOfCollectionIds.filter(item => !this.metaEntryFlat.collectionId || item.toLowerCase().includes(this.metaEntryFlat.collectionId.trim().toLowerCase()))
     }
   }
 }
