@@ -13,12 +13,25 @@
       </div>
       <div class="card-content">
         <div class="content">
-          <div>
-            <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-              <b-field :label="$t('label.collectionid')" :type="{ 'is-danger': errors[0] }" :message="errors">
-                <b-input v-model="metaCollectionFlat['collectionId']"></b-input>
-              </b-field>
-            </ValidationProvider>
+          <div class="columns">
+            <div class="column">
+              <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.collectionid')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaCollectionFlat['collectionId']"></b-input>
+                </b-field>
+              </ValidationProvider>
+            </div>
+            <div class="column">
+              <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.format')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-select v-model="metaCollectionFlat['format']" value="shapefile">
+                    <option value="shapefile">{{$t('label.shapefile')}}</option>
+                    <option value="geotiff">{{$t('label.geotiff')}}</option>
+                    <option value="pdf">{{$t('label.pdf')}}</option>
+                  </b-select>
+                </b-field>
+              </ValidationProvider>
+            </div>
           </div>
           <CommonMeta :commonMetaFlat="metaCollectionFlat"/>
           <CommonTileInfo :commonMetaFlat="metaCollectionFlat"/>
