@@ -113,6 +113,7 @@
             <b-field :label="$t('label.tilegensrc')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-autocomplete autocomplete="nope" :data="filteredListOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus :loading="isTileSourceLoading"></b-autocomplete>
             </b-field>
+            <br><br><br><br>
           </ValidationProvider>
           <div v-if="!metaEntryFlat['isCollectionItem']">
             <div class="columns">
@@ -564,14 +565,18 @@ export default {
   },
   async created() {
     await this.populateForm(this.metaEntry.file)
-    if (this.isPdf) {
-      this.isTileSourceLoading = true
-      getListOfStoredFiles(false).then((result) => {
-        this.listOfTileSourceFiles = result.map(f => f.name)
-        this.isTileSourceLoading = false
-      })
+    this.isTileSourceLoading = true
+    getListOfStoredFiles(false).then((result) => {
+      this.listOfTileSourceFiles = result.map(f => f.name)
+      this.isTileSourceLoading = false
+    })
+    // Only include collections with compatible file formats
+    if (this.metaEntryFlat.isCollectionItem) {
+      let f = this.collections.find(c => c.collectionId === this.metaEntryFlat.collectionId).format
+      this.listOfCollectionIds = this.collections.filter(c => c.format === f).map(c => c.collectionId)
+    } else {
+      this.listOfCollectionIds = this.collections.filter(c => c.format === this.metaEntryFlat.format).map(c => c.collectionId)
     }
-    this.listOfCollectionIds = this.collections.map(c => c.collectionId)
   },
   methods: {
     async populateForm(file) {
@@ -593,53 +598,78 @@ export default {
       let tileSourceFile = this.isPdf ? this.metaEntryFlat.tileGenSrc : this.metaEntryFlat.file
       this.metaEntryFlat['tiles'] = (tileSourceFile.replace(/\.[^/.]+$/, '')).toLowerCase()
 
-      if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
-        this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
-        this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
-        this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
-      }
-      this.metaEntryFlat.date = this.formDate.toISOString()
+      let updatedMetaEntry
+      let job = null
 
-      // Cleanup tileInfo paint elements
-      Object.keys(this.metaEntryFlat).forEach(key => {
-        if (key.startsWith('tileInfo.style.paint.')) {
-          if (!key.startsWith('tileInfo.style.paint.' + this.metaEntryFlat['tileInfo.style.type'])) {
-            delete this.metaEntryFlat[key]
+      if (this.metaEntryFlat.isCollectionItem) {
+        updatedMetaEntry = unflatten(this.metaEntryFlat)
+        delete updatedMetaEntry.name
+        delete updatedMetaEntry.source
+        delete updatedMetaEntry.keywords
+        delete updatedMetaEntry.description
+        delete updatedMetaEntry.format
+        delete updatedMetaEntry.date
+        delete updatedMetaEntry.tileInfo
+
+        // TODO: Prep job sumission for collectionitem raster tile generation
+
+      } else {
+
+        // Remember to get rid of these
+        if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
+          this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
+          this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
+          this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
+        }
+
+        this.metaEntryFlat.date = this.formDate.toISOString()
+
+        // Cleanup tileInfo paint elements
+        Object.keys(this.metaEntryFlat).forEach(key => {
+          if (key.startsWith('tileInfo.style.paint.')) {
+            if (!key.startsWith('tileInfo.style.paint.' + this.metaEntryFlat['tileInfo.style.type'])) {
+              delete this.metaEntryFlat[key]
+            }
+          }
+        })
+
+        if (!this.addFillOutline) {
+          delete this.metaEntryFlat['tileInfo.style.paint.fill-outline-color']
+        }
+
+        updatedMetaEntry = unflatten(this.metaEntryFlat)
+
+        delete updatedMetaEntry.isCollectionItem
+        delete updatedMetaEntry.collectionId
+        delete updatedMetaEntry.collectionItemId
+
+        if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'vector') {
+          delete updatedMetaEntry.tileInfo.colorTable
+        } else {
+          delete updatedMetaEntry.tileInfo.style
+          delete updatedMetaEntry.tileInfo.displayAttribute
+        }
+        //let metaEntry = unflatten(this.metaEntryFlat)
+        if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
+          if (updatedMetaEntry.tileInfo.colorTable && updatedMetaEntry.tileInfo.hideNoData) {
+            updatedMetaEntry.tileInfo.colorTable.push(['nv', '#ffffff00'])
+          }
+          job = {tileInfo: updatedMetaEntry.tileInfo}
+          if (updatedMetaEntry.tileGenSrc) {
+            job.file = updatedMetaEntry.tileGenSrc
+            job.directory = dataConfig.privateFilesDirectory
+          } else {
+            job.file = updatedMetaEntry.file
+            job.directory = dataConfig.filesDirectory
           }
         }
-      })
-
-      if (!this.addFillOutline) {
-        delete this.metaEntryFlat['tileInfo.style.paint.fill-outline-color']
       }
 
-      let updatedMetaEntry = unflatten(this.metaEntryFlat)
-
-      if (updatedMetaEntry.tileInfo === 'vector') {
-        delete updatedMetaEntry.tileInfo.colorTable
-      } else {
-        delete updatedMetaEntry.tileInfo.style
-        delete updatedMetaEntry.tileInfo.displayAttribute
-      }
-      let metaEntry = unflatten(this.metaEntryFlat)
-      let job = null
-      if (updatedMetaEntry.tileInfo && updatedMetaEntry.tileInfo.type === 'raster' && (!updatedMetaEntry.tileInfo.skipAutoGen) && (JSON.stringify(updatedMetaEntry.tileInfo) !== this.savedTileInfo)) {
-        if (updatedMetaEntry.tileInfo.colorTable && updatedMetaEntry.tileInfo.hideNoData) {
-          updatedMetaEntry.tileInfo.colorTable.push(['nv', '#ffffff00'])
-        }
-        job = {tileInfo: updatedMetaEntry.tileInfo}
-        if (updatedMetaEntry.tileGenSrc) {
-          job.file = updatedMetaEntry.tileGenSrc
-          job.directory = dataConfig.privateFilesDirectory
-        } else {
-          job.file = updatedMetaEntry.file
-          job.directory = dataConfig.filesDirectory
-        }
-      }
-      saveMetaFromRepo(sessionStorage.githubtoken, metaEntry).then(() => {
+      console.log(updatedMetaEntry)
+      saveMetaFromRepo(sessionStorage.githubtoken, updatedMetaEntry).then(() => {
         console.log('saved meta entry')
         this.$store.commit('setPublishIndicator', true)
-        this.$eventBus.$emit('acceptmetachanges', {metaEntry: metaEntry, job: job})
+        this.$eventBus.$emit('acceptmetachanges', {metaEntry: updatedMetaEntry, job: job})
         this.$parent.close()
       })
     },
@@ -792,7 +822,11 @@ export default {
       return this.metaEntryFlat['format'] === 'shapefile'
     },
     isPdf() {
-      return this.metaEntryFlat['format'] === 'pdf'
+      if (this.metaEntryFlat.isCollectionItem) {
+        return (this.collections.find(c => c.collectionId === this.metaEntryFlat.collectionId && c.format === 'pdf')) ? true : false
+      } else {
+        return this.metaEntryFlat['format'] === 'pdf'
+      }
     },
     filteredListOfModelCandidates() {
       return this.listOfModelCandidates.filter(
