@@ -208,6 +208,9 @@
           this.$set(item, 'expanded', false)
         }
         if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
+        if (item.tileInfo.type === 'vector') {
+          item.tileInfo.style.id = item.tileInfo.style.source = item.tileInfo.style['source-layer'] = item.tiles
+        }
         if (item.isCollectionItem) {
           item.currentCollectionItemId = ((item.currentCollectionItemId === undefined) ? item.collectionItemInfo[0].collectionItemId : item.currentCollectionItemId)
           this.collectionItemSelectionChange(item)

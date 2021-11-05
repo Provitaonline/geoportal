@@ -615,13 +615,6 @@ export default {
 
       } else {
 
-        // Remember to get rid of these
-        if (this.metaEntryFlat['tileInfo.type'] === 'vector') {
-          this.metaEntryFlat['tileInfo.style.id'] = this.metaEntryFlat['tiles']
-          this.metaEntryFlat['tileInfo.style.source'] = this.metaEntryFlat['tiles']
-          this.metaEntryFlat['tileInfo.style.source-layer'] = this.metaEntryFlat['tiles']
-        }
-
         this.metaEntryFlat.date = this.formDate.toISOString()
 
         // Cleanup tileInfo paint elements
