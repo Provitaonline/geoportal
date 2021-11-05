@@ -80,7 +80,6 @@
         this.openCollectionEditor({collectionId: ''})
       },
       openCollectionEditor(collection) {
-        console.log(collection)
         this.$buefy.modal.open({
           parent: this,
           canCancel: ['escape', 'x'],
