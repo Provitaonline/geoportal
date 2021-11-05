@@ -198,7 +198,9 @@
       "collectionname": "Collection name",
       "addcollection": "Add collection",
       "newcollection": "New collection",
-      "iscollectionitem": "This file is a collection item"
+      "iscollectionitem": "This file is a collection item",
+      "itemlabelenglish": "English item label",
+      "itemlabelspanish": "Spanish item label"
     }
   },
   "es": {
@@ -400,7 +402,9 @@
       "collectionname": "Nombre de la colección",
       "addcollection": "Añadir colección",
       "newcollection": "Colección nueva",
-      "iscollectionitem": "Este archivo forma parte de una colección"
+      "iscollectionitem": "Este archivo forma parte de una colección",
+      "itemlabelenglish": "Nombre de los ítems en inglés",
+      "itemlabelspanish": "Nombre de los ítems en español" 
     }
   }
 }

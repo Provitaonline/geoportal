@@ -33,6 +33,22 @@
               </ValidationProvider>
             </div>
           </div>
+          <div class="columns">
+            <div class="column">
+              <ValidationProvider rules="required|min:3" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.itemlabelspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaCollectionFlat['itemLabel.es']"></b-input>
+                </b-field>
+              </ValidationProvider>
+            </div>
+            <div class="column">
+              <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+                <b-field :label="$t('label.itemlabelenglish')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                  <b-input v-model="metaCollectionFlat['itemLabel.en']"></b-input>
+                </b-field>
+              </ValidationProvider>
+            </div>
+          </div>
           <CommonMeta :commonMetaFlat="metaCollectionFlat"/>
           <CommonTileInfo :commonMetaFlat="metaCollectionFlat"/>
         </div>
