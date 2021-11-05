@@ -359,6 +359,34 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+
+  .input-color-container {
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    width: 40px;
+    height: 30px;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px;
+  }
+
+  .input-color {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    width: 60px;
+    height: 56px;
+    border: none;
+    cursor: pointer;
+  }
+
+  ::v-deep .b-tooltip .tooltip-content {
+    box-shadow: none;
+  }
+
+</style>
+
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import * as validation from '~/utils/validation'
