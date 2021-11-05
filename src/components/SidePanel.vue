@@ -41,7 +41,7 @@
               <div v-if="item.collectionId" class="block has-text-centered has-text-weight-bold collection-heading">{{ $t('label.collection') }}</div>
               <div class="columns" v-if="item.collectionId">
                 <div class="column is-narrow" style="display: flex; align-items: center;">
-                  <small><b>{{ $t('label.collectionitem') }}:</b></small>
+                  <small><b>{{ item.itemLabel[$i18n.locale.substr(0, 2)] }}:</b></small>
                 </div>
                 <div class="column" style="padding-left: 0px;">
                   <b-select @input="collectionItemSelectionChange(item)" v-model="item.currentCollectionItemId" size="is-small">

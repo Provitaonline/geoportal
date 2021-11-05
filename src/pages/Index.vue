@@ -57,6 +57,10 @@
         }
         tileInfo
         tileLabels
+        itemLabel {
+          en
+          es
+        }
       }
     }
   }
