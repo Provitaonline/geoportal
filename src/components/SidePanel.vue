@@ -285,10 +285,14 @@
       },
       collectionItemSelectionChange(item) {
         let collectionItem = (item.collectionItemInfo.find(it => it.collectionItemId === item.currentCollectionItemId))
-
         let previousTiles = item.tiles
         item.file = collectionItem.file
         item.tiles = collectionItem.tiles
+
+        if (item.tileInfo.type === 'vector') {
+          item.tileInfo.style.id = item.tileInfo.style.source = item.tileInfo.style['source-layer'] = item.tiles
+        }
+
         getFileSize(item.format + '/' + item.file).then((fileSize) => {
           this.$set(item, 'fileSize', fileSize)
         })
