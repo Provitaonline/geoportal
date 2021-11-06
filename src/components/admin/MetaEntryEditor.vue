@@ -611,8 +611,21 @@ export default {
         delete updatedMetaEntry.date
         delete updatedMetaEntry.tileInfo
 
-        // TODO: Prep job sumission for collectionitem raster tile generation
+        let collectionEntry = this.collections.find(c => c.collectionId === updatedMetaEntry.collectionId)
 
+        if (collectionEntry.tileInfo && collectionEntry.tileInfo.type === 'raster') {
+          if (collectionEntry.tileInfo.colorTable && collectionEntry.tileInfo.hideNoData) {
+            collectionEntry.tileInfo.colorTable.push(['nv', '#ffffff00'])
+          }
+          job = {tileInfo: collectionEntry.tileInfo}
+          if (updatedMetaEntry.tileGenSrc) {
+            job.file = updatedMetaEntry.tileGenSrc
+            job.directory = dataConfig.privateFilesDirectory
+          } else {
+            job.file = updatedMetaEntry.file
+            job.directory = dataConfig.filesDirectory
+          }
+        }
       } else {
 
         this.metaEntryFlat.date = this.formDate.toISOString()
@@ -658,7 +671,6 @@ export default {
         }
       }
 
-      console.log(updatedMetaEntry)
       saveMetaFromRepo(sessionStorage.githubtoken, updatedMetaEntry).then(() => {
         console.log('saved meta entry')
         this.$store.commit('setPublishIndicator', true)
