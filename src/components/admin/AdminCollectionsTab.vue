@@ -63,12 +63,12 @@
         if (!this.Collections) {
           this.Collections = await getCollectionsFromRepo(sessionStorage.githubtoken)
         }
-        this.$buefy.toast.open({
+        /*this.$buefy.toast.open({
             duration: 10000,
             message: `Please wait for collection file references to load...`,
             type: 'is-warning'
         })
-        await this.getCollectionsInUse()
+        await this.getCollectionsInUse() */
         this.isLoading = false
       },
       async getCollectionsInUse() {
