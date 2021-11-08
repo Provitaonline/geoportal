@@ -13,6 +13,7 @@
       v-if="Collections"
       :data="Collections.collections"
       :checked-rows.sync="collectionListCheckedRows"
+      :is-row-checkable="(row) => !collectionsInUse[row.collectionId]"
       draggable
       @dragstart="dragStart"
       @dragover="dragOver"
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-  import {getCollectionsFromRepo, saveCollections} from '~/utils/data'
+  import {getCollectionsFromRepo, getMetaListFromRepo, getMetaFromRepo, saveCollections} from '~/utils/data'
   import CollectionEditor from '~/components/admin/CollectionEditor'
 
   export default {
@@ -43,6 +44,7 @@
       return {
         Collections: null,
         collectionListCheckedRows: [],
+        collectionsInUse: {},
         isLoading: true,
         currentIndex: 0,
         isNew: false,
@@ -55,20 +57,38 @@
       this.$eventBus.$on('acceptcollectionchanges', this.acceptCollectionChanges)
     },
     methods: {
-      getCollections() {
+      async getCollections() {
+        console.log('get collections')
+        this.isLoading = true
         if (!this.Collections) {
-          console.log('get collections')
-          getCollectionsFromRepo(sessionStorage.githubtoken).then((result) => {
-            this.Collections = result
-            this.isLoading = false
-          }).catch((err) => {
-            this.Collections = {}
-            this.isLoading = false
-            if (err.response.status != 404) {
-              console.log('error getting collections from repo')
-            }
-          })
+          this.Collections = await getCollectionsFromRepo(sessionStorage.githubtoken)
         }
+        this.$buefy.toast.open({
+            duration: 10000,
+            message: `Please wait for collection file references to load...`,
+            type: 'is-warning'
+        })
+        await this.getCollectionsInUse()
+        this.isLoading = false
+      },
+      async getCollectionsInUse() {
+        console.log('get collections in use')
+        let metalist = await getMetaListFromRepo(sessionStorage.githubtoken)
+        let meta = {}
+        for (const m of metalist) {
+          meta = await getMetaFromRepo(sessionStorage.githubtoken, m.file)
+          if (meta.isCollectionItem) {
+            if (!this.collectionsInUse[meta.collectionId]) this.collectionsInUse[meta.collectionId] = []
+            this.collectionsInUse[meta.collectionId].push({file: meta.file, tiles: meta.tiles, tileGenSrc: meta.tileGenSrc})
+          }
+        }
+        Object.keys(this.collectionsInUse).forEach(k => {
+          let c = this.Collections.collections.find(c => c.collectionId === k)
+          if (c.tileInfo && c.tileInfo.type === 'raster') {
+            this.collectionsInUse[k].tileInfo = c.tileInfo
+          }
+        })
+        console.log(this.collectionsInUse)
       },
       editCollection(index) {
         this.isNew = false
