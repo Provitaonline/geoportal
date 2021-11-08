@@ -40,7 +40,6 @@
     collectionsData: collectionsData (id: "collections") {
       collections {
         collectionId
-        date
         description {
           en
           es
@@ -94,10 +93,10 @@
           let collection = this.$page.collectionsData.collections.find(c => c.collectionId === item.node.collectionId)
           let idx = this.fileList.findIndex(el => el.collectionId === item.node.collectionId)
           if (idx === -1) {
-            let cII = {collectionItemInfo: [{collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles}]}
+            let cII = {collectionItemInfo: [{collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles, date: item.node.date}]}
             this.fileList.push(Object.assign(item.node, collection, cII))
           } else {
-            this.fileList[idx].collectionItemInfo.push({collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles})
+            this.fileList[idx].collectionItemInfo.push({collectionItemId: item.node.collectionItemId, file: item.node.file, tiles: item.node.tiles, date: item.node.date})
           }
         }
       })

@@ -288,6 +288,7 @@
         let previousTiles = item.tiles
         item.file = collectionItem.file
         item.tiles = collectionItem.tiles
+        item.date = collectionItem.date
 
         if (item.tileInfo.type === 'vector') {
           item.tileInfo.style.id = item.tileInfo.style.source = item.tileInfo.style['source-layer'] = item.tiles

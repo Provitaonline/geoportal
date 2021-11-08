@@ -29,11 +29,22 @@
                 <b-autocomplete :data="filteredListOfCollectionIds" :placeholder="$t('label.collectionid')" v-model="metaEntryFlat['collectionId']" open-on-focus clearable></b-autocomplete>
               </b-field>
             </ValidationProvider>
-            <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-              <b-field :label="$t('label.collectionitem')" :type="{ 'is-danger': errors[0] }" :message="errors">
-                <b-input v-model="metaEntryFlat['collectionItemId']"></b-input>
-              </b-field>
-            </ValidationProvider>
+            <div class="columns">
+              <div class="column">
+                <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+                  <b-field :label="$t('label.collectionitem')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                    <b-input v-model="metaEntryFlat['collectionItemId']"></b-input>
+                  </b-field>
+                </ValidationProvider>
+              </div>
+              <div class="column">
+                <ValidationProvider rules="required" v-slot="{ errors, valid }">
+                  <b-field :label="$t('label.date')" :type="{ 'is-danger': errors[0] }" :message="errors">
+                    <b-datepicker v-model="formDate" :locale="$i18n.locale" icon="calendar" trap-focus></b-datepicker>
+                  </b-field>
+                </ValidationProvider>
+              </div>
+            </div>
           </div>
           <div v-if="!metaEntryFlat['isCollectionItem']">
             <hr>
@@ -113,8 +124,8 @@
             <b-field :label="$t('label.tilegensrc')" :type="{ 'is-danger': errors[0] }" :message="errors">
               <b-autocomplete autocomplete="nope" :data="filteredListOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus :loading="isTileSourceLoading"></b-autocomplete>
             </b-field>
-            <br><br><br><br>
           </ValidationProvider>
+          <div style="height: 16em;"></div>
           <div v-if="!metaEntryFlat['isCollectionItem']">
             <div class="columns">
               <div class="column is-narrow">
@@ -601,6 +612,8 @@ export default {
       let updatedMetaEntry
       let job = null
 
+      this.metaEntryFlat.date = this.formDate.toISOString()
+
       if (this.metaEntryFlat.isCollectionItem) {
         updatedMetaEntry = unflatten(this.metaEntryFlat)
         delete updatedMetaEntry.name
@@ -608,7 +621,6 @@ export default {
         delete updatedMetaEntry.keywords
         delete updatedMetaEntry.description
         delete updatedMetaEntry.format
-        delete updatedMetaEntry.date
         delete updatedMetaEntry.tileInfo
 
         let collectionEntry = this.collections.find(c => c.collectionId === updatedMetaEntry.collectionId)
@@ -627,8 +639,6 @@ export default {
           }
         }
       } else {
-
-        this.metaEntryFlat.date = this.formDate.toISOString()
 
         // Cleanup tileInfo paint elements
         Object.keys(this.metaEntryFlat).forEach(key => {

@@ -10,22 +10,11 @@
         <b-input v-model="commonMetaFlat['name.en']"></b-input>
       </b-field>
     </ValidationProvider>
-    <div class="columns">
-      <div class="column">
-        <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
-          <b-field :label="$t('label.source')" :type="{ 'is-danger': errors[0] }" :message="errors">
-            <b-input v-model="commonMetaFlat['source']"></b-input>
-          </b-field>
-        </ValidationProvider>
-      </div>
-      <div class="column">
-        <ValidationProvider rules="required" v-slot="{ errors, valid }">
-          <b-field :label="$t('label.date')" :type="{ 'is-danger': errors[0] }" :message="errors">
-            <b-datepicker v-model="formDate" :locale="$i18n.locale" icon="calendar" trap-focus></b-datepicker>
-          </b-field>
-        </ValidationProvider>
-      </div>
-    </div>
+    <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+      <b-field :label="$t('label.source')" :type="{ 'is-danger': errors[0] }" :message="errors">
+        <b-input v-model="commonMetaFlat['source']"></b-input>
+      </b-field>
+    </ValidationProvider>
     <ValidationProvider rules="required" v-slot="{ errors, valid }">
       <b-field :label="$t('label.tagsspanish')" :type="{ 'is-danger': errors[0] }" :message="errors">
         <b-taginput v-model="esTags" :placeholder="$t('label.addtag')"></b-taginput>
@@ -64,7 +53,6 @@ export default {
   },
   data() {
     return {
-      //formDate: null
     }
   },
   components: {
@@ -111,14 +99,6 @@ export default {
       },
       set(val) {
         this.reflattenTags('en', val)
-      }
-    },
-    formDate: {
-      get() {
-        return this.commonMetaFlat.date ? new Date(this.commonMetaFlat.date) : new Date()
-      },
-      set(val) {
-        this.commonMetaFlat.date = val.toISOString()
       }
     }
   }
