@@ -82,16 +82,52 @@ export async function saveMetaFromRepo(token, meta) {
     'Updated meta'
   )
 
+  // Update collection items
+  if (meta.isCollectionItem) {
+    let collectionItems = {}
+    let r = await oK.getContent(token, dataConfig.collectionItems)
+    if (r !== undefined) {
+      collectionItems = JSON.parse(utf8.decode(base64.decode(r.data.content)))
+    }
+    if (!collectionItems[meta.collectionId]) collectionItems[meta.collectionId] = []
+    if (!collectionItems[meta.collectionId].includes(meta.file)) {
+      collectionItems[meta.collectionId].push(meta.file)
+      await oK.writeFile(token, dataConfig.collectionItems, base64.encode(utf8.encode(JSON.stringify(collectionItems, null, 2))), 'Updated collection items')
+    }
+  }
+
   return response
 }
 
 export async function deleteMetaListFromRepo(token, fileList) {
 
+  // Get collectionItems
+  let collectionItems = {}
+  let r = await oK.getContent(token, dataConfig.collectionItems)
+  if (r !== undefined) {
+    collectionItems = JSON.parse(utf8.decode(base64.decode(r.data.content)))
+  }
+
+  // Delete files one by one
   let responses = []
   for (const file of fileList) {
+    // Remove the files from collectionItems
+    if (collectionItems) {
+      Object.keys(collectionItems).forEach(key => {
+        collectionItems[key] = collectionItems[key].filter(f => f !== file)
+      })
+    }
     let response = await oK.deleteFile(token, dataConfig.metaDirectory + '/' + file + '.json')
     responses.push(response)
   }
+
+  // Cleanup collectionItems
+  Object.keys(collectionItems).forEach(key => {
+    if (collectionItems[key].length === 0) delete collectionItems[key]
+  })
+
+  // Update collectionItems
+  await oK.writeFile(token, dataConfig.collectionItems, base64.encode(utf8.encode(JSON.stringify(collectionItems, null, 2))), 'Updated collection items')
 
   return responses
 }

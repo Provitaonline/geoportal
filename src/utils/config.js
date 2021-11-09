@@ -54,6 +54,7 @@ export const dataConfig = {
   surveyTemplateName: 'survey-template.json',
   faqFileName: 'faq.json',
   collectionsFileName: 'collections.json',
+  collectionItems: 'collection-items.json',
   contactFileName: 'contact.json',
   aboutFileName: 'about.json',
   newsDirName: 'news',

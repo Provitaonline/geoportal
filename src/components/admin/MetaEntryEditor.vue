@@ -125,7 +125,7 @@
               <b-autocomplete autocomplete="nope" :data="filteredListOfTileSourceFiles" :placeholder="$t('label.filename')" v-model="metaEntryFlat['tileGenSrc']" open-on-focus :loading="isTileSourceLoading"></b-autocomplete>
             </b-field>
           </ValidationProvider>
-          <div style="height: 16em;"></div>
+          <div style="height: 18em;"></div>
           <div v-if="!metaEntryFlat['isCollectionItem']">
             <div class="columns">
               <div class="column is-narrow">
