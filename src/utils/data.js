@@ -99,6 +99,17 @@ export async function saveMetaFromRepo(token, meta) {
   return response
 }
 
+// This retrieves collections items file
+export async function getCollectionItems(token) {
+  let result = {}
+  let response = await oK.getContent(token, dataConfig.collectionItems)
+
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+  }
+  return result
+}
+
 export async function deleteMetaListFromRepo(token, fileList) {
 
   // Get collectionItems

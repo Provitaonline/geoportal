@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import {getCollectionsFromRepo, getMetaListFromRepo, getMetaFromRepo, saveCollections} from '~/utils/data'
+  import {getCollectionsFromRepo, getMetaListFromRepo, getMetaFromRepo, getCollectionItems, saveCollections} from '~/utils/data'
   import CollectionEditor from '~/components/admin/CollectionEditor'
 
   export default {
@@ -62,33 +62,9 @@
         this.isLoading = true
         if (!this.Collections) {
           this.Collections = await getCollectionsFromRepo(sessionStorage.githubtoken)
+          this.collectionsInUse = await getCollectionItems(sessionStorage.githubtoken)
         }
-        /*this.$buefy.toast.open({
-            duration: 10000,
-            message: `Please wait for collection file references to load...`,
-            type: 'is-warning'
-        })
-        await this.getCollectionsInUse() */
         this.isLoading = false
-      },
-      async getCollectionsInUse() {
-        console.log('get collections in use')
-        let metalist = await getMetaListFromRepo(sessionStorage.githubtoken)
-        let meta = {}
-        for (const m of metalist) {
-          meta = await getMetaFromRepo(sessionStorage.githubtoken, m.file)
-          if (meta.isCollectionItem) {
-            if (!this.collectionsInUse[meta.collectionId]) this.collectionsInUse[meta.collectionId] = []
-            this.collectionsInUse[meta.collectionId].push({file: meta.file, tiles: meta.tiles, tileGenSrc: meta.tileGenSrc})
-          }
-        }
-        Object.keys(this.collectionsInUse).forEach(k => {
-          let c = this.Collections.collections.find(c => c.collectionId === k)
-          if (c.tileInfo && c.tileInfo.type === 'raster') {
-            this.collectionsInUse[k].tileInfo = c.tileInfo
-          }
-        })
-        console.log(this.collectionsInUse)
       },
       editCollection(index) {
         this.isNew = false
