@@ -257,7 +257,6 @@ export async function saveCollections(token, Collections) {
     c.tileInfo = JSON.stringify(c.tileInfo)
     return c
   })
-  console.log(Collections)
 
   let response = await oK.writeFile(token, dataConfig.collectionsFileName, base64.encode(utf8.encode(JSON.stringify(Collections, null, 2))), 'Updated Collections')
 
