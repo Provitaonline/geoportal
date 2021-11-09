@@ -62,8 +62,9 @@
         this.isLoading = true
         if (!this.Collections) {
           this.Collections = await getCollectionsFromRepo(sessionStorage.githubtoken)
-          this.collectionsInUse = await getCollectionItems(sessionStorage.githubtoken)
         }
+        // Get latest version of collection items
+        this.collectionsInUse = await getCollectionItems(sessionStorage.githubtoken)
         this.isLoading = false
       },
       editCollection(index) {
