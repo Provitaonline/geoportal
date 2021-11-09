@@ -86,12 +86,12 @@
           }
         })
       },
-      acceptCollectionChanges(question) {
+      acceptCollectionChanges(collection) {
         this.isChanged = true
         if (this.isNew) {
-          this.Collections.collections.push(question)
+          this.Collections.collections.push(collection)
         } else {
-          this.$set(this.Collections.collections, this.currentIndex, question)
+          this.$set(this.Collections.collections, this.currentIndex, collection)
         }
       },
       confirmDelete() {
