@@ -35,8 +35,9 @@
 </template>
 
 <script>
-  import {getCollectionsFromRepo, getMetaListFromRepo, getMetaFromRepo, getCollectionItems, saveCollections} from '~/utils/data'
+  import {getCollectionsFromRepo, getMetaListFromRepo, getMetaFromRepo, getCollectionItems, saveCollections, submitJob} from '~/utils/data'
   import CollectionEditor from '~/components/admin/CollectionEditor'
+  import {dataConfig} from '~/utils/config'
 
   export default {
     name: 'AdminCollectionsTab',
@@ -49,7 +50,9 @@
         currentIndex: 0,
         isNew: false,
         isChanged: false,
-        draggingRowIndex: null
+        draggingRowIndex: null,
+        savedTileInfo: null,
+        regenTiles: {}
       }
     },
     mounted() {
@@ -77,6 +80,9 @@
         this.openCollectionEditor({collectionId: ''})
       },
       openCollectionEditor(collection) {
+        if (collection.tileInfo && collection.tileInfo.type === 'raster') {
+          this.savedTileInfo = JSON.stringify(collection.tileInfo)
+        }
         this.$buefy.modal.open({
           parent: this,
           canCancel: ['escape', 'x'],
@@ -92,6 +98,9 @@
           this.Collections.collections.push(collection)
         } else {
           this.$set(this.Collections.collections, this.currentIndex, collection)
+          if (collection.tileInfo && collection.tileInfo.type === 'raster' && JSON.stringify(collection.tileInfo) !== this.savedTileInfo) {
+            this.regenTiles[collection.collectionId] = true
+          }
         }
       },
       confirmDelete() {
@@ -106,14 +115,38 @@
           onConfirm: () => {this.deleteCollections()}
         })
       },
-      saveChanges() {
-        saveCollections(sessionStorage.githubtoken, this.Collections).then(() => {
-          console.log('saved collections')
-          this.isChanged = false
-          this.$store.commit('setPublishIndicator', true)
-        }).catch((e) => {
-          console.log('error saving collections to github ', e)
-        })
+      async saveChanges() {
+        this.isLoading = true
+        await saveCollections(sessionStorage.githubtoken, this.Collections)
+        console.log('saved collections')
+        this.isChanged = false
+        this.$store.commit('setPublishIndicator', true)
+        // Regenerate tiles where needed
+        for (const key of Object.keys(this.regenTiles)) {
+          let collection = this.Collections.collections.find(c => c.collectionId === key)
+          let tileInfo = JSON.parse(JSON.stringify(collection.tileInfo)) // Make a copy of tileInfo
+          if (tileInfo.colorTable && tileInfo.hideNoData) {
+            tileInfo.colorTable.push(['nv', '#ffffff00'])
+          }
+          for (const f of this.collectionsInUse[key]) {
+            await this.regenerateTiles(tileInfo, f)
+          }
+        }
+        this.isLoading = false
+        this.regenTiles = {}
+      },
+      async regenerateTiles(tileInfo, file) {
+        let fileMeta = await getMetaFromRepo(sessionStorage.githubtoken, file)
+        let job = {tileInfo: tileInfo}
+        if (fileMeta.tileGenSrc) {
+          job.file = fileMeta.tileGenSrc
+          job.directory = dataConfig.privateFilesDirectory
+        } else {
+          job.file = fileMeta.file
+          job.directory = dataConfig.filesDirectory
+        }
+        await submitJob(sessionStorage.githubtoken, job)
+        console.log('job submitted', job.file)
       },
       deleteCollections() {
         this.Collections.collections = this.Collections.collections.filter(x => !this.collectionListCheckedRows.includes(x))
