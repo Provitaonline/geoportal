@@ -3,9 +3,14 @@
   <aside class="side-panel">
     <div class="side-panel-content">
       <div class="panel">
-        <p class="panel-heading has-text-centered is-size-5">
+        <div class="panel-heading has-text-centered is-size-5">
           <b>{{$t('label.files')}}</b>
-        </p>
+          <span v-show="showReset">&nbsp;
+            <a @click="resetPanel()" href="#" :title="$t('label.resetpanel')">
+              <font-awesome :icon="['fas', 'chevron-up']"/>
+            </a>
+          </span>
+        </div>
         <div class="panel-block">
           <div class="control has-icons-left">
             <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
@@ -297,12 +302,28 @@
         getFileSize(item.format + '/' + item.file).then((fileSize) => {
           this.$set(item, 'fileSize', fileSize)
         })
+
         if (item.layerShow) {
           item.layerShow = false
           this.$eventBus.$emit('removetilelayer', previousTiles)
           item.layerShow = true
           this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo, source: item.source})
         }
+      },
+      resetPanel() {
+        this.searchString = ''
+        this.tags = []
+        this.fileList.forEach(item => {
+          item.expanded = false
+          if (item.layerShow) {
+            item.layerShow = false
+            this.addToMap(item, false)
+          }
+          if (item.isCollectionItem && (item.currentCollectionItemId != item.collectionItemInfo[0].collectionItemId)) {
+            item.currentCollectionItemId = item.collectionItemInfo[0].collectionItemId
+            this.collectionItemSelectionChange(item)
+          }
+        })
       }
     },
     computed: {
@@ -322,6 +343,9 @@
       },
       locale() {
         return this.$i18n.locale.toString().substr(0,2)
+      },
+      showReset() {
+        return this.searchString || this.tags.length > 0 || this.fileList.some(item => item.expanded || item.layerShow || (item.isCollectionItem && (item.currentCollectionItemId != item.collectionItemInfo[0].collectionItemId)))
       }
     }
   }
