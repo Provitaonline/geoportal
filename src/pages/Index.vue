@@ -113,7 +113,7 @@
     data() {
       return {
         fileList: [],
-        showDisclaimer: !sessionStorage.disclaimerAcknowledged
+        showDisclaimer: true
       }
     },
     components: {
@@ -121,6 +121,7 @@
       InteractiveMap
     },
     created() {
+      if (process.isClient) this.showDisclaimer = !sessionStorage.disclaimerAcknowledged
       this.fileList = []
       this.$page.allMetaData.edges.forEach(item => {
         if (!item.node.isCollectionItem) {
