@@ -1,5 +1,21 @@
 <template>
   <Layout :hasBanner="false">
+    <div v-if="showDisclaimer" class="disclaimer">
+      <b-notification
+        type="is-warning"
+        :closable="false"
+        has-icon
+        class="has-text-centered"
+        role="alert">
+          <b>Lorem Ipsum:</b><br>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus urna dui, condimentum at euismod sit amet, luctus a neque. Ut erat elit, euismod vel dignissim nec, euismod commodo nibh. Proin ante lacus, convallis vel cursus quis, ornare at urna. Proin vitae diam a tortor ultrices vulputate sed non justo.
+          <g-link :to="$tp('/about')">Proin neque.</g-link>
+        <br><br>
+        <b-button @click="ackDisclaimer()"
+          label="Ok" type="is-ghost"
+         />
+      </b-notification>
+    </div>
     <div class="columns is-gapless">
       <SidePanel class="column is-narrow" :fileList="fileList" />
       <InteractiveMap id="mapColumn" class="column" :layerMeta="fileList" />
@@ -7,6 +23,25 @@
   </Layout>
 </template>
 
+<style lang="scss" scoped>
+
+  @import "~/assets/style/_variables";
+
+  .disclaimer {
+    position: absolute;
+    top: 64px;
+    left: 0px;
+    z-index: 18;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .disclaimer {
+      left: 320px;
+    }
+  }
+
+
+</style>
 <page-query>
   query {
     allMetaData: allMetaData (sort: [{ by: "collectionId", order: ASC }, { by: "collectionItemId", order: ASC }]) {
@@ -77,7 +112,8 @@
     },
     data() {
       return {
-        fileList: []
+        fileList: [],
+        showDisclaimer: !sessionStorage.disclaimerAcknowledged
       }
     },
     components: {
@@ -101,6 +137,12 @@
         }
       })
       console.log('Branch ', process.env.GRIDSOME_BRANCH)
+    },
+    methods: {
+      ackDisclaimer() {
+        sessionStorage.disclaimerAcknowledged = true
+        this.showDisclaimer = false
+      }
     }
   }
 </script>
