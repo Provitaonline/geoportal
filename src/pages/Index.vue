@@ -1,21 +1,23 @@
 <template>
   <Layout :hasBanner="false">
-    <div v-if="showDisclaimer" class="disclaimer">
-      <b-notification
-        type="is-warning"
-        :closable="false"
-        has-icon
-        class="has-text-centered"
-        role="alert">
-          <b>Lorem Ipsum:</b><br>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus urna dui, condimentum at euismod sit amet, luctus a neque. Ut erat elit, euismod vel dignissim nec, euismod commodo nibh. Proin ante lacus, convallis vel cursus quis, ornare at urna. Proin vitae diam a tortor ultrices vulputate sed non justo.
-          <g-link :to="$tp('/about')">Proin neque.</g-link>
-        <br><br>
-        <b-button @click="ackDisclaimer()"
-          label="Ok" type="is-ghost"
-         />
-      </b-notification>
-    </div>
+    <ClientOnly>
+      <div v-if="showDisclaimer" class="disclaimer">
+        <b-notification
+          type="is-warning"
+          :closable="false"
+          has-icon
+          class="has-text-centered"
+          role="alert">
+            <b>Lorem Ipsum:</b><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus urna dui, condimentum at euismod sit amet, luctus a neque. Ut erat elit, euismod vel dignissim nec, euismod commodo nibh. Proin ante lacus, convallis vel cursus quis, ornare at urna. Proin vitae diam a tortor ultrices vulputate sed non justo.
+            <g-link :to="$tp('/about')">Proin neque.</g-link>
+          <br><br>
+          <b-button @click="ackDisclaimer()"
+            label="Ok" type="is-ghost"
+           />
+        </b-notification>
+      </div>
+    </ClientOnly>
     <div class="columns is-gapless">
       <SidePanel class="column is-narrow" :fileList="fileList" />
       <InteractiveMap id="mapColumn" class="column" :layerMeta="fileList" />
@@ -113,7 +115,7 @@
     data() {
       return {
         fileList: [],
-        showDisclaimer: true
+        showDisclaimer: false
       }
     },
     components: {
@@ -141,8 +143,8 @@
     },
     methods: {
       ackDisclaimer() {
-        sessionStorage.disclaimerAcknowledged = true
         this.showDisclaimer = false
+        sessionStorage.disclaimerAcknowledged = true
       }
     }
   }
