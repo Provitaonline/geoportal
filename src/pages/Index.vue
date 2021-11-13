@@ -1,5 +1,6 @@
 <template>
   <Layout :hasBanner="false">
+    <ClientOnly>
     <div v-if="showDisclaimer" class="disclaimer">
       <b-notification
         type="is-warning"
@@ -16,6 +17,7 @@
          />
       </b-notification>
     </div>
+    <ClientOnly>
     <div class="columns is-gapless">
       <SidePanel class="column is-narrow" :fileList="fileList" />
       <InteractiveMap id="mapColumn" class="column" :layerMeta="fileList" />
