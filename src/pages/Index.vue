@@ -17,7 +17,7 @@
            />
         </b-notification>
       </div>
-    <ClientOnly>
+    </ClientOnly>
     <div class="columns is-gapless">
       <SidePanel class="column is-narrow" :fileList="fileList" />
       <InteractiveMap id="mapColumn" class="column" :layerMeta="fileList" />
