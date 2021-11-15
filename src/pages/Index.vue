@@ -13,7 +13,7 @@
             <g-link :to="$tp('/about')">Proin neque.</g-link>
           <br><br>
           <b-button @click="ackDisclaimer()"
-            label="Ok" type="is-ghost"
+            label="Ok"
            />
         </b-notification>
       </div>
