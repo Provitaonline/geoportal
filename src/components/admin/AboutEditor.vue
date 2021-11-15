@@ -11,12 +11,22 @@
         <div class="content">
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.aboutspanish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="about.text.es" type="textarea"></b-input>
+              <b-input v-model="about.text.es" type="textarea" rows="10"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
             <b-field :label="$t('label.aboutenglish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
-              <b-input v-model="about.text.en" type="textarea"></b-input>
+              <b-input v-model="about.text.en" type="textarea" rows="10"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.disclaimerspanish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="about.disclaimer.es" type="textarea" rows="3" maxlength="500"></b-input>
+            </b-field>
+          </ValidationProvider>
+          <ValidationProvider rules="required|min:4" v-slot="{ errors, valid }">
+            <b-field :label="$t('label.disclaimerenglish') + ' (markdown)'" :type="{ 'is-danger': errors[0] }" :message="errors">
+              <b-input v-model="about.disclaimer.en" type="textarea" rows="3" maxlength="500"></b-input>
             </b-field>
           </ValidationProvider>
         </div>
@@ -38,7 +48,7 @@
   ::v-deep textarea {
     font-family: monospace;
     font-size: 0.9rem;
-    min-height: 14em !important;
+    /*min-height: 12em !important;  */
   }
 
 </style>

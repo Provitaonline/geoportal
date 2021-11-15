@@ -81,6 +81,11 @@ module.exports = function (api) {
           obj.text.en = marked(obj.text.en)
           obj.text.es = marked(obj.text.es)
           return obj.text
+        },
+        disclaimer(obj) {
+          obj.disclaimer.en = marked(obj.disclaimer.en)
+          obj.disclaimer.es = marked(obj.disclaimer.es)
+          return obj.disclaimer
         }
       }
     })
