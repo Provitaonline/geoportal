@@ -201,7 +201,9 @@
       "iscollectionitem": "This file is a collection item",
       "itemlabelenglish": "English item label",
       "itemlabelspanish": "Spanish item label",
-      "resetpanel": "Reset panel"
+      "resetpanel": "Reset panel",
+      "disclaimerspanish": "Disclaimer in spanish",
+      "disclaimerenglish": "Disclaimer in english"
     }
   },
   "es": {
@@ -406,7 +408,9 @@
       "iscollectionitem": "Este archivo forma parte de una colección",
       "itemlabelenglish": "Nombre de los ítems en inglés",
       "itemlabelspanish": "Nombre de los ítems en español",
-      "resetpanel": "Reiniciar panel"
+      "resetpanel": "Reiniciar panel",
+      "disclaimerspanish": "Advertencia en español",
+      "disclaimerenglish": "Advertencia en inglés"
     }
   }
 }

@@ -2,17 +2,10 @@
   <Layout :hasBanner="false">
     <ClientOnly>
       <div v-if="showDisclaimer" class="disclaimer">
-        <b-notification
-          type="is-warning"
-          :closable="false"
-          has-icon
-          class="has-text-centered"
-          role="alert">
-          <!-- <div v-html="$page.aboutData.disclaimer[$i18n.locale.substr(0, 2)]"></div> -->
-          <br><br>
-          <b-button @click="ackDisclaimer()"
-            label="Ok"
-           />
+        <b-notification type="is-warning" :closable="false" has-icon class="has-text-centered" role="alert">
+          <span v-html="$page.aboutData.disclaimer[$i18n.locale.substr(0, 2)]"></span>
+          <br>
+          <b-button @click="ackDisclaimer()" label="Ok" />
         </b-notification>
       </div>
     </ClientOnly>

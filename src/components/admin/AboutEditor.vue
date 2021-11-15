@@ -91,7 +91,7 @@
       saveChanges() {
         this.isLoading = true
         saveAbout(sessionStorage.githubtoken, JSON.parse(JSON.stringify(this.about))).then(() => {
-          console.log('saved About')
+          console.log('saved about')
           this.isLoading = false
           this.$store.commit('setPublishIndicator', true)
           this.$parent.close()
