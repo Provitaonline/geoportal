@@ -74,7 +74,7 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {publishSite, isPublishDue} from '~/utils/data'
+import {publishSite, isPublishDue, getCollectionItems, saveCBundlesManifest} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
 import AdminFilesTab from '~/components/admin/AdminFilesTab'
 import AdminNewsTab from '~/components/admin/AdminNewsTab'
@@ -185,13 +185,16 @@ export default {
         onConfirm: () => {this.publishSite()}
       })
     },
-    publishSite() {
-      publishSite(process.env.GRIDSOME_BRANCH).then(() => {
+    async publishSite() {
+      try {
+        let manifest = await getCollectionItems(sessionStorage.githubtoken)
+        await saveCBundlesManifest(sessionStorage.githubtoken, manifest)
+        await publishSite(process.env.GRIDSOME_BRANCH)
         console.log('site deploy requested')
         this.$store.commit('setPublishIndicator', false)
-      }).catch(err => {
+      } catch(err) {
         console.log('publish error', err)
-      })
+      }
     }
   },
   computed: {

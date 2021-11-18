@@ -215,6 +215,11 @@ export async function sendSurvey(survey, version) {
   return response
 }
 
+export async function saveCBundlesManifest(token, manifest) {
+  let response = await axios.put('/.netlify/functions/save-cbundles-manifest', JSON.stringify(manifest, null, 2), {headers: {authorization: token}})
+  return response
+}
+
 export async function getFAQFromRepo(token) {
   let result = {}
 
