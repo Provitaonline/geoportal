@@ -189,6 +189,11 @@ export async function submitJob(token, job) {
   return response
 }
 
+export async function submitSimpleJob(token, jobName) {
+  let response = await axios.get('/.netlify/functions/submit-simple-job?jobname=' + jobName, {headers: {authorization: token}})
+  return response
+}
+
 export async function getSurveyTemplateFromRepo(token) {
   let result = {}
 
