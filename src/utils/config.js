@@ -48,6 +48,8 @@ export const dataConfig = {
   filesBaseUrl: 'https://' + awsConfig.bucket + '.s3-' + awsConfig.region + '.amazonaws.com/',
   filesDirectory: 'files',
   privateFilesDirectory: 'pfiles',
+  cBundlesDirectory: 'cbundles/tarfiles/',
+  cBundlesExtension: '.tar',
   newsDirectory: 'news',
   metaFileName: 'meta.json',
   metaDirectory: 'meta',

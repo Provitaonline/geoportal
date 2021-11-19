@@ -60,14 +60,28 @@
                 </div>
               </div>
               <div class="columns">
-                <div class="column">
-                <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
+                <div v-if="item.downloadAll" class="column is-narrow">
+                  <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
+                    <small><font-awesome :icon="['fas', 'download']"/>
+                      <b> {{ $t('label.download') }}</b>
+                      ({{mFormatter(item.cBundleSize)}})
+                    </small>
+                  </a>
+                  <a style="display: none;" :id="'download-' + index" download :href="filesBaseUrl + cBundlesDirectory + item.collectionId + cBundlesExtension"></a>
+                </div>
+                <div v-else class="column is-narrow">
+                  <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
                     <small><font-awesome :icon="['fas', 'download']"/>
                       <b> {{ $t('label.download') }}</b>
                       ({{mFormatter(item.fileSize)}})
                     </small>
                   </a>
                   <a style="display: none;" :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.format + '/' + item.file"></a>
+                </div>
+                <div v-if="item.collectionId && item.cBundleSize" class="column">
+                  <b-field>
+                      <b-checkbox size="is-small" v-model="item.downloadAll">{{$t('label.all')}}</b-checkbox>
+                  </b-field>
                 </div>
               </div>
               <div class="columns">
@@ -184,6 +198,8 @@
       return {
         filesBaseUrl: dataConfig.filesBaseUrl,
         filesDirectory: dataConfig.filesDirectory,
+        cBundlesDirectory: dataConfig.cBundlesDirectory,
+        cBundlesExtension: dataConfig.cBundlesExtension,
         searchString: '',
         surveyTemplate: null,
         tags: [],
@@ -219,10 +235,15 @@
         if (item.isCollectionItem) {
           item.currentCollectionItemId = ((item.currentCollectionItemId === undefined) ? item.collectionItemInfo[0].collectionItemId : item.currentCollectionItemId)
           this.collectionItemSelectionChange(item)
+          if (!item.cBundleSize) {
+            getFileSize(dataConfig.cBundlesDirectory + item.collectionId + dataConfig.cBundlesExtension).then((cBundleSize) => {
+              this.$set(item, 'cBundleSize', cBundleSize)
+            })
+          }
         }
         if (item.file) {
           if (!item.fileSize) {
-            getFileSize(item.format + '/' + item.file).then((fileSize) => {
+            getFileSize(dataConfig.filesDirectory + '/' + item.format + '/' + item.file).then((fileSize) => {
               this.$set(item, 'fileSize', fileSize)
             })
           }
@@ -302,7 +323,7 @@
           item.tileInfo.style.id = item.tileInfo.style.source = item.tileInfo.style['source-layer'] = item.tiles
         }
 
-        getFileSize(item.format + '/' + item.file).then((fileSize) => {
+        getFileSize(dataConfig.filesDirectory + '/' + item.format + '/' + item.file).then((fileSize) => {
           this.$set(item, 'fileSize', fileSize)
         })
 
@@ -318,6 +339,7 @@
         this.tags = []
         this.fileList.forEach(item => {
           item.expanded = false
+          item.downloadAll = false
           if (item.layerShow) {
             item.layerShow = false
             this.addToMap(item, false)
@@ -348,7 +370,7 @@
         return this.$i18n.locale.toString().substr(0,2)
       },
       showReset() {
-        return this.searchString || this.tags.length > 0 || this.fileList.some(item => item.expanded || item.layerShow || (item.isCollectionItem && (item.currentCollectionItemId != item.collectionItemInfo[0].collectionItemId)))
+        return this.searchString || this.tags.length > 0 || this.fileList.some(item => item.expanded || item.layerShow || item.downloadAll || (item.isCollectionItem && (item.currentCollectionItemId != item.collectionItemInfo[0].collectionItemId)))
       }
     }
   }

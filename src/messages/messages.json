@@ -203,7 +203,8 @@
       "itemlabelspanish": "Spanish item label",
       "resetpanel": "Reset panel",
       "disclaimerspanish": "Disclaimer in spanish",
-      "disclaimerenglish": "Disclaimer in english"
+      "disclaimerenglish": "Disclaimer in english",
+      "all": "All"
     }
   },
   "es": {
@@ -410,7 +411,8 @@
       "itemlabelspanish": "Nombre de los ítems en español",
       "resetpanel": "Reiniciar panel",
       "disclaimerspanish": "Advertencia en español",
-      "disclaimerenglish": "Advertencia en inglés"
+      "disclaimerenglish": "Advertencia en inglés",
+      "all": "Todos"
     }
   }
 }

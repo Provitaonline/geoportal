@@ -15,8 +15,12 @@ export function setRepoBranch(branch) {
 
 // This gets the size of a file
 export async function getFileSize(fileName) {
-  let response = await axios.head(dataConfig.filesBaseUrl + dataConfig.filesDirectory + '/' + fileName)
-  return response.headers['content-length']
+  try {
+    let response = await axios.head(dataConfig.filesBaseUrl + fileName)
+    return response.headers['content-length']
+  } catch (err) {
+    return 0
+  }
 }
 
 // This gets the list of stored files
