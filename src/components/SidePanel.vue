@@ -99,6 +99,12 @@
                     </b-switch>
                   </b-field>
                 </div>
+                <div class="column is-narrow">
+                  <a @click="playPause(item)" v-show="item.layerShow && item.collectionId" href="">
+                    <font-awesome v-if="item.play" size="lg" :icon="['far', 'pause-circle']"/>
+                    <font-awesome v-else size="lg" :icon="['far', 'play-circle']"/>
+                  </a>
+                </div>
               </div>
               <div class="columns" style="margin-bottom: 0px;">
                 <div class="column is-narrow">
@@ -187,7 +193,7 @@
 
   import {dataConfig} from '~/utils/config'
   import {getFileSize} from '~/utils/data'
-  import {getPureText} from '~/utils/misc'
+  import {getPureText, wait} from '~/utils/misc'
 
   export default {
     name: 'SidePanel',
@@ -328,9 +334,9 @@
         })
 
         if (item.layerShow) {
-          item.layerShow = false
+          //item.layerShow = false
           this.$eventBus.$emit('removetilelayer', previousTiles)
-          item.layerShow = true
+          //item.layerShow = true
           this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo, source: item.source})
         }
       },
@@ -349,6 +355,24 @@
             this.collectionItemSelectionChange(item)
           }
         })
+      },
+      playPause(item) {
+        console.log('play pause', item.collectionItemInfo)
+        this.$set(item, 'play', !item.play)
+        if (item.play && !item.isRunning) {
+          this.playTiles(item)
+        }
+      },
+      async playTiles(item) {
+        item.isRunning = true
+        let i = 0
+        while (item.play) {
+          if (i >= item.collectionItemInfo.length) i = 0
+          console.log('tick', item.currentCollectionItemId = item.collectionItemInfo[i++].collectionItemId)
+          this.collectionItemSelectionChange(item)
+          await wait(2000)
+        }
+        item.isRunning = false
       }
     },
     computed: {

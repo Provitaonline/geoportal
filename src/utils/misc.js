@@ -45,3 +45,9 @@ export function stripePattern(color, isFlipped) {
     }
   })
 }
+
+export function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(() => { resolve() }, ms)
+  })
+}

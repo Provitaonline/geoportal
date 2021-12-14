@@ -14,7 +14,7 @@ import VueCookieAcceptDecline from 'vue-cookie-accept-decline'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
-import { faUser, faEdit, faPlusSquare, faMinusSquare, faNewspaper, faCopy } from '@fortawesome/free-regular-svg-icons'
+import { faUser, faEdit, faPlusSquare, faMinusSquare, faNewspaper, faCopy, faPauseCircle, faPlayCircle } from '@fortawesome/free-regular-svg-icons'
 import { faFacebookF, faTwitter, faInstagram, faGithub } from '@fortawesome/free-brands-svg-icons'
 import {
   faFileDownload, faDownload, faMapMarkedAlt, faTimes, faBars, faAngleDown,
@@ -30,7 +30,8 @@ library.add(
   faInstagram, faGithub, faTimes, faBars, faAngleDown, faAngleUp, faSearch, faTrashAlt,
   faCloudUploadAlt, faPlus, faCheck, faPlusSquare, faMinusSquare, faExclamationCircle,
   faTimesCircle, faExclamationTriangle, faAngleLeft, faAngleRight, faCalendar, faArrowUp,
-  faNewspaper, faTag, faRss, faGlobe, faLink, faCopy, faUndo, faChevronUp
+  faNewspaper, faTag, faRss, faGlobe, faLink, faCopy, faUndo, faChevronUp, faPauseCircle,
+  faPlayCircle
 )
 
 export default function (Vue, { router, head, isClient, appOptions }) {
