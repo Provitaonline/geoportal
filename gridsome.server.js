@@ -44,9 +44,20 @@ module.exports = function (api) {
     addSchemaResolvers({
       MetaData: {
         description(obj) {
-          obj.description.en = marked(obj.description.en)
-          obj.description.es = marked(obj.description.es)
-          return obj.description
+          if (obj.description) {
+            obj.description.en = marked(obj.description.en)
+            obj.description.es = marked(obj.description.es)
+            return obj.description
+          }
+        }
+      },
+      CollectionsData: {
+        collections(obj) {
+          return obj.collections.map(c => {
+            c.description.en = marked(c.description.en)
+            c.description.es = marked(c.description.es)
+            return c
+          })
         }
       },
       FaqData: {
@@ -70,6 +81,11 @@ module.exports = function (api) {
           obj.text.en = marked(obj.text.en)
           obj.text.es = marked(obj.text.es)
           return obj.text
+        },
+        disclaimer(obj) {
+          obj.disclaimer.en = marked(obj.disclaimer.en)
+          obj.disclaimer.es = marked(obj.disclaimer.es)
+          return obj.disclaimer
         }
       }
     })

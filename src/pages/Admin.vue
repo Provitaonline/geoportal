@@ -21,6 +21,9 @@
             </b-tab-item>
           </b-tabs>
         </b-tab-item>
+        <b-tab-item value="collections" :label="$t('label.collections')">
+          <AdminCollectionsTab />
+        </b-tab-item>
         <b-tab-item value="news" :label="$t('label.news')">
           <AdminNewsTab />
         </b-tab-item>
@@ -71,13 +74,14 @@
 
 <script>
 import {getStateToken, getUserInfo} from '~/utils/user'
-import {publishSite, isPublishDue} from '~/utils/data'
+import {publishSite, isPublishDue, getCollectionItems, saveCBundlesManifest, submitSimpleJob} from '~/utils/data'
 import {adminConfig} from '~/utils/config'
 import AdminFilesTab from '~/components/admin/AdminFilesTab'
 import AdminNewsTab from '~/components/admin/AdminNewsTab'
 import AdminSurveyTab from '~/components/admin/AdminSurveyTab'
 import AdminFAQTab from '~/components/admin/AdminFAQTab'
 import AdminMoreTab from '~/components/admin/AdminMoreTab'
+import AdminCollectionsTab from '~/components/admin/AdminCollectionsTab'
 
 export default {
   metaInfo() {
@@ -97,7 +101,8 @@ export default {
     AdminNewsTab,
     AdminSurveyTab,
     AdminFAQTab,
-    AdminMoreTab
+    AdminMoreTab,
+    AdminCollectionsTab
   },
   created() {
     if (this.$route.query.token) {
@@ -180,13 +185,18 @@ export default {
         onConfirm: () => {this.publishSite()}
       })
     },
-    publishSite() {
-      publishSite().then(() => {
+    async publishSite() {
+      try {
+        let manifest = await getCollectionItems(sessionStorage.githubtoken)
+        await saveCBundlesManifest(sessionStorage.githubtoken, manifest)
+        await submitSimpleJob(sessionStorage.githubtoken, 'cbundles')
+        console.log('bundle creation job submitted')
+        await publishSite(process.env.GRIDSOME_BRANCH)
         console.log('site deploy requested')
         this.$store.commit('setPublishIndicator', false)
-      }).catch(err => {
+      } catch(err) {
         console.log('publish error', err)
-      })
+      }
     }
   },
   computed: {

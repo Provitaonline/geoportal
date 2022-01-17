@@ -3,9 +3,14 @@
   <aside class="side-panel">
     <div class="side-panel-content">
       <div class="panel">
-        <p class="panel-heading has-text-centered is-size-5">
+        <div class="panel-heading has-text-centered is-size-5">
           <b>{{$t('label.files')}}</b>
-        </p>
+          <span v-show="showReset">&nbsp;
+            <a @click="resetPanel()" href="#" :title="$t('label.resetpanel')">
+              <font-awesome :icon="['fas', 'chevron-up']"/>
+            </a>
+          </span>
+        </div>
         <div class="panel-block">
           <div class="control has-icons-left">
             <input class="input" type="search" v-model="searchString" :placeholder="$t('label.search')">
@@ -38,15 +43,45 @@
           </div>
           <transition name="slide">
             <div v-show="item.expanded" class="card-content">
+              <div v-if="item.collectionId" class="block has-text-centered has-text-weight-bold collection-heading">{{ $t('label.collection') }}</div>
+              <div class="columns" v-if="item.collectionId">
+                <div class="column is-narrow" style="display: flex; align-items: center;">
+                  <small><b>{{ item.itemLabel[$i18n.locale.substr(0, 2)] }}:</b></small>
+                </div>
+                <div class="column" style="padding-left: 0px;">
+                  <b-select @input="collectionItemSelectionChange(item)" v-model="item.currentCollectionItemId" size="is-small">
+                    <option
+                      v-for="collectionItem in item.collectionItemInfo"
+                      :value="collectionItem.collectionItemId"
+                      :key="collectionItem.collectionItemId">
+                      {{collectionItem.collectionItemId}}
+                    </option>
+                  </b-select>
+                </div>
+              </div>
               <div class="columns">
-                <div class="column">
-                <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
+                <div v-if="item.downloadAll" class="column is-narrow">
+                  <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
+                    <small><font-awesome :icon="['fas', 'download']"/>
+                      <b> {{ $t('label.download') }}</b>
+                      ({{mFormatter(item.cBundleSize)}})
+                    </small>
+                  </a>
+                  <a style="display: none;" :id="'download-' + index" download :href="filesBaseUrl + cBundlesDirectory + item.collectionId + cBundlesExtension"></a>
+                </div>
+                <div v-else class="column is-narrow">
+                  <a @click="downloadFile(index)" href="" v-bind:disabled="!item.file">
                     <small><font-awesome :icon="['fas', 'download']"/>
                       <b> {{ $t('label.download') }}</b>
                       ({{mFormatter(item.fileSize)}})
                     </small>
                   </a>
                   <a style="display: none;" :id="'download-' + index" download :href="filesBaseUrl + filesDirectory + '/' + item.format + '/' + item.file"></a>
+                </div>
+                <div v-if="item.collectionId && item.cBundleSize" class="column">
+                  <b-field>
+                      <b-checkbox size="is-small" v-model="item.downloadAll">{{$t('label.all')}}</b-checkbox>
+                  </b-field>
                 </div>
               </div>
               <div class="columns">
@@ -139,6 +174,11 @@
     border-bottom: 1px solid rgba(85,107,47, 0.2);
   }
 
+  .collection-heading {
+    color: $site-color;
+    background-color: #FAFAFA;
+  }
+
 </style>
 
 <script>
@@ -158,6 +198,8 @@
       return {
         filesBaseUrl: dataConfig.filesBaseUrl,
         filesDirectory: dataConfig.filesDirectory,
+        cBundlesDirectory: dataConfig.cBundlesDirectory,
+        cBundlesExtension: dataConfig.cBundlesExtension,
         searchString: '',
         surveyTemplate: null,
         tags: [],
@@ -166,7 +208,7 @@
       }
     },
     created() {
-      this.fileList.forEach(item => {
+      this.fileList.forEach((item, index) => {
         // Auto add format as keyword
         if (!item.keywords['en'].includes(item.format)) item.keywords['en'].push(item.format)
         if (!item.keywords['es'].includes(item.format)) item.keywords['es'].push(item.format)
@@ -183,11 +225,25 @@
         })
         this.filteredTags = this.allKeywords[this.locale]
 
-        this.$set(item, 'expanded', false)
+        if (item.expanded === undefined) {
+          this.$set(item, 'expanded', false)
+        }
         if (typeof(item.tileInfo) === 'string') this.$set(item, 'tileInfo', JSON.parse(item.tileInfo))
+        if (item.tileInfo.type === 'vector') {
+          item.tileInfo.style.id = item.tileInfo.style.source = item.tileInfo.style['source-layer'] = item.tiles
+        }
+        if (item.isCollectionItem) {
+          item.currentCollectionItemId = ((item.currentCollectionItemId === undefined) ? item.collectionItemInfo[0].collectionItemId : item.currentCollectionItemId)
+          this.collectionItemSelectionChange(item)
+          if (!item.cBundleSize) {
+            getFileSize(dataConfig.cBundlesDirectory + item.collectionId + dataConfig.cBundlesExtension).then((cBundleSize) => {
+              this.$set(item, 'cBundleSize', cBundleSize)
+            })
+          }
+        }
         if (item.file) {
           if (!item.fileSize) {
-            getFileSize(item.format + '/' + item.file).then((fileSize) => {
+            getFileSize(dataConfig.filesDirectory + '/' + item.format + '/' + item.file).then((fileSize) => {
               this.$set(item, 'fileSize', fileSize)
             })
           }
@@ -210,10 +266,13 @@
       },
       isMatch(item) {
         if (this.tags.length === 0 && this.searchString.length < 3) return true
-        if (getPureText(item.name[this.locale]).includes(getPureText(this.searchString)) ||
-            getPureText(item.description[this.locale]).includes(getPureText(this.searchString))) {
+        let s = getPureText(this.searchString)
+        if (getPureText(item.name[this.locale]).includes(s) ||
+            getPureText(item.description[this.locale]).includes(s)) {
           if (this.tags.length === 0 || item.keywords[this.locale].some(k => this.tags.includes(k))) return true
         }
+        if (item.tileInfo.type === 'raster' && getPureText(item.tileLabels.toString()).includes(s)) return true
+        if (item.tileInfo.type === 'vector' && item.tileInfo.style && item.tileInfo.style.paint && item.tileInfo.style.paint['fill-color'] && item.tileInfo.style.paint['fill-color'].stops && getPureText(item.tileInfo.style.paint['fill-color'].stops.toString()).includes(s)) return true
         return false
       },
       getFilteredTags(text) {
@@ -252,6 +311,44 @@
       },
       addTagToFilterList(tag) {
         if (!this.tags.includes(tag)) this.tags.push(tag)
+      },
+      collectionItemSelectionChange(item) {
+        let collectionItem = (item.collectionItemInfo.find(it => it.collectionItemId === item.currentCollectionItemId))
+        let previousTiles = item.tiles
+        item.file = collectionItem.file
+        item.tiles = collectionItem.tiles
+        item.date = collectionItem.date
+
+        if (item.tileInfo.type === 'vector') {
+          item.tileInfo.style.id = item.tileInfo.style.source = item.tileInfo.style['source-layer'] = item.tiles
+        }
+
+        getFileSize(dataConfig.filesDirectory + '/' + item.format + '/' + item.file).then((fileSize) => {
+          this.$set(item, 'fileSize', fileSize)
+        })
+
+        if (item.layerShow) {
+          item.layerShow = false
+          this.$eventBus.$emit('removetilelayer', previousTiles)
+          item.layerShow = true
+          this.$eventBus.$emit('addtilelayer', {tiles: item.tiles, tileInfo: item.tileInfo, source: item.source})
+        }
+      },
+      resetPanel() {
+        this.searchString = ''
+        this.tags = []
+        this.fileList.forEach(item => {
+          item.expanded = false
+          item.downloadAll = false
+          if (item.layerShow) {
+            item.layerShow = false
+            this.addToMap(item, false)
+          }
+          if (item.isCollectionItem && (item.currentCollectionItemId != item.collectionItemInfo[0].collectionItemId)) {
+            item.currentCollectionItemId = item.collectionItemInfo[0].collectionItemId
+            this.collectionItemSelectionChange(item)
+          }
+        })
       }
     },
     computed: {
@@ -271,6 +368,9 @@
       },
       locale() {
         return this.$i18n.locale.toString().substr(0,2)
+      },
+      showReset() {
+        return this.searchString || this.tags.length > 0 || this.fileList.some(item => item.expanded || item.layerShow || item.downloadAll || (item.isCollectionItem && (item.currentCollectionItemId != item.collectionItemInfo[0].collectionItemId)))
       }
     }
   }

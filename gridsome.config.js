@@ -57,6 +57,13 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
+        path: 'data/collections.json',
+        typeName: 'CollectionsData'
+      }
+    },
+    {
+      use: '@gridsome/source-filesystem',
+      options: {
         path: 'data/news/*.json',
         typeName: 'NewsData'
       }

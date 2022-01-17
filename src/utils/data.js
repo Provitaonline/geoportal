@@ -8,17 +8,19 @@ import * as oK from '~/utils/octokitwrapper'
 
 let parseString = require('xml2js').parseString
 
-
-// This retrieves meta from the github cache
-export async function getMetaEntries() {
-  let response = await axios.get(dataConfig.metaBaseUrl + dataConfig.metaFileName)
-  return response
+// Set the branch of the data repo
+export function setRepoBranch(branch) {
+  oK.setRepoBranch(branch)
 }
 
 // This gets the size of a file
 export async function getFileSize(fileName) {
-  let response = await axios.head(dataConfig.filesBaseUrl + dataConfig.filesDirectory + '/' + fileName)
-  return response.headers['content-length']
+  try {
+    let response = await axios.head(dataConfig.filesBaseUrl + fileName)
+    return response.headers['content-length']
+  } catch (err) {
+    return 0
+  }
 }
 
 // This gets the list of stored files
@@ -57,7 +59,7 @@ export async function getMetaFromRepo(token, file) {
   if (response !== undefined) {
     result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
     // Need to unpack tileInfo back to object
-    result.tileInfo = JSON.parse(result.tileInfo)
+    if (result.tileInfo) result.tileInfo = JSON.parse(result.tileInfo)
   }
   return result
 }
@@ -84,16 +86,63 @@ export async function saveMetaFromRepo(token, meta) {
     'Updated meta'
   )
 
+  // Update collection items
+  if (meta.isCollectionItem) {
+    let collectionItems = {}
+    let r = await oK.getContent(token, dataConfig.collectionItems)
+    if (r !== undefined) {
+      collectionItems = JSON.parse(utf8.decode(base64.decode(r.data.content)))
+    }
+    if (!collectionItems[meta.collectionId]) collectionItems[meta.collectionId] = []
+    if (!collectionItems[meta.collectionId].includes(meta.file)) {
+      collectionItems[meta.collectionId].push(meta.file)
+      await oK.writeFile(token, dataConfig.collectionItems, base64.encode(utf8.encode(JSON.stringify(collectionItems, null, 2))), 'Updated collection items')
+    }
+  }
+
   return response
+}
+
+// This retrieves collections items file
+export async function getCollectionItems(token) {
+  let result = {}
+  let response = await oK.getContent(token, dataConfig.collectionItems)
+
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+  }
+  return result
 }
 
 export async function deleteMetaListFromRepo(token, fileList) {
 
+  // Get collectionItems
+  let collectionItems = {}
+  let r = await oK.getContent(token, dataConfig.collectionItems)
+  if (r !== undefined) {
+    collectionItems = JSON.parse(utf8.decode(base64.decode(r.data.content)))
+  }
+
+  // Delete files one by one
   let responses = []
   for (const file of fileList) {
+    // Remove the files from collectionItems
+    if (collectionItems) {
+      Object.keys(collectionItems).forEach(key => {
+        collectionItems[key] = collectionItems[key].filter(f => f !== file)
+      })
+    }
     let response = await oK.deleteFile(token, dataConfig.metaDirectory + '/' + file + '.json')
     responses.push(response)
   }
+
+  // Cleanup collectionItems
+  Object.keys(collectionItems).forEach(key => {
+    if (collectionItems[key].length === 0) delete collectionItems[key]
+  })
+
+  // Update collectionItems
+  await oK.writeFile(token, dataConfig.collectionItems, base64.encode(utf8.encode(JSON.stringify(collectionItems, null, 2))), 'Updated collection items')
 
   return responses
 }
@@ -140,6 +189,11 @@ export async function submitJob(token, job) {
   return response
 }
 
+export async function submitSimpleJob(token, jobName) {
+  let response = await axios.get('/.netlify/functions/submit-simple-job?jobname=' + jobName, {headers: {authorization: token}})
+  return response
+}
+
 export async function getSurveyTemplateFromRepo(token) {
   let result = {}
 
@@ -170,6 +224,11 @@ export async function sendSurvey(survey, version) {
   return response
 }
 
+export async function saveCBundlesManifest(token, manifest) {
+  let response = await axios.put('/.netlify/functions/save-cbundles-manifest', JSON.stringify(manifest, null, 2), {headers: {authorization: token}})
+  return response
+}
+
 export async function getFAQFromRepo(token) {
   let result = {}
 
@@ -184,6 +243,36 @@ export async function getFAQFromRepo(token) {
 export async function saveFAQ(token, FAQ) {
 
   let response = await oK.writeFile(token, dataConfig.faqFileName, base64.encode(utf8.encode(JSON.stringify(FAQ, null, 2))), 'Updated FAQ')
+
+  return response
+}
+
+export async function getCollectionsFromRepo(token) {
+  let result = {}
+
+  let response = await oK.getContent(token, dataConfig.collectionsFileName)
+
+  if (response !== undefined) {
+    result = JSON.parse(utf8.decode(base64.decode(response.data.content)))
+    result.collections = result.collections.map(c => {
+      c.tileInfo = JSON.parse(c.tileInfo)
+      return c
+    })
+  }
+  return result
+}
+
+export async function saveCollections(token, Collections) {
+
+  // Make a copy to avoid clobbering tileInfo
+  Collections = JSON.parse(JSON.stringify(Collections))
+
+  Collections.collections = Collections.collections.map(c => {
+    c.tileInfo = JSON.stringify(c.tileInfo)
+    return c
+  })
+
+  let response = await oK.writeFile(token, dataConfig.collectionsFileName, base64.encode(utf8.encode(JSON.stringify(Collections, null, 2))), 'Updated Collections')
 
   return response
 }
@@ -290,8 +379,8 @@ export async function saveContact(token, contact) {
   return response
 }
 
-export async function publishSite() {
-  let response = await axios.post(dataConfig.deployHookUrl, 'publish')
+export async function publishSite(branch) {
+  let response = await axios.post(dataConfig.deployHookUrl + '?trigger_branch=' + branch, 'publish')
   return response
 }
 

@@ -53,7 +53,7 @@
 </style>
 
 <script>
-  import {getListOfStoredFiles, getPresignedPost, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo} from '~/utils/data'
+  import {setRepoBranch, getListOfStoredFiles, getPresignedPost, uploadFileToS3, deleteFiles, submitJob, getMetaListFromRepo, deleteMetaListFromRepo, getCollectionsFromRepo} from '~/utils/data'
   import {dataConfig} from '~/utils/config'
   import {getPureText} from '~/utils/misc'
   import MetaEntryEditor from '~/components/admin/MetaEntryEditor'
@@ -70,6 +70,7 @@
         listOfFiles: [],
         fileListCheckedRows: [],
         metaFromRepo: [],
+        collections: [],
         currentIndex: 0,
         currentEntry: {},
         fileToUpload: null,
@@ -80,12 +81,16 @@
       }
     },
     mounted() {
+      setRepoBranch(process.env.GRIDSOME_BRANCH)
       this.getListOfFiles()
       if (this.isPublic) {
         getMetaListFromRepo(sessionStorage.githubtoken).then(result => {
-          console.log('retrieve list from meta')
+          console.log('retrieve list & collections from meta')
           this.metaFromRepo = result
-          this.isLoading = false
+          getCollectionsFromRepo(sessionStorage.githubtoken).then((c) => {
+            if (c.collections) this.collections = c.collections
+            this.isLoading = false
+          })
         })
         this.$eventBus.$on('acceptmetachanges', this.acceptMetaChanges)
       } else {
@@ -121,7 +126,8 @@
             metaEntry: metaEntry,
             listOfModelCandidates: this.listOfFiles.filter(file => {
               return this.metaFromRepo.find(meta => meta.file === file.name)
-            })
+            }),
+            collections: this.collections
           }
         })
       },

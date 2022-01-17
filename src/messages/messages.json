@@ -17,6 +17,8 @@
       "removenewsitemswarning": "This operation will remove the selected news items",
       "removequestions": "Remove questions",
       "removequestionswarning": "This operation will remove the selected questions",
+      "removecollections": "Remove collections",
+      "removecollectionswarning": "This operation will remove the selected collections",
       "batchjobwarning": "Any changes in the color table (section below this message) will trigger the (re)generation of the tile layer associated with this data set.",
       "dataconflictmessage": "Metadata has been changed by another user, therefore your changes will be canceled",
       "surveyheader": "Would you answer the questions below to help us serve you better?",
@@ -188,7 +190,21 @@
       "copy": "Copy",
       "tocopy": "Copy",
       "label": "Label",
-      "addfilloutline": "Add a fill outline"
+      "addfilloutline": "Add a fill outline",
+      "collection": "Data set collection",
+      "collectionitem": "Collection item",
+      "collections": "Collections",
+      "collectionid": "Collection Id",
+      "collectionname": "Collection name",
+      "addcollection": "Add collection",
+      "newcollection": "New collection",
+      "iscollectionitem": "This file is a collection item",
+      "itemlabelenglish": "English item label",
+      "itemlabelspanish": "Spanish item label",
+      "resetpanel": "Reset panel",
+      "disclaimerspanish": "Disclaimer in spanish",
+      "disclaimerenglish": "Disclaimer in english",
+      "all": "All"
     }
   },
   "es": {
@@ -209,6 +225,8 @@
       "removequestions": "Eliminar preguntas",
       "removequestionswarning": "Esta operación eliminará las preguntas seleccionadas",
       "removenewsitemswarning": "Esta operación eliminará los artículos seleccionados",
+      "removecollections": "Eliminar colecciones",
+      "removecollectionswarning": "Esta operación eliminará las colecciones seleccionadas",
       "batchjobwarning": "Cualquier cambio en la tabla de colores (sección debajo de éste mensaje) iniciará la (re)generación de la capa de teselas asociada con éste archivo de datos.",
       "dataconflictmessage": "Los metadatos han sido modificados por otro usuario, por lo tanto tus cambios no se han efectuado.",
       "surveyheader": "¿Responderías a las preguntas siguientes para ayudarnos a servirte mejor?",
@@ -380,7 +398,21 @@
       "copy": "Copia",
       "tocopy": "Copiar",
       "label": "Etiqueta",
-      "addfilloutline": "Añadir un borde al relleno"
+      "addfilloutline": "Añadir un borde al relleno",
+      "collection": "Colección de archivos de datos",
+      "collectionitem": "Item de la colección",
+      "collections": "Colecciones",
+      "collectionid": "Id de la colección",
+      "collectionname": "Nombre de la colección",
+      "addcollection": "Añadir colección",
+      "newcollection": "Colección nueva",
+      "iscollectionitem": "Este archivo forma parte de una colección",
+      "itemlabelenglish": "Nombre de los ítems en inglés",
+      "itemlabelspanish": "Nombre de los ítems en español",
+      "resetpanel": "Reiniciar panel",
+      "disclaimerspanish": "Advertencia en español",
+      "disclaimerenglish": "Advertencia en inglés",
+      "all": "Todos"
     }
   }
 }
