@@ -120,7 +120,7 @@
       InteractiveMap
     },
     created() {
-      if (process.isClient) this.showDisclaimer = !sessionStorage.disclaimerAcknowledged
+      if (process.isClient) this.showDisclaimer = !localStorage.disclaimerAcknowledged
       this.fileList = []
       this.$page.allMetaData.edges.forEach(item => {
         if (!item.node.isCollectionItem) {
@@ -141,7 +141,7 @@
     methods: {
       ackDisclaimer() {
         this.showDisclaimer = false
-        sessionStorage.disclaimerAcknowledged = true
+        localStorage.disclaimerAcknowledged = true
       }
     }
   }
