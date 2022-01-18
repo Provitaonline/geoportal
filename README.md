@@ -18,7 +18,9 @@ The site is based on the [Gridsome](https://gridsome.org/) [Vue.js](https://vuej
 ## Directory structure
 
 ```
-content - Static content (markdown, images)
+data - Site content (JSON files in a Git submodule)
+
+functions - Lambda functions used by the application
 
 src - Source code (Gridsome application)
 
@@ -27,6 +29,8 @@ static - Static content copied directly onto "dist"
   mapstyles - Mapbox-compatible style documents
   sound - Sounds used by the app (e.g., camera click)
 ```
+
+Note: The data directory resides externally in a [Git submodule](https://github.com/Provitaonline/geoportal-data)
 
 ## Licenses
 
