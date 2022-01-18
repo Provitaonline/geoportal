@@ -5,7 +5,7 @@
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
-let marked = require('marked')
+let { marked } = require('marked')
 
 var renderer = new marked.Renderer()
 renderer.link = function(href, title, text) {
