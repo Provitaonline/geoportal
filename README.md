@@ -2,8 +2,6 @@
 
 This project is the source for [Provita's Geographical Information Portal](https://geoportal.provita.org.ve/).
 
-This project is currently in Beta test.
-
 ## Development environment
 
 The site is based on the [Gridsome](https://gridsome.org/) [Vue.js](https://vuejs.org/) framework.
