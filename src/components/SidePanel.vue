@@ -273,8 +273,6 @@
             item.tileInfo.type === 'vector' && item.tileInfo.style && item.tileInfo.style.paint && item.tileInfo.style.paint['fill-color'] && item.tileInfo.style.paint['fill-color'].stops && getPureText(item.tileInfo.style.paint['fill-color'].stops.toString()).includes(s)) {
           if (this.tags.length === 0 || item.keywords[this.locale].some(k => this.tags.includes(k))) return true
         }
-        //if (item.tileInfo.type === 'raster' && getPureText(item.tileLabels.toString()).includes(s)) return true
-        //if (item.tileInfo.type === 'vector' && item.tileInfo.style && item.tileInfo.style.paint && item.tileInfo.style.paint['fill-color'] && item.tileInfo.style.paint['fill-color'].stops && getPureText(item.tileInfo.style.paint['fill-color'].stops.toString()).includes(s)) return true
         return false
       },
       getFilteredTags(text) {
