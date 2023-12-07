@@ -1,6 +1,6 @@
 {
   "name": "geoportal",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/Provitaonline/geoportal.git"
@@ -25,8 +25,8 @@
     "gridsome": "^0.7.23",
     "gridsome-plugin-i18n": "^1.6.0",
     "html2canvas": "^1.0.0-rc.7",
-    "maplibre-gl": "=1.14.0",
     "mapbox-gl-style-switcher": "^1.0.8",
+    "maplibre-gl": "=1.14.0",
     "marked": "^4.0.10",
     "unzip-js": "^1.0.0",
     "utf8": "^3.0.0",
@@ -50,7 +50,7 @@
     "@gridsome/transformer-remark": "^0.6.1",
     "gridsome-plugin-robots-txt": "^1.0.2",
     "gridsome-plugin-rss": "^1.2.0",
-    "netlify-cli": "^2.61.2",
+    "netlify-cli": "^10.16.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2"
   }
