@@ -8,12 +8,15 @@ The site is based on the [Gridsome](https://gridsome.org/) [Vue.js](https://vuej
 
 ## Development/deployment instructions
 
-#### Prerequisite: [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation)
+#### Prerequisites:
+* [Node.js](https://nodejs.org/en/) (version 14.21.3)
+* [Gridsome](https://gridsome.org/) (version 0.7.23)
+* [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation) (version 10.16.0)
 
 * Clone the repository
 * ```npm install```
-* Develop: ```netlify dev```; runs a development server; to access the application, point your browser to: ```http://localhost:8888```
-* Build: ```netlify build```; the result is in the ```"dist"``` folder
+* Develop: ```npx netlify dev```; runs a development server; to access the application, point your browser to: ```http://localhost:8888```
+* Build: ```npx netlify build```; the result is in the ```"dist"``` folder
 
 ## Directory structure
 
