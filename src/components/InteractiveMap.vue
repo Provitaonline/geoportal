@@ -210,8 +210,8 @@
               layout: {},
               filter: ['==', 'NAME', 'Territorio Esequibo'],
               paint: {
-                'fill-pattern': 'pattern',
-                'fill-opacity': 0.3
+                /* 'fill-pattern': 'pattern', */
+                'fill-opacity': 0
               }
             })
           })
