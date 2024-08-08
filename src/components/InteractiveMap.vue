@@ -181,18 +181,18 @@
         document.getElementsByClassName('screenshot-control')[0].title = this.$t('label.screenshot', locale)
       },
       addLayers: function() {
-        if (!this.map.getLayer('venezuela')) {
-          this.map.addSource('venezuela', {
+        if (!this.map.getLayer('venezuela_e')) {
+          this.map.addSource('venezuela_e', {
             type: 'vector',
             maxzoom: 10,
-            tiles: [mapConfig.vectorTilesBaseUrl + 'venezuela' + '/{z}/{x}/{y}.pbf'],
+            tiles: [mapConfig.vectorTilesBaseUrl + 'venezuela_e' + '/{z}/{x}/{y}.pbf'],
             attribution: 'IGVSB'
           })
           this.map.addLayer({
-            id: 'venezuela',
+            id: 'venezuela_e',
             type: 'line',
-            source: 'venezuela',
-            'source-layer': 'venezuela',
+            source: 'venezuela_e',
+            'source-layer': 'venezuela_e',
             layout: {},
             paint: {
               'line-color': '#504f54',
@@ -200,7 +200,7 @@
               'line-width': 2
             }
           })
-          stripePattern('black').then((image) => {
+          /* stripePattern('black').then((image) => {
             if (!this.map.hasImage('pattern')) this.map.addImage('pattern', image)
             this.map.addLayer({
               id: 'esequibo-layer',
@@ -210,11 +210,11 @@
               layout: {},
               filter: ['==', 'NAME', 'Territorio Esequibo'],
               paint: {
-                /* 'fill-pattern': 'pattern', */
+                'fill-pattern': 'pattern',
                 'fill-opacity': 0
               }
             })
-          })
+          }) */
         }
 
         for (const item in this.visibleTileLayers) {
